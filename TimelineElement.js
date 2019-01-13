@@ -31,13 +31,9 @@ export default class TimelineElement extends React.Component {
         }
     }
 
-    openPopup = () => {
-        console.log("function called");
-    }
-
     render() {
         return (
-            <TouchableHighlight style={{position: 'relative' }} onPress={this.openPopup}>
+            <TouchableHighlight style={{position: 'relative' }} onPress={this.props.onClick}>
                 <View>
                     <View style={styles.el} />
                     <View style={styles.point} />

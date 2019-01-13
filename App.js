@@ -74,9 +74,10 @@ export default class App extends React.Component {
       <View style={StyleSheet.absoluteFillObject}>
         
         <MapView style={StyleSheet.absoluteFillObject} region={this.state.region} annotations={this.state.markers}>
-          {this.state.markers.map(marker => (
+          {
+            this.state.markers.map(marker => (
             <Marker
-              key={0}
+              key={marker.latlong.longitude}
               coordinate={marker.latlong}
               title={marker.title}
               description={marker.description}

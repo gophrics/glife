@@ -1,4 +1,5 @@
 import {CameraRoll} from 'react-native';
+import { AnimatedRegion } from 'react-native-maps';
 
 module.exports = {
     getPhotosFromLibrary: () => {
@@ -51,10 +52,26 @@ module.exports = {
 
         locationInfo.region.latitude = latitude;
         locationInfo.region.longitude = longitude;
-        locationInfo.region.latitudeDelta = latitudeArray[latitudeArray.length-1] - latitudeArray[0];
-        locationInfo.region.longitudeDelta = longitudeArray[latitudeArray.length-1] - longitudeArray[0];
+        locationInfo.region.latitudeDelta = 0;//latitudeArray[latitudeArray.length-1] - latitudeArray[0];
+        locationInfo.region.longitudeDelta = 0;//longitudeArray[latitudeArray.length-1] - longitudeArray[0];
 
-        console.log(locationInfo);
         return locationInfo;
+    },
+
+    getMarkers: (locationInfos) => {
+        var markers = [];
+        for(var location of locationInfos) {
+            var loc = {
+                title: "abc",
+                description: ""
+            }
+            loc.latlong = {
+                latitude: location.region.latitude,
+                longitude: location.region.longitude
+            };
+            markers.push(loc);
+        }
+
+        return markers;
     }
 }

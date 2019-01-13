@@ -1,8 +1,32 @@
 import React from 'react';
-import MapView from 'react-native-maps';
-import { StyleSheet, ScrollView, View, Text } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { Animated, StyleSheet, ScrollView, View, Text } from 'react-native';
 import TimelineElement from './TimelineElement';
 import * as PhotoLibraryProcessor from './Utilities/PhotoLibraryProcessor';
+
+
+
+const styles = StyleSheet.create({
+  markerWrap: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  marker: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "rgba(130,4,150, 0.9)",
+  },
+  ring: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: "rgba(130,4,150, 0.3)",
+    position: "absolute",
+    borderWidth: 1,
+    borderColor: "rgba(130,4,150, 0.5)",
+  }
+});
 
 export default class App extends React.Component {
 
@@ -12,15 +36,19 @@ export default class App extends React.Component {
       region: {
         latitude: 0, longitude: 0,
         latitudeDelta: 0, longitudeDelta: 0
-      }
+      },
+      markers: []
     }
 
     PhotoLibraryProcessor.getPhotosFromLibrary()
     .then((res) => {
+        var markers = PhotoLibraryProcessor.getMarkers(res);
         var locationInfo = PhotoLibraryProcessor.triangulatePhotoLocationInfo(res);
+        console.log(markers);
         this.setState({
-          region: locationInfo.region
-        })
+          region: locationInfo.region,
+          markers: markers
+        });
     });
   }
 
@@ -39,12 +67,23 @@ export default class App extends React.Component {
     console.log("onTimelineClick and region change");
   }
 
+
   render() {
 
     return (
       <View style={StyleSheet.absoluteFillObject}>
         
-        <MapView style={StyleSheet.absoluteFillObject} region={this.state.region}/>
+        <MapView style={StyleSheet.absoluteFillObject} region={this.state.region} annotations={this.state.markers}>
+          {this.state.markers.map(marker => (
+            <Marker
+              key={0}
+              coordinate={marker.latlong}
+              title={marker.title}
+              description={marker.description}
+            />
+          ))}
+        </MapView>
+        
         <ScrollView horizontal={true} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
           <TimelineElement  month="2019" onClick={this.onTimelineClick}/>
           <TimelineElement  month="January" onClick={this.onTimelineClick}/>

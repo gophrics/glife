@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, ScrollView, StyleSheet, View } from 'react-native';
+import { Text, TouchableHighlight, StyleSheet, View } from 'react-native';
 
 
 const styles = StyleSheet.create({
     el: {
         position: 'absolute',
-        width: 60,
+        alignSelf: 'flex-start',
+        width: '100%',
         height: 100,
         top: 8,
         borderTopWidth: 5,
@@ -30,13 +31,19 @@ export default class TimelineElement extends React.Component {
         }
     }
 
+    openPopup = () => {
+        console.log("function called");
+    }
+
     render() {
         return (
-            <View style={{position: 'relative' }}>
-                <View style={styles.el} />
-                <View style={styles.point} />
-                <Text style={{left: 0, top: 25}}> {this.state.month} </Text>
-            </View>
+            <TouchableHighlight style={{position: 'relative' }} onPress={this.openPopup}>
+                <View>
+                    <View style={styles.el} />
+                    <View style={styles.point} />
+                    <Text style={{left: 0, top: 25}}> {this.state.month} </Text>
+                </View>
+            </TouchableHighlight>
         );
     }
 } 

@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, ScrollView, View, Text } from 'react-native';
+import { CameraRoll, StyleSheet, ScrollView, View, Text } from 'react-native';
 import TimelineElement from './TimelineElement';
 
 export default class App extends React.Component {
@@ -9,13 +9,36 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       region: {
-        latitude: 0,
-        longitude: 0,
-        latitudeDelta: 0,
-        longitudeDelta: 0
+        latitude: 0, longitude: 0,
+        latitudeDelta: 0, longitudeDelta: 0
       }
     }
+
+    this.getPhotosFromLibrary();
   }
+
+  getPhotosFromLibrary = () => {
+    CameraRoll.getPhotos({ first: 1000000000 })
+    .then((res) => {
+      var locationInfo = {
+        region: {
+          latitude: 0, longitude: 0,
+          latitudeDelta: 0, longitudeDelta: 0
+        }
+      }
+      for(var image of res.edges) {
+        if(image && image.node && image.node.location) {
+          locationInfo.region.latitude  = image.node.location.latitude;
+          locationInfo.region.longitude = image.node.location.longitude;
+        }
+        break;
+      }
+      this.setState({
+        region: locationInfo.region
+      });
+    });
+  }
+
   onTimelineClick = () => {
     var region = {
       latitude: 10,

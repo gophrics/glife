@@ -6,7 +6,7 @@ module.exports = {
         return CameraRoll.getPhotos({ first: 1000000000 })
         .then((res) => {
           var locationList = [];
-
+          var imageList = [];
           for(var image of res.edges) {
             var locationInfo = {
                 region: {
@@ -19,10 +19,11 @@ module.exports = {
               locationInfo.region.latitude  = image.node.location.latitude;
               locationInfo.region.longitude = image.node.location.longitude;
               locationList.push(locationInfo);
+              imageList.push(image.node.image.uri);
             }
           }
 
-          return locationList;
+          return {"locationList": locationList, "imageList": imageList };
         });
       },
 
@@ -58,9 +59,9 @@ module.exports = {
         return locationInfo;
     },
 
-    getMarkers: (locationInfos) => {
+    getMarkers: (infos) => {
         var markers = [];
-        for(var location of locationInfos) {
+        for(var location of infos.locationList) {
             var loc = {
                 title: "abc",
                 description: ""

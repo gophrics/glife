@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { Animated, StyleSheet, ScrollView, View, Text } from 'react-native';
+import { Animated, StyleSheet, ScrollView, View, Image } from 'react-native';
 import TimelineElement from './TimelineElement';
 import * as PhotoLibraryProcessor from './Utilities/PhotoLibraryProcessor';
 
@@ -25,6 +25,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderWidth: 1,
     borderColor: "rgba(130,4,150, 0.5)",
+  },
+  imageBox: {
+    width: 30,
+    height: 30,
+    borderWidth: 1
   }
 });
 
@@ -43,11 +48,12 @@ export default class App extends React.Component {
     PhotoLibraryProcessor.getPhotosFromLibrary()
     .then((res) => {
         var markers = PhotoLibraryProcessor.getMarkers(res);
-        var locationInfo = PhotoLibraryProcessor.triangulatePhotoLocationInfo(res);
-        console.log(markers);
+        var locationInfo = PhotoLibraryProcessor.triangulatePhotoLocationInfo(res.locationList);
+        console.log(res.imageList);
         this.setState({
           region: locationInfo.region,
-          markers: markers
+          markers: markers,
+          markerImages: res.imageList
         });
     });
   }
@@ -75,13 +81,17 @@ export default class App extends React.Component {
         
         <MapView style={StyleSheet.absoluteFillObject} region={this.state.region} annotations={this.state.markers}>
           {
-            this.state.markers.map(marker => (
+            this.state.markers.map((marker, index) => (
             <Marker
               key={marker.latlong.longitude}
               coordinate={marker.latlong}
               title={marker.title}
               description={marker.description}
-            />
+            >
+            <View style={styles.imageBox}>
+              <Image style={styles.imageBox} source={{uri:this.state.markerImages[index]}}></Image>
+            </View>
+            </Marker>
           ))}
         </MapView>
         

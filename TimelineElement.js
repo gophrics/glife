@@ -33,11 +33,11 @@ export default class TimelineElement extends React.Component {
 
     render() {
         return (
-            <TouchableHighlight style={{position: 'relative' }} onPress={this.props.onClick}>
+            <TouchableHighlight style={{position: 'relative', width: 100 }} onPress={this.props.onClick}>
                 <View>
                     <View style={styles.el} />
                     <View style={styles.point} />
-                    <Text style={{left: 0, top: 25}}> {this.state.month} </Text>
+                    <Text style={{left: 0, top: 25}}> {this.props.year + "\n" + this.props.month}  </Text>
                 </View>
             </TouchableHighlight>
         );

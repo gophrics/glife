@@ -7,6 +7,7 @@ module.exports = {
         .then((res) => {
           var locationList = [];
           var imageList = [];
+          var timestampList = [];
           for(var image of res.edges) {
             var locationInfo = {
                 region: {
@@ -21,9 +22,12 @@ module.exports = {
               locationList.push(locationInfo);
               imageList.push(image.node.image.uri);
             }
+            if( image && image.node && image.node.timestamp) {
+                timestampList.push(image.node.timestamp);
+            }
           }
 
-          return {"locationList": locationList, "imageList": imageList };
+          return {"locationInfo": locationList, "imageData": imageList, "timestampList": timestampList };
         });
       },
 
@@ -61,7 +65,7 @@ module.exports = {
 
     getMarkers: (infos) => {
         var markers = [];
-        for(var location of infos.locationList) {
+        for(var location of infos.locationInfo) {
             var loc = {
                 title: "abc",
                 description: ""

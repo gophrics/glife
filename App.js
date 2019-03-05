@@ -33,8 +33,10 @@ const styles = StyleSheet.create({
   }
 });
 
+let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", ];
+    
 export default class App extends React.Component {
-
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -42,24 +44,56 @@ export default class App extends React.Component {
         latitude: 0, longitude: 0,
         latitudeDelta: 0, longitudeDelta: 0
       },
-      markers: []
+      markers: [],
+      timelineData: [],
+      timelines: []
     }
-
+    
     PhotoLibraryProcessor.getPhotosFromLibrary()
     .then((res) => {
         var markers = PhotoLibraryProcessor.getMarkers(res);
-        var locationInfo = PhotoLibraryProcessor.triangulatePhotoLocationInfo(res.locationList);
-        console.log(res.imageList);
+        var locationInfo = PhotoLibraryProcessor.triangulatePhotoLocationInfo(res.locationInfo);
         this.setState({
           region: locationInfo.region,
           markers: markers,
-          markerImages: res.imageList
+          markerImages: res.imageData,
+          timelineData: res.timestampList
         });
+    })
+    .then(() => {
+      this.populateTimelineData();
+    })
+  }
+
+  populateTimelineData = () => {
+       
+    var timelineData = this.state.timelineData;
+    timelineData.sort((a, b) => {
+      return a < b ? -1 : 1;
+    });
+
+    // Converting to millisecond timestamp by * 1000
+    var initialDate = new Date(timelineData[0]*1000);
+    var finalDate = new Date(timelineData[timelineData.length-1]*1000);
+
+    var j = initialDate.getMonth();
+    var timeline = {};
+    for(var i = initialDate.getFullYear(); i <= finalDate.getFullYear(); i++) {
+      timeline[i] = []
+      j = 1;
+      while(j <= months.length) {
+        timeline[i].push(months[j-1]);
+        j++;
+      }
+    }
+
+    this.setState({
+      timelines: timeline
     });
   }
 
 
-  onTimelineClick = () => {
+  onTimelineClick = (month, year) => {
     var region = {
       latitude: 10,
       longitude: 10,
@@ -75,6 +109,15 @@ export default class App extends React.Component {
 
 
   render() {
+
+    var timelineRenderArray = []
+    var i = 0;
+    for(var year in this.state.timelines) {
+      for(var month in this.state.timelines[year]) {
+        i++;
+        timelineRenderArray.push(<TimelineElement key={i} month={months[month]} year={year} onClick={(month, year) => this.onTimelineClick(month, year)} />);
+      }
+    }
 
     return (
       <View style={StyleSheet.absoluteFillObject}>
@@ -96,19 +139,9 @@ export default class App extends React.Component {
         </MapView>
         
         <ScrollView horizontal={true} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
-          <TimelineElement  month="2019" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="January" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="February" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="March" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="April" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="May" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="June" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="July" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="August" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="September" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="October" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="November" onClick={this.onTimelineClick}/>
-          <TimelineElement  month="December" onClick={this.onTimelineClick}/>
+          {
+            timelineRenderArray
+          }
         </ScrollView>
       </View>
     );

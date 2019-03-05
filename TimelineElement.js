@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, TouchableHighlight, StyleSheet, View } from 'react-native';
 
-
 const styles = StyleSheet.create({
     el: {
         position: 'absolute',

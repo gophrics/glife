@@ -23,7 +23,7 @@ module.exports = {
               imageList.push(image.node.image.uri);
             }
             if( image && image.node && image.node.timestamp) {
-                timestampList.push(image.node.timestamp);
+                timestampList.push(image.node.timestamp*1000);
             }
           }
 
@@ -54,7 +54,7 @@ module.exports = {
 
         latitude = latitudeArray.reduce((a, b) => {return a+b;},0)/latitudeArray.length;
         longitude = longitudeArray.reduce((a, b) => {return a+b;},0)/longitudeArray.length;
-
+        
         locationInfo.region.latitude = latitude;
         locationInfo.region.longitude = longitude;
         locationInfo.region.latitudeDelta = 0;//latitudeArray[latitudeArray.length-1] - latitudeArray[0];
@@ -70,7 +70,7 @@ module.exports = {
                 title: "abc",
                 description: ""
             }
-            loc.latlong = {
+            loc.region = {
                 latitude: location.region.latitude,
                 longitude: location.region.longitude
             };

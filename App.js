@@ -72,19 +72,18 @@ export default class App extends React.Component {
       return a < b ? -1 : 1;
     });
 
-    // Converting to millisecond timestamp by * 1000
-    var initialDate = new Date(timelineData[0]*1000);
-    var finalDate = new Date(timelineData[timelineData.length-1]*1000);
+    var initialDate = new Date(timelineData[0]);
+    var finalDate = new Date(timelineData[timelineData.length-1]);
 
     var j = initialDate.getMonth();
     var timeline = {};
     for(var i = initialDate.getFullYear(); i <= finalDate.getFullYear(); i++) {
       timeline[i] = []
-      j = 1;
       while(j <= months.length) {
         timeline[i].push(months[j-1]);
         j++;
       }
+      j = 1;
     }
 
     this.setState({
@@ -94,28 +93,32 @@ export default class App extends React.Component {
 
 
   onTimelineClick = (month, year) => {
-    var region = {
-      latitude: 10,
-      longitude: 10,
-      latitudeDelta: 2,
-      longitudeDelta: 2
-    }
-    this.setState({
-      region: region
-    });
+    month = months.indexOf(month) + 1;
 
-    console.log("onTimelineClick and region change");
+
+    var triangulationLocations = [];
+    var i = 0;
+    for(var timestamp of this.state.timelineData) {
+      var d = new Date(timestamp);
+      if(d.getFullYear() == year && d.getMonth() == month) { triangulationLocations.push(this.state.markers[i]); }
+      i++;
+    }
+    
+    var focusLocation = PhotoLibraryProcessor.triangulatePhotoLocationInfo(triangulationLocations);
+    console.log(focusLocation);
+    this.setState({
+      region: focusLocation.region
+    });
   }
 
 
   render() {
-
     var timelineRenderArray = []
     var i = 0;
     for(var year in this.state.timelines) {
-      for(var month in this.state.timelines[year]) {
+      for(var month of this.state.timelines[year]) {
         i++;
-        timelineRenderArray.push(<TimelineElement key={i} month={months[month]} year={year} onClick={(month, year) => this.onTimelineClick(month, year)} />);
+        timelineRenderArray.push(<TimelineElement key={i} month={month} year={year} onClick={this.onTimelineClick.bind(this, month, year)} />);
       }
     }
 
@@ -126,8 +129,8 @@ export default class App extends React.Component {
           {
             this.state.markers.map((marker, index) => (
             <Marker
-              key={marker.latlong.longitude}
-              coordinate={marker.latlong}
+              key={marker.region.longitude}
+              coordinate={marker.region}
               title={marker.title}
               description={marker.description}
             >
@@ -139,9 +142,7 @@ export default class App extends React.Component {
         </MapView>
         
         <ScrollView horizontal={true} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
-          {
-            timelineRenderArray
-          }
+          { timelineRenderArray }
         </ScrollView>
       </View>
     );

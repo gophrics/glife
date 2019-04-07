@@ -8,12 +8,13 @@
   },
   "dependencies": {
     "expo": "^32.0.6",
-    "react": "16.5.0",
+    "react": "^16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-native-maps": "^0.22.1"
+    "react-native-maps": "^0.22.1",
+    "react-native-background-service": "https://github.com/issacnitin/react-native-background-service.git"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-preset-expo": "^5.1.1"
   },
   "private": true
 }

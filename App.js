@@ -1,10 +1,14 @@
 import React from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { Animated, StyleSheet, ScrollView, View, Image } from 'react-native';
+import { NativeModules, NativeEventEmitter, StyleSheet, ScrollView, View, Image } from 'react-native';
 import TimelineElement from './TimelineElement';
 import * as PhotoLibraryProcessor from './Utilities/PhotoLibraryProcessor';
 
 
+const LocationService = new NativeEventEmitter(NativeModules.LocationService)
+
+LocationService.addListener('LocationListener',
+(res) => { console.log(res) });
 
 const styles = StyleSheet.create({
   markerWrap: {
@@ -95,7 +99,6 @@ export default class App extends React.Component {
   onTimelineClick = (month, year) => {
     month = months.indexOf(month) + 1;
 
-
     var triangulationLocations = [];
     var i = 0;
     for(var timestamp of this.state.timelineData) {
@@ -105,7 +108,6 @@ export default class App extends React.Component {
     }
     
     var focusLocation = PhotoLibraryProcessor.triangulatePhotoLocationInfo(triangulationLocations);
-    console.log(focusLocation);
     this.setState({
       region: focusLocation.region
     });

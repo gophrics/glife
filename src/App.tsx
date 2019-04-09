@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import MapView from 'react-native-maps';
 import {Marker} from 'react-native-maps';
 import { NativeModules, NativeEventEmitter, StyleSheet, ScrollView, View, Image, AsyncStorage } from 'react-native';
@@ -66,6 +66,7 @@ export default class App extends React.Component<IProps, IState> {
       console.log(item);
       if(item) {
         this.state = JSON.parse(item);
+        this.initialize();
       } else {
         this.initialize();
       }
@@ -130,12 +131,14 @@ export default class App extends React.Component<IProps, IState> {
     var timelineRenderArray: Array<any> = []
     var i = 0;
 
-    for( let entry of this.state.sortedTimelineData.entries() ) {
-      var year = entry[0];
-      var monthArray = entry[1];
+    for(var entry in this.state.sortedTimelineData) {
+      console.log(entry);
+      var monthArray: any[] = [];//this.state.sortedTimelineData.get(entry);
+      var year = entry;
       i++;
       for(var month of monthArray)
         timelineRenderArray.push(<TimelineElement key={i} month={month} year={year} onClick={this.onTimelineClick.bind(this, month, year)} />);
+    
     }
 
     const markers = PhotoLibraryProcessor.getMarkers(this.state.imageData);

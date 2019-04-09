@@ -54,6 +54,11 @@ export default class App extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      region: new Region(0, 0, 0, 0),
+      imageData: [],
+      sortedTimelineData: new Map<number, Array<string>>()
+    } as IState;
     
     PhotoLibraryProcessor.getPhotosFromLibrary()
     .then((photoRollInfos: Array<ImageDataModal>) => {
@@ -79,9 +84,12 @@ export default class App extends React.Component<IProps, IState> {
       return a < b ? -1 : 1;
     });
 
+    console.log(timelineData);
     var initialDate = new Date(timelineData[0]);
     var finalDate = new Date(timelineData[timelineData.length-1]);
 
+    console.log(initialDate);
+    console.log(finalDate);
     var j = initialDate.getMonth();
     var timeline: Map<number, Array<string>> = new Map<number, Array<string>>();
     for(var i = initialDate.getFullYear(); i <= finalDate.getFullYear(); i++) {

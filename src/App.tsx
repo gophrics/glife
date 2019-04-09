@@ -1,6 +1,7 @@
 import React from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import { NativeModules, NativeEventEmitter, StyleSheet, ScrollView, View, Image } from 'react-native';
+import MapView from 'react-native-maps';
+import {Marker} from 'react-native-maps';
+import { NativeModules, NativeEventEmitter, StyleSheet, ScrollView, View, Image, AsyncStorage } from 'react-native';
 import TimelineElement from './UIComponents/TimelineElement';
 import * as PhotoLibraryProcessor from './Utilities/PhotoLibraryProcessor';
 import Region from './Modals/Region';
@@ -54,12 +55,25 @@ export default class App extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+
     this.state = {
       region: new Region(0, 0, 0, 0),
       imageData: [],
-      sortedTimelineData: new Map<number, Array<string>>()
+      sortedTimelineData: {} as Map<number, Array<string>>
     } as IState;
-    
+
+    AsyncStorage.getItem('lastState').then((item) => {
+      console.log(item);
+      if(item) {
+        this.state = JSON.parse(item);
+      } else {
+        this.initialize();
+      }
+    });
+
+  }
+
+  initialize = () => {
     PhotoLibraryProcessor.getPhotosFromLibrary()
     .then((photoRollInfos: Array<ImageDataModal>) => {
 
@@ -84,14 +98,11 @@ export default class App extends React.Component<IProps, IState> {
       return a < b ? -1 : 1;
     });
 
-    console.log(timelineData);
     var initialDate = new Date(timelineData[0]);
     var finalDate = new Date(timelineData[timelineData.length-1]);
-
-    console.log(initialDate);
-    console.log(finalDate);
     var j = initialDate.getMonth();
     var timeline: Map<number, Array<string>> = new Map<number, Array<string>>();
+
     for(var i = initialDate.getFullYear(); i <= finalDate.getFullYear(); i++) {
       var monthsInTheYear: Array<string> = [];
       while(j <= months.length) {
@@ -105,6 +116,8 @@ export default class App extends React.Component<IProps, IState> {
     this.setState({
       sortedTimelineData: timeline
     });
+
+    AsyncStorage.setItem('lastState', JSON.stringify(this.state));
   }
 
 
@@ -114,12 +127,12 @@ export default class App extends React.Component<IProps, IState> {
 
 
   render() {
-    var timelineRenderArray = []
+    var timelineRenderArray: Array<any> = []
     var i = 0;
 
-    for(let yearMonth of this.state.sortedTimelineData.entries()) {
-      var year = yearMonth[0];
-      var monthArray = yearMonth[1];
+    for( let entry of this.state.sortedTimelineData.entries() ) {
+      var year = entry[0];
+      var monthArray = entry[1];
       i++;
       for(var month of monthArray)
         timelineRenderArray.push(<TimelineElement key={i} month={month} year={year} onClick={this.onTimelineClick.bind(this, month, year)} />);

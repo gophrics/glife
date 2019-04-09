@@ -5,7 +5,7 @@ npm-debug.*
 *.p12
 *.key
 *.mobileprovision
-ios/build/*
+ios/build/
 package-lock.json
 ios/glife.xcodeproj/project.xcworkspace/
 ios/glife.xcodeproj/xcuserdata/

@@ -8,9 +8,10 @@
   },
   "dependencies": {
     "react": "16.8.3",
-    "react-native": "0.59.3",
+    "react-native": "0.58.0",
     "react-native-background-service": "https://github.com/issacnitin/react-native-background-service.git",
-    "react-native-maps": "^0.23.0"
+    "react-native-maps": "^0.23.0",
+    "react-native-sqlite-storage": "^3.3.10"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",

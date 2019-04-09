@@ -1,0 +1,36 @@
+PODS:
+  - React (0.58.0):
+    - React/Core (= 0.58.0)
+  - react-native-background-service (1.0.0):
+    - React
+  - react-native-sqlite-storage (3.3.10):
+    - React
+  - React/Core (0.58.0):
+    - yoga (= 0.58.0.React)
+  - yoga (0.58.0.React)
+
+DEPENDENCIES:
+  - React (from `../node_modules/react-native`)
+  - react-native-background-service (from `../node_modules/react-native-background-service/`)
+  - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+EXTERNAL SOURCES:
+  React:
+    :path: "../node_modules/react-native"
+  react-native-background-service:
+    :path: "../node_modules/react-native-background-service/"
+  react-native-sqlite-storage:
+    :path: "../node_modules/react-native-sqlite-storage"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
+
+SPEC CHECKSUMS:
+  React: 466fd4ed76b09452bacab56b48bc122b3b094ba0
+  react-native-background-service: dc549c0353f0029137013c47044a99115b4ecdeb
+  react-native-sqlite-storage: e2514e75e65458cc2c6590d181bd1947ec6f4e3f
+  yoga: 00e4390d4d6282e07b3b8276c94703bd66428119
+
+PODFILE CHECKSUM: 872514727b1c1e3b3304951989e203ab673a6b94
+
+COCOAPODS: 1.6.1

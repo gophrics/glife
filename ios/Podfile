@@ -4,5 +4,5 @@ platform :ios, 9.0
 
 pod 'React', :path => '../node_modules/react-native'
 pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
-pod 'react-native-background-service', :path => '../node_modules/react-native-background-service/ios/'
+pod 'react-native-background-service', :path => '../node_modules/react-native-background-service/'
 pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'

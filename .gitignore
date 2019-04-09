@@ -6,6 +6,8 @@ npm-debug.*
 *.key
 *.mobileprovision
 ios/build/
+ios/Pods/
+dist/
 package-lock.json
 ios/glife.xcodeproj/project.xcworkspace/
 ios/glife.xcodeproj/xcuserdata/

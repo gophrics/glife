@@ -21,9 +21,14 @@ const styles = StyleSheet.create({
     }
 });
 
-export default class TimelineElement extends React.Component {
+interface IProps {
+    month: string,
+    year: number,
+    onClick: any
+}
+export default class TimelineElement extends React.Component<IProps, any> {
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             month: this.props.month

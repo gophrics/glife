@@ -1,9 +1,10 @@
 import React from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { NativeModules, NativeEventEmitter, StyleSheet, ScrollView, View, Image } from 'react-native';
-import TimelineElement from './TimelineElement';
+import TimelineElement from './UIComponents/TimelineElement';
 import * as PhotoLibraryProcessor from './Utilities/PhotoLibraryProcessor';
-
+import Region from './Modals/Region';
+import ImageDataModal from './Modals/ImageDataModal';
 
 const LocationService = new NativeEventEmitter(NativeModules.LocationService)
 
@@ -39,29 +40,29 @@ const styles = StyleSheet.create({
 
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", ];
     
-export default class App extends React.Component {
-  
-  constructor(props) {
+interface IState {
+  region: Region,
+  imageData: Array<ImageDataModal>,
+  sortedTimelineData: Map<number, Array<string>>
+}
+
+interface IProps {
+
+}
+
+export default class App extends React.Component<IProps, IState> {
+
+  constructor(props: IProps) {
     super(props);
-    this.state = {
-      region: {
-        latitude: 0, longitude: 0,
-        latitudeDelta: 0, longitudeDelta: 0
-      },
-      markers: [],
-      timelineData: [],
-      timelines: []
-    }
     
     PhotoLibraryProcessor.getPhotosFromLibrary()
-    .then((res) => {
-        var markers = PhotoLibraryProcessor.getMarkers(res);
-        var locationInfo = PhotoLibraryProcessor.triangulatePhotoLocationInfo(res.locationInfo);
+    .then((photoRollInfos: Array<ImageDataModal>) => {
+
+        var markers = PhotoLibraryProcessor.getMarkers(photoRollInfos);
+        var triangulatedLocation: Region = PhotoLibraryProcessor.triangulatePhotoLocationInfo(markers);
         this.setState({
-          region: locationInfo.region,
-          markers: markers,
-          markerImages: res.imageData,
-          timelineData: res.timestampList
+          region: triangulatedLocation,
+          imageData: photoRollInfos
         });
     })
     .then(() => {
@@ -71,7 +72,9 @@ export default class App extends React.Component {
 
   populateTimelineData = () => {
        
-    var timelineData = this.state.timelineData;
+    var timelineData: Array<number> = PhotoLibraryProcessor.getTimelineData(this.state.imageData);
+    var imageUriArray: Array<any> = PhotoLibraryProcessor.getImageUriArray(this.state.imageData); //TO BE USED
+
     timelineData.sort((a, b) => {
       return a < b ? -1 : 1;
     });
@@ -80,67 +83,59 @@ export default class App extends React.Component {
     var finalDate = new Date(timelineData[timelineData.length-1]);
 
     var j = initialDate.getMonth();
-    var timeline = {};
+    var timeline: Map<number, Array<string>> = new Map<number, Array<string>>();
     for(var i = initialDate.getFullYear(); i <= finalDate.getFullYear(); i++) {
-      timeline[i] = []
+      var monthsInTheYear: Array<string> = [];
       while(j <= months.length) {
-        timeline[i].push(months[j-1]);
+        monthsInTheYear.push(months[j-1]);
         j++;
       }
+      timeline.set(i, monthsInTheYear);
       j = 1;
     }
 
     this.setState({
-      timelines: timeline
+      sortedTimelineData: timeline
     });
   }
 
 
-  onTimelineClick = (month, year) => {
-    month = months.indexOf(month) + 1;
+  onTimelineClick = (monthAsString: string, year: number) => {
 
-    var triangulationLocations = [];
-    var i = 0;
-    for(var timestamp of this.state.timelineData) {
-      var d = new Date(timestamp);
-      if(d.getFullYear() == year && d.getMonth() == month) { triangulationLocations.push(this.state.markers[i]); }
-      i++;
-    }
-    
-    var focusLocation = PhotoLibraryProcessor.triangulatePhotoLocationInfo(triangulationLocations);
-    this.setState({
-      region: focusLocation.region
-    });
   }
 
 
   render() {
     var timelineRenderArray = []
     var i = 0;
-    for(var year in this.state.timelines) {
-      for(var month of this.state.timelines[year]) {
-        i++;
+
+    for(let yearMonth of this.state.sortedTimelineData.entries()) {
+      var year = yearMonth[0];
+      var monthArray = yearMonth[1];
+      i++;
+      for(var month of monthArray)
         timelineRenderArray.push(<TimelineElement key={i} month={month} year={year} onClick={this.onTimelineClick.bind(this, month, year)} />);
-      }
     }
+
+    const markers = PhotoLibraryProcessor.getMarkers(this.state.imageData);
+    var imageUriData = PhotoLibraryProcessor.getImageUriArray(this.state.imageData);
 
     return (
       <View style={StyleSheet.absoluteFillObject}>
         
-        <MapView style={StyleSheet.absoluteFillObject} region={this.state.region} annotations={this.state.markers}>
-          {
-            this.state.markers.map((marker, index) => (
-            <Marker
-              key={marker.region.longitude}
-              coordinate={marker.region}
-              title={marker.title}
-              description={marker.description}
-            >
-            <View style={styles.imageBox}>
-              <Image style={styles.imageBox} source={{uri:this.state.markerImages[index]}}></Image>
-            </View>
-            </Marker>
-          ))}
+        <MapView style={StyleSheet.absoluteFillObject} region={this.state.region} >
+        {
+            markers.map((marker, index) => (
+              <Marker
+                key={marker.longitude}
+                coordinate={marker}
+              >
+              <View style={styles.imageBox}>
+                <Image style={styles.imageBox} source={{uri:imageUriData[index]}}></Image>
+              </View>
+              </Marker>
+            ))
+        }
         </MapView>
         
         <ScrollView horizontal={true} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>

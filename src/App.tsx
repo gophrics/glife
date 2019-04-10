@@ -44,7 +44,7 @@ let months = ["January", "February", "March", "April", "May", "June", "July", "A
 interface IState {
   region: Region,
   imageData: Array<ImageDataModal>,
-  sortedTimelineData: Map<number, Array<string>>
+  sortedTimelineData: {[key: number]: Array<string>}
 }
 
 interface IProps {
@@ -59,17 +59,17 @@ export default class App extends React.Component<IProps, IState> {
     this.state = {
       region: new Region(0, 0, 0, 0),
       imageData: [],
-      sortedTimelineData: {} as Map<number, Array<string>>
+      sortedTimelineData: {} as {[key: number]: Array<string>}
     } as IState;
 
     AsyncStorage.getItem('lastState').then((item) => {
       console.log(item);
       if(item) {
         this.state = JSON.parse(item);
-        this.initialize();
       } else {
         this.initialize();
       }
+      this.initialize();
     });
 
   }
@@ -102,7 +102,7 @@ export default class App extends React.Component<IProps, IState> {
     var initialDate = new Date(timelineData[0]);
     var finalDate = new Date(timelineData[timelineData.length-1]);
     var j = initialDate.getMonth();
-    var timeline: Map<number, Array<string>> = new Map<number, Array<string>>();
+    var timeline: {[key: number]: Array<string>} = {} as {[key: number]: Array<string>};
 
     for(var i = initialDate.getFullYear(); i <= finalDate.getFullYear(); i++) {
       var monthsInTheYear: Array<string> = [];
@@ -110,7 +110,7 @@ export default class App extends React.Component<IProps, IState> {
         monthsInTheYear.push(months[j-1]);
         j++;
       }
-      timeline.set(i, monthsInTheYear);
+      timeline[i] = monthsInTheYear;
       j = 1;
     }
 
@@ -132,13 +132,11 @@ export default class App extends React.Component<IProps, IState> {
     var i = 0;
 
     for(var entry in this.state.sortedTimelineData) {
-      console.log(entry);
-      var monthArray: any[] = [];//this.state.sortedTimelineData.get(entry);
-      var year = entry;
+      var monthArray: any[] = this.state.sortedTimelineData[entry];
+      var year = +entry;
       i++;
       for(var month of monthArray)
         timelineRenderArray.push(<TimelineElement key={i} month={month} year={year} onClick={this.onTimelineClick.bind(this, month, year)} />);
-    
     }
 
     const markers = PhotoLibraryProcessor.getMarkers(this.state.imageData);

@@ -580,7 +580,6 @@
 				A5B62B349C8CECB547D33BF5 /* Pods-glife.debug.xcconfig */,
 				D32B6744307D519F744AB861 /* Pods-glife.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

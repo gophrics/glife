@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Can I Use Location</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Can I use photo Library for Educational Purposes?</string>
 	<key>UILaunchStoryboardName</key>

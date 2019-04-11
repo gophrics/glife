@@ -1,16 +1,18 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
 import {Marker} from 'react-native-maps';
-import { NativeModules, NativeEventEmitter, StyleSheet, ScrollView, View, Image, AsyncStorage } from 'react-native';
+import { NativeEventEmitter, StyleSheet, ScrollView, View, Image, AsyncStorage } from 'react-native';
 import TimelineElement from './UIComponents/TimelineElement';
 import * as PhotoLibraryProcessor from './Utilities/PhotoLibraryProcessor';
 import Region from './Modals/Region';
 import ImageDataModal from './Modals/ImageDataModal';
+import ReactNativeBackgroundService from 'react-native-background-service';
 
-const LocationService = new NativeEventEmitter(NativeModules.LocationService)
+console.log("React Native BG Service: " + JSON.stringify(ReactNativeBackgroundService));
+const LocationServiceListener = new NativeEventEmitter(ReactNativeBackgroundService.LocationService);
 
-LocationService.addListener('LocationListener',
-(res) => { console.log(res) });
+LocationServiceListener.addListener('LocationListener',
+(res) => { console.log("Location: " + res) });
 
 const styles = StyleSheet.create({
   markerWrap: {
@@ -56,6 +58,10 @@ export default class App extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
+    ReactNativeBackgroundService.LocationService.requestPermission();
+    ReactNativeBackgroundService.LocationService.startLocationTracking();
+    var a = (ReactNativeBackgroundService.LocationService.testFunc());
+    console.log("A" + a);
     this.state = {
       region: new Region(0, 0, 0, 0),
       imageData: [],
@@ -63,7 +69,6 @@ export default class App extends React.Component<IProps, IState> {
     } as IState;
 
     AsyncStorage.getItem('lastState').then((item) => {
-      console.log(item);
       if(item) {
         this.state = JSON.parse(item);
       } else {

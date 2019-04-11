@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@types/react-native-sqlite-storage": "^3.3.1",
-    "react": "16.8.3",
+    "react": "^16.8.3",
     "react-native": "0.58.0",
     "react-native-background-service": "git+https://github.com/issacnitin/react-native-background-service.git",
     "react-native-maps": "^0.23.0",
@@ -28,7 +28,11 @@
     "react-native-typescript-transformer": "^1.2.12",
     "react-test-renderer": "16.8.3",
     "source-map-loader": "^0.2.4",
-    "typescript": "^3.4.2"
+    "tslint": "^5.15.0",
+    "tslint-eslint-rules": "^4.1.1",
+    "tslint-react": "^3.6.0",
+    "tslint-react-recommended": "^1.0.15",
+    "typescript": "^3.4.3"
   },
   "jest": {
     "preset": "react-native"

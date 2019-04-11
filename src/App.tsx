@@ -1,17 +1,14 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
 import {Marker} from 'react-native-maps';
-import { NativeEventEmitter, StyleSheet, ScrollView, View, Image, AsyncStorage } from 'react-native';
+import { StyleSheet, ScrollView, View, Image, AsyncStorage } from 'react-native';
 import TimelineElement from './UIComponents/TimelineElement';
 import * as PhotoLibraryProcessor from './Utilities/PhotoLibraryProcessor';
 import Region from './Modals/Region';
 import ImageDataModal from './Modals/ImageDataModal';
-import ReactNativeBackgroundService from 'react-native-background-service';
+import RNBackgroundService from 'react-native-background-service';
 
-console.log("React Native BG Service: " + JSON.stringify(ReactNativeBackgroundService));
-const LocationServiceListener = new NativeEventEmitter(ReactNativeBackgroundService.LocationService);
-
-LocationServiceListener.addListener('LocationListener',
+RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 (res) => { console.log("Location: " + res) });
 
 const styles = StyleSheet.create({
@@ -57,11 +54,9 @@ export default class App extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+    RNBackgroundService.RNBackgroundServiceLocationService.requestPermission();
+    RNBackgroundService.RNBackgroundServiceLocationService.startLocationTracking();
 
-    ReactNativeBackgroundService.LocationService.requestPermission();
-    ReactNativeBackgroundService.LocationService.startLocationTracking();
-    var a = (ReactNativeBackgroundService.LocationService.testFunc());
-    console.log("A" + a);
     this.state = {
       region: new Region(0, 0, 0, 0),
       imageData: [],
@@ -139,9 +134,10 @@ export default class App extends React.Component<IProps, IState> {
     for(var entry in this.state.sortedTimelineData) {
       var monthArray: any[] = this.state.sortedTimelineData[entry];
       var year = +entry;
-      i++;
-      for(var month of monthArray)
+      for(var month of monthArray){
+        i++;
         timelineRenderArray.push(<TimelineElement key={i} month={month} year={year} onClick={this.onTimelineClick.bind(this, month, year)} />);
+      }
     }
 
     const markers = PhotoLibraryProcessor.getMarkers(this.state.imageData);

@@ -5,7 +5,7 @@ import { Image, View, ViewStyle, ImageStyle } from 'react-native';
 interface IProps {
 }
 
-export default class Loading extends React.Component<IProps, any> {
+export default class Spinner extends React.Component<IProps, any> {
     
     constructor(props: IProps) {
         super(props);

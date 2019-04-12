@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import Loading from '../UIComponents/Loading';
+import Spinner from '../UIComponents/Spinner';
+import { Page } from '../Modals/ApplicationEnums';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -19,7 +20,15 @@ var styles = StyleSheet.create<Styles>({
     }
 });
 
-export default class ParsingPhotos extends React.Component<any, any> {
+interface IProps {
+    setPage: (page: Page) => void
+}
+
+interface IState {
+
+}
+
+export default class ParsingPhotoPage extends React.Component<IProps, IState> {
 
     constructor(props:any) {
         super(props);
@@ -31,7 +40,7 @@ export default class ParsingPhotos extends React.Component<any, any> {
             <View>
                 <Text style={styles.infoText}>Going through your photo library</Text>
                 <View style={styles.spinnerContainer}>
-                    <Loading/>
+                    <Spinner/>
                 </View>
             </View>
         );

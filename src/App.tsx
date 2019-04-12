@@ -11,7 +11,8 @@ RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationLis
 
 
 interface IState {
-  page: Page
+  page: string,
+  pageDataPipe: {[key:string]: any}
 }
 
 interface IProps {
@@ -23,35 +24,55 @@ export default class App extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      page: Page.LOADING
+      page: Page[Page.NONE],
+      pageDataPipe: {} 
     };
 
     AsyncStorage.getItem('lastPage')
-    .then((item) => {
-        if(item) {
-          this.setState({
-            page: Page[item as keyof typeof Page]
-          });
-        }
-    });
+      .then((item) => {
+          if(item) {
+            AsyncStorage.getItem('lastPageDataPipe')
+              .then((item2) => {
+                if(item2) {
+                  console.log(item);
+                  this.setState({
+                    page: item,
+                    pageDataPipe: JSON.parse(item2)
+                  });
+                } else {
+                  this.setState({
+                    page: Page[Page.LOADING]
+                  });
+                }
+              });
+          } else {
+            this.setState({
+              page: Page[Page.LOADING]
+            });
+          }
+      });
+
+
 
     RNBackgroundService.RNBackgroundServiceLocationService.requestPermission();
     RNBackgroundService.RNBackgroundServiceLocationService.startLocationTracking();
   }
 
-  setPage(page: Page) {
+  setPage(page: string, data: any) {
+    this.state.pageDataPipe[page] = data;
+    AsyncStorage.setItem('lastPage', page);
+    AsyncStorage.setItem('lastPageDataPipe', JSON.stringify(this.state.pageDataPipe));
     this.setState({
       page: page
     });
-    AsyncStorage.setItem('lastPage', Page[this.state.page]);
   }
 
   render() {
     switch(this.state.page) {
-      case Page.MAPVIEW:
-        return (<MapPhotoPage setPage={this.setPage}/>);
-      case Page.LOADING:
-        return (<ParsingPhotoPage setPage={this.setPage}/>);
+      case Page[Page.LOADING]:
+        return (<ParsingPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.LOADING]]}/>);
+      case Page[Page.MAPVIEW]:
+        return (<MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]}/>);
       default:
         return (<View />);
     }

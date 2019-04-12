@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle, TextStyle, AsyncStorage } from 'react-native';
 import Spinner from '../UIComponents/Spinner';
-import { Page } from '../Modals/ApplicationEnums';
+import {Page, months} from '../Modals/ApplicationEnums';
+import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
+import ImageDataModal from '../Modals/ImageDataModal';
+import Region from '../Modals/Region';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -21,7 +24,8 @@ var styles = StyleSheet.create<Styles>({
 });
 
 interface IProps {
-    setPage: (page: Page) => void
+    setPage: (page: string, data: any) => void,
+    data: any
 }
 
 interface IState {
@@ -30,12 +34,14 @@ interface IState {
 
 export default class ParsingPhotoPage extends React.Component<IProps, IState> {
 
+    dataToSendToNextPage: any = {};
+
     constructor(props:any) {
         super(props);
+        this.initialize();
     }
 
     render() {
-
         return (
             <View>
                 <Text style={styles.infoText}>Going through your photo library</Text>
@@ -45,5 +51,48 @@ export default class ParsingPhotoPage extends React.Component<IProps, IState> {
             </View>
         );
     }
+
+    // Helper methods
+    initialize () {
+        PhotoLibraryProcessor.getPhotosFromLibrary()
+        .then((photoRollInfos: Array<ImageDataModal>) => {
+    
+            var markers = PhotoLibraryProcessor.getMarkers(photoRollInfos);
+            var triangulatedLocation: Region = PhotoLibraryProcessor.triangulatePhotoLocationInfo(markers);
+            this.dataToSendToNextPage['region'] = triangulatedLocation;
+            this.dataToSendToNextPage['imageData'] = photoRollInfos;
+        })
+        .then(() => {
+          this.populateTimelineData();
+        });
+    }
+
+    populateTimelineData () {
+        
+        var timelineData: Array<number> = PhotoLibraryProcessor.getTimelineData(this.dataToSendToNextPage['imageData']);
+        var imageUriArray: Array<any> = PhotoLibraryProcessor.getImageUriArray(this.dataToSendToNextPage['imageData']); //TO BE USED
+
+        timelineData.sort((a, b) => {
+        return a < b ? -1 : 1;
+        });
+
+        var initialDate = new Date(timelineData[0]);
+        var finalDate = new Date(timelineData[timelineData.length-1]);
+        var j = initialDate.getMonth();
+        var timeline: {[key: number]: Array<string>} = {} as {[key: number]: Array<string>};
+
+        for(var i = initialDate.getFullYear(); i <= finalDate.getFullYear(); i++) {
+            var monthsInTheYear: Array<string> = [];
+            while(j <= months.length) {
+                monthsInTheYear.push(months[j-1]);
+                j++;
+            }
+            timeline[i] = monthsInTheYear;
+            j = 1;
+        }
+        this.dataToSendToNextPage['sortedTimelineData'] = timeline;
+        this.props.setPage(Page[Page.MAPVIEW], this.dataToSendToNextPage);
+    }
+
 
 }

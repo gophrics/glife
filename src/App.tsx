@@ -7,6 +7,8 @@ import * as PhotoLibraryProcessor from './Utilities/PhotoLibraryProcessor';
 import Region from './Modals/Region';
 import ImageDataModal from './Modals/ImageDataModal';
 import RNBackgroundService from 'react-native-background-service';
+import ParsingPhotos from './Pages/ParsingPhotos';
+
 
 RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 (res) => { console.log("Location: " + res) });
@@ -39,11 +41,18 @@ const styles = StyleSheet.create({
 });
 
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", ];
-    
+  
+enum Page {
+  LOADING,
+  MAPVIEW,
+  HOME
+}
+
 interface IState {
   region: Region,
   imageData: Array<ImageDataModal>,
-  sortedTimelineData: {[key: number]: Array<string>}
+  sortedTimelineData: {[key: number]: Array<string>},
+  page: Page
 }
 
 interface IProps {
@@ -60,7 +69,8 @@ export default class App extends React.Component<IProps, IState> {
     this.state = {
       region: new Region(0, 0, 0, 0),
       imageData: [],
-      sortedTimelineData: {} as {[key: number]: Array<string>}
+      sortedTimelineData: {} as {[key: number]: Array<string>},
+      page: Page.MAPVIEW
     } as IState;
 
     AsyncStorage.getItem('lastState').then((item) => {
@@ -115,7 +125,8 @@ export default class App extends React.Component<IProps, IState> {
     }
 
     this.setState({
-      sortedTimelineData: timeline
+      sortedTimelineData: timeline,
+      page: Page.MAPVIEW
     });
 
     AsyncStorage.setItem('lastState', JSON.stringify(this.state));
@@ -128,43 +139,50 @@ export default class App extends React.Component<IProps, IState> {
 
 
   render() {
-    var timelineRenderArray: Array<any> = []
-    var i = 0;
 
-    for(var entry in this.state.sortedTimelineData) {
-      var monthArray: any[] = this.state.sortedTimelineData[entry];
-      var year = +entry;
-      for(var month of monthArray){
-        i++;
-        timelineRenderArray.push(<TimelineElement key={i} month={month} year={year} onClick={this.onTimelineClick.bind(this, month, year)} />);
-      }
-    }
+    if(this.state.page == Page.MAPVIEW) {
+        var timelineRenderArray: Array<any> = []
+        var i = 0;
 
-    const markers = PhotoLibraryProcessor.getMarkers(this.state.imageData);
-    var imageUriData = PhotoLibraryProcessor.getImageUriArray(this.state.imageData);
-
-    return (
-      <View style={StyleSheet.absoluteFillObject}>
-        
-        <MapView style={StyleSheet.absoluteFillObject} region={this.state.region} >
-        {
-            markers.map((marker, index) => (
-              <Marker
-                key={marker.longitude}
-                coordinate={marker}
-              >
-              <View style={styles.imageBox}>
-                <Image style={styles.imageBox} source={{uri:imageUriData[index]}}></Image>
-              </View>
-              </Marker>
-            ))
+        for(var entry in this.state.sortedTimelineData) {
+          var monthArray: any[] = this.state.sortedTimelineData[entry];
+          var year = +entry;
+          for(var month of monthArray){
+            i++;
+            timelineRenderArray.push(<TimelineElement key={i} month={month} year={year} onClick={this.onTimelineClick.bind(this, month, year)} />);
+          }
         }
-        </MapView>
-        
-        <ScrollView horizontal={true} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
-          { timelineRenderArray }
-        </ScrollView>
-      </View>
-    );
+
+        const markers = PhotoLibraryProcessor.getMarkers(this.state.imageData);
+        var imageUriData = PhotoLibraryProcessor.getImageUriArray(this.state.imageData);
+
+        return (
+          <View style={StyleSheet.absoluteFillObject}>
+            
+            <MapView style={StyleSheet.absoluteFillObject} region={this.state.region} >
+            {
+                markers.map((marker, index) => (
+                  <Marker
+                    key={marker.longitude}
+                    coordinate={marker}
+                  >
+                  <View style={styles.imageBox}>
+                    <Image style={styles.imageBox} source={{uri:imageUriData[index]}}></Image>
+                  </View>
+                  </Marker>
+                ))
+            }
+            </MapView>
+            
+            <ScrollView horizontal={true} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
+              { timelineRenderArray }
+            </ScrollView>
+          </View>
+        );
+    } else if(this.state.page == Page.LOADING) {
+      return (
+        <ParsingPhotos />
+      )
+    }
   }
 }

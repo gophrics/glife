@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, ScrollView, View, Image, TextInput, Button } from 'react-native';
+import { StyleSheet, ScrollView, View, Image, Text } from 'react-native';
 import TimelineElement from '../UIComponents/TimelineElement';
-import Region from '../Modals/Region';
-import ImageDataModal from '../Modals/ImageDataModal';
 import MapView from 'react-native-maps';
 import {Marker, Callout} from 'react-native-maps';
 import {Page} from '../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
-
+import SnapSlider from '../UIComponents/SnapSlider';
 
 interface IState {
 
@@ -74,25 +72,12 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
                         </Marker>
                     ))
                 }
-                <Callout style={{ position: 'absolute', top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
-                    <View style={{ position: 'absolute', top: 0, left: 0, flex: 1, flexDirection: 'row'}}>
-                        <Button
-                            onPress={this.navigateToSocial}
-                            title=""
-                        />
-                        <Button
-                            onPress={this.navigateToSocial}
-                            title="B1"
-                        />
-                        <Button
-                            onPress={this.navigateToTravel}
-                            title="B2"
-                        />
-                        <Button
-                            onPress={this.navigateToStats}
-                            title="B3"
-                        />
-                    </View>
+                <Callout style={{ top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
+                    <SnapSlider 
+                        style={{ top: 50, left: 120}}
+                        items={[{value: 0, label: 'Item A'}, {value: 1, label: 'Item B'}, {value: 2, label: 'Item C'}]} 
+                        defaultItem={0}
+                    />
                 </Callout>
             </MapView>
             

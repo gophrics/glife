@@ -4,7 +4,7 @@ import RNBackgroundService from 'react-native-background-service';
 import {Page} from './Modals/ApplicationEnums';
 import MapPhotoPage from './Pages/MapPhotoPage';
 import ParsingPhotoPage from './Pages/ParsingPhotoPage';
-
+import SocialPage from './Pages/SocialPage';
 
 RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 (res) => { console.log("Location: " + res) });
@@ -66,12 +66,23 @@ export default class App extends React.Component<IProps, IState> {
     });
   }
 
+  sliderChange(item: number, value: number) {
+    console.log("Slider changed!! " + item);
+    if(item == 1) {
+      this.setState({
+        page: Page[Page.SOCIAL]
+      });
+    }
+  }
+
   render() {
     switch(this.state.page) {
       case Page[Page.LOADING]:
         return (<ParsingPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.LOADING]]}/>);
       case Page[Page.MAPVIEW]:
-        return (<MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]}/>);
+        return (<MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} sliderChangeCallback={this.sliderChange.bind(this)}/>);
+      case Page[Page.SOCIAL]:
+        return (<SocialPage />)
       default:
         return (<View />);
     }

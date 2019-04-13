@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, View, Image, Text } from 'react-native';
 import TimelineElement from '../UIComponents/TimelineElement';
 import MapView from 'react-native-maps';
 import {Marker, Callout} from 'react-native-maps';
-import {Page} from '../Modals/ApplicationEnums';
+import {Page, SliderItems} from '../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
 import SnapSlider from '../UIComponents/SnapSlider';
 
@@ -13,7 +13,8 @@ interface IState {
   
 interface IProps {
     setPage: (page: string, data: any) => void,
-    data: any
+    data: any,
+    sliderChangeCallback: (item: number, value: number) => void
 }
 
 export default class MapPhotoPage extends React.Component<IProps, IState> {
@@ -75,8 +76,9 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
                 <Callout style={{ top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
                     <SnapSlider 
                         style={{ top: 50, left: 120}}
-                        items={[{value: 0, label: 'Item A'}, {value: 1, label: 'Item B'}, {value: 2, label: 'Item C'}]} 
+                        items={SliderItems} 
                         defaultItem={0}
+                        sliderChangeCallback={this.props.sliderChangeCallback}
                     />
                 </Callout>
             </MapView>

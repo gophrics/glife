@@ -21,7 +21,8 @@ interface IState {
 interface IProps {
     items: any,
     defaultItem: any,
-    style: any
+    style: any,
+    sliderChangeCallback: (item: number, value: number) => void
 }
 
 export default class SnapSlider extends React.Component<IProps, IState> {
@@ -71,6 +72,7 @@ export default class SnapSlider extends React.Component<IProps, IState> {
         }
         this.setState({value: value, item: i}, () =>{
             //callback
+            this.props.sliderChangeCallback(i, value);
         });
 
     }

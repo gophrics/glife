@@ -3,6 +3,7 @@ export enum Page {
     NONE,
     LOADING,
     MAPVIEW,
+    SOCIAL,
     HOME
 }
 

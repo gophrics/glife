@@ -34,7 +34,6 @@ export default class App extends React.Component<IProps, IState> {
             AsyncStorage.getItem('lastPageDataPipe')
               .then((item2) => {
                 if(item2) {
-                  console.log(item);
                   this.setState({
                     page: item,
                     pageDataPipe: JSON.parse(item2)

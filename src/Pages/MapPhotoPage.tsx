@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, ScrollView, View, Image, AsyncStorage } from 'react-native';
+import { StyleSheet, ScrollView, View, Image, TextInput, Button } from 'react-native';
 import TimelineElement from '../UIComponents/TimelineElement';
 import Region from '../Modals/Region';
 import ImageDataModal from '../Modals/ImageDataModal';
 import MapView from 'react-native-maps';
-import {Marker} from 'react-native-maps';
+import {Marker, Callout} from 'react-native-maps';
 import {Page} from '../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
 
@@ -22,6 +22,18 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
 
     constructor(props: any) {
         super(props);
+    }
+
+    navigateToSocial() {
+        this.props.setPage(Page[Page.SOCIAL], null);
+    }
+
+    navigateToTravel() {
+
+    }
+
+    navigateToStats() {
+
     }
 
     onTimelineClick() {
@@ -50,18 +62,38 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
             <View style={StyleSheet.absoluteFillObject}>
             
             <MapView style={StyleSheet.absoluteFillObject} region={this.props.data.region} >
-            {
-                markers.map((marker, index) => (
-                    <Marker
-                    key={marker.longitude}
-                    coordinate={marker}
-                    >
-                    <View style={styles.imageBox}>
-                    <Image style={styles.imageBox} source={{uri:imageUriData[index]}}></Image>
+                {
+                    markers.map((marker, index) => (
+                        <Marker
+                        key={marker.longitude}
+                        coordinate={marker}
+                        >
+                        <View style={styles.imageBox}>
+                        <Image style={styles.imageBox} source={{uri:imageUriData[index]}}></Image>
+                        </View>
+                        </Marker>
+                    ))
+                }
+                <Callout style={{ position: 'absolute', top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
+                    <View style={{ position: 'absolute', top: 0, left: 0, flex: 1, flexDirection: 'row'}}>
+                        <Button
+                            onPress={this.navigateToSocial}
+                            title=""
+                        />
+                        <Button
+                            onPress={this.navigateToSocial}
+                            title="B1"
+                        />
+                        <Button
+                            onPress={this.navigateToTravel}
+                            title="B2"
+                        />
+                        <Button
+                            onPress={this.navigateToStats}
+                            title="B3"
+                        />
                     </View>
-                    </Marker>
-                ))
-            }
+                </Callout>
             </MapView>
             
             <ScrollView horizontal={true} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>

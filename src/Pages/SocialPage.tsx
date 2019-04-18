@@ -20,4 +20,8 @@ export default class SocialPage extends React.Component<IProps, IState> {
             <View />
         )
     }
+
+    openWebSocket () {
+        var ws = new WebSocket('http://localhost:3000/websocket');
+    }
 }

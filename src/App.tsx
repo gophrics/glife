@@ -68,6 +68,20 @@ export default class App extends React.Component<IProps, IState> {
 
   sliderChange(item: number, value: number) {
     console.log("Slider changed!! " + item);
+    switch( item ) {
+      case 0:
+        this.setState({
+          page: Page[Page.MAPVIEW]
+        }); break;
+      case 1:
+        this.setState({
+          page: Page[Page.SOCIAL]
+        }); break;
+      default:
+        this.setState({
+          page: Page[Page.MAPVIEW]
+        }); break;
+    } 
     if(item == 1) {
       this.setState({
         page: Page[Page.SOCIAL]
@@ -82,7 +96,7 @@ export default class App extends React.Component<IProps, IState> {
       case Page[Page.MAPVIEW]:
         return (<MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} sliderChangeCallback={this.sliderChange.bind(this)}/>);
       case Page[Page.SOCIAL]:
-        return (<SocialPage />)
+        return (<SocialPage sliderChangeCallback={this.sliderChange.bind(this)}/>)
       default:
         return (<View />);
     }

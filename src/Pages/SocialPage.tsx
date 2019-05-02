@@ -17,6 +17,9 @@ interface IProps {
 
 export default class SocialPage extends React.Component<IProps, IState> {
 
+    Timer: number = 0;
+    connection: WebSocket;
+
     constructor(props: IProps) {
         super(props);
 
@@ -24,6 +27,17 @@ export default class SocialPage extends React.Component<IProps, IState> {
             markers: [],
             region: new Region(0, 0, 0, 0)
         }
+        this.connection = new WebSocket('http://localhost:8082/location/v1/nearmews');
+
+        this.connection.onopen = (evt) => {
+            console.log(evt);
+        }
+
+        this.connection.onmessage = evt => { 
+            // add the new message to state
+            console.log(evt.data);
+        };
+        
         fetch('http://localhost:8080/location/v1/nearme', {
             method: 'POST',    
             headers: {
@@ -45,6 +59,9 @@ export default class SocialPage extends React.Component<IProps, IState> {
             });
         })
     }
+
+    componentDidMount() {
+    }   
 
     calculateRegion(markers: Array<any>) : Region {
 

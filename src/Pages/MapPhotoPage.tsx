@@ -67,8 +67,10 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
                             key={index}
                             coordinate={marker}
                             style={styles.imageBox}
-                            image={{uri:imageUriData[index]}}
                         >
+                            <View style={styles.imageBox}>
+                            <Image style={styles.imageBox} source={{uri:imageUriData[index]}}></Image>
+                            </View>
                         </Marker>
                     ))
                 }

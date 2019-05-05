@@ -279,6 +279,13 @@
 			remoteGlobalIDString = 83CBBA2D1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		7251551C227F4F9B001C6224 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EDB4E75BBB38403594D2C4FF /* AirMaps.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 11FA5C501C4A1296003AC2EE;
+			remoteInfo = AirMaps;
+		};
 		726E193D225BA569003EA830 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 726E1939225BA569003EA830 /* RCTCameraRoll.xcodeproj */;
@@ -742,6 +749,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				7251551D227F4F9B001C6224 /* PBXTargetDependency */,
 				722A6C9B225F94E7002ED977 /* PBXTargetDependency */,
 			);
 			name = glife;
@@ -1320,6 +1328,11 @@
 			isa = PBXTargetDependency;
 			name = React;
 			targetProxy = 722A6C9A225F94E7002ED977 /* PBXContainerItemProxy */;
+		};
+		7251551D227F4F9B001C6224 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AirMaps;
+			targetProxy = 7251551C227F4F9B001C6224 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

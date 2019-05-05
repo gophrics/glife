@@ -87,12 +87,15 @@ export default class SocialPage extends React.Component<IProps, IState> {
             <View style={StyleSheet.absoluteFillObject}>
                 <MapView style={StyleSheet.absoluteFillObject} region={this.state.region}>
                     {
-                        this.state.markersAsArray.map((value: Region, index: number) => {
+                        // WHAT's the frickin difference in using 
+                        // ((value: Region, index: number) => (...code...)      Working
+                        // ((value: Region, index: number) => {...code...}      Not frickin working
+                        this.state.markersAsArray.map((value: Region, index: number) => (
                             <Marker key={index} coordinate={value}>
-                                <View style={{ width: 30, height: 30, borderWidth: 3}} >
+                                <View style={{ width: 30, height: 30, borderWidth: 1}} >
                                 </View>
                             </Marker>
-                        })
+                        ))
                     }
                     <Callout style={{ top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
                         <SnapSlider 

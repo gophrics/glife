@@ -48,7 +48,13 @@ export default class SocialPage extends React.Component<IProps, IState> {
                 longitude: data.longitude
             };
 
-            this.setState( {
+            var markerIn: any = []
+            for(var key in this.state.markers) {
+                markerIn.push({latitude: this.state.markers[key].latitude, longitude: this.state.markers[key].longitude})
+            }
+
+            this.setState({
+                region: this.calculateRegion(markerIn),
                 markers: markers
             });
         };
@@ -84,24 +90,18 @@ export default class SocialPage extends React.Component<IProps, IState> {
         for(var key in this.state.markers) {
             markerIn.push({latitude: this.state.markers[key].latitude, longitude: this.state.markers[key].longitude})
         }
-
-        this.calculateRegion(markerIn);
-
         return(
             <View style={StyleSheet.absoluteFillObject}>
                 <MapView style={StyleSheet.absoluteFillObject} region={this.state.region}>
                     {
-                        console.log(markerIn)
-                    }
-                    {
                         markerIn.map((value: any) => {
                             <Marker
-                            key={value.longitude}
+                            key={value.longitude + Math.random()}
                             coordinate={value}
                             >
                             <View style={{
-                                width: 30,
-                                height: 30,
+                                width: 100,
+                                height: 100,
                                 borderWidth: 1}}>
                             </View>
                             </Marker>

@@ -10,29 +10,31 @@
   },
   "dependencies": {
     "@types/react-native-sqlite-storage": "^3.3.1",
+    "install": "^0.12.2",
+    "npm": "^6.9.0",
     "react": "^16.8.3",
     "react-native": "0.58.0",
     "react-native-background-service": "git+https://github.com/issacnitin/react-native-background-service.git",
-    "react-native-maps": "^0.23.0",
+    "react-native-maps": "^0.24.2",
     "react-native-sqlite-storage": "^3.3.10"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/runtime": "^7.4.3",
-    "@types/react": "^16.8.13",
-    "@types/react-native": "^0.57.42",
+    "@babel/core": "^7.4.4",
+    "@babel/runtime": "^7.4.4",
+    "@types/react": "^16.8.16",
+    "@types/react-native": "^0.57.51",
     "awesome-typescript-loader": "^5.2.1",
-    "babel-jest": "^24.7.1",
-    "jest": "^24.7.1",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.53.1",
     "react-native-typescript-transformer": "^1.2.12",
     "react-test-renderer": "16.8.3",
     "source-map-loader": "^0.2.4",
-    "tslint": "^5.15.0",
+    "tslint": "^5.16.0",
     "tslint-eslint-rules": "^4.1.1",
     "tslint-react": "^3.6.0",
     "tslint-react-recommended": "^1.0.15",
-    "typescript": "^3.4.3"
+    "typescript": "^3.4.5"
   },
   "jest": {
     "preset": "react-native"

@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
-import MapView, { Callout, Marker } from 'react-native-maps';
+import { View, StyleSheet, Image } from 'react-native';
+import MapView, { Callout, Marker, AnimatedRegion } from 'react-native-maps';
 import { SliderItems } from '../Modals/ApplicationEnums';
 import Region from '../Modals/Region';
 import SnapSlider from '../UIComponents/SnapSlider';
 
 interface IState {
-    markers: {[key:string]: {latitude: number, longitude: number}}, //latitude, longitude as elements 
+    markers: {[key:string]: {latitude: number, longitude: number}}, //latitude, longitude as elements
+    markersAsArray: Array<Region>
     region: Region,
     socketState: string
 }
@@ -26,6 +27,7 @@ export default class SocialPage extends React.Component<IProps, IState> {
         this.state = {
             markers: {} as {[key:string]: {latitude: number, longitude: number}},
             region: new Region(0, 0, 0, 0),
+            markersAsArray: [],
             socketState: "CLOSED"
         }
 
@@ -48,14 +50,21 @@ export default class SocialPage extends React.Component<IProps, IState> {
                 longitude: data.longitude
             };
 
-            var markerIn: any = []
-            for(var key in this.state.markers) {
-                markerIn.push({latitude: this.state.markers[key].latitude, longitude: this.state.markers[key].longitude})
+            var markerIn: Array<Region> = new Array<Region>();
+            var latitudeArray: Array<number> = [];
+            var longitudeArray: Array<number> = [];
+
+            for(var key in markers) {
+                markerIn.push(new Region(this.state.markers[key].latitude, this.state.markers[key].longitude, 0, 0))
+                latitudeArray.push(this.state.markers[key].latitude)
+                longitudeArray.push(this.state.markers[key].longitude)
             }
 
             this.setState({
-                region: this.calculateRegion(markerIn),
-                markers: markers
+                region: new Region(latitudeArray.reduce((a, b) => { return a + b; }, 0) / latitudeArray.length,
+                        longitudeArray.reduce((a, b) => { return a + b; }, 0) / longitudeArray.length, 0, 0),
+                markers: markers,
+                markersAsArray: markerIn
             });
         };
 
@@ -69,41 +78,19 @@ export default class SocialPage extends React.Component<IProps, IState> {
 
     }
 
-    componentDidMount() {
-    }   
-
-    calculateRegion(markers: Array<any>) : Region {
-
-        var latitudeSum: number = 0;
-        var longitudeSum: number = 0;
-
-        for(var i = 0; i < markers.length; i++) {
-            latitudeSum += markers[i].latitude;
-            longitudeSum += markers[i].longitude;
-        }
-
-        return new Region(latitudeSum/markers.length, longitudeSum/markers.length, 0, 0);
-    }
-
     render() {
-        var markerIn: any = []
-        for(var key in this.state.markers) {
-            markerIn.push({latitude: this.state.markers[key].latitude, longitude: this.state.markers[key].longitude})
-        }
+        this.state.markersAsArray.map((value: Region, index: number) => {
+            console.log(value);
+            console.log(index);
+        })
         return(
             <View style={StyleSheet.absoluteFillObject}>
                 <MapView style={StyleSheet.absoluteFillObject} region={this.state.region}>
                     {
-                        markerIn.map((value: any) => {
-                            <Marker
-                            key={value.longitude + Math.random()}
-                            coordinate={value}
-                            >
-                            <View style={{
-                                width: 100,
-                                height: 100,
-                                borderWidth: 1}}>
-                            </View>
+                        this.state.markersAsArray.map((value: Region, index: number) => {
+                            <Marker key={index} coordinate={value}>
+                                <View style={{ width: 30, height: 30, borderWidth: 3}} >
+                                </View>
                             </Marker>
                         })
                     }

@@ -7,7 +7,8 @@ import SnapSlider from '../UIComponents/SnapSlider';
 
 interface IState {
     markers: Array<any>,
-    region: Region
+    region: Region,
+    socketState: string
 }
 
 interface IProps {
@@ -18,53 +19,37 @@ interface IProps {
 export default class SocialPage extends React.Component<IProps, IState> {
 
     Timer: number = 0;
-    connection: WebSocket;
-
+    ws: WebSocket;
     constructor(props: IProps) {
         super(props);
 
         this.state = {
             markers: [],
-            region: new Region(0, 0, 0, 0)
-        }
-        this.connection = new WebSocket('http://localhost:8082/location/v1/nearmews');
-
-        this.connection.onopen = (evt) => {
-            console.log(evt);
+            region: new Region(0, 0, 0, 0),
+            socketState: "CLOSED"
         }
 
-        this.connection.onmessage = evt => { 
-            // add the new message to state
-            console.log(evt.data);
-        };
         
-        fetch('http://localhost:8080/location/v1/nearme', {
-            method: 'POST',    
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                'profileId': '1',
-                'latitude': 9.2324,
-                'longitude': 9.2324
-            })
-        })
-        .then((response) => response.json())
-        .then((response) => {
-            if(response.profileArray == undefined) return;
+        this.ws = new WebSocket('ws://localhost:8080/api/v1/location/nearme');
+        this.ws.onopen = () => {
+            // connection opened
+            this.ws.send(JSON.stringify({profileId: "1", latitude: 1.123, longitude: 2.232})); // send a message
             this.setState({
-                markers: response.profileArray,
-                region: this.calculateRegion(response.profileArray)
-            });
-        })
+                socketState: "OPENED"
+            })
+        };
+
+        this.ws.onmessage = (e: MessageEvent) => {
+        // a message was received
+            console.log(e.data);
+        };
+
     }
 
     componentDidMount() {
     }   
 
     calculateRegion(markers: Array<any>) : Region {
-
 
         var latitudeSum: number = 0;
         var longitudeSum: number = 0;
@@ -78,6 +63,15 @@ export default class SocialPage extends React.Component<IProps, IState> {
     }
 
     render() {
+
+
+        var i = 0;
+        while(i < 5) {
+            if(this.state.socketState == "OPENED")
+                this.ws.send(JSON.stringify({profileId: "1", latitude: 1.123, longitude: 2.232}));
+            i++;
+        }
+
         return(
             <View style={StyleSheet.absoluteFillObject}>
                 <MapView style={StyleSheet.absoluteFillObject} region={this.state.region}>

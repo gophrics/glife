@@ -6,7 +6,7 @@ import Region from '../Modals/Region';
 import SnapSlider from '../UIComponents/SnapSlider';
 
 interface IState {
-    markers: Array<any>,
+    markers: {[key:string]: {latitude: number, longitude: number}}, //latitude, longitude as elements 
     region: Region,
     socketState: string
 }
@@ -24,7 +24,7 @@ export default class SocialPage extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            markers: [],
+            markers: {} as {[key:string]: {latitude: number, longitude: number}},
             region: new Region(0, 0, 0, 0),
             socketState: "CLOSED"
         }
@@ -41,8 +41,25 @@ export default class SocialPage extends React.Component<IProps, IState> {
 
         this.ws.onmessage = (e: MessageEvent) => {
         // a message was received
-            console.log(e.data);
+            var data = JSON.parse(e.data)
+            var markers: {[key:string]: {latitude: number, longitude: number}} = this.state.markers;
+            markers[data.profileId]= {
+                latitude: data.latitude,
+                longitude: data.longitude
+            };
+
+            this.setState( {
+                markers: markers
+            });
         };
+
+        this.ws.onclose = (e: CloseEvent) => {
+
+        }
+
+        this.ws.onerror = (e: Event) => {
+
+        }
 
     }
 
@@ -63,26 +80,24 @@ export default class SocialPage extends React.Component<IProps, IState> {
     }
 
     render() {
-
-
-        var i = 0;
-        while(i < 5) {
-            if(this.state.socketState == "OPENED")
-                this.ws.send(JSON.stringify({profileId: "1", latitude: 1.123, longitude: 2.232}));
-            i++;
+        var markerIn: any = []
+        for(var key in this.state.markers) {
+            markerIn.push({latitude: this.state.markers[key].latitude, longitude: this.state.markers[key].longitude})
         }
+
+        this.calculateRegion(markerIn);
 
         return(
             <View style={StyleSheet.absoluteFillObject}>
                 <MapView style={StyleSheet.absoluteFillObject} region={this.state.region}>
                     {
-                        console.log(this.state.markers)
+                        console.log(markerIn)
                     }
                     {
-                        this.state.markers.map((marker, index) => (
+                        markerIn.map((value: any) => {
                             <Marker
-                            key={marker.longitude}
-                            coordinate={marker}
+                            key={value.longitude}
+                            coordinate={value}
                             >
                             <View style={{
                                 width: 30,
@@ -90,7 +105,7 @@ export default class SocialPage extends React.Component<IProps, IState> {
                                 borderWidth: 1}}>
                             </View>
                             </Marker>
-                        ))
+                        })
                     }
                     <Callout style={{ top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
                         <SnapSlider 

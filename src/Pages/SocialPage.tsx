@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, Text } from 'react-native';
 import MapView, { Callout, Marker, AnimatedRegion } from 'react-native-maps';
 import { SliderItems } from '../Modals/ApplicationEnums';
 import Region from '../Modals/Region';
 import SnapSlider from '../UIComponents/SnapSlider';
+import ChatComponent from '../UIComponents/ChatComponent';
 
 interface IState {
     markers: {[key:string]: {latitude: number, longitude: number}}, //latitude, longitude as elements
     markersAsArray: Array<Region>
     region: Region,
-    socketState: string
+    socketState: string,
+    page: string
 }
 
 interface IProps {
@@ -20,7 +22,9 @@ interface IProps {
 export default class SocialPage extends React.Component<IProps, IState> {
 
     Timer: number = 0;
-    ws: WebSocket;
+    nearmeWs: WebSocket;
+    //chatWs: WebSocket;
+
     constructor(props: IProps) {
         super(props);
 
@@ -28,20 +32,22 @@ export default class SocialPage extends React.Component<IProps, IState> {
             markers: {} as {[key:string]: {latitude: number, longitude: number}},
             region: new Region(0, 0, 0, 0),
             markersAsArray: [],
-            socketState: "CLOSED"
+            socketState: "CLOSED",
+            // Change to 'NearYou'
+            page: 'Helpline'
         }
 
         
-        this.ws = new WebSocket('ws://localhost:8080/api/v1/location/nearme');
-        this.ws.onopen = () => {
+        this.nearmeWs = new WebSocket('ws://localhost:8080/api/v1/location/nearme');
+        this.nearmeWs.onopen = () => {
             // connection opened
-            this.ws.send(JSON.stringify({profileId: "1", latitude: 1.123, longitude: 2.232})); // send a message
+            this.nearmeWs.send(JSON.stringify({profileId: "1", latitude: 1.123, longitude: 2.232})); // send a message
             this.setState({
                 socketState: "OPENED"
             })
         };
 
-        this.ws.onmessage = (e: MessageEvent) => {
+        this.nearmeWs.onmessage = (e: MessageEvent) => {
         // a message was received
             var data = JSON.parse(e.data)
             var markers: {[key:string]: {latitude: number, longitude: number}} = this.state.markers;
@@ -68,61 +74,84 @@ export default class SocialPage extends React.Component<IProps, IState> {
             });
         };
 
-        this.ws.onclose = (e: CloseEvent) => {
+        this.nearmeWs.onclose = (e: CloseEvent) => {
 
         }
 
-        this.ws.onerror = (e: Event) => {
+        this.nearmeWs.onerror = (e: Event) => {
 
         }
+/*
+        this.chatWs = new WebSocket('ws://localhost:8080/api/v1/chat');
+        this.chatWs.onopen = () => {
+            this.nearmeWs.send(JSON.stringify({profileId: "1"}))
+        }
 
+        this.chatWs.onmessage = (e: MessageEvent) => {
+        }
+*/
     }
 
     nearYouPress = () => {
-
+        this.setState({
+            page: 'NearYou'
+        })
     }
 
     helplinePress = () => {
-
+        this.setState({
+            page: 'Helpline'
+        })
     }
 
     swipePress = () => {
-
+        this.setState({
+            page: 'Swipe'
+        })
     }
 
     render() {
-        return(
-            <View style={StyleSheet.absoluteFillObject}>
-                <MapView style={StyleSheet.absoluteFillObject} region={this.state.region}>
-                    {
-                        // WHAT's the frickin difference in using 
-                        // ((value: Region, index: number) => (...code...)      Working
-                        // ((value: Region, index: number) => {...code...}      Not frickin working
-                        // EDIT: Apparently, if {} is used, you need to return the whole JSX
-                        this.state.markersAsArray.map((value: Region, index: number) => (
-                            <Marker key={index} coordinate={value}>
-                                <View style={{ width: 30, height: 30, borderWidth: 1}} >
-                                </View>
-                            </Marker>
-                        ))
-                    }
-                    <Callout style={{ top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
-                        <SnapSlider 
-                            style={{ top: 50, left: 120}}
-                            items={SliderItems} 
-                            defaultItem={1}
-                            sliderChangeCallback={this.props.sliderChangeCallback}
-                        />
-                    </Callout>
-                </MapView>
 
-                <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'skyblue', position:'absolute', bottom: 0, left: 0, right: 0, width:"100%", height:"10%"}}>
-                    <Button title={"Near you"} color={'black'} onPress={this.nearYouPress.bind(this)}/>
-                    <Button title={"Helpline"} color={'black'}  onPress={this.helplinePress.bind(this)}/>
-                    <Button title={"Swipe"} color={'black'} onPress={this.swipePress.bind(this)}/>
+        if(this.state.page == 'NearYou') {
+            return(
+                <View style={StyleSheet.absoluteFillObject}>
+                    <MapView style={StyleSheet.absoluteFillObject} region={this.state.region}>
+                        {
+                            // WHAT's the frickin difference in using 
+                            // ((value: Region, index: number) => (...code...)      Working
+                            // ((value: Region, index: number) => {...code...}      Not frickin working
+                            // EDIT: Apparently, if {} is used, you need to return the whole JSX
+                            this.state.markersAsArray.map((value: Region, index: number) => (
+                                <Marker key={index} coordinate={value}>
+                                    <View style={{ width: 30, height: 30, borderWidth: 1}} >
+                                    </View>
+                                </Marker>
+                            ))
+                        }
+                        <Callout style={{ top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
+                            <SnapSlider 
+                                style={{ top: 50, left: 120}}
+                                items={SliderItems} 
+                                defaultItem={1}
+                                sliderChangeCallback={this.props.sliderChangeCallback}
+                            />
+                        </Callout>
+                    </MapView>
+
+                    <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'skyblue', position:'absolute', bottom: 0, left: 0, right: 0, width:"100%", height:"10%"}}>
+                        <Button title={"Near you"} color={'black'} onPress={this.nearYouPress.bind(this)}/>
+                        <Button title={"Helpline"} color={'black'}  onPress={this.helplinePress.bind(this)}/>
+                        <Button title={"Swipe"} color={'black'} onPress={this.swipePress.bind(this)}/>
+                    </View>
                 </View>
+            )
+        } else if(this.state.page == "Helpline") {
+            return (
+            <View>
+                <Text>Chat</Text>
             </View>
-        )
+            )
+        }
     }
 
 }

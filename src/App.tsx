@@ -24,7 +24,8 @@ export default class App extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      page: Page[Page.NONE],
+      // Change to Page.NONE
+      page: Page[Page.SOCIAL],
       pageDataPipe: {} 
     };
 

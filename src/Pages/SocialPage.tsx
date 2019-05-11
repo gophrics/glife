@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import MapView, { Callout, Marker, AnimatedRegion } from 'react-native-maps';
 import { SliderItems } from '../Modals/ApplicationEnums';
 import Region from '../Modals/Region';
@@ -78,11 +78,19 @@ export default class SocialPage extends React.Component<IProps, IState> {
 
     }
 
+    nearYouPress = () => {
+
+    }
+
+    helplinePress = () => {
+
+    }
+
+    swipePress = () => {
+
+    }
+
     render() {
-        this.state.markersAsArray.map((value: Region, index: number) => {
-            console.log(value);
-            console.log(index);
-        })
         return(
             <View style={StyleSheet.absoluteFillObject}>
                 <MapView style={StyleSheet.absoluteFillObject} region={this.state.region}>
@@ -90,6 +98,7 @@ export default class SocialPage extends React.Component<IProps, IState> {
                         // WHAT's the frickin difference in using 
                         // ((value: Region, index: number) => (...code...)      Working
                         // ((value: Region, index: number) => {...code...}      Not frickin working
+                        // EDIT: Apparently, if {} is used, you need to return the whole JSX
                         this.state.markersAsArray.map((value: Region, index: number) => (
                             <Marker key={index} coordinate={value}>
                                 <View style={{ width: 30, height: 30, borderWidth: 1}} >
@@ -106,6 +115,12 @@ export default class SocialPage extends React.Component<IProps, IState> {
                         />
                     </Callout>
                 </MapView>
+
+                <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'skyblue', position:'absolute', bottom: 0, left: 0, right: 0, width:"100%", height:"10%"}}>
+                    <Button title={"Near you"} color={'black'} onPress={this.nearYouPress.bind(this)}/>
+                    <Button title={"Helpline"} color={'black'}  onPress={this.helplinePress.bind(this)}/>
+                    <Button title={"Swipe"} color={'black'} onPress={this.swipePress.bind(this)}/>
+                </View>
             </View>
         )
     }

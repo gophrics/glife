@@ -6,12 +6,20 @@ import Region from '../../Modals/Region';
 import SnapSlider from '../../UIComponents/SnapSlider';
 import ChatComponent from '../../UIComponents/ChatComponent';
 
+
+interface Message {
+    profileId: string,
+    chatroomId: string,
+    timestamp: string,
+    message: string
+}
 interface IState {
     markers: {[key:string]: {latitude: number, longitude: number}}, //latitude, longitude as elements
     markersAsArray: Array<Region>
     region: Region,
     socketState: string,
-    page: string
+    page: string,
+    messages: Array<Message>
 }
 
 interface IProps {
@@ -23,7 +31,7 @@ export default class SocialPage extends React.Component<IProps, IState> {
 
     Timer: number = 0;
     nearmeWs: WebSocket;
-    //chatWs: WebSocket;
+    chatWs: WebSocket;
 
     constructor(props: IProps) {
         super(props);
@@ -34,7 +42,8 @@ export default class SocialPage extends React.Component<IProps, IState> {
             markersAsArray: [],
             socketState: "CLOSED",
             // Change to 'NearYou'
-            page: 'Helpline'
+            page: 'Helpline',
+            messages: []
         }
 
         
@@ -80,16 +89,23 @@ export default class SocialPage extends React.Component<IProps, IState> {
 
         this.nearmeWs.onerror = (e: Event) => {
 
-        }
-/*
-        this.chatWs = new WebSocket('ws://localhost:8080/api/v1/chat');
+        }   
+
+        this.chatWs = new WebSocket('ws://localhost:8080/api/v1/chat/getandpost');
         this.chatWs.onopen = () => {
-            this.nearmeWs.send(JSON.stringify({profileId: "1"}))
+            console.log("WS OPENED");
+            this.chatWs.send(JSON.stringify({timestamp: "2018/02/11 00:00:00", chatroomId: "Chat_India"}))
         }
 
         this.chatWs.onmessage = (e: MessageEvent) => {
+            var data: Message = JSON.parse(e.data)
+            var msgs: Array<Message> = this.state.messages;
+            msgs.push(data)
+            console.log(msgs);
+            this.setState({
+                messages: msgs
+            })
         }
-*/
     }
 
     nearYouPress = () => {
@@ -160,6 +176,11 @@ export default class SocialPage extends React.Component<IProps, IState> {
                 </View>
             )
         } else if(this.state.page == "Helpline") {
+            var chats: any = []
+            for(var msg of this.state.messages) {
+                console.log(msg)
+                chats.push(<ChatComponent myMessage={false} messageSenderName={msg.profileId} message={msg.message} messageTimestamp={msg.timestamp} />)
+            }
             return (
             <View>
                 <SnapSlider 
@@ -170,6 +191,7 @@ export default class SocialPage extends React.Component<IProps, IState> {
                             />
 
                 <View style={{marginTop: 60}}>
+                    {chats}
                     <ChatComponent myMessage={true} messageSenderName={"Nitin"} message={"Hi there"} messageTimestamp="02/11/1993 05:31" />
                 </View>
             </View>

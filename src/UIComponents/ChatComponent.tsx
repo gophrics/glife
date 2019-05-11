@@ -41,14 +41,14 @@ export default class ChatComponent extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
     messageOthers: {
         flexDirection: 'column',
-        marginLeft: 40,
+        marginRight: 40,
         paddingRight: 20,
         backgroundColor: 'skyblue',
         borderRadius: 10
     },
     messageMe: {
         flexDirection: 'column',
-        marginRight: 40,
+        marginLeft: 40,
         paddingRight: 20,
         backgroundColor: 'lightgrey',
         borderRadius: 10

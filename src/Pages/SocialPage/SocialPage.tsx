@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View, StyleSheet, Button, Text } from 'react-native';
+import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 import MapView, { Callout, Marker, AnimatedRegion } from 'react-native-maps';
-import { SliderItems } from '../Modals/ApplicationEnums';
-import Region from '../Modals/Region';
-import SnapSlider from '../UIComponents/SnapSlider';
-import ChatComponent from '../UIComponents/ChatComponent';
+import { SliderItems } from '../../Modals/ApplicationEnums';
+import Region from '../../Modals/Region';
+import SnapSlider from '../../UIComponents/SnapSlider';
+import ChatComponent from '../../UIComponents/ChatComponent';
 
 interface IState {
     markers: {[key:string]: {latitude: number, longitude: number}}, //latitude, longitude as elements
@@ -138,17 +138,40 @@ export default class SocialPage extends React.Component<IProps, IState> {
                         </Callout>
                     </MapView>
 
-                    <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'skyblue', position:'absolute', bottom: 0, left: 0, right: 0, width:"100%", height:"10%"}}>
-                        <Button title={"Near you"} color={'black'} onPress={this.nearYouPress.bind(this)}/>
-                        <Button title={"Helpline"} color={'black'}  onPress={this.helplinePress.bind(this)}/>
-                        <Button title={"Swipe"} color={'black'} onPress={this.swipePress.bind(this)}/>
+                    <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'skyblue', alignItems:'stretch', justifyContent:'center', position:'absolute', bottom: 0, left: 0, right: 0, width:"100%", height:"10%"}}>
+                        <TouchableOpacity style={{
+                            backgroundColor: "black",
+                            padding: 20
+                        }} onPress={this.nearYouPress.bind(this)}>
+                            <Text>NearYou</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{
+                            backgroundColor: "black",
+                            padding: 20
+                        }} onPress={this.helplinePress.bind(this)}>
+                            <Text>Helpline</Text>
+                        </TouchableOpacity><TouchableOpacity style={{
+                            backgroundColor: "black",
+                            padding: 20
+                        }} onPress={this.swipePress.bind(this)}>
+                            <Text>Swipe</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )
         } else if(this.state.page == "Helpline") {
             return (
             <View>
-                <Text>Chat</Text>
+                <SnapSlider 
+                                style={{ top: 50, left: 120, width:140, borderWidth: 1}}
+                                items={SliderItems} 
+                                defaultItem={1}
+                                sliderChangeCallback={this.props.sliderChangeCallback}
+                            />
+
+                <View style={{marginTop: 60}}>
+                    <ChatComponent myMessage={true} messageSenderName={"Nitin"} message={"Hi there"} messageTimestamp="02/11/1993 05:31" />
+                </View>
             </View>
             )
         }

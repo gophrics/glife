@@ -4,7 +4,7 @@ import RNBackgroundService from 'react-native-background-service';
 import {Page} from './Modals/ApplicationEnums';
 import MapPhotoPage from './Pages/MapPhotoPage';
 import ParsingPhotoPage from './Pages/ParsingPhotoPage';
-import SocialPage from './Pages/SocialPage';
+import SocialPage from './Pages/SocialPage/SocialPage';
 
 RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 (res) => { console.log("Location: " + res) });

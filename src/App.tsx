@@ -5,6 +5,7 @@ import {Page} from './Modals/ApplicationEnums';
 import MapPhotoPage from './Pages/MapPhotoPage';
 import ParsingPhotoPage from './Pages/ParsingPhotoPage';
 import SocialPage from './Pages/SocialPage/SocialPage';
+import ProfilePage from './Pages/ProfilePage';
 
 // RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 // (res) => { console.log("Location: " + res) });
@@ -25,10 +26,11 @@ export default class App extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       // Change to Page.NONE
-      page: Page[Page.SOCIAL],
+      page: Page[Page.PROFILE],
       pageDataPipe: {} 
     };
 
+    /*
     AsyncStorage.getItem('lastPage')
       .then((item) => {
           if(item) {
@@ -51,7 +53,7 @@ export default class App extends React.Component<IProps, IState> {
             });
           }
       });
-
+      */
 
 
     // RNBackgroundService.RNBackgroundServiceLocationService.requestPermission();
@@ -98,6 +100,8 @@ export default class App extends React.Component<IProps, IState> {
         return (<MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} sliderChangeCallback={this.sliderChange.bind(this)}/>);
       case Page[Page.SOCIAL]:
         return (<SocialPage sliderChangeCallback={this.sliderChange.bind(this)}/>)
+      case Page[Page.PROFILE]:
+        return (<ProfilePage />)
       default:
         return (<View />);
     }

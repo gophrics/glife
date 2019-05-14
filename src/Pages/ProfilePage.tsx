@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-
+import { ProfileComponent } from '../UIComponents/ProfileComponent';
 
 interface IState {
 
@@ -20,7 +20,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
 
         return (
             <View>
-                
+                <ProfileComponent />
             </View>
         )
     }

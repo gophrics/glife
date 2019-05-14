@@ -17,7 +17,8 @@ export class WorldMapColouredComponent extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View />
+            <View>
+            </View>
         )
     }
 }

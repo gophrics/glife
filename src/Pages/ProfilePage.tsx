@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { ProfileComponent } from '../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
+import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
 
 interface IState {
 
@@ -24,6 +25,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
             <View>
                 <ProfileComponent />
                 <WorldMapColouredComponent visitedCountryList={visitedCountryList}/>
+                <StatsAsCardComponent />
             </View>
         )
     }

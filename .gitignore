@@ -7,6 +7,9 @@ npm-debug.*
 *.mobileprovision
 ios/build/
 ios/Pods/
+android/.idea/
+android/.gradle/
+android/app/build/
 dist/
 package-lock.json
 ios/glife.xcodeproj/project.xcworkspace/

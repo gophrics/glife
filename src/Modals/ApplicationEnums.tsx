@@ -2,6 +2,7 @@
 export enum Page {
     NONE,
     LOADING,
+    PROFILE,
     MAPVIEW,
     SOCIAL,
     HOME

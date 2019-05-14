@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { View, AsyncStorage } from 'react-native';
-import RNBackgroundService from 'react-native-background-service';
+// import RNBackgroundService from 'react-native-background-service';
 import {Page} from './Modals/ApplicationEnums';
 import MapPhotoPage from './Pages/MapPhotoPage';
 import ParsingPhotoPage from './Pages/ParsingPhotoPage';
 import SocialPage from './Pages/SocialPage/SocialPage';
 
-RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
-(res) => { console.log("Location: " + res) });
+// RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
+// (res) => { console.log("Location: " + res) });
 
 
 interface IState {
@@ -54,8 +54,8 @@ export default class App extends React.Component<IProps, IState> {
 
 
 
-    RNBackgroundService.RNBackgroundServiceLocationService.requestPermission();
-    RNBackgroundService.RNBackgroundServiceLocationService.startLocationTracking();
+    // RNBackgroundService.RNBackgroundServiceLocationService.requestPermission();
+    // RNBackgroundService.RNBackgroundServiceLocationService.startLocationTracking();
   }
 
   setPage(page: string, data: any) {

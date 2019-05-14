@@ -2,10 +2,13 @@ target 'glife'
 
 platform :ios, 9.0
 
-pod 'React', :path => '../node_modules/react-native'
+pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    'RCTImage'
+]
 pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 pod 'react-native-background-service', :path => '../node_modules/react-native-background-service/'
 pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
 rn_path = '../node_modules/react-native'
 pod 'Folly', :podspec => "#{rn_path}/third-party-podspecs/Folly.podspec"

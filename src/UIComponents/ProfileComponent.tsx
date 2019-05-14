@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, StyleSheet, Button } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { WorldMapColouredComponent } from './WorldMapColouredComponent';
 
 interface IState {
@@ -28,11 +28,14 @@ export class ProfileComponent extends React.Component<IProps, IState> {
         return (
             <View style={styles.main}>
                 <Image source={{}}/> 
-                <View style={styles.follow}>
-                    <Button title={"Follow"} onPress={this.onFollowButtonPress.bind(this)}/>
-                    <Button title={"Donate"} onPress={this.onDonateButtonPress.bind(this)}/>
+                <View style={styles.followButtonGroup}>
+                    <TouchableOpacity style={styles.button} onPress={this.onFollowButtonPress.bind(this)}>
+                        <Text style={styles.text}>Follow</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={this.onFollowButtonPress.bind(this)}>
+                        <Text style={styles.text}>Donate</Text>
+                    </TouchableOpacity>
                 </View> 
-                <WorldMapColouredComponent />
             </View>
         )
     }
@@ -40,11 +43,20 @@ export class ProfileComponent extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
     main: {
-        alignContent: "center",
-        flexDirection: "row"
+        marginTop: 50
     },
 
-    follow: {
-        flexDirection: "row"
+    followButtonGroup: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+
+    button: {
+        backgroundColor: 'grey',
+        padding: 5,
+        margin: 20,
+    },
+    text: {
+        color: 'white'
     }
 })

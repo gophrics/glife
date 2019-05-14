@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { ProfileComponent } from '../UIComponents/ProfileComponent';
+import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
 
 interface IState {
 
@@ -17,10 +18,12 @@ export default class ProfilePage extends React.Component<IProps, IState> {
     }
 
     render() {
-
+        var visitedCountryList = Array<string>()
+        visitedCountryList.push("US")
         return (
             <View>
                 <ProfileComponent />
+                <WorldMapColouredComponent visitedCountryList={visitedCountryList}/>
             </View>
         )
     }

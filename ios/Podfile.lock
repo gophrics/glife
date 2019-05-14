@@ -14,13 +14,21 @@ PODS:
     - React
   - React/Core (0.58.0):
     - yoga (= 0.58.0.React)
+  - React/RCTImage (0.58.0):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTNetwork (0.58.0):
+    - React/Core
+  - RNSVG (9.4.0):
+    - React
   - yoga (0.58.0.React)
 
 DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
-  - React (from `../node_modules/react-native`)
   - react-native-background-service (from `../node_modules/react-native-background-service/`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -38,6 +46,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-service/"
   react-native-sqlite-storage:
     :path: "../node_modules/react-native-sqlite-storage"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -49,8 +59,9 @@ SPEC CHECKSUMS:
   React: 466fd4ed76b09452bacab56b48bc122b3b094ba0
   react-native-background-service: dc549c0353f0029137013c47044a99115b4ecdeb
   react-native-sqlite-storage: e2514e75e65458cc2c6590d181bd1947ec6f4e3f
+  RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
   yoga: 00e4390d4d6282e07b3b8276c94703bd66428119
 
-PODFILE CHECKSUM: 85a52269ab12cc12fe6c442dfa14ed0f55085289
+PODFILE CHECKSUM: 109a6ecad94cbd65011965db423d4b4ff073091d
 
 COCOAPODS: 1.6.1

@@ -38,7 +38,10 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                 </View>
 
                 <View>
-                    <TripComponent location={"Hyderabad"} temperature={41} daysOfTravel={14} distanceTravelled={2340} activities={activities} />
+                    <TripComponent location={"Hyderabad"} 
+                        temperature={41} daysOfTravel={14} 
+                        distanceTravelled={2340} activities={activities} 
+                        startDate="30 Oct 18"/>
                 </View>
             </ScrollView>
         )

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { ProfileComponent } from '../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
@@ -24,8 +24,11 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         return (
             <View>
                 <ProfileComponent />
-                <WorldMapColouredComponent visitedCountryList={visitedCountryList}/>
-                <StatsAsCardComponent />
+                <WorldMapColouredComponent visitedCountryList={visitedCountryList}/> 
+                <View style={{flexDirection: 'row', alignContent: 'stretch'}}>
+                    <StatsAsCardComponent text={"You travelled 21% of the world"}/>
+                    <StatsAsCardComponent text={"You've collected 36 flags"}/>
+                </View>
             </View>
         )
     }

@@ -14,7 +14,7 @@ interface IState {
 interface IProps {
     setPage: (page: string, data: any) => void,
     data: any,
-    sliderChangeCallback: (item: number, value: number) => void
+   // sliderChangeCallback: (item: number, value: number) => void
 }
 
 export default class MapPhotoPage extends React.Component<IProps, IState> {
@@ -58,9 +58,9 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
         var imageUriData = PhotoLibraryProcessor.getImageUriArray(this.props.data.imageData);
 
         return (
-            <View style={StyleSheet.absoluteFillObject}>
+            <View>
             
-            <MapView style={StyleSheet.absoluteFillObject} region={this.props.data.region} >
+            <MapView style={{width: '100%', height: '70%'}} region={this.props.data.region} >
                 {
                     markers.map((marker, index) => (
                         <Marker
@@ -74,6 +74,8 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
                         </Marker>
                     ))
                 }
+                {
+                /*
                 <Callout style={{ top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
                     <SnapSlider 
                         style={{ top: 50, left: 120}}
@@ -82,9 +84,11 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
                         sliderChangeCallback={this.props.sliderChangeCallback}
                     />
                 </Callout>
+                */
+               }
             </MapView>
             
-            <ScrollView horizontal={true} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
+            <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
                 { timelineRenderArray }
             </ScrollView>
             </View>

@@ -27,7 +27,7 @@ export default class App extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       // Change to Page.NONE
-      page: Page[Page.NONE],
+      page: Page[Page.LOADING],
       pageDataPipe: {} 
     };
 
@@ -87,7 +87,7 @@ export default class App extends React.Component<IProps, IState> {
           : this.state.page == Page[Page.PROFILE] ? 
             <ProfilePage />
           : this.state.page == Page[Page.MAPVIEW] ? 
-            <MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} sliderChangeCallback={this.sliderChange.bind(this)}/>
+            <MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} />
           : <View />
         }
       </View>

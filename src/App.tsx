@@ -6,6 +6,7 @@ import MapPhotoPage from './Pages/MapPhotoPage';
 import ParsingPhotoPage from './Pages/ParsingPhotoPage';
 import SocialPage from './Pages/SocialPage/SocialPage';
 import ProfilePage from './Pages/ProfilePage';
+import { TopNavigator } from './UIComponents/TopNavigator';
 
 // RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 // (res) => { console.log("Location: " + res) });
@@ -26,7 +27,7 @@ export default class App extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       // Change to Page.NONE
-      page: Page[Page.PROFILE],
+      page: Page[Page.NONE],
       pageDataPipe: {} 
     };
 
@@ -69,41 +70,27 @@ export default class App extends React.Component<IProps, IState> {
     });
   }
 
-  sliderChange(item: number, value: number) {
+  sliderChange(item: number) {
     console.log("Slider changed!! " + item);
-    switch( item ) {
-      case 0:
-        this.setState({
-          page: Page[Page.MAPVIEW]
-        }); break;
-      case 1:
-        this.setState({
-          page: Page[Page.SOCIAL]
-        }); break;
-      default:
-        this.setState({
-          page: Page[Page.MAPVIEW]
-        }); break;
-    } 
-    if(item == 1) {
-      this.setState({
-        page: Page[Page.SOCIAL]
-      });
-    }
+    this.setState({
+      page: Page[item]
+    })
   }
 
   render() {
-    switch(this.state.page) {
-      case Page[Page.LOADING]:
-        return (<ParsingPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.LOADING]]}/>);
-      case Page[Page.MAPVIEW]:
-        return (<MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} sliderChangeCallback={this.sliderChange.bind(this)}/>);
-      case Page[Page.SOCIAL]:
-        return (<SocialPage sliderChangeCallback={this.sliderChange.bind(this)}/>)
-      case Page[Page.PROFILE]:
-        return (<ProfilePage />)
-      default:
-        return (<View />);
-    }
+    return (
+      <View style={{flexDirection: 'column', height: "100%"}}>
+        <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
+        {
+          this.state.page == Page[Page.LOADING] ?
+            <ParsingPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.LOADING]]}/>
+          : this.state.page == Page[Page.PROFILE] ? 
+            <ProfilePage />
+          : this.state.page == Page[Page.MAPVIEW] ? 
+            <MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} sliderChangeCallback={this.sliderChange.bind(this)}/>
+          : <View />
+        }
+      </View>
+    )
   }
 }

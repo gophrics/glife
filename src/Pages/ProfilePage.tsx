@@ -19,6 +19,10 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         super(props)
     }
 
+    onPressTrip = () => {
+
+    }
+
     render() {
         var visitedCountryList = Array<string>()
         visitedCountryList.push("US")
@@ -29,21 +33,24 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         activities.push("Parasailing")
         activities.push("Cultural Exchange")
         return (
-            <ScrollView>
-                <ProfileComponent />
-                <WorldMapColouredComponent visitedCountryList={visitedCountryList}/> 
-                <View style={{flexDirection: 'row', alignContent: 'stretch'}}>
-                    <StatsAsCardComponent text={"You travelled 21% of the world"}/>
-                    <StatsAsCardComponent text={"You've collected 36 flags"}/>
-                </View>
+            <View>
+                <ScrollView>
+                    <ProfileComponent />
+                    <WorldMapColouredComponent visitedCountryList={visitedCountryList}/> 
+                    <View style={{flexDirection: 'row'}}>
+                        <StatsAsCardComponent text={"You travelled 21% of the world"}/>
+                        <StatsAsCardComponent text={"You've collected 36 flags"}/>
+                    </View>
 
-                <View>
-                    <TripComponent location={"Hyderabad"} 
-                        temperature={41} daysOfTravel={14} 
-                        distanceTravelled={2340} activities={activities} 
-                        startDate="30 Oct 18"/>
-                </View>
-            </ScrollView>
+                    <View>
+                        <TripComponent location={"Hyderabad"} 
+                            temperature={41} daysOfTravel={14} 
+                            distanceTravelled={2340} activities={activities} 
+                            startDate="30 Oct 18"
+                            onPress={this.onPressTrip.bind(this)}/>
+                    </View>
+                </ScrollView>
+            </View>
         )
     }
 }

@@ -66,6 +66,9 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         })
         .then(() => {
           this.populateTimelineData();
+        })
+        .then(() => {
+          this.filterOutTrips();  
         });
     }
 
@@ -97,4 +100,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     }
 
 
+    filterOutTrips = () => {
+        var trips: MapPhotoPageModal[]
+        
+    }
 }

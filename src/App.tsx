@@ -3,7 +3,7 @@ import { View, AsyncStorage } from 'react-native';
 // import RNBackgroundService from 'react-native-background-service';
 import {Page} from './Modals/ApplicationEnums';
 import MapPhotoPage from './Pages/MapPhotoPage';
-import ParsingPhotoPage from './Pages/ParsingPhotoPage';
+import LoadingPage from './Pages/LoadingPage';
 import SocialPage from './Pages/SocialPage/SocialPage';
 import ProfilePage from './Pages/ProfilePage';
 import { TopNavigator } from './UIComponents/TopNavigator';
@@ -83,7 +83,7 @@ export default class App extends React.Component<IProps, IState> {
         <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
         {
           this.state.page == Page[Page.LOADING] ?
-            <ParsingPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.LOADING]]}/>
+            <LoadingPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.LOADING]]}/>
           : this.state.page == Page[Page.PROFILE] ? 
             <ProfilePage />
           : this.state.page == Page[Page.MAPVIEW] ? 

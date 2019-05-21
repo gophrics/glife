@@ -42,7 +42,7 @@ export function getTimelineData(imageDataArray: Array<ImageDataModal>) : Array<n
 }
 
 export function getImageUriArray(imageDataArray: Array<ImageDataModal>) : Array<any> {
-    var imageUriArray: Array<number> = [];
+    var imageUriArray: Array<string> = [];
     for (var imageData of imageDataArray) {
         imageUriArray.push(imageData.image);
     }

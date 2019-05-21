@@ -17,9 +17,23 @@ export default class ProfilePage extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props)
+
+        this.fetchProfileData()
     }
 
-    onPressTrip = () => {
+    fetchProfileData = () => {
+        fetch('http://localhost:8081/api/v1/profile/getmyprofile', {
+            method: 'post',
+            body: JSON.stringify({
+                'profileId': '1'
+            })
+        })
+        .then((response) => {
+            console.log(response)
+        })
+    }
+
+    onTripPress = () => {
 
     }
 
@@ -33,7 +47,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         activities.push("Parasailing")
         activities.push("Cultural Exchange")
         return (
-            <View>
+            <View style={{width: '100%', height: '100%'}}>
                 <ScrollView>
                     <ProfileComponent />
                     <WorldMapColouredComponent visitedCountryList={visitedCountryList}/> 
@@ -47,7 +61,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                             temperature={41} daysOfTravel={14} 
                             distanceTravelled={2340} activities={activities} 
                             startDate="30 Oct 18"
-                            onPress={this.onPressTrip.bind(this)}/>
+                            onPress={this.onTripPress.bind(this)}/>
                     </View>
                 </ScrollView>
             </View>

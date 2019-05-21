@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle, AsyncStorage } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle, TextStyle, AsyncStorage, ImageProgressEventDataIOS } from 'react-native';
 import Spinner from '../UIComponents/Spinner';
 import {Page, months} from '../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
-import ImageDataModal from '../Modals/ImageDataModal';
+import MapViewPageModal from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
+import ImageDataModal from '../Modals/ImageDataModal';
+import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -32,9 +34,9 @@ interface IState {
 
 }
 
-export default class ParsingPhotoPage extends React.Component<IProps, IState> {
+export default class LoadingPage extends React.Component<IProps, IState> {
 
-    dataToSendToNextPage: any = {};
+    dataToSendToNextPage: MapPhotoPageModal = new MapPhotoPageModal(new Region(0, 0, 0, 0), [], {});
 
     constructor(props:any) {
         super(props);
@@ -59,8 +61,8 @@ export default class ParsingPhotoPage extends React.Component<IProps, IState> {
     
             var markers = PhotoLibraryProcessor.getMarkers(photoRollInfos);
             var triangulatedLocation: Region = PhotoLibraryProcessor.triangulatePhotoLocationInfo(markers);
-            this.dataToSendToNextPage['region'] = triangulatedLocation;
-            this.dataToSendToNextPage['imageData'] = photoRollInfos;
+            this.dataToSendToNextPage.region = triangulatedLocation;
+            this.dataToSendToNextPage.imageData = photoRollInfos;
         })
         .then(() => {
           this.populateTimelineData();
@@ -69,8 +71,8 @@ export default class ParsingPhotoPage extends React.Component<IProps, IState> {
 
     populateTimelineData () {
         
-        var timelineData: Array<number> = PhotoLibraryProcessor.getTimelineData(this.dataToSendToNextPage['imageData']);
-        var imageUriArray: Array<any> = PhotoLibraryProcessor.getImageUriArray(this.dataToSendToNextPage['imageData']); //TO BE USED
+        var timelineData: Array<number> = PhotoLibraryProcessor.getTimelineData(this.dataToSendToNextPage.imageData);
+        var imageUriArray: Array<any> = PhotoLibraryProcessor.getImageUriArray(this.dataToSendToNextPage.imageData); //TO BE USED
 
         timelineData.sort((a, b) => {
         return a < b ? -1 : 1;
@@ -90,7 +92,7 @@ export default class ParsingPhotoPage extends React.Component<IProps, IState> {
             timeline[i] = monthsInTheYear;
             j = 1;
         }
-        this.dataToSendToNextPage['sortedTimelineData'] = timeline;
+        this.dataToSendToNextPage.sortedTimelineData = timeline;
         this.props.setPage(Page[Page.MAPVIEW], this.dataToSendToNextPage);
     }
 

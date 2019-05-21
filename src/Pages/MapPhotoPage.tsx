@@ -3,9 +3,7 @@ import { StyleSheet, ScrollView, View, Image, Text } from 'react-native';
 import TimelineElement from '../UIComponents/TimelineElement';
 import MapView from 'react-native-maps';
 import {Marker, Callout} from 'react-native-maps';
-import {Page, SliderItems} from '../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
-import SnapSlider from '../UIComponents/SnapSlider';
 
 interface IState {
 
@@ -13,26 +11,13 @@ interface IState {
   
 interface IProps {
     setPage: (page: string, data: any) => void,
-    data: any,
-   // sliderChangeCallback: (item: number, value: number) => void
+    data: any
 }
 
 export default class MapPhotoPage extends React.Component<IProps, IState> {
 
     constructor(props: any) {
         super(props);
-    }
-
-    navigateToSocial() {
-        this.props.setPage(Page[Page.SOCIAL], null);
-    }
-
-    navigateToTravel() {
-
-    }
-
-    navigateToStats() {
-
     }
 
     onTimelineClick() {
@@ -74,18 +59,6 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
                         </Marker>
                     ))
                 }
-                {
-                /*
-                <Callout style={{ top: 50, left: 120, width: 140, height: 50, borderWidth: 1}}> 
-                    <SnapSlider 
-                        style={{ top: 50, left: 120}}
-                        items={SliderItems} 
-                        defaultItem={0}
-                        sliderChangeCallback={this.props.sliderChangeCallback}
-                    />
-                </Callout>
-                */
-               }
             </MapView>
             
             <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>

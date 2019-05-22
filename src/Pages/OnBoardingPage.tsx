@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { View, TextInput, Button, Text } from 'react-native'
-import DatePicker from 'react-native-datepicker'
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 interface IProps {
 
@@ -28,6 +28,14 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         })
     }
 
+    onConfirm = () => {
+
+    }
+
+    onCancel = () => {
+
+    }
+
     render() {
         if(this.state == null) return (<View />)
 
@@ -35,9 +43,16 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         for(var i = 0; i < this.state.numberOfHomes; i++) {
             textInputs.push(
                     <TextInput
+                        key={i}
                         placeholder="Enter home city"
                     />)
-            textInputs.push(<DatePicker />)
+                
+            textInputs.push(<DateTimePicker
+                isVisible={true}
+                key={i + 'd'}
+                onConfirm={this.onConfirm.bind(this)}
+                onCancel={this.onCancel.bind(this)}
+              />)
         }
 
         var buttonInputs = []

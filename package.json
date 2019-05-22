@@ -18,6 +18,7 @@
     "react-native-background-service": "git+https://github.com/issacnitin/react-native-background-service.git",
     "react-native-datepicker": "^1.7.2",
     "react-native-maps": "^0.24.2",
+    "react-native-modal-datetime-picker": "^7.4.2",
     "react-native-sqlite-storage": "^3.3.10",
     "react-native-svg": "^9.4.0"
   },

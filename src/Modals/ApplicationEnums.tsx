@@ -1,11 +1,12 @@
 
 export enum Page {
     NONE    = 0,
-    LOADING = 1,
-    PROFILE = 2,
-    MAPVIEW = 3,
-    SOCIAL  = 4,
-    HOME    = 5
+    ONBOARDING = 1,
+    LOADING = 2,
+    PROFILE = 3,
+    MAPVIEW = 4,
+    SOCIAL  = 5,
+    HOME    = 6
 }
 
 

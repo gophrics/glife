@@ -7,6 +7,7 @@ import LoadingPage from './Pages/LoadingPage';
 import SocialPage from './Pages/SocialPage/SocialPage';
 import ProfilePage from './Pages/ProfilePage';
 import { TopNavigator } from './UIComponents/TopNavigator';
+import { OnBoardingPage } from './Pages/OnBoardingPage';
 
 // RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 // (res) => { console.log("Location: " + res) });
@@ -27,7 +28,7 @@ export default class App extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       // Change to Page.NONE
-      page: Page[Page.LOADING],
+      page: Page[Page.ONBOARDING],
       pageDataPipe: {} 
     };
 
@@ -88,6 +89,8 @@ export default class App extends React.Component<IProps, IState> {
             <ProfilePage />
           : this.state.page == Page[Page.MAPVIEW] ? 
             <MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} />
+          : this.state.page == Page[Page.ONBOARDING] ? 
+            <OnBoardingPage />
           : <View />
         }
       </View>

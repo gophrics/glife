@@ -4,6 +4,7 @@ import { ProfileComponent } from '../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
 import { TripComponent } from '../UIComponents/TripComponent';
+import { TripModal } from '../Modals/TripModal';
 
 interface IState {
 
@@ -22,7 +23,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
     }
 
     fetchProfileData = () => {
-        fetch('http://localhost:8081/api/v1/profile/getmyprofile', {
+        fetch('http://192.168.0.3:8081/api/v1/profile/getmyprofile', {
             method: 'post',
             body: JSON.stringify({
                 'profileId': '1'
@@ -46,6 +47,14 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         activities.push("Hiking")
         activities.push("Parasailing")
         activities.push("Cultural Exchange")
+
+        var tripModalData: TripModal = new TripModal();
+        tripModalData.location = "Hyderabad";
+        tripModalData.temperature = 41;
+        tripModalData.daysOfTravel = 14;
+        tripModalData.distanceTravelled = 2340;
+        tripModalData.activities = activities;
+        tripModalData.startDate = "30 OCt 2018"
         return (
             <View style={{width: '100%', height: '100%'}}>
                 <ScrollView>
@@ -57,10 +66,8 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     </View>
 
                     <View>
-                        <TripComponent location={"Hyderabad"} 
-                            temperature={41} daysOfTravel={14} 
-                            distanceTravelled={2340} activities={activities} 
-                            startDate="30 Oct 18"
+                        <TripComponent 
+                            tripModal={tripModalData}
                             onPress={this.onTripPress.bind(this)}/>
                     </View>
                 </ScrollView>

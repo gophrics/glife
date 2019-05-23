@@ -1,5 +1,6 @@
 import { ClusterModal } from "../Modals/ClusterModal";
 import { StepModal } from "../Modals/StepModal";
+import { DBSCAN } from "./DBSCAN";
 
 export class ClusterProcessor {
 
@@ -20,6 +21,9 @@ export class ClusterProcessor {
     // homes expanded to match clusterData size
 
     static RunStepClustering = (trip: ClusterModal[]) : StepModal[] => {
+
+        var dbscan = new DBSCAN(trip, 0, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
+        dbscan.Run(trip, 0, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
         //Populate markers as well
         return [new StepModal()];
     }
@@ -30,7 +34,7 @@ export class ClusterProcessor {
         var trips = []
         var trip = []
         for(var data of clusterData) {
-            if(ClusterProcessor.EarthDistance(homes[data.timestamp], data) > 100) {
+            if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100) {
                 trip.push(data)
             } else {
                 trips.push(trip)
@@ -39,6 +43,15 @@ export class ClusterProcessor {
         }
 
         return trips;
+    }
+
+    static EarthAndTimeDistanceCombined(p: ClusterModal, q: ClusterModal) {
+        var earthDistance = ClusterProcessor.EarthDistance(p, q);
+        var timeDistance = ClusterProcessor.TimeDistance(p, q);
+
+        var distance = Math.sqrt(earthDistance*earthDistance + timeDistance*timeDistance);
+
+        return distance;
     }
 
     static TimeDistance = (p: ClusterModal, q: ClusterModal) => {

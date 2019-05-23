@@ -328,13 +328,6 @@
 			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
 			remoteInfo = AirMaps;
 		};
-		72D19B10225B8EA30090D512 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7BBB3544AF784AAF91A35199 /* RNReactNativeBackgroundService.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNReactNativeBackgroundService;
-		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -381,14 +374,12 @@
 		2D02E47B1E0B4A5D006451C7 /* glife-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "glife-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* glife-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "glife-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		33CF6B413ACF40B5B64FC3BC /* libRNReactNativeBackgroundService.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNReactNativeBackgroundService.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6391C19ECC604B43B0673441 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		726E1936225BA39C003EA830 /* glife-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "glife-Bridging-Header.h"; sourceTree = "<group>"; };
 		726E1937225BA39D003EA830 /* EmptySwiftFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySwiftFile.swift; sourceTree = "<group>"; };
 		726E1939225BA569003EA830 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		7BBB3544AF784AAF91A35199 /* RNReactNativeBackgroundService.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeBackgroundService.xcodeproj; path = "../node_modules/react-native-background-service/ios/RNReactNativeBackgroundService.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		97EF5C94BFC3AE55DD4A4832 /* libPods-glife.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-glife.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5B62B349C8CECB547D33BF5 /* Pods-glife.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-glife.debug.xcconfig"; path = "Target Support Files/Pods-glife/Pods-glife.debug.xcconfig"; sourceTree = "<group>"; };
@@ -617,18 +608,9 @@
 		72D19AE1225B8EA20090D512 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				33CF6B413ACF40B5B64FC3BC /* libRNReactNativeBackgroundService.a */,
 				6391C19ECC604B43B0673441 /* libAirMaps.a */,
 			);
 			name = "Recovered References";
-			sourceTree = "<group>";
-		};
-		72D19B08225B8EA30090D512 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				72D19B11225B8EA30090D512 /* libRNReactNativeBackgroundService.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		72D19B0A225B8EA30090D512 /* Products */ = {
@@ -652,7 +634,6 @@
 			isa = PBXGroup;
 			children = (
 				726E1939225BA569003EA830 /* RCTCameraRoll.xcodeproj */,
-				7BBB3544AF784AAF91A35199 /* RNReactNativeBackgroundService.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -889,10 +870,6 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-				},
-				{
-					ProductGroup = 72D19B08225B8EA30090D512 /* Products */;
-					ProjectRef = 7BBB3544AF784AAF91A35199 /* RNReactNativeBackgroundService.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1156,13 +1133,6 @@
 			fileType = archive.ar;
 			path = libAirMaps.a;
 			remoteRef = 72D19B0D225B8EA30090D512 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		72D19B11225B8EA30090D512 /* libRNReactNativeBackgroundService.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNReactNativeBackgroundService.a;
-			remoteRef = 72D19B10225B8EA30090D512 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {

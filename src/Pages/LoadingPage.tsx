@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, ViewStyle, TextStyle, AsyncStorage, ImageProgre
 import Spinner from '../UIComponents/Spinner';
 import {Page, months} from '../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
-import Region from '../Modals/Region';
 import ImageDataModal from '../Modals/ImageDataModal';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
 import { ClusterModal } from '../Modals/ClusterModal';
@@ -73,33 +72,36 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     timestamp: timelineData[i]} as ClusterModal )
             }
 
+            console.log("Current time" + Math.floor((new Date()).getTime()/8.64e7));
             // Expanding homes to timestamp
             var homesDataForClustering: {[key:number]: ClusterModal} = {}
             var initialTimestamp = 0;
             var endTimestamp = 0;
+            var max = 0;
             for(var data in this.props.homes) {
-                endTimestamp = this.props.homes[data].timestamp/86400
-                if(endTimestamp == undefined || endTimestamp == null) //Current day
-                    endTimestamp = (new Date()).getTime()/86400
-                for(var i = initialTimestamp; i < endTimestamp; i++) {
+                endTimestamp = Math.floor(this.props.homes[data].timestamp/8.64e7)
+                if(Number.isNaN(endTimestamp)) //Current day
+                    endTimestamp = Math.floor((new Date()).getTime()/8.64e7)
+                for(var i = initialTimestamp; i <= endTimestamp; i++) {
                     homesDataForClustering[i] = this.props.homes[data]
+                    if(i > max) max = i
                 }
                 initialTimestamp = endTimestamp;
             }
 
+            console.log("Max timestamp " + i);
             var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
-            console.log(trips)
 
-            var i = 0;
             for(var trip of trips) {
-                var _trip: TripModal = this.populateTimelineData(ClusterProcessor.RunStepClustering(trip), i)
+                var _trip: TripModal = this.populateTripModalData(ClusterProcessor.RunStepClustering(trip), i)
                 this.dataToSendToNextPage.trips.push(_trip);
-                i++;
             }
+
+            this.props.onDone(this.dataToSendToNextPage);
         });
     }
 
-    populateTimelineData (steps: StepModal[], tripId: number) {
+    populateTripModalData = (steps: StepModal[], tripId: number) => {
         var tripResult : TripModal = new TripModal();
 
         for(var step of steps) {
@@ -121,6 +123,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
 
         tripResult.tripId = tripId;
+
+        // Populate remaining data of TripModal
         return tripResult;
     }
        

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Image, View, TextInput, Button, Text, TouchableOpacity } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
+import { ClusterModal } from '../Modals/ClusterModal';
 
 interface IProps {
     onDone: (data: any) => void
@@ -14,7 +15,9 @@ interface IState {
 
 export class OnBoardingPage extends React.Component<IProps, IState> {
 
-    homes: {[key: number]: any} = {};
+    homes: {[key: number]: string} = {};
+    timestamps: {[key:number]: number} = {}
+
     cursor: number = 0
 
     constructor(props: IProps) {
@@ -49,7 +52,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         var dates = this.state.dates;
         var dateObject: Date = new Date(date)
         dates[this.cursor] = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
-
+        this.timestamps[this.cursor] = dateObject.getTime();
         this.setState({
             showPicker: false,
             dates: dates
@@ -77,7 +80,28 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onNextButtonClick = () => {
+        // TODO: Fetch using API, the geocodes
+        var homesClusterModal: ClusterModal[] = [];
 
+        homesClusterModal.push({
+            latitude: 9.99209,
+            longitude: 76.570603,
+            timestamp: 1337799830000//this.timestamps[0]
+        } as ClusterModal)
+
+        homesClusterModal.push({
+            latitude: 12.981887,
+            longitude: 77.584762,
+            timestamp: 1464030230000//this.timestamps[1]
+        } as ClusterModal)
+
+        homesClusterModal.push({
+            latitude: 15.390570,
+            longitude: 73.878204,
+            timestamp: NaN//this.timestamps[2]
+        } as ClusterModal)
+        
+        this.props.onDone(homesClusterModal)
     }
 
     render() {
@@ -135,7 +159,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                         calenderInputs
                     }
                 </View>
-                <Button title="Done" onPress={() => this.props.onDone(this.homes)} />
+                <Button title="Done" onPress={this.onNextButtonClick} />
             </View>
         )
     }

@@ -4,6 +4,7 @@ import TimelineElement from '../UIComponents/TimelineElement';
 import MapView from 'react-native-maps';
 import {Marker, Callout} from 'react-native-maps';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
+import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
 
 interface IState {
 
@@ -11,7 +12,7 @@ interface IState {
   
 interface IProps {
     setPage: (page: string, data: any) => void,
-    data: any
+    data: MapPhotoPageModal
 }
 
 export default class MapPhotoPage extends React.Component<IProps, IState> {

@@ -5,6 +5,7 @@ export class StepModal {
     meanLongitude: number
     startTimestamp: number
     endTimestamp: number
+    timelineData: string[]
     images: Image[]
 
     constructor() {
@@ -13,5 +14,6 @@ export class StepModal {
         this.startTimestamp = 0;
         this.endTimestamp = 0;
         this.images = []
+        this.timelineData = [];
     }
 }

@@ -90,7 +90,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             console.log(trips)
 
             for(var trip of trips) {
-                var steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
+                var steps: StepModal[] = this.populateTimelineData(ClusterProcessor.RunStepClustering(trip))
                 this.dataToSendToNextPage.trips.push(steps);
             }
 
@@ -100,43 +100,34 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             // this.dataToSendToNextPage.imageData = photoRollInfos;
         })
         .then(() => {
-          //this.populateTimelineData();
         })
         .then(() => {
           //this.filterOutTrips();  
         });
     }
 
-    populateTimelineData () {
-        
-        var timelineData: Array<number> = PhotoLibraryProcessor.getTimelineData(this.dataToSendToNextPage.imageData);
-        var imageUriArray: Array<any> = PhotoLibraryProcessor.getImageUriArray(this.dataToSendToNextPage.imageData); //TO BE USED
+    populateTimelineData (steps: StepModal[]) {
+        var returnVal = [];
 
-        timelineData.sort((a, b) => {
-        return a < b ? -1 : 1;
-        });
+        for(var step of steps) {
 
-        var initialDate = new Date(timelineData[0]);
-        var finalDate = new Date(timelineData[timelineData.length-1]);
-        var j = initialDate.getMonth();
-        var timeline: {[key: number]: Array<string>} = {} as {[key: number]: Array<string>};
-
-        for(var i = initialDate.getFullYear(); i <= finalDate.getFullYear(); i++) {
-            var monthsInTheYear: Array<string> = [];
-            while(j <= months.length) {
-                monthsInTheYear.push(months[j-1]);
-                j++;
+            var initialDate = new Date(steps[0].startTimestamp);
+            var finalDate = new Date(steps[steps.length-1].endTimestamp);
+    
+            var timelineData : Array<string> = []
+    
+            while( initialDate.getTime() <= finalDate.getTime() ) {
+                var dateInStringFormat = initialDate.getDate().toString() + " " + months[initialDate.getMonth()] + " " 
+                + initialDate.getFullYear().toString();
+                timelineData.push(dateInStringFormat);
+                initialDate = new Date(initialDate.getTime() + 86400);
             }
-            timeline[i] = monthsInTheYear;
-            j = 1;
+
+            step.timelineData = timelineData;
+            returnVal.push(step);
         }
-        this.dataToSendToNextPage.sortedTimelineData = timeline;
-        this.props.onDone(this.dataToSendToNextPage);
-    }
 
-
-    filterOutTrips = () => {
-        var trips: MapPhotoPageModal[]
-        
+        return returnVal;
     }
+       
 }

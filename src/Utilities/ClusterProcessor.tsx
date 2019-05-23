@@ -1,7 +1,6 @@
 import { ClusterModal } from "../Modals/ClusterModal";
+import { StepModal } from "../Modals/StepModal";
 
-
-const secondsInDay: number = 86400;
 export class ClusterProcessor {
 
     /*
@@ -17,14 +16,20 @@ export class ClusterProcessor {
         }
     */
 
-    // homes; key - timestamp/secondsInDay, value - lat, long
+    // homes; key - timestamp by date, value - lat, long
     // homes expanded to match clusterData size
 
-    RunClustering = (clusterData: Array<ClusterModal>, homes: {[key:number]: ClusterModal}) => {
+    static RunStepClustering = (trip: ClusterModal[]) : StepModal[] => {
+        return [new StepModal()];
+    }
+
+
+    static RunMasterClustering = (clusterData: Array<ClusterModal>, homes: {[key:number]: ClusterModal}) 
+        : ClusterModal[][] => {
         var trips = []
         var trip = []
         for(var data of clusterData) {
-            if(this.EarthDistance(homes[data.timestamp/secondsInDay], data) > 100) {
+            if(ClusterProcessor.EarthDistance(homes[data.timestamp], data) > 100) {
                 trip.push(data)
             } else {
                 trips.push(trip)
@@ -35,17 +40,17 @@ export class ClusterProcessor {
         return trips;
     }
 
-    TimeDistance = (p: ClusterModal, q: ClusterModal) => {
+    static TimeDistance = (p: ClusterModal, q: ClusterModal) => {
         return p.timestamp - q.timestamp
     }
 
-    EarthDistance = (p: ClusterModal, q: ClusterModal) => {
+    static EarthDistance = (p: ClusterModal, q: ClusterModal) => {
         var R = 6371;
-        var dLat = this.deg2rad(p.latitude-q.latitude); 
-        var dLon = this.deg2rad(p.longitude-q.longitude); 
+        var dLat = ClusterProcessor.deg2rad(p.latitude-q.latitude); 
+        var dLon = ClusterProcessor.deg2rad(p.longitude-q.longitude); 
         var a = 
           Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(this.deg2rad(p.latitude)) * Math.cos(this.deg2rad(p.longitude)) * 
+          Math.cos(ClusterProcessor.deg2rad(p.latitude)) * Math.cos(ClusterProcessor.deg2rad(p.longitude)) * 
           Math.sin(dLon/2) * Math.sin(dLon/2)
           ; 
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
@@ -54,7 +59,7 @@ export class ClusterProcessor {
         return d;
     }
 
-    deg2rad = (deg: number) => {
+    static deg2rad = (deg: number) => {
         return deg * (Math.PI/180)
     }
 }

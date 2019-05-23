@@ -84,13 +84,13 @@ export default class App extends React.Component<IProps, IState> {
         <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
         {
           this.state.page == Page[Page.LOADING] ?
-            <LoadingPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.LOADING]]}/>
+            <LoadingPage onDone={(data) => this.setPage(Page[Page.MAPVIEW], data)} homes={this.state.pageDataPipe[Page[Page.LOADING]]}/>
           : this.state.page == Page[Page.PROFILE] ? 
             <ProfilePage />
           : this.state.page == Page[Page.MAPVIEW] ? 
             <MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} />
           : this.state.page == Page[Page.ONBOARDING] ? 
-            <OnBoardingPage />
+            <OnBoardingPage onDone={(data) => this.setPage(Page[Page.LOADING], data)}/>
           : <View />
         }
       </View>

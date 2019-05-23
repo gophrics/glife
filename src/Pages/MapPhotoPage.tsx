@@ -41,7 +41,7 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
 
         const markers = PhotoLibraryProcessor.getMarkers(this.props.data.imageData);
         var imageUriData = PhotoLibraryProcessor.getImageUriArray(this.props.data.imageData);
-
+        
         return (
             <View>
             

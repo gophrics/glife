@@ -22,7 +22,7 @@ export class TopNavigator extends React.Component<IProps, IState> {
     }
 
     onMapPress = () => {
-        this.props.navigatorFunc(Page.MAPVIEW, 0)
+        this.props.navigatorFunc(Page.LOADING, 0)
     }
 
     render() {

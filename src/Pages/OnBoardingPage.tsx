@@ -3,7 +3,7 @@ import { Image, View, TextInput, Button, Text, TouchableOpacity } from 'react-na
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 interface IProps {
-
+    onDone: (data: any) => void
 }
 
 interface IState {
@@ -76,6 +76,10 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         console.log(this.homes);
     }
 
+    onNextButtonClick = () => {
+
+    }
+
     render() {
         if(this.state == null) return (<View />)
 
@@ -131,6 +135,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                         calenderInputs
                     }
                 </View>
+                <Button title="Done" onPress={() => this.props.onDone(this.homes)} />
             </View>
         )
     }

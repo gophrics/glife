@@ -3,10 +3,12 @@ import { Text, View, StyleSheet, ViewStyle, TextStyle, AsyncStorage, ImageProgre
 import Spinner from '../UIComponents/Spinner';
 import {Page, months} from '../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
-import MapViewPageModal from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
 import ImageDataModal from '../Modals/ImageDataModal';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
+import { ClusterModal } from '../Modals/ClusterModal';
+import { ClusterProcessor } from '../Utilities/ClusterProcessor';
+import { StepModal } from '../Modals/StepModal';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -26,8 +28,8 @@ var styles = StyleSheet.create<Styles>({
 });
 
 interface IProps {
-    setPage: (page: string, data: any) => void,
-    data: any
+    onDone: (data: any) => void,
+    homes: {[key:number]: ClusterModal}
 }
 
 interface IState {
@@ -36,7 +38,7 @@ interface IState {
 
 export default class LoadingPage extends React.Component<IProps, IState> {
 
-    dataToSendToNextPage: MapPhotoPageModal = new MapPhotoPageModal(new Region(0, 0, 0, 0), [], {});
+    dataToSendToNextPage: MapPhotoPageModal = new MapPhotoPageModal([]);
 
     constructor(props:any) {
         super(props);
@@ -60,15 +62,48 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         .then((photoRollInfos: Array<ImageDataModal>) => {
     
             var markers = PhotoLibraryProcessor.getMarkers(photoRollInfos);
-            var triangulatedLocation: Region = PhotoLibraryProcessor.triangulatePhotoLocationInfo(markers);
-            this.dataToSendToNextPage.region = triangulatedLocation;
-            this.dataToSendToNextPage.imageData = photoRollInfos;
+            var timelineData: Array<number> = PhotoLibraryProcessor.getTimelineData(photoRollInfos);
+
+            var clusterData: Array<ClusterModal> = [];
+            for(var i = 0; i < markers.length; i++) {
+                clusterData.push({
+                    latitude: markers[i].latitude, 
+                    longitude: markers[i].longitude, 
+                    timestamp: timelineData[i]} as ClusterModal )
+            }
+
+            // Expanding homes to timestamp
+            var homesDataForClustering: {[key:number]: ClusterModal} = {}
+            var initialTimestamp = 0;
+            var endTimestamp = 0;
+            for(var data in this.props.homes) {
+                endTimestamp = this.props.homes[data].timestamp/86400
+                if(endTimestamp == undefined || endTimestamp == null) //Current day
+                    endTimestamp = (new Date()).getTime()/86400
+                for(var i = initialTimestamp; i < endTimestamp; i++) {
+                    homesDataForClustering[i] = this.props.homes[data]
+                }
+                initialTimestamp = endTimestamp;
+            }
+
+            var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
+            console.log(trips)
+
+            for(var trip of trips) {
+                var steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
+                this.dataToSendToNextPage.trips.push(steps);
+            }
+
+
+            // var triangulatedLocation: Region = PhotoLibraryProcessor.triangulatePhotoLocationInfo(markers);
+            // this.dataToSendToNextPage.region = triangulatedLocation;
+            // this.dataToSendToNextPage.imageData = photoRollInfos;
         })
         .then(() => {
-          this.populateTimelineData();
+          //this.populateTimelineData();
         })
         .then(() => {
-          this.filterOutTrips();  
+          //this.filterOutTrips();  
         });
     }
 
@@ -96,7 +131,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             j = 1;
         }
         this.dataToSendToNextPage.sortedTimelineData = timeline;
-        this.props.setPage(Page[Page.MAPVIEW], this.dataToSendToNextPage);
+        this.props.onDone(this.dataToSendToNextPage);
     }
 
 

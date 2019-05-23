@@ -1,15 +1,10 @@
 
-import Region from './Region';
-import ImageDataModal from './ImageDataModal';
+import { StepModal } from './StepModal';
 
 export class MapPhotoPageModal {
-    region: Region
-    imageData: Array<ImageDataModal>
-    sortedTimelineData: {[key: number]: Array<string>} 
+    trips: StepModal[][];
 
-    constructor(region: Region, imageData: Array<ImageDataModal>, sortedTimelineData: {[key: number]: Array<string>}) {
-        this.region = region;
-        this.imageData = imageData;
-        this.sortedTimelineData = sortedTimelineData;
+    constructor(trips: StepModal[][]) {
+        this.trips = trips;
     }
 }

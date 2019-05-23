@@ -1,4 +1,5 @@
 import {Image} from 'react-native';
+import {Region} from 'react-native-maps';
 
 export class StepModal {
     meanLatitude: number
@@ -6,14 +7,16 @@ export class StepModal {
     startTimestamp: number
     endTimestamp: number
     timelineData: string[]
-    images: Image[]
+    imageUris: string[]
+    markers: Region[]
 
     constructor() {
         this.meanLatitude = 0;
         this.meanLongitude = 0;
         this.startTimestamp = 0;
         this.endTimestamp = 0;
-        this.images = []
+        this.imageUris = []
         this.timelineData = [];
+        this.markers = [];
     }
 }

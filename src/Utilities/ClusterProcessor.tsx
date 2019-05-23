@@ -20,6 +20,7 @@ export class ClusterProcessor {
     // homes expanded to match clusterData size
 
     static RunStepClustering = (trip: ClusterModal[]) : StepModal[] => {
+        //Populate markers as well
         return [new StepModal()];
     }
 

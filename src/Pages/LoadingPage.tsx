@@ -96,21 +96,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 this.dataToSendToNextPage.trips.push(_trip);
                 i++;
             }
-
-
-            // var triangulatedLocation: Region = PhotoLibraryProcessor.triangulatePhotoLocationInfo(markers);
-            // this.dataToSendToNextPage.region = triangulatedLocation;
-            // this.dataToSendToNextPage.imageData = photoRollInfos;
-        })
-        .then(() => {
-        })
-        .then(() => {
-          //this.filterOutTrips();  
         });
     }
 
     populateTimelineData (steps: StepModal[], tripId: number) {
-        var returnVal : TripModal = new TripModal();
+        var tripResult : TripModal = new TripModal();
 
         for(var step of steps) {
 
@@ -127,11 +117,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             }
 
             step.timelineData = timelineData;
-            returnVal.tripAsSteps.push(step);
+            tripResult.tripAsSteps.push(step);
         }
 
-        returnVal.tripId = tripId;
-        return returnVal;
+        tripResult.tripId = tripId;
+        return tripResult;
     }
        
 }

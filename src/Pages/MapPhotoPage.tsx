@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, ScrollView, View, Image, Text } from 'react-native';
-import TimelineElement from '../UIComponents/TimelineElement';
-import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
+import MapView, { Marker } from 'react-native-maps';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
 import { TripComponent } from '../UIComponents/TripComponent';
 import { TripModal } from '../Modals/TripModal';
+import Region from '../Modals/Region';
 
 interface IState {
 
@@ -25,7 +25,7 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
 
     }
 
-    onTripPress = (tripId: number) => {
+    onTripPress = (tripModal: TripModal) => {
 
     }
 
@@ -34,18 +34,34 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
 
         var tripRenderArray: Array<any> = []
         var i = 0;
+        
+
+        var locationData: Region[] = []
+        var imageData: string[] = []
+        var meanLatitudeTrip : number = 0;
+        var meanLongitudeTrip: number = 0;
 
         for(var trip of this.props.data.trips) {
-            tripRenderArray.push(<TripComponent onPress={(tripId = trip.tripId) => this.onTripPress(tripId)}/>)
+            tripRenderArray.push(<TripComponent tripModal={trip} onPress={this.onTripPress}/>)
+            for(var step of trip.tripAsSteps) {
+                locationData.push.apply(locationData, step.markers);
+                imageData.push.apply(imageData, step.imageUris);
+                meanLatitudeTrip = step.meanLatitude;
+                meanLongitudeTrip = step.meanLongitude;
+            }
+
+            meanLatitudeTrip = meanLatitudeTrip/trip.tripAsSteps.length;
+            meanLongitudeTrip = meanLongitudeTrip/trip.tripAsSteps.length;
         }
 
-        const markers = PhotoLibraryProcessor.getMarkers(this.props.data.imageData);
-        var imageUriData = PhotoLibraryProcessor.getImageUriArray(this.props.data.imageData);
+        var triangulatedLocation = new Region(meanLatitudeTrip, meanLongitudeTrip, 0, 0)
+        const markers = locationData;
+        var imageUriData = imageData; 
         
         return (
             <View>
             
-            <MapView style={{width: '100%', height: '70%'}} region={this.props.data.region} >
+            <MapView style={{width: '100%', height: '70%'}} region={triangulatedLocation} >
                 {
                     markers.map((marker, index) => (
                         <Marker

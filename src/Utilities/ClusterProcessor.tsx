@@ -1,6 +1,7 @@
 import { ClusterModal } from "../Modals/ClusterModal";
 import { StepModal } from "../Modals/StepModal";
 import { DBSCAN } from "./DBSCAN";
+import Region from "../Modals/Region";
 
 export class ClusterProcessor {
 
@@ -22,10 +23,40 @@ export class ClusterProcessor {
 
     static RunStepClustering = (trip: ClusterModal[]) : StepModal[] => {
 
-        var dbscan = new DBSCAN(trip, 0, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
-        dbscan.Run(trip, 0, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
+        var dbscan = new DBSCAN(trip, 500, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
+        var clusterResult: ClusterModal[][] =  dbscan.Run(trip, 500, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
+        
+        var stepResult: StepModal[] = [];
+
+        for(var cluster of clusterResult) {
+            var step: StepModal = new StepModal()
+            var markers: Region[] = []
+            var imageUris: string[] = []
+            var latitudeSum = 0;
+            var longitudeSum = 0;
+            for(var clusterModal of cluster) {
+                markers.push(
+                {
+                    latitude: clusterModal.latitude, 
+                    longitude: clusterModal.longitude, 
+                    latitudeDelta: 0, 
+                    longitudeDelta: 0
+                } as Region);
+                imageUris.push(clusterModal.image);
+                latitudeSum += clusterModal.latitude;
+                longitudeSum += clusterModal.longitude;
+            }
+            step.startTimestamp = cluster[0].timestamp;
+            step.endTimestamp = cluster[cluster.length-1].timestamp;
+            step.imageUris = imageUris;
+            step.markers = markers;
+            step.meanLatitude = latitudeSum/cluster.length;
+            step.meanLongitude = longitudeSum/cluster.length;
+            
+            stepResult.push(step);
+        }
+        return stepResult ;
         //Populate markers as well
-        return [new StepModal()];
     }
 
 
@@ -36,7 +67,7 @@ export class ClusterProcessor {
         for(var data of clusterData) {
             if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100) {
                 trip.push(data)
-            } else {
+            } else if(trip.length > 0){
                 trips.push(trip)
                 trip = []
             }
@@ -55,10 +86,12 @@ export class ClusterProcessor {
     }
 
     static TimeDistance = (p: ClusterModal, q: ClusterModal) => {
+        if(p == undefined || q == undefined) return 0; // TODO: Need to find out this case
         return p.timestamp - q.timestamp
     }
 
     static EarthDistance = (p: ClusterModal, q: ClusterModal) => {
+        if(p == undefined || q == undefined) return 0;
         var R = 6371;
         var dLat = ClusterProcessor.deg2rad(p.latitude-q.latitude); 
         var dLon = ClusterProcessor.deg2rad(p.longitude-q.longitude); 

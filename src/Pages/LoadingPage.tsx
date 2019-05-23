@@ -69,32 +69,36 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 clusterData.push({
                     latitude: markers[i].latitude, 
                     longitude: markers[i].longitude, 
-                    timestamp: timelineData[i]} as ClusterModal )
+                    timestamp: timelineData[i],
+                    id: i} as ClusterModal )
             }
 
-            console.log("Current time" + Math.floor((new Date()).getTime()/8.64e7));
             // Expanding homes to timestamp
             var homesDataForClustering: {[key:number]: ClusterModal} = {}
             var initialTimestamp = 0;
             var endTimestamp = 0;
-            var max = 0;
             for(var data in this.props.homes) {
                 endTimestamp = Math.floor(this.props.homes[data].timestamp/8.64e7)
                 if(Number.isNaN(endTimestamp)) //Current day
                     endTimestamp = Math.floor((new Date()).getTime()/8.64e7)
                 for(var i = initialTimestamp; i <= endTimestamp; i++) {
                     homesDataForClustering[i] = this.props.homes[data]
-                    if(i > max) max = i
                 }
                 initialTimestamp = endTimestamp;
             }
-
-            console.log("Max timestamp " + i);
             var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
 
+            var count = 1;
             for(var trip of trips) {
+                console.log("TRIP " + count);
                 var _trip: TripModal = this.populateTripModalData(ClusterProcessor.RunStepClustering(trip), i)
                 this.dataToSendToNextPage.trips.push(_trip);
+                var scount = 0;
+                for(var step of trip) {
+                    scount++;
+                }
+                console.log(scount + "Steps");
+                count++;
             }
 
             this.props.onDone(this.dataToSendToNextPage);
@@ -123,7 +127,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
 
         tripResult.tripId = tripId;
-
+        
         // Populate remaining data of TripModal
         return tripResult;
     }

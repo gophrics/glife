@@ -1,3 +1,5 @@
+import { ClusterModal } from "../Modals/ClusterModal";
+
 /**
  * DBSCAN - Density based clustering
  *
@@ -18,7 +20,7 @@
  * @returns {DBSCAN}
  */
 
-dataset: Array<any>
+dataset: Array<ClusterModal>
 epsilon: number
 minPts: number
 distance: (p: any, q: any) => number
@@ -29,7 +31,7 @@ _assigned: Array<any>
 _datasetLength: number
 
 
-constructor(dataset: Array<any>, epsilon: number, minPts: number, distanceFunction: (p: any, q: any) => number) {
+constructor(dataset: Array<ClusterModal>, epsilon: number, minPts: number, distanceFunction: (p: any, q: any) => number) {
     /** @type {Array} */
     this.dataset = [];
     /** @type {number} */
@@ -68,25 +70,24 @@ constructor(dataset: Array<any>, epsilon: number, minPts: number, distanceFuncti
    * @returns {undefined}
    * @access public
    */
- Run = (dataset: Array<any>, epsilon: number, minPts: number, distanceFunction: (p: any, q: any) => number) => {
+ Run = (dataset: Array<ClusterModal>, epsilon: number, minPts: number, distanceFunction: (p: any, q: any) => number) => {
     this._init(dataset, epsilon, minPts, distanceFunction);
   
-    for (var pointId = 0; pointId < this._datasetLength; pointId++) {
+    for (var i = 0; i < this._datasetLength; i++) {
       // if point is not visited, check if it forms a cluster
-      if (this._visited[pointId] !== 1) {
-        this._visited[pointId] = 1;
+      if (this._visited[this.dataset[i].id] !== 1) {
+        this._visited[this.dataset[i].id] = 1;
   
         // if closest neighborhood is too small to form a cluster, mark as noise
-        var neighbors = this._regionQuery(pointId);
+        var neighbors = this._regionQuery(this.dataset[i].id);
   
         if (neighbors.length < this.minPts) {
-          this.noise.push(pointId);
+          this.noise.push(this.dataset[i].id);
         } else {
           // create new cluster and add point
           var clusterId = this.clusters.length;
           this.clusters.push([]);
-          this._addToCluster(pointId, clusterId);
-  
+          this._addToCluster(this.dataset[i], clusterId);
           this._expandCluster(clusterId, neighbors);
         }
       }
@@ -147,14 +148,14 @@ constructor(dataset: Array<any>, epsilon: number, minPts: number, distanceFuncti
    * @returns {undefined}
    * @access protected
    */
-  _expandCluster = (clusterId: number, neighbors: Array<any>)  =>{
+  _expandCluster = (clusterId: number, neighbors: Array<ClusterModal>)  =>{
   
     /**
      * It's very important to calculate length of neighbors array each time,
      * as the number of elements changes over time
      */
     for (var i = 0; i < neighbors.length; i++) {
-      var pointId2 = neighbors[i];
+      var pointId2 = neighbors[i].id;
   
       if (this._visited[pointId2] !== 1) {
         this._visited[pointId2] = 1;
@@ -167,7 +168,7 @@ constructor(dataset: Array<any>, epsilon: number, minPts: number, distanceFuncti
   
       // add to cluster
       if (this._assigned[pointId2] !== 1) {
-        this._addToCluster(pointId2, clusterId);
+        this._addToCluster(neighbors[i], clusterId);
       }
     }
   };
@@ -178,9 +179,9 @@ constructor(dataset: Array<any>, epsilon: number, minPts: number, distanceFuncti
    * @param {number} pointId
    * @param {number} clusterId
    */
-  _addToCluster = (pointId: number, clusterId: number) => {
+  _addToCluster = (pointId: ClusterModal, clusterId: number) => {
     this.clusters[clusterId].push(pointId);
-    this._assigned[pointId] = 1;
+    this._assigned[pointId.id] = 1;
   };
   
   /**
@@ -191,13 +192,14 @@ constructor(dataset: Array<any>, epsilon: number, minPts: number, distanceFuncti
    * @returns {Array}
    * @access protected
    */
-  _regionQuery = (pointId: number) => {
+  _regionQuery = (pointId: number) : ClusterModal[] => {
     var neighbors = [];
   
     for (var id = 0; id < this._datasetLength; id++) {
+      
       var dist = this.distance(this.dataset[pointId], this.dataset[id]);
       if (dist < this.epsilon) {
-        neighbors.push(id);
+        neighbors.push(this.dataset[id]);
       }
     }
   
@@ -244,4 +246,5 @@ constructor(dataset: Array<any>, epsilon: number, minPts: number, distanceFuncti
   
     return Math.sqrt(sum);
   };
+
 }

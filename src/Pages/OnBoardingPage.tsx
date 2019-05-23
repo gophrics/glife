@@ -98,9 +98,21 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         homesClusterModal.push({
             latitude: 15.390570,
             longitude: 73.878204,
-            timestamp: NaN//this.timestamps[2]
+            timestamp: 1464036771000//this.timestamps[2]
         } as ClusterModal)
         
+        homesClusterModal.push({
+            latitude: 12.902886,
+            longitude: 77.675271,
+            timestamp: 1540327971000//this.timestamps[2]
+        } as ClusterModal)
+
+        homesClusterModal.push({
+            latitude: 17.449202,
+            longitude: 78.370166,
+            timestamp: NaN//this.timestamps[2]
+        } as ClusterModal)
+
         this.props.onDone(homesClusterModal)
     }
 

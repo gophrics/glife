@@ -88,7 +88,9 @@ constructor(dataset: Array<ClusterModal>, epsilon: number, minPts: number, dista
           var clusterId = this.clusters.length;
           this.clusters.push([]);
           this._addToCluster(this.dataset[i], clusterId);
-          this._expandCluster(clusterId, neighbors);
+          this._addToCluster(neighbors[i], clusterId);
+
+          //this._expandCluster(clusterId, neighbors);
         }
       }
     }
@@ -196,7 +198,7 @@ constructor(dataset: Array<ClusterModal>, epsilon: number, minPts: number, dista
     var neighbors = [];
   
     for (var id = 0; id < this._datasetLength; id++) {
-      
+
       var dist = this.distance(this.dataset[pointId], this.dataset[id]);
       if (dist < this.epsilon) {
         neighbors.push(this.dataset[id]);

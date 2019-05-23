@@ -93,11 +93,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 console.log("TRIP " + count);
                 var _trip: TripModal = this.populateTripModalData(ClusterProcessor.RunStepClustering(trip), i)
                 this.dataToSendToNextPage.trips.push(_trip);
-                var scount = 0;
-                for(var step of trip) {
-                    scount++;
-                }
-                console.log(scount + "Steps");
                 count++;
             }
 
@@ -108,7 +103,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     populateTripModalData = (steps: StepModal[], tripId: number) => {
         var tripResult : TripModal = new TripModal();
 
+        var scount = 0, latitudeSum = 0, longitudeSum = 0;
         for(var step of steps) {
+            scount++;
+            latitudeSum += step.meanLatitude;
+            longitudeSum += step.meanLongitude;
 
             var initialDate = new Date(steps[0].startTimestamp);
             var finalDate = new Date(steps[steps.length-1].endTimestamp);
@@ -126,6 +125,9 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             tripResult.tripAsSteps.push(step);
         }
 
+        console.log("Steps count" + scount);
+        console.log("LAT: " + latitudeSum/steps.length);
+        console.log("LONG: " + longitudeSum/steps.length);
         tripResult.tripId = tripId;
         
         // Populate remaining data of TripModal

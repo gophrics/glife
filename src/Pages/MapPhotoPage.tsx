@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, ScrollView, View, Image, Text } from 'react-native';
 import TimelineElement from '../UIComponents/TimelineElement';
-import MapView from 'react-native-maps';
-import {Marker, Callout} from 'react-native-maps';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
+import { TripComponent } from '../UIComponents/TripComponent';
+import { TripModal } from '../Modals/TripModal';
 
 interface IState {
 
@@ -25,19 +25,18 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
 
     }
 
+    onTripPress = (tripId: number) => {
+
+    }
+
     render() {
         if(this.props.data == undefined) return(<View />)
 
-        var timelineRenderArray: Array<any> = []
+        var tripRenderArray: Array<any> = []
         var i = 0;
 
-        for(var entry in this.props.data['sortedTimelineData']) {
-            var monthArray: any[] = this.props.data['sortedTimelineData'][entry];
-            var year = +entry;
-            for(var month of monthArray){
-                i++;
-                timelineRenderArray.push(<TimelineElement key={i} month={month} year={year} onClick={this.onTimelineClick.bind(this, month, year)} />);
-            }
+        for(var trip of this.props.data.trips) {
+            tripRenderArray.push(<TripComponent onPress={(tripId = trip.tripId) => this.onTripPress(tripId)}/>)
         }
 
         const markers = PhotoLibraryProcessor.getMarkers(this.props.data.imageData);
@@ -63,7 +62,7 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
             </MapView>
             
             <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
-                { timelineRenderArray }
+                { tripRenderArray }
             </ScrollView>
             </View>
         );

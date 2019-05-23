@@ -9,6 +9,7 @@ import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { ClusterProcessor } from '../Utilities/ClusterProcessor';
 import { StepModal } from '../Modals/StepModal';
+import { TripModal } from '../Modals/TripModal';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -89,9 +90,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
             console.log(trips)
 
+            var i = 0;
             for(var trip of trips) {
-                var steps: StepModal[] = this.populateTimelineData(ClusterProcessor.RunStepClustering(trip))
-                this.dataToSendToNextPage.trips.push(steps);
+                var _trip: TripModal = this.populateTimelineData(ClusterProcessor.RunStepClustering(trip), i)
+                this.dataToSendToNextPage.trips.push(_trip);
+                i++;
             }
 
 
@@ -106,8 +109,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         });
     }
 
-    populateTimelineData (steps: StepModal[]) {
-        var returnVal = [];
+    populateTimelineData (steps: StepModal[], tripId: number) {
+        var returnVal : TripModal = new TripModal();
 
         for(var step of steps) {
 
@@ -124,9 +127,10 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             }
 
             step.timelineData = timelineData;
-            returnVal.push(step);
+            returnVal.tripAsSteps.push(step);
         }
 
+        returnVal.tripId = tripId;
         return returnVal;
     }
        

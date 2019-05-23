@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { templateElement } from '@babel/types';
+import { TripModal } from '../Modals/TripModal';
 
 interface IState {
 
 }
 
 interface IProps {
-    onPress: any
+    tripId: number
     location? : string
     temperature? : number
     daysOfTravel?: number
@@ -15,7 +15,10 @@ interface IProps {
     activities?: Array<string>
     startDate?: string
     endDate?: string
+
+    onPress: (tripId: number) => void
 }
+
 
 export class TripComponent extends React.Component<IProps, IState> {
 
@@ -23,9 +26,14 @@ export class TripComponent extends React.Component<IProps, IState> {
         super(props)
     }
 
+
+    onPress = () => {
+        this.props.onPress(this.props.tripId);
+    }
+
     render() {
         return (
-            <TouchableOpacity onPress={this.props.onPress}>
+            <TouchableOpacity onPress={this.onPress}>
                 <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15, borderWidth: 2}}>
                     <View style={{flex: 2, flexDirection: 'column', alignContent: 'flex-start'}}>
                         <Text style={{flex: 1, fontSize: 18}}>{this.props.location}</Text>

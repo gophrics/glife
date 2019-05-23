@@ -1,10 +1,8 @@
-
-import { StepModal } from './StepModal';
-
+import { TripModal } from './TripModal';
 export class MapPhotoPageModal {
-    trips: StepModal[][];
+    trips: TripModal[];
 
-    constructor(trips: StepModal[][]) {
+    constructor(trips: TripModal[]) {
         this.trips = trips;
     }
 }

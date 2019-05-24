@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, ScrollView, View, Image, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
-import { TripComponent } from '../UIComponents/TripComponent';
 import { StepComponent } from '../UIComponents/StepComponent';
 import { TripModal } from '../Modals/TripModal';
 import { StepModal } from '../Modals/StepModal';
@@ -16,42 +14,50 @@ interface IState {
   
 interface IProps {
     setPage: (page: string, data: any) => void,
-    data: MapPhotoPageModal
+    data: TripModal,
 }
 
-export default class MapPhotoPage extends React.Component<IProps, IState> {
+export default class TripExplorePage extends React.Component<IProps, IState> {
+    
+    travelCardArray: any = []
 
-    tripRenderArray: any = []
     constructor(props: any) {
         super(props);
-
-        var locationData: Region[] = []
-        var imageData: string[] = []
-        var meanLatitudeTrip : number = 0;
-        var meanLongitudeTrip: number = 0;
-
-        for(var trip of this.props.data.trips) {
-            this.tripRenderArray.push(<TripComponent tripModal={trip} onPress={this.onTripPress}/>)
-            for(var step of trip.tripAsSteps) {
-                locationData.push.apply(locationData, step.markers);
-                imageData.push.apply(imageData, step.imageUris);
-                meanLatitudeTrip = step.meanLatitude;
-                meanLongitudeTrip = step.meanLongitude;
-            }
-
-            meanLatitudeTrip = meanLatitudeTrip/trip.tripAsSteps.length;
-            meanLongitudeTrip = meanLongitudeTrip/trip.tripAsSteps.length;
+        //Populate travelcard Array for each step
+        var latitudeSum = 0;
+        var longitudeSum = 0;
+        var trip = this.props.data;
+        var markers: Region[] = []
+        var imageUriData: string[] = []
+        for(var step of trip.tripAsSteps) {
+            latitudeSum += step.meanLatitude
+            longitudeSum += step.meanLongitude
+            this.travelCardArray.push(<StepComponent modal={step} daysOfTravel={0} distanceTravelled={0} onPress={(step: StepModal) => this.onStepClick(step)} />)
+            markers.push.apply(markers, step.markers)
+            imageUriData.push.apply(imageUriData, step.imageUris)
         }
 
-        var triangulatedLocation = new Region(meanLatitudeTrip, meanLongitudeTrip, 0, 0)
-        const markers = locationData;
-        var imageUriData = imageData; 
+        var triangulatedLocation = new Region(latitudeSum/trip.tripAsSteps.length, longitudeSum/trip.tripAsSteps.length, 0, 0)
         this.state = {
             triangulatedLocation: triangulatedLocation,
             markers: markers,
             imageUriData: imageUriData
         }
     }
+
+    onStepClick = (step: StepModal) => {
+        this.setState({
+            triangulatedLocation: {
+                latitude: step.meanLatitude,
+                longitude: step.meanLongitude,
+                latitudeDelta: 0,
+                longitudeDelta: 0
+            } as Region,
+            imageUriData: step.imageUris,
+            markers: step.markers
+        });
+    }
+
     onTripPress = (tripModal: TripModal) => {
 
     }
@@ -79,7 +85,7 @@ export default class MapPhotoPage extends React.Component<IProps, IState> {
             </MapView>
             
             <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
-                { this.tripRenderArray  }
+                { this.travelCardArray }
             </ScrollView>
             </View>
         );

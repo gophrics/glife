@@ -89,12 +89,9 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             }
             var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
 
-            var count = 1;
             for(var trip of trips) {
-                console.log("TRIP " + JSON.stringify(trip));
                 var _trip: TripModal = this.populateTripModalData(ClusterProcessor.RunStepClustering(trip), i)
                 this.dataToSendToNextPage.trips.push(_trip);
-                count++;
             }
 
             this.props.onDone(this.dataToSendToNextPage);

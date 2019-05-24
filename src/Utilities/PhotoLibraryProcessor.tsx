@@ -3,7 +3,7 @@ import ImageDataModal from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
 
 export function getPhotosFromLibrary() {
-    return CameraRoll.getPhotos({ first: 99999999, assetType: "Photos", groupTypes: "All" })
+    return CameraRoll.getPhotos({ first: 1000, assetType: "Photos", groupTypes: "All" })
         .then((res) => {
             
             var imageDataList: Array<ImageDataModal> = [];

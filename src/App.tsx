@@ -2,12 +2,13 @@ import * as React from 'react';
 import { View, AsyncStorage } from 'react-native';
 // import RNBackgroundService from 'react-native-background-service';
 import {Page} from './Modals/ApplicationEnums';
-import MapPhotoPage from './Pages/MapPhotoPage';
+import TripExplorePage from './Pages/TripExplorePage';
 import LoadingPage from './Pages/LoadingPage';
 import SocialPage from './Pages/SocialPage/SocialPage';
 import ProfilePage from './Pages/ProfilePage';
 import { TopNavigator } from './UIComponents/TopNavigator';
 import { OnBoardingPage } from './Pages/OnBoardingPage';
+import StepExplorePage from './Pages/StepExplorePage';
 
 // RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 // (res) => { console.log("Location: " + res) });
@@ -64,8 +65,9 @@ export default class App extends React.Component<IProps, IState> {
 
   setPage(page: string, data: any) {
     this.state.pageDataPipe[page] = data;
-    AsyncStorage.setItem('lastPage', page);
-    AsyncStorage.setItem('lastPageDataPipe', JSON.stringify(this.state.pageDataPipe));
+    // AsyncStorage.setItem('lastPage', page);
+    // console.log()
+    // AsyncStorage.setItem('lastPageDataPipe', JSON.stringify(this.state.pageDataPipe));
     this.setState({
       page: page
     });
@@ -84,13 +86,15 @@ export default class App extends React.Component<IProps, IState> {
         <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
         {
           this.state.page == Page[Page.LOADING] ?
-            <LoadingPage onDone={(data) => this.setPage(Page[Page.MAPVIEW], data)} homes={this.state.pageDataPipe[Page[Page.LOADING]]}/>
+            <LoadingPage onDone={(data) => this.setPage(Page[Page.TRIPEXPLORE], data)} homes={this.state.pageDataPipe[Page[Page.LOADING]]}/>
           : this.state.page == Page[Page.PROFILE] ? 
             <ProfilePage />
-          : this.state.page == Page[Page.MAPVIEW] ? 
-            <MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} />
+          : this.state.page == Page[Page.TRIPEXPLORE] ? 
+            <TripExplorePage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.TRIPEXPLORE]]} />
           : this.state.page == Page[Page.ONBOARDING] ? 
             <OnBoardingPage onDone={(data) => this.setPage(Page[Page.LOADING], data)}/>
+          : this.state.page == Page[Page.STEPEXPLORE] ?
+            <StepExplorePage data={this.state.pageDataPipe[Page[Page.STEPEXPLORE]]}/>
           : <View />
         }
       </View>

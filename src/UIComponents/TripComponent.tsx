@@ -24,7 +24,7 @@ export class TripComponent extends React.Component<IProps, IState> {
                 <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15, borderWidth: 2}}>
                     <View style={{flex: 2, flexDirection: 'column', alignContent: 'flex-start'}}>
                         <Text style={{flex: 1, fontSize: 18}}>{this.props.tripModal.location}</Text>
-                        <Text style={{flex: 10, fontSize: 12}}>{this.props.tripModal.startDate + " - "}{this.props.tripModal.endDate ? this.props.tripModal.endDate : "Present"}</Text>
+                        <Text style={{flex: 3, fontSize: 12}}>{this.props.tripModal.startDate + " - "}{this.props.tripModal.endDate ? this.props.tripModal.endDate : "Present"}</Text>
                         {
                             // TODO: Don't forget to add degree celsius}
                         }
@@ -33,7 +33,6 @@ export class TripComponent extends React.Component<IProps, IState> {
                     <View style={{flex: 3, flexDirection: 'column'}}>
                         <Text style={{alignSelf: 'flex-end', fontSize: 18}}>{this.props.tripModal.daysOfTravel + " days"}</Text>
                         <Text style={{alignSelf: 'flex-end', fontSize: 18}}>{this.props.tripModal.distanceTravelled + " km"}</Text>
-                        <Text style={{alignSelf: 'flex-end', fontSize: 18}}>{""}</Text>
                         <Text style={{alignSelf: 'flex-end', fontSize: 18}}>{""}</Text>
                         {
                             this.props.tripModal.activities ? this.props.tripModal.activities.map((val, index) => (

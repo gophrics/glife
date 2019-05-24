@@ -22,11 +22,8 @@ export class ClusterProcessor {
     // homes expanded to match clusterData size
 
     static RunStepClustering = (trip: ClusterModal[]) : StepModal[] => {
-
-        for(var _t of trip) console.log(_t);
-        var dbscan = new DBSCAN(trip, 10, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
-        var clusterResult: ClusterModal[][] =  dbscan.Run(trip, 10, 0, ClusterProcessor.EarthAndTimeDistanceCombined);
-        console.log("ClusterResult" + clusterResult);
+        var dbscan = new DBSCAN(trip, 10, 1, ClusterProcessor.TimeDistance);
+        var clusterResult: ClusterModal[][] =  dbscan.Run(trip, 86400, 0, ClusterProcessor.TimeDistance);
         var stepResult: StepModal[] = [];
 
         for(var cluster of clusterResult) {
@@ -66,11 +63,11 @@ export class ClusterProcessor {
         var trips = []
         var trip = []
         for(var data of clusterData) {
-            console.log("Trying to add to trip " + JSON.stringify(data))
-            console.log(homes[Math.floor(data.timestamp/8.64e7)])
-            console.log("Earth Distance: " + ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data))
+            // console.log("Trying to add to trip " + JSON.stringify(data))
+            // console.log(homes[Math.floor(data.timestamp/8.64e7)])
+            // console.log("Earth Distance: " + ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data))
             if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100) {
-                console.log("Adding to trip " + data)
+                // console.log("Adding to trip " + data)
                 trip.push(data)
             } else if(trip.length > 0){
                 trips.push(trip)

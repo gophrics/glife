@@ -83,39 +83,14 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         // TODO: Fetch using API, the geocodes
         var homesClusterModal: ClusterModal[] = [];
 
-        // var i = 0;
-        // let headers = new Headers({
-        //     "Accept"       : "application/json",
-        //     "Content-Type" : "application/json",   
-        //     "User-Agent": "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-        // });
-        // for(var key in this.homes) {
-        //     fetch('https://geocode.xyz/' + this.homes[key] + '?json=1', {
-        //         method: 'GET',
-        //         headers: headers
-        //     })
-        //     .then((res) => {
-        //         console.log(res)
-        //         return res.json()
-        //     }).then((response) => {
-        //         console.log(response)
-        //         homesClusterModal.push({
-        //             id: i,
-        //             latitude: response.latt,
-        //             longitude: response.longt,
-        //             timestamp: this.state.dates[key]
-        //         } as ClusterModal)
-        //         console.log(JSON.stringify(homesClusterModal))
-        //         i++;
-        //     })
-        // }
+        /*
         homesClusterModal.push({
             latitude:  37.763804,
             longitude: -122.438588,
             timestamp: NaN//this.timestamps[0]
         } as ClusterModal)
-    
-        /*
+        */
+        
         homesClusterModal.push({
             latitude:  37.763804,
             longitude: -122.438588,
@@ -139,7 +114,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             longitude: 78.370166,
             timestamp: NaN//this.timestamps[2]
         } as ClusterModal)
-        */
+        
         this.props.onDone(homesClusterModal)
     }
 

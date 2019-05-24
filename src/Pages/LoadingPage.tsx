@@ -9,6 +9,7 @@ import { ClusterModal } from '../Modals/ClusterModal';
 import { ClusterProcessor } from '../Utilities/ClusterProcessor';
 import { StepModal } from '../Modals/StepModal';
 import { TripModal } from '../Modals/TripModal';
+import { TravelUtils } from '../Utilities/TravelUtils';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -89,9 +90,15 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             }
             var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
 
+            i = 0;
             for(var trip of trips) {
+                trip.sort((a: ClusterModal, b: ClusterModal) => {
+                    if(a.timestamp < b.timestamp) return 0
+                    return 1
+                });
                 var _trip: TripModal = this.populateTripModalData(ClusterProcessor.RunStepClustering(trip), i)
                 this.dataToSendToNextPage.trips.push(_trip);
+                i++;
             }
 
             this.props.onDone(this.dataToSendToNextPage);
@@ -126,9 +133,16 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
 
         tripResult.tripId = tripId;
-        tripResult.daysOfTravel = Math.floor(Math.abs(tripResult.tripAsSteps[tripResult.tripAsSteps.length-1].endTimestamp - tripResult.tripAsSteps[0].startTimestamp)/86400)
+        tripResult.daysOfTravel = Math.floor(Math.abs(steps[steps.length-1].endTimestamp - steps[0].startTimestamp)/8.64e7)
         tripResult.distanceTravelled = Math.floor(distanceTravelled)
+        tripResult.startDate = TravelUtils.getDateFromTimestamp(steps[0].startTimestamp);
+        tripResult.endDate = TravelUtils.getDateFromTimestamp(steps[steps.length-1].endTimestamp);
+        TravelUtils.getLocationFromCoordinates(steps[0].meanLatitude, steps[0].meanLongitude).then((res) => {
+            tripResult.location = res
+        })
 
+        // console.log("TRIP")
+        console.log(tripResult)
         // Populate remaining data of TripModal
         return tripResult;
     }

@@ -20,7 +20,8 @@
     "react-native-maps": "^0.24.2",
     "react-native-modal-datetime-picker": "^7.4.2",
     "react-native-sqlite-storage": "^3.3.10",
-    "react-native-svg": "^9.4.0"
+    "react-native-svg": "^9.4.0",
+    "react-native-threads": "0.0.16"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

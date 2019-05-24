@@ -74,6 +74,7 @@ constructor(dataset: Array<ClusterModal>, epsilon: number, minPts: number, dista
     this._init(dataset, epsilon, minPts, distanceFunction);
   
     for (var i = 0; i < this._datasetLength; i++) {
+      console.log("Checking if dataset is undefined " + JSON.stringify(this.dataset[i]))
       // if point is not visited, check if it forms a cluster
       if (this._visited[this.dataset[i].id] !== 1) {
         this._visited[this.dataset[i].id] = 1;
@@ -88,7 +89,7 @@ constructor(dataset: Array<ClusterModal>, epsilon: number, minPts: number, dista
           var clusterId = this.clusters.length;
           this.clusters.push([]);
           this._addToCluster(this.dataset[i], clusterId);
-          this._addToCluster(neighbors[i], clusterId);
+          this._addToCluster(neighbors[neighbors.length-1], clusterId);
 
           //this._expandCluster(clusterId, neighbors);
         }
@@ -182,6 +183,7 @@ constructor(dataset: Array<ClusterModal>, epsilon: number, minPts: number, dista
    * @param {number} clusterId
    */
   _addToCluster = (pointId: ClusterModal, clusterId: number) => {
+    console.log("Adding to cluster: " + JSON.stringify(pointId));
     this.clusters[clusterId].push(pointId);
     this._assigned[pointId.id] = 1;
   };

@@ -23,8 +23,9 @@ export class ClusterProcessor {
 
     static RunStepClustering = (trip: ClusterModal[]) : StepModal[] => {
 
+        for(var _t of trip) console.log(_t);
         var dbscan = new DBSCAN(trip, 10, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
-        var clusterResult: ClusterModal[][] =  dbscan.Run(trip, 10, 3, ClusterProcessor.EarthAndTimeDistanceCombined);
+        var clusterResult: ClusterModal[][] =  dbscan.Run(trip, 10, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
         
         var stepResult: StepModal[] = [];
 
@@ -55,6 +56,9 @@ export class ClusterProcessor {
             
             stepResult.push(step);
         }
+
+        console.log("STEPRESULT");
+        console.log(stepResult);
         return stepResult ;
         //Populate markers as well
     }
@@ -65,15 +69,13 @@ export class ClusterProcessor {
         var trip = []
         for(var data of clusterData) {
             if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100) {
-                console.log("HOME" + JSON.stringify(homes[Math.floor(data.timestamp/8.64e7)]) + " " + data.timestamp)
-                console.log("TRAVEL" + JSON.stringify(data) + " " + data.timestamp);
                 trip.push(data)
             } else if(trip.length > 0){
                 trips.push(trip)
                 trip = []
             }
         }
-
+        trips.push(trip)
         return trips;
     }
 

@@ -83,36 +83,62 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         // TODO: Fetch using API, the geocodes
         var homesClusterModal: ClusterModal[] = [];
 
+        // var i = 0;
+        // let headers = new Headers({
+        //     "Accept"       : "application/json",
+        //     "Content-Type" : "application/json",   
+        //     "User-Agent": "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+        // });
+        // for(var key in this.homes) {
+        //     fetch('https://geocode.xyz/' + this.homes[key] + '?json=1', {
+        //         method: 'GET',
+        //         headers: headers
+        //     })
+        //     .then((res) => {
+        //         console.log(res)
+        //         return res.json()
+        //     }).then((response) => {
+        //         console.log(response)
+        //         homesClusterModal.push({
+        //             id: i,
+        //             latitude: response.latt,
+        //             longitude: response.longt,
+        //             timestamp: this.state.dates[key]
+        //         } as ClusterModal)
+        //         console.log(JSON.stringify(homesClusterModal))
+        //         i++;
+        //     })
+        // }
         homesClusterModal.push({
-            latitude: 9.99209,
-            longitude: 76.570603,
-            timestamp: 1337799830000//this.timestamps[0]
-        } as ClusterModal)
-
-        homesClusterModal.push({
-            latitude: 12.981887,
-            longitude: 77.584762,
-            timestamp: 1464030230000//this.timestamps[1]
-        } as ClusterModal)
-
-        homesClusterModal.push({
-            latitude: 15.390570,
-            longitude: 73.878204,
-            timestamp: 1464036771000//this.timestamps[2]
-        } as ClusterModal)
-        
-        homesClusterModal.push({
-            latitude: 12.902886,
-            longitude: 77.675271,
-            timestamp: 1540327971000//this.timestamps[2]
-        } as ClusterModal)
-
-        homesClusterModal.push({
-            latitude: 17.449202,
-            longitude: 78.370166,
-            timestamp: NaN//this.timestamps[2]
-        } as ClusterModal)
-
+                latitude:  37.763804,
+                longitude: -122.438588,
+                timestamp: 1337799830000//this.timestamps[0]
+            } as ClusterModal)
+    
+            homesClusterModal.push({
+                latitude: 12.981887,
+                longitude: 77.584762,
+                timestamp: 1464030230000//this.timestamps[1]
+            } as ClusterModal)
+    
+            homesClusterModal.push({
+                latitude: 15.390570,
+                longitude: 73.878204,
+                timestamp: 1464036771000//this.timestamps[2]
+            } as ClusterModal)
+            
+            homesClusterModal.push({
+                latitude: 12.902886,
+                longitude: 77.675271,
+                timestamp: 1540327971000//this.timestamps[2]
+            } as ClusterModal)
+    
+            homesClusterModal.push({
+                latitude: 17.449202,
+                longitude: 78.370166,
+                timestamp: NaN//this.timestamps[2]
+            } as ClusterModal)
+            
         this.props.onDone(homesClusterModal)
     }
 

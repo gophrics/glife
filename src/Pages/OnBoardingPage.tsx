@@ -110,35 +110,36 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         //     })
         // }
         homesClusterModal.push({
-                latitude:  37.763804,
-                longitude: -122.438588,
-                timestamp: 1337799830000//this.timestamps[0]
-            } as ClusterModal)
+            latitude:  37.763804,
+            longitude: -122.438588,
+            timestamp: NaN//this.timestamps[0]
+        } as ClusterModal)
     
-            homesClusterModal.push({
-                latitude: 12.981887,
-                longitude: 77.584762,
-                timestamp: 1464030230000//this.timestamps[1]
-            } as ClusterModal)
-    
-            homesClusterModal.push({
-                latitude: 15.390570,
-                longitude: 73.878204,
-                timestamp: 1464036771000//this.timestamps[2]
-            } as ClusterModal)
-            
-            homesClusterModal.push({
-                latitude: 12.902886,
-                longitude: 77.675271,
-                timestamp: 1540327971000//this.timestamps[2]
-            } as ClusterModal)
-    
-            homesClusterModal.push({
-                latitude: 17.449202,
-                longitude: 78.370166,
-                timestamp: NaN//this.timestamps[2]
-            } as ClusterModal)
-            
+        /*
+        homesClusterModal.push({
+            latitude:  37.763804,
+            longitude: -122.438588,
+            timestamp: 1464030230000//this.timestamps[1]
+        } as ClusterModal)
+
+        homesClusterModal.push({
+            latitude: 15.390570,
+            longitude: 73.878204,
+            timestamp: 1464036771000//this.timestamps[2]
+        } as ClusterModal)
+        
+        homesClusterModal.push({
+            latitude: 12.902886,
+            longitude: 77.675271,
+            timestamp: 1540327971000//this.timestamps[2]
+        } as ClusterModal)
+
+        homesClusterModal.push({
+            latitude: 17.449202,
+            longitude: 78.370166,
+            timestamp: NaN//this.timestamps[2]
+        } as ClusterModal)
+        */
         this.props.onDone(homesClusterModal)
     }
 

@@ -25,8 +25,8 @@ export class ClusterProcessor {
 
         for(var _t of trip) console.log(_t);
         var dbscan = new DBSCAN(trip, 10, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
-        var clusterResult: ClusterModal[][] =  dbscan.Run(trip, 10, 1, ClusterProcessor.EarthAndTimeDistanceCombined);
-        
+        var clusterResult: ClusterModal[][] =  dbscan.Run(trip, 10, 0, ClusterProcessor.EarthAndTimeDistanceCombined);
+        console.log("ClusterResult" + clusterResult);
         var stepResult: StepModal[] = [];
 
         for(var cluster of clusterResult) {
@@ -57,8 +57,6 @@ export class ClusterProcessor {
             stepResult.push(step);
         }
 
-        console.log("STEPRESULT");
-        console.log(stepResult);
         return stepResult ;
         //Populate markers as well
     }
@@ -68,14 +66,18 @@ export class ClusterProcessor {
         var trips = []
         var trip = []
         for(var data of clusterData) {
+            console.log("Trying to add to trip " + JSON.stringify(data))
+            console.log(homes[Math.floor(data.timestamp/8.64e7)])
+            console.log("Earth Distance: " + ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data))
             if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100) {
+                console.log("Adding to trip " + data)
                 trip.push(data)
             } else if(trip.length > 0){
                 trips.push(trip)
                 trip = []
             }
         }
-        trips.push(trip)
+        if(trip.length > 0) trips.push(trip)
         return trips;
     }
 
@@ -95,17 +97,19 @@ export class ClusterProcessor {
 
     static EarthDistance = (p: ClusterModal, q: ClusterModal) => {
         if(p == undefined || q == undefined) return 0;
-        var R = 6371;
-        var dLat = ClusterProcessor.deg2rad(p.latitude-q.latitude); 
-        var dLon = ClusterProcessor.deg2rad(p.longitude-q.longitude); 
-        var a = 
-          Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(ClusterProcessor.deg2rad(p.latitude)) * Math.cos(ClusterProcessor.deg2rad(p.longitude)) * 
-          Math.sin(dLon/2) * Math.sin(dLon/2)
-          ; 
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-        var d = R * c; // Distance in km
+        var lat2 = q.latitude;
+        var lat1 = p.latitude;
+        var lon2 = q.longitude;
+        var lon1 = p.longitude;
 
+        var R = 6371; // km
+        var dLat = ClusterProcessor.deg2rad(lat2 - lat1);
+        var dLon = ClusterProcessor.deg2rad(lon2 - lon1);
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(ClusterProcessor.deg2rad(lat1)) * Math.cos(ClusterProcessor.deg2rad(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
         return d;
     }
 

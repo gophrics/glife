@@ -67,6 +67,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             var clusterData: Array<ClusterModal> = [];
             for(var i = 0; i < markers.length; i++) {
                 clusterData.push({
+                    image: photoRollInfos[i].image,
                     latitude: markers[i].latitude, 
                     longitude: markers[i].longitude, 
                     timestamp: timelineData[i],
@@ -90,7 +91,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
             var count = 1;
             for(var trip of trips) {
-                console.log("TRIP " + count);
+                console.log("TRIP " + JSON.stringify(trip));
                 var _trip: TripModal = this.populateTripModalData(ClusterProcessor.RunStepClustering(trip), i)
                 this.dataToSendToNextPage.trips.push(_trip);
                 count++;
@@ -126,8 +127,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
 
         console.log("Steps count" + scount);
-        console.log("LAT: " + latitudeSum/steps.length);
-        console.log("LONG: " + longitudeSum/steps.length);
+        console.log("LAT: " + latitudeSum);
+        console.log("LONG: " + longitudeSum);
         tripResult.tripId = tripId;
         
         // Populate remaining data of TripModal

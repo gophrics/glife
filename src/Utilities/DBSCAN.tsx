@@ -80,6 +80,7 @@ constructor(dataset: Array<ClusterModal>, epsilon: number, minPts: number, dista
         this._visited[this.dataset[i].id] = 1;
   
         // if closest neighborhood is too small to form a cluster, mark as noise
+        // Find immediate neighbors satisfying distance by radius, and add to current step
         var neighbors = this._regionQuery(this.dataset[i].id);
   
         if (neighbors.length < this.minPts) {
@@ -89,7 +90,8 @@ constructor(dataset: Array<ClusterModal>, epsilon: number, minPts: number, dista
           var clusterId = this.clusters.length;
           this.clusters.push([]);
           this._addToCluster(this.dataset[i], clusterId);
-          this._addToCluster(neighbors[neighbors.length-1], clusterId);
+          for(var neighbor of neighbors)
+            this._addToCluster(neighbor, clusterId);
 
           //this._expandCluster(clusterId, neighbors);
         }

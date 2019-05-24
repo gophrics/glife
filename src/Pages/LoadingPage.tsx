@@ -103,13 +103,10 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
     populateTripModalData = (steps: StepModal[], tripId: number) => {
         var tripResult : TripModal = new TripModal();
+        var distanceTravelled = 0;
 
-        var scount = 0, latitudeSum = 0, longitudeSum = 0;
+        var i = 0;
         for(var step of steps) {
-            scount++;
-            latitudeSum += step.meanLatitude;
-            longitudeSum += step.meanLongitude;
-
             var initialDate = new Date(steps[0].startTimestamp);
             var finalDate = new Date(steps[steps.length-1].endTimestamp);
     
@@ -124,13 +121,17 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
             step.timelineData = timelineData;
             tripResult.tripAsSteps.push(step);
+
+            if(i > 0)
+            distanceTravelled += ClusterProcessor.EarthDistance({latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude} as ClusterModal,
+                                {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal)
+            i++;
         }
 
-        console.log("Steps count" + scount);
-        console.log("LAT: " + latitudeSum);
-        console.log("LONG: " + longitudeSum);
         tripResult.tripId = tripId;
-        
+        tripResult.daysOfTravel = Math.floor(Math.abs(tripResult.tripAsSteps[tripResult.tripAsSteps.length-1].endTimestamp - tripResult.tripAsSteps[0].startTimestamp)/86400)
+        tripResult.distanceTravelled = Math.floor(distanceTravelled)
+
         // Populate remaining data of TripModal
         return tripResult;
     }

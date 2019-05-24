@@ -88,7 +88,7 @@ export default class App extends React.Component<IProps, IState> {
           : this.state.page == Page[Page.PROFILE] ? 
             <ProfilePage />
           : this.state.page == Page[Page.MAPVIEW] ? 
-            <MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} />
+            <MapPhotoPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.MAPVIEW]]} isSingleTrip={true} />
           : this.state.page == Page[Page.ONBOARDING] ? 
             <OnBoardingPage onDone={(data) => this.setPage(Page[Page.LOADING], data)}/>
           : <View />

@@ -41,7 +41,7 @@ export default class TimelineElement extends React.Component<IProps, any> {
                 <View>
                     <View style={styles.el} />
                     <View style={styles.point} />
-                    <Text style={{left: 0, top: 25}}> {this.props.year + "\n" + this.props.month}  </Text>
+                    <Text style={{left: 0, color: 'white', top: 25}}> {this.props.year + "\n" + this.props.month}  </Text>
                 </View>
             </TouchableHighlight>
         );

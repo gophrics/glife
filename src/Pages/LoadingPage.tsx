@@ -24,7 +24,8 @@ var styles = StyleSheet.create<Styles>({
     infoText: {
         flex: 9,
         padding: '20%',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color:'white'
     }
 });
 

@@ -128,17 +128,17 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                         key={i}
                         placeholder="Enter home city"
                         onChangeText={(text) => this.onLocationTextChange(i-1, text)}
-                        style={{fontSize: 16, borderWidth: 2, borderRadius: 10}}
+                        style={{fontSize: 16, color:'white', borderWidth: 2, borderRadius: 10}}
                         />)
             textInputs.push(
-                <Text>{i == 0 ? "Long long ago" : this.state.dates[i-1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
+                <Text style={{color:'white'}}>{i == 0 ? "Long long ago" : this.state.dates[i-1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
             )
         }
 
         var buttonInputs = []
         for(var i = 0; i < this.state.numberOfHomes; i++) {
-            buttonInputs.push(<Text style={{alignSelf: 'center'}}>=</Text>)
-            buttonInputs.push(<Text style={{alignSelf: 'center'}}>=</Text>)
+            buttonInputs.push(<Text style={{alignSelf: 'center', color:'white'}}>=</Text>)
+            buttonInputs.push(<Text style={{alignSelf: 'center', color:'white'}}>=</Text>)
         }
 
         var calenderInputs = []

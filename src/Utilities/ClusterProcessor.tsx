@@ -22,58 +22,81 @@ export class ClusterProcessor {
     // homes expanded to match clusterData size
 
     static RunStepClustering = (trip: ClusterModal[]) : StepModal[] => {
-        var dbscan = new DBSCAN(trip, 10, 1, ClusterProcessor.TimeDistance);
-        var clusterResult: ClusterModal[][] =  dbscan.Run(trip, 86400, 0, ClusterProcessor.TimeDistance);
-        var stepResult: StepModal[] = [];
+        
+        if(trip.length == 0) throw "Recieved empty tripcluster";
 
-        for(var cluster of clusterResult) {
-            var step: StepModal = new StepModal()
-            var markers: Region[] = []
-            var imageUris: string[] = []
+        var stepResult: StepModal[] = []
+
+        var firstTimestamp = trip[0].timestamp;
+        var _stepCluster: ClusterModal[][] = []
+        _stepCluster.push([])
+        var _it = 0
+
+        for(var item of trip) {
+            if(item.timestamp <= firstTimestamp + 8.64e7)
+                _stepCluster[_it].push(item)
+            else {
+                firstTimestamp += 8.64e7
+                _stepCluster.push([])
+                _it++;
+            }
+        }
+
+        for(var cluster of _stepCluster) {
+
+            if(cluster.length == 0) continue
+
             var latitudeSum = 0;
             var longitudeSum = 0;
-            for(var clusterModal of cluster) {
-                markers.push(
-                {
-                    latitude: clusterModal.latitude, 
-                    longitude: clusterModal.longitude, 
-                    latitudeDelta: 0, 
-                    longitudeDelta: 0
-                } as Region);
-                imageUris.push(clusterModal.image);
-                latitudeSum += clusterModal.latitude;
-                longitudeSum += clusterModal.longitude;
+            var imageUris: string[] = [] 
+            var markers: Region[] = []
+
+            cluster.sort((a, b) => {
+                return a.timestamp-b.timestamp;
+            })
+
+            for(var item of cluster) {
+                latitudeSum += item.latitude;
+                longitudeSum += item.longitude;
+                imageUris.push(item.image)
+                markers.push(new Region(item.latitude, item.longitude, 0, 0))
             }
-            step.startTimestamp = cluster[0].timestamp;
-            step.endTimestamp = cluster[cluster.length-1].timestamp;
-            step.imageUris = imageUris;
-            step.markers = markers;
-            step.meanLatitude = latitudeSum/cluster.length;
-            step.meanLongitude = longitudeSum/cluster.length;
-            
-            stepResult.push(step);
+
+            var _step: StepModal = new StepModal()
+            _step.meanLatitude = latitudeSum/cluster.length;
+            _step.meanLongitude = longitudeSum/cluster.length;
+            _step.markers = markers;
+            _step.startTimestamp = cluster[0].timestamp;
+            _step.endTimestamp = cluster[cluster.length - 1].timestamp
+            _step.imageUris = imageUris
+
+            stepResult.push(_step)
         }
 
         return stepResult ;
-        //Populate markers as well
     }
 
 
     static RunMasterClustering = (clusterData: Array<ClusterModal>, homes: {[key:number]: ClusterModal}) : ClusterModal[][] => {
+       
         var trips = []
         var trip = []
+        
+        clusterData.sort((a, b) => {
+            return a.timestamp-b.timestamp
+        })
+        
         for(var data of clusterData) {
-            // console.log("Trying to add to trip " + JSON.stringify(data))
-            // console.log(homes[Math.floor(data.timestamp/8.64e7)])
-            // console.log("Earth Distance: " + ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data))
             if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100) {
-                // console.log("Adding to trip " + data)
                 trip.push(data)
             } else if(trip.length > 0){
-                trips.push(trip)
+                if(trip.length > 10)
+                    trips.push(trip)
                 trip = []
             }
         }
+
+        // If more than 10 photos were taken for the trip
         if(trip.length > 0) trips.push(trip)
         return trips;
     }

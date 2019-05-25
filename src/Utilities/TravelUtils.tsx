@@ -4,13 +4,14 @@ import { months } from '../Modals/ApplicationEnums';
 export class TravelUtils {
 
     static getLocationFromCoordinates(latitude: number, longitude: number): Promise<any> {
-        return fetch('https://geocode.xyz/' + latitude + "," + longitude + '?json=1&auth=535581842205350452289x2442', {
+        return fetch('https://us1.locationiq.com/v1/reverse.php?key=daecd8873d0c8e&lat='+latitude+'&lon='+longitude+'&format=json', {
             method: 'GET'
         })
         .then((res) => {
             return res.json()
         }).then((res) => {
-            return res.city
+            console.log(res)
+            return res;
         })
     }
 

@@ -5,20 +5,30 @@ import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredCompo
 import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
 import { TripComponent } from '../UIComponents/TripComponent';
 import { TripModal } from '../Modals/TripModal';
+import { Page } from '../Modals/ApplicationEnums';
+import { ProfileModalInstance } from '../Modals/ProfileModalSingleton';
 
 interface IState {
-
+    bottom: number
 }
 
 interface IProps {
-
+    setPage: any,
+    data: any
 }
 
 export default class ProfilePage extends React.Component<IProps, IState> {
+    tripRenderArray: any = []
 
     constructor(props: IProps) {
         super(props)
-
+        for(var trip of this.props.data.trips) {
+            this.tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress}/>)
+            this.tripRenderArray.push(<View style={{height:10}} />)
+        }
+        this.state = {
+            bottom: this.tripRenderArray.length*60
+        }
         this.fetchProfileData()
     }
 
@@ -34,44 +44,30 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         })
     }
 
-    onTripPress = () => {
-
+    onTripPress = (tripModal: TripModal) => {
+        this.props.setPage(Page[Page.STEPEXPLORE], tripModal)
     }
 
     render() {
-        var visitedCountryList = Array<string>()
-        visitedCountryList.push("US")
-        visitedCountryList.push("IN")
 
         var activities = Array<string>()
         activities.push("Hiking")
         activities.push("Parasailing")
         activities.push("Cultural Exchange")
 
-        var tripModalData: TripModal = new TripModal();
-        tripModalData.location = "Hyderabad";
-        tripModalData.temperature = 41;
-        tripModalData.daysOfTravel = 14;
-        tripModalData.distanceTravelled = 2340;
-        tripModalData.activities = activities;
-        tripModalData.startDate = "30 OCt 2018"
         return (
-            <View style={{width: '100%', height: '100%'}}>
-                <ScrollView>
+                <ScrollView style={{flex: 1}} 
+                    contentInset={{top: 0, bottom: this.state.bottom}}>
                     <ProfileComponent />
-                    <WorldMapColouredComponent visitedCountryList={visitedCountryList}/> 
-                    <View style={{flexDirection: 'row'}}>
-                        <StatsAsCardComponent text={"You travelled 21% of the world"}/>
-                        <StatsAsCardComponent text={"You've collected 36 flags"}/>
+                    <WorldMapColouredComponent visitedCountryList={ProfileModalInstance.countriesVisited}/> 
+                    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                        <StatsAsCardComponent text={"You travelled " + ProfileModalInstance.percentageWorldTravelled + "% of the world"}/>
+                        <View style={{width:10}}/>
+                        <StatsAsCardComponent text={"You've collected " + ProfileModalInstance.countriesVisited.length + " flags"}/>
                     </View>
-
-                    <View>
-                        <TripComponent 
-                            tripModal={tripModalData}
-                            onPress={this.onTripPress.bind(this)}/>
-                    </View>
+                    <View style={{height: 10}}/>
+                    {this.tripRenderArray}
                 </ScrollView>
-            </View>
         )
     }
 }

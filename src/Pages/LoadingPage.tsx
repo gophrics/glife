@@ -10,6 +10,7 @@ import { ClusterProcessor } from '../Utilities/ClusterProcessor';
 import { StepModal } from '../Modals/StepModal';
 import { TripModal } from '../Modals/TripModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
+import { ProfileModalInstance } from '../Modals/ProfileModalSingleton';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -18,13 +19,13 @@ interface Styles {
 
 var styles = StyleSheet.create<Styles>({
     spinnerContainer: {
-        flex: 1,
-        marginLeft: 80,
-        marginTop: 200,
+        flex: 5,
+        alignSelf: 'center'
     },
     infoText: {
-        marginLeft: 80,
-        marginTop: 300
+        flex: 9,
+        padding: '20%',
+        alignSelf: 'center'
     }
 });
 
@@ -40,7 +41,9 @@ interface IState {
 export default class LoadingPage extends React.Component<IProps, IState> {
 
     dataToSendToNextPage: MapPhotoPageModal = new MapPhotoPageModal([]);
+    homesDataForClustering: {[key:number]: ClusterModal} = {}
 
+    retryCount = 20;
     constructor(props:any) {
         super(props);
         this.initialize();
@@ -48,7 +51,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View>
+            <View style={{width: '100%', justifyContent:'center', flex: 1}}>
                 <Text style={styles.infoText}>Going through your photo library</Text>
                 <View style={styles.spinnerContainer}>
                     <Spinner/>
@@ -76,7 +79,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             }
 
             // Expanding homes to timestamp
-            var homesDataForClustering: {[key:number]: ClusterModal} = {}
             var initialTimestamp = 0;
             var endTimestamp = 0;
             for(var data in this.props.homes) {
@@ -84,11 +86,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 if(Number.isNaN(endTimestamp)) //Current day
                     endTimestamp = Math.floor((new Date()).getTime()/8.64e7)
                 for(var i = initialTimestamp; i <= endTimestamp; i++) {
-                    homesDataForClustering[i] = this.props.homes[data]
+                    this.homesDataForClustering[i] = this.props.homes[data]
                 }
                 initialTimestamp = endTimestamp;
             }
-            var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
+            var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
 
             i = 0;
             for(var trip of trips) {
@@ -105,9 +107,46 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         });
     }
 
+    getLocation(latitude: number, longitude: number) {
+        if(this.retryCount == 0) return;
+        this.retryCount--
+        TravelUtils.getLocationFromCoordinates(latitude, longitude)
+        .then((res) => {
+            if(res.address) {
+                res = res.address.country
+                if(ProfileModalInstance.countriesVisited.indexOf(res) == -1) {
+                    ProfileModalInstance.countriesVisited.push(res);
+                }
+                ProfileModalInstance.percentageWorldTravelled = Math.floor((ProfileModalInstance.countriesVisited.length)*100/186)
+            } else {
+                this.getLocation(latitude, longitude)
+            }
+        })
+    }
+
     populateTripModalData = (steps: StepModal[], tripId: number) => {
         var tripResult : TripModal = new TripModal();
         var distanceTravelled = 0;
+
+        // Home to first step
+        distanceTravelled += ClusterProcessor.EarthDistance({
+            latitude: steps[0].meanLatitude,
+            longitude: steps[0].meanLongitude
+        } as ClusterModal,
+        {
+            latitude: this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)].latitude,
+            longitude: this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)].longitude
+        } as ClusterModal);
+
+        // Last step to back home
+        distanceTravelled += ClusterProcessor.EarthDistance({
+            latitude: steps[steps.length-1].meanLatitude,
+            longitude: steps[steps.length-1].meanLongitude
+        } as ClusterModal,
+        {
+            latitude: this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)].latitude,
+            longitude: this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)].longitude
+        } as ClusterModal)
 
         var i = 0;
         for(var step of steps) {
@@ -130,6 +169,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             distanceTravelled += ClusterProcessor.EarthDistance({latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude} as ClusterModal,
                                 {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal)
             i++;
+
+            this.getLocation(step.meanLatitude, step.meanLongitude)
         }
 
         tripResult.tripId = tripId;
@@ -137,13 +178,13 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         tripResult.distanceTravelled = Math.floor(distanceTravelled)
         tripResult.startDate = TravelUtils.getDateFromTimestamp(steps[0].startTimestamp);
         tripResult.endDate = TravelUtils.getDateFromTimestamp(steps[steps.length-1].endTimestamp);
-        TravelUtils.getLocationFromCoordinates(steps[0].meanLatitude, steps[0].meanLongitude).then((res) => {
-            tripResult.location = res
-        })
+        tripResult.location = {
+            latitude: steps[0].meanLatitude,
+            longitude: steps[0].meanLongitude,
+            latitudeDelta: 0,
+            longitudeDelta: 0
+        };
 
-        // console.log("TRIP")
-        console.log(tripResult)
-        // Populate remaining data of TripModal
         return tripResult;
     }
        

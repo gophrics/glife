@@ -25,6 +25,9 @@ export class ClusterProcessor {
         
         if(trip.length == 0) throw "Recieved empty tripcluster";
 
+        trip.sort((a, b) => {
+            return a.timestamp-b.timestamp;
+        })
         var stepResult: StepModal[] = []
 
         var firstTimestamp = trip[0].timestamp;
@@ -72,6 +75,8 @@ export class ClusterProcessor {
 
             stepResult.push(_step)
         }
+        console.log("Step clustering result")
+        console.log(stepResult)
 
         return stepResult ;
     }
@@ -90,24 +95,15 @@ export class ClusterProcessor {
             if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100) {
                 trip.push(data)
             } else if(trip.length > 0){
+                // If more than 10 photos were taken for the trip
                 if(trip.length > 10)
                     trips.push(trip)
                 trip = []
             }
         }
 
-        // If more than 10 photos were taken for the trip
         if(trip.length > 0) trips.push(trip)
         return trips;
-    }
-
-    static EarthAndTimeDistanceCombined(p: ClusterModal, q: ClusterModal) {
-        var earthDistance = ClusterProcessor.EarthDistance(p, q);
-        var timeDistance = ClusterProcessor.TimeDistance(p, q);
-
-        var distance = Math.sqrt(earthDistance*earthDistance + timeDistance*timeDistance);
-
-        return distance;
     }
 
     static TimeDistance = (p: ClusterModal, q: ClusterModal) => {

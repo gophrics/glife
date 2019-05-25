@@ -19,7 +19,9 @@ export class StatsAsCardComponent extends React.Component<IProps, IState> {
     render() {
         return (
             <View style={styles.card}>
+                <View style={{height: 40}}/>
                 <Text style={styles.text}>{this.props.text}</Text>
+                <View style={{height: 40}}/>
             </View>
         )
     }
@@ -30,11 +32,14 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         borderWidth: 0.5,
         borderColor: '#d6d7da',
-        width: '45%'
+        width: '45%',
+        height: '100%',
+        alignSelf: 'center'
     },
 
     text: {
         fontSize: 18,
-        textAlign: 'right'
+        textAlign: 'right',
+        padding: 10
     }
 });

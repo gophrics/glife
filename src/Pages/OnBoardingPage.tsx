@@ -145,12 +145,13 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         for(var i = 0; i < this.state.numberOfHomes; i++) {  
             calenderInputs.push(
                 <TouchableOpacity key={i} onPress={() => this.onCalenderClick(i-1)}>
-                    <Image style={{width: 30, height: 30}} source={require('../Assets/Poke-Ball-256.png')}/>
+                    <Image style={{width: 30, height: 30}} source={require('../Assets/icons8-calendar-52.png')}/>
                 </TouchableOpacity>
             )
         }
 
         return (
+            <View>
             <View style={{flexDirection:'row'}} >
                 <DateTimePicker
                     isVisible={this.state.showPicker}
@@ -163,17 +164,19 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                     }
                     <Button title={"+"} onPress={this.onButtonClick.bind(this)} />
                 </View>
-                <View style={{flexDirection: 'column', flex: 9}}>
+                <View style={{flex: 8}}>
                     {
                         textInputs
                     }
                 </View>
-                <View style={{flex: 1, alignSelf: 'center'}}>
+                <View style={{flex: 1, paddingLeft: 10, alignSelf: 'flex-start'}}>
                     {
                         calenderInputs
                     }
                 </View>
-                <Button title="Done" onPress={this.onNextButtonClick} />
+            </View>
+
+            <Button title="Done" onPress={this.onNextButtonClick} />
             </View>
         )
     }

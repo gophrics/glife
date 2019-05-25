@@ -1,9 +1,10 @@
 import { StepModal } from "./StepModal";
+import Region from "./Region";
 
 export class TripModal {
     tripId: number
     tripAsSteps: StepModal[]
-    location : string
+    location : Region
     temperature : number
     daysOfTravel: number
     distanceTravelled : number
@@ -14,7 +15,7 @@ export class TripModal {
     constructor() {
         this.tripId = 0;
         this.tripAsSteps = [];
-        this.location = ""
+        this.location = {} as Region
         this.temperature = 0
         this.daysOfTravel = 0
         this.distanceTravelled = 0

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { View, AsyncStorage, SafeAreaView } from 'react-native';
 // import RNBackgroundService from 'react-native-background-service';
 import {Page} from './Modals/ApplicationEnums';
 import TripExplorePage from './Pages/TripExplorePage';
@@ -32,35 +32,6 @@ export default class App extends React.Component<IProps, IState> {
       page: Page[Page.ONBOARDING],
       pageDataPipe: {} 
     };
-
-    /*
-    AsyncStorage.getItem('lastPage')
-      .then((item) => {
-          if(item) {
-            AsyncStorage.getItem('lastPageDataPipe')
-              .then((item2) => {
-                if(item2) {
-                  this.setState({
-                    page: item,
-                    pageDataPipe: JSON.parse(item2)
-                  });
-                } else {
-                  this.setState({
-                    page: Page[Page.LOADING]
-                  });
-                }
-              });
-          } else {
-            this.setState({
-              page: Page[Page.LOADING]
-            });
-          }
-      });
-      */
-
-
-    // RNBackgroundService.RNBackgroundServiceLocationService.requestPermission();
-    // RNBackgroundService.RNBackgroundServiceLocationService.startLocationTracking();
   }
 
   setPage(page: string, data: any) {
@@ -82,22 +53,24 @@ export default class App extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <View style={{flexDirection: 'column', height: "100%"}}>
-        <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
-        {
-          this.state.page == Page[Page.LOADING] ?
-            <LoadingPage onDone={(data) => this.setPage(Page[Page.TRIPEXPLORE], data)} homes={this.state.pageDataPipe[Page[Page.LOADING]]}/>
-          : this.state.page == Page[Page.PROFILE] ? 
-            <ProfilePage />
-          : this.state.page == Page[Page.TRIPEXPLORE] ? 
-            <TripExplorePage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.TRIPEXPLORE]]} />
-          : this.state.page == Page[Page.ONBOARDING] ? 
-            <OnBoardingPage onDone={(data) => this.setPage(Page[Page.LOADING], data)}/>
-          : this.state.page == Page[Page.STEPEXPLORE] ?
-            <StepExplorePage data={this.state.pageDataPipe[Page[Page.STEPEXPLORE]]}/>
-          : <View />
-        }
-      </View>
+      <SafeAreaView style={{flex:1, backgroundColor:'#454545' }} >
+        <View style={{flexDirection: 'column', height: "100%"}}>
+          <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
+          {
+            this.state.page == Page[Page.LOADING] ?
+              <LoadingPage onDone={(data) => this.setPage(Page[Page.PROFILE], data)} homes={this.state.pageDataPipe[Page[Page.LOADING]]}/>
+            : this.state.page == Page[Page.PROFILE] ? 
+              <ProfilePage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.PROFILE]]} />
+            : this.state.page == Page[Page.TRIPEXPLORE] ? 
+              <TripExplorePage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.PROFILE]]} />
+            : this.state.page == Page[Page.ONBOARDING] ? 
+              <OnBoardingPage onDone={(data) => this.setPage(Page[Page.LOADING], data)}/>
+            : this.state.page == Page[Page.STEPEXPLORE] ?
+              <StepExplorePage data={this.state.pageDataPipe[Page[Page.STEPEXPLORE]]}/>
+            : <View />
+          }
+        </View>
+      </SafeAreaView>
     )
   }
 }

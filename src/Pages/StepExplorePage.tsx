@@ -40,7 +40,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             
             latitudeSum += step.meanLatitude
             longitudeSum += step.meanLongitude
-            this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp-tripStartTimestamp)/86400)} distanceTravelled={distanceTravelled} onPress={(step: StepModal) => this.onStepClick(step)} />)
+            this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp-tripStartTimestamp)/8.64e7)} distanceTravelled={distanceTravelled} onPress={(step: StepModal) => this.onStepClick(step)} />)
             markers.push.apply(markers, step.markers)
             imageUriData.push.apply(imageUriData, step.imageUris)
             key++;
@@ -91,7 +91,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 }
             </MapView>
             {
-            <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
+            <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: '#454545', overflow:'hidden' }}>
                 { this.travelCardArray }
             </ScrollView>
             }

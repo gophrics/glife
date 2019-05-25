@@ -28,12 +28,9 @@ export class TopNavigator extends React.Component<IProps, IState> {
     render() {
 
         return (
-            <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity onPress={this.onProfilePress.bind(this)}>
-                    <Image style={{width: 60, height: 60}} source={require('../Assets/Poke-Ball-256.png')}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.onMapPress.bind(this, 2)}>
-                    <Image style={{width: 60, height: 60}} source={require('../Assets/Premier-Ball-256.png')}/>
+            <View style={{ width: '100%'}}>
+                <TouchableOpacity style={{alignSelf: 'center'}} onPress={this.onProfilePress.bind(this)}>
+                    <Image style={{width: 60, height: 60, alignSelf: 'center'}} source={require('../Assets/logo.png')}/>
                 </TouchableOpacity>
             </View>
         )

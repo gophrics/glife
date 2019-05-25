@@ -60,7 +60,7 @@ export default class TripExplorePage extends React.Component<IProps, IState> {
         if(this.props.data == undefined) return(<View />)
         
         return (
-            <View>
+            <View style={{backgroundColor: '#454545'}}>
                 {/*
                 <MapView style={{width: '100%', height: '70%'}} region={this.state.triangulatedLocation} >
                     {
@@ -79,7 +79,7 @@ export default class TripExplorePage extends React.Component<IProps, IState> {
                 </MapView>
                 */}
                 
-                <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: 'skyblue' }}>
+                <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: '#808080', overflow:'hidden' }}>
                     { this.tripRenderArray  }
                 </ScrollView>
             </View>

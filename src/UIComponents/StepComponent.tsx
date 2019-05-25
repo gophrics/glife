@@ -19,22 +19,33 @@ interface IState {
 
 export class StepComponent extends React.Component<IProps, IState> {
 
+    retryCount = 20;
     constructor(props: IProps) {
         super(props)
         this.state = {
             location: "Loading..",
             temperature: 0
         }
-        TravelUtils.getLocationFromCoordinates(this.props.modal.meanLatitude, this.props.modal.meanLongitude)
-        .then((res: string) => {
-            if(res.includes("/")) res=res.split('/')[1]
-            this.setState({
-                location: res
-            })
-        })
         var temperature = TravelUtils.getTemperatureFromLocationAndTime(this.props.modal.meanLatitude, this.props.modal.meanLongitude, this.props.modal.endTimestamp)
         this.setState({
             temperature: temperature
+        })
+    }
+
+    getLocation() {
+        if(this.retryCount <= 0) return;
+        this.retryCount--
+        TravelUtils.getLocationFromCoordinates(this.props.modal.meanLatitude, this.props.modal.meanLongitude)
+        .then((res: any) => {
+            if(res.address) {
+                res = res.address.state_district
+                if(res.includes("/")) res=res.split('/')[1]
+                this.setState({
+                    location: res
+                })
+            } else {
+                this.getLocation();
+            }
         })
     }
 

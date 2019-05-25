@@ -21,13 +21,11 @@ export class ClusterProcessor {
     // homes; key - timestamp by date, value - lat, long
     // homes expanded to match clusterData size
 
+    // Assumes trip: ClusterModal[][] is sorted
     static RunStepClustering = (trip: ClusterModal[]) : StepModal[] => {
         
         if(trip.length == 0) throw "Recieved empty tripcluster";
 
-        trip.sort((a, b) => {
-            return a.timestamp-b.timestamp;
-        })
         var stepResult: StepModal[] = []
 
         var firstTimestamp = trip[0].timestamp;
@@ -75,10 +73,8 @@ export class ClusterProcessor {
 
             stepResult.push(_step)
         }
-        console.log("Step clustering result")
-        console.log(stepResult)
 
-        return stepResult ;
+        return stepResult;
     }
 
 

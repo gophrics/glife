@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, AsyncStorage, ImageProgressEventDataIOS } from 'react-native';
 import Spinner from '../UIComponents/Spinner';
-import {Page, months} from '../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
 import ImageDataModal from '../Modals/ImageDataModal';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
@@ -87,20 +86,24 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     endTimestamp = Math.floor((new Date()).getTime()/8.64e7)
                 for(var i = initialTimestamp; i <= endTimestamp; i++) {
                     this.homesDataForClustering[i] = this.props.homes[data]
+                    // For some reason this is not working. To be checked later
+                    this.homesDataForClustering[i].timestamp = i*8.64e7
                 }
                 initialTimestamp = endTimestamp;
             }
+
             var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
 
             i = 0;
             for(var trip of trips) {
                 trip.sort((a: ClusterModal, b: ClusterModal) => {
-                    if(a.timestamp < b.timestamp) return 0
-                    return 1
+                    return a.timestamp-b.timestamp
                 });
+                
                 var _trip: TripModal = this.populateTripModalData(ClusterProcessor.RunStepClustering(trip), i)
                 this.dataToSendToNextPage.trips.push(_trip);
                 i++;
+                console.log(_trip)
             }
 
             this.props.onDone(this.dataToSendToNextPage);
@@ -129,6 +132,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var distanceTravelled = 0;
 
         // Home to first step
+        /*
         distanceTravelled += ClusterProcessor.EarthDistance({
             latitude: steps[0].meanLatitude,
             longitude: steps[0].meanLongitude
@@ -147,9 +151,20 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             latitude: this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)].latitude,
             longitude: this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)].longitude
         } as ClusterModal)
+        */
+
+        var homeStep = this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1]
+        homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
+        var _stepModal = new StepModal()
+        _stepModal.meanLatitude = homeStep.latitude
+        _stepModal.meanLongitude = homeStep.longitude
+        _stepModal.startTimestamp = homeStep.timestamp
+        _stepModal.endTimestamp = homeStep.timestamp
+        tripResult.tripAsSteps.push(_stepModal)
 
         var i = 0;
         for(var step of steps) {
+            /*
             var initialDate = new Date(steps[0].startTimestamp);
             var finalDate = new Date(steps[steps.length-1].endTimestamp);
     
@@ -163,6 +178,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             }
 
             step.timelineData = timelineData;
+            */
             tripResult.tripAsSteps.push(step);
 
             if(i > 0)
@@ -172,6 +188,15 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
             this.getLocation(step.meanLatitude, step.meanLongitude)
         }
+
+        homeStep = this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1]
+        homeStep.timestamp = Math.floor(steps[steps.length-1].endTimestamp + 8.64e7)
+        var _stepModal = new StepModal()
+        _stepModal.meanLatitude = homeStep.latitude
+        _stepModal.meanLongitude = homeStep.longitude
+        _stepModal.startTimestamp = homeStep.timestamp
+        _stepModal.endTimestamp = homeStep.timestamp
+        tripResult.tripAsSteps.push(_stepModal)
 
         tripResult.tripId = tripId;
         tripResult.daysOfTravel = Math.floor(Math.abs(steps[steps.length-1].endTimestamp - steps[0].startTimestamp)/8.64e7)

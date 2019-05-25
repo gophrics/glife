@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, ScrollView, View, Image, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import { StepComponent } from '../UIComponents/StepComponent';
 import { TripModal } from '../Modals/TripModal';
 import { StepModal } from '../Modals/StepModal';
@@ -10,8 +10,9 @@ import Region from '../Modals/Region';
 
 interface IState {
     markers: Region[],
-    triangulatedLocation: Region
-    imageUriData: string[]
+    triangulatedLocation: Region,
+    imageUriData: string[],
+    polylineArr: any[]
 }
   
 interface IProps {
@@ -33,6 +34,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         var key = 0;
         var tripStartTimestamp = trip.tripAsSteps[0].startTimestamp;
         var distanceTravelled = 0
+        var polylineArr = []
         for(var step of trip.tripAsSteps) {
             if(key > 0)
             distanceTravelled += Math.floor(ClusterProcessor.EarthDistance({latitude: trip.tripAsSteps[key].meanLatitude, longitude: trip.tripAsSteps[key].meanLongitude} as ClusterModal,
@@ -43,6 +45,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp-tripStartTimestamp)/8.64e7)} distanceTravelled={distanceTravelled} onPress={(step: StepModal) => this.onStepClick(step)} />)
             markers.push.apply(markers, step.markers)
             imageUriData.push.apply(imageUriData, step.imageUris)
+            polylineArr.push({latitude: step.meanLatitude, longitude: step.meanLongitude})
             key++;
         }
 
@@ -50,7 +53,8 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         this.state = {
             triangulatedLocation: triangulatedLocation,
             markers: markers,
-            imageUriData: imageUriData
+            imageUriData: imageUriData,
+            polylineArr: polylineArr
         }
     }
 
@@ -71,7 +75,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     
     render() {
         if(this.props.data == undefined) return(<View />)
-        
+        var polylineArr = [{latitude: -12.2323, longitude: 73.2232}, {latitude: 15.2323, longitude: 73.2232}, {latitude: -3.2323, longitude: 122.2232}]
         return (
             <View>
             
@@ -89,6 +93,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         </Marker>
                     ))
                 }
+                <Polyline coordinates={this.state.polylineArr} strokeWidth={2} geodesic={true}/>
             </MapView>
             {
             <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: '#454545', overflow:'hidden' }}>

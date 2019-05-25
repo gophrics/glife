@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, TouchableOpacity, Text, Button } from "react-native";
 import { StepModal } from '../Modals/StepModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
-import { templateElement } from '@babel/types';
 
 interface IProps {
     modal: StepModal

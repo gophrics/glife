@@ -22,7 +22,7 @@ interface IProps {
 export default class StepExplorePage extends React.Component<IProps, IState> {
 
     travelCardArray: any = []
-
+    mapView: any = "";
     constructor(props: any) {
         super(props);
         //Populate travelcard Array for each step
@@ -59,27 +59,22 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     }
 
     onStepClick = (step: StepModal) => {
-        console.log("Step clicked")
-        console.log(step)
-        this.setState({
-            triangulatedLocation: {
-                latitude: step.meanLatitude,
-                longitude: step.meanLongitude,
-                latitudeDelta: 5,
-                longitudeDelta: 5
-            } as Region,
-            imageUriData: step.imageUris,
-            markers: step.markers
-        });
+        this.mapView.animateToRegion({
+            latitude: step.meanLatitude,
+            longitude: step.meanLongitude,
+            latitudeDelta: .3,
+            longitudeDelta: .3
+        } as Region, 1000)
     }
     
     render() {
         if(this.props.data == undefined) return(<View />)
-        var polylineArr = [{latitude: -12.2323, longitude: 73.2232}, {latitude: 15.2323, longitude: 73.2232}, {latitude: -3.2323, longitude: 122.2232}]
         return (
             <View>
             
-            <MapView style={{width: '100%', height: '70%'}} region={this.state.triangulatedLocation} >
+            <MapView style={{width: '100%', height: '70%'}} 
+                ref={ref => this.mapView = ref}
+                region={this.state.triangulatedLocation} >
                 {
                     this.state.markers.map((marker, index) => (
                         <Marker
@@ -93,7 +88,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         </Marker>
                     ))
                 }
-                <Polyline coordinates={this.state.polylineArr} strokeWidth={2} geodesic={true}/>
+                <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true}/>
             </MapView>
             {
             <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: '#454545', overflow:'hidden' }}>

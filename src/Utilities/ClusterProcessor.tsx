@@ -29,16 +29,24 @@ export class ClusterProcessor {
         var stepResult: StepModal[] = []
 
         var firstTimestamp = trip[0].timestamp;
+        var firstItem = trip[0]
         var _stepCluster: ClusterModal[][] = []
         _stepCluster.push([])
         var _it = 0
 
         for(var item of trip) {
-            if(item.timestamp <= firstTimestamp + 8.64e7)
-                _stepCluster[_it].push(item)
-            else {
-                firstTimestamp += 8.64e7
-                _stepCluster.push([])
+            if(ClusterProcessor.EarthDistance(item, firstItem) < 100) {
+                if(item.timestamp <= firstTimestamp + 8.64e7)
+                    _stepCluster[_it].push(item)
+                else {
+                    firstTimestamp = item.timestamp
+                    _stepCluster.push([item])
+                    _it++;
+                }
+            } else {
+                firstTimestamp = item.timestamp
+                firstItem = item;
+                _stepCluster.push([item])
                 _it++;
             }
         }
@@ -87,8 +95,11 @@ export class ClusterProcessor {
             return a.timestamp-b.timestamp
         })
         
+        var prevData: ClusterModal = clusterData[0];
         for(var data of clusterData) {
-            if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100) {
+            if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100
+            && (ClusterProcessor.TimeDistance(data, prevData) < 8.64e7*10)) {
+                // Noise filtering, if two pictures are taken 10 days apart, something a'nt right
                 trip.push(data)
             } else if(trip.length > 0){
                 // If more than 10 photos were taken for the trip
@@ -96,6 +107,7 @@ export class ClusterProcessor {
                     trips.push(trip)
                 trip = []
             }
+            prevData = data
         }
 
         if(trip.length > 0) trips.push(trip)
@@ -104,7 +116,7 @@ export class ClusterProcessor {
 
     static TimeDistance = (p: ClusterModal, q: ClusterModal) => {
         if(p == undefined || q == undefined) return 0; // TODO: Need to find out this case
-        return p.timestamp - q.timestamp
+        return Math.abs(p.timestamp - q.timestamp)
     }
 
     static EarthDistance = (p: ClusterModal, q: ClusterModal) => {

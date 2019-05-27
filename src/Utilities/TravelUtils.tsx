@@ -14,6 +14,18 @@ export class TravelUtils {
         })
     }
 
+    static getCoordinatesFromLocation(location: string): Promise<any> {
+        return fetch('https://us1.locationiq.com/v1/search.php?key=daecd8873d0c8e&q=' + location + '&format=json', {
+            method: 'GET'
+        })
+        .then((res) => {
+            return res.json()
+        }).then((res) => {
+            console.log(res)
+            return res
+        })
+    }   
+
     static getDateFromTimestamp(timestamp: number): string {
         var date = new Date(timestamp)
         return date.getDay() + " " + months[date.getMonth()] + " " + date.getFullYear()

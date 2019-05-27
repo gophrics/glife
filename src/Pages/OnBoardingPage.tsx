@@ -15,8 +15,7 @@ interface IState {
 
 export class OnBoardingPage extends React.Component<IProps, IState> {
 
-    homes: { [key: number]: string } = {};
-    timestamps: { [key: number]: number } = {}
+    homes: { name: string, timestamp: number }[] = [];
 
     cursor: number = 0
 
@@ -49,10 +48,12 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onPickerConfirm = (date: string) => {
+        if(this.homes.length <= this.cursor) this.homes.push({name: "", timestamp: 0})
+
         var dates = this.state.dates;
         var dateObject: Date = new Date(date)
         dates[this.cursor] = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
-        this.timestamps[this.cursor] = dateObject.getTime();
+        this.homes[this.cursor].timestamp = dateObject.getTime();
         this.setState({
             showPicker: false,
             dates: dates
@@ -76,13 +77,12 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     onLocationTextChange = (pos: number, text: string) => {
         console.log(pos);
         this.cursor = pos
-        this.homes[pos] = text
-        console.log(this.homes);
+        if(this.homes.length <= this.cursor) this.homes.push({name: "", timestamp: NaN})
+        this.homes[pos].name = text
     }
 
     onNextButtonClick = () => {
         // TODO: Fetch using API, the geocodes
-        var homesClusterModal: ClusterModal[] = [];
 
         /*
         homesClusterModal.push({
@@ -90,7 +90,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             longitude: -122.438588,
             timestamp: NaN//this.timestamps[0]
         } as ClusterModal)
-        */
+        
 
         homesClusterModal.push({
             latitude: 37.763804,
@@ -115,8 +115,9 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             longitude: 78.370166,
             timestamp: NaN//this.timestamps[2]
         } as ClusterModal)
+        */
 
-        this.props.onDone(homesClusterModal)
+        this.props.onDone(this.homes)
     }
 
     render() {

@@ -1,28 +1,37 @@
 import * as React from 'react';
-import { StyleSheet, ScrollView, View, Image, Text } from 'react-native';
+import { Modal, Animated,
+    StyleSheet, 
+    Dimensions,
+    ScrollView, View, Image, Text, TouchableHighlight, SafeAreaView } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { StepComponent } from '../UIComponents/StepComponent';
 import { TripModal } from '../Modals/TripModal';
 import { StepModal } from '../Modals/StepModal';
 import { ClusterModal } from '../Modals/ClusterModal';
-import { ClusterProcessor }  from '../Utilities/ClusterProcessor';
+import { ClusterProcessor } from '../Utilities/ClusterProcessor';
 import Region from '../Modals/Region';
 
 interface IState {
     markers: Region[],
     triangulatedLocation: Region,
     imageUriData: string[],
-    polylineArr: any[]
+    polylineArr: any[],
+    photoModalVisible: boolean,
+    lastStepClicked: StepModal
 }
-  
+
 interface IProps {
     data: TripModal
 }
+
+const deviceWidth = Dimensions.get('window').width
 
 export default class StepExplorePage extends React.Component<IProps, IState> {
 
     travelCardArray: any = []
     mapView: any = "";
+    animVal = new Animated.Value(0)
+
     constructor(props: any) {
         super(props);
         //Populate travelcard Array for each step
@@ -35,30 +44,35 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         var tripStartTimestamp = trip.tripAsSteps[0].startTimestamp;
         var distanceTravelled = 0
         var polylineArr = []
-        for(var step of trip.tripAsSteps) {
-            if(key > 0)
-            distanceTravelled += Math.floor(ClusterProcessor.EarthDistance({latitude: trip.tripAsSteps[key].meanLatitude, longitude: trip.tripAsSteps[key].meanLongitude} as ClusterModal,
-                                {latitude: trip.tripAsSteps[key-1].meanLatitude, longitude: trip.tripAsSteps[key-1].meanLongitude} as ClusterModal))
-            
+        for (var step of trip.tripAsSteps) {
+            if (key > 0)
+                distanceTravelled += Math.floor(ClusterProcessor.EarthDistance({ latitude: trip.tripAsSteps[key].meanLatitude, longitude: trip.tripAsSteps[key].meanLongitude } as ClusterModal,
+                    { latitude: trip.tripAsSteps[key - 1].meanLatitude, longitude: trip.tripAsSteps[key - 1].meanLongitude } as ClusterModal))
+
             latitudeSum += step.meanLatitude
             longitudeSum += step.meanLongitude
-            this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp-tripStartTimestamp)/8.64e7)} distanceTravelled={distanceTravelled} onPress={(step: StepModal) => this.onStepClick(step)} />)
+            this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={distanceTravelled} onPress={(step: StepModal) => this.onStepClick(step)} />)
             markers.push.apply(markers, step.markers)
             imageUriData.push.apply(imageUriData, step.imageUris)
-            polylineArr.push({latitude: step.meanLatitude, longitude: step.meanLongitude})
+            polylineArr.push({ latitude: step.meanLatitude, longitude: step.meanLongitude })
             key++;
         }
 
-        var triangulatedLocation = new Region(latitudeSum/trip.tripAsSteps.length, longitudeSum/trip.tripAsSteps.length, 0, 0)
+        var triangulatedLocation = new Region(latitudeSum / trip.tripAsSteps.length, longitudeSum / trip.tripAsSteps.length, 0, 0)
         this.state = {
             triangulatedLocation: triangulatedLocation,
             markers: markers,
             imageUriData: imageUriData,
-            polylineArr: polylineArr
+            polylineArr: polylineArr,
+            photoModalVisible: false,
+            lastStepClicked: new StepModal()
         }
     }
 
     onStepClick = (step: StepModal) => {
+        this.setState({
+            lastStepClicked : step
+        });
         this.mapView.animateToRegion({
             latitude: step.meanLatitude,
             longitude: step.meanLongitude,
@@ -66,64 +80,130 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             longitudeDelta: .3
         } as Region, 1000)
     }
-    
+
+    onMarkerPress = (e: any) => {
+        console.log(e.nativeEvent)
+        this.setState({
+            triangulatedLocation: {
+                latitude: this.state.lastStepClicked.meanLatitude,
+                longitude: this.state.lastStepClicked.meanLongitude,
+                latitudeDelta: .3,
+                longitudeDelta: .3
+            } as Region,
+            photoModalVisible: true
+        })
+    }
+
     render() {
-        if(this.props.data == undefined) return(<View />)
+        if (this.props.data == undefined) return (<View />)
+        this.state.lastStepClicked.imageUris.map((imageUri, index) => (
+            console.log(imageUri)
+        ))
         return (
             <View>
-            
-            <MapView style={{width: '100%', height: '70%'}} 
-                ref={ref => this.mapView = ref}
-                region={this.state.triangulatedLocation} >
-                {
-                    this.state.markers.map((marker, index) => (
-                        <Marker
-                            key={index}
-                            coordinate={marker}
-                            style={styles.imageBox}
+                <View>
+                    <MapView style={{ width: '100%', height: '70%' }}
+                        ref={ref => this.mapView = ref}
+                        region={this.state.triangulatedLocation}
+                    >
+                        {
+                            this.state.markers.map((marker, index) => (
+                                <Marker
+                                    key={index}
+                                    coordinate={marker}
+                                    style={styles.imageBox}
+                                    onPress={(e) => this.onMarkerPress(e)}
+                                >
+                                    <View style={styles.imageBox}>
+                                        <Image style={styles.imageBox} source={{ uri: this.state.imageUriData[index] }}></Image>
+                                    </View>
+                                </Marker>
+                            ))
+                        }
+                        <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
+                    </MapView>
+                    {
+                        <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: '#454545', overflow: 'hidden' }}>
+                            {this.travelCardArray}
+                        </ScrollView>
+                    }
+                </View>
+                <Modal
+                    animationType='fade'
+                    visible={this.state.photoModalVisible}
+                    transparent={true}>
+
+                    <SafeAreaView style={{ margin: 30 }}>
+                        <View style={{
+                            backgroundColor: '#ffffffff'
+                        }}>
+                        <ScrollView horizontal={true} //scrolling left to right instead of top to bottom
+                            showsHorizontalScrollIndicator={false} //hides native scrollbar
+                            scrollEventThrottle={10} //how often we update the position of the indicator bar
+                            pagingEnabled={true} //scrolls from one image to the next, instead of allowing any value inbetween
+                            onScroll={
+                                Animated.event(
+                                  [{ nativeEvent: { contentOffset: { x: this.animVal } } }]
+                                )
+                              }
+                            style={{aspectRatio: 1}}
+                            snapToAlignment='center'
+                            snapToInterval={deviceWidth-60}
+                            decelerationRate={0}
                         >
-                            <View style={styles.imageBox}>
-                            <Image style={styles.imageBox} source={{uri:this.state.imageUriData[index]}}></Image>
-                            </View>
-                        </Marker>
-                    ))
-                }
-                <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true}/>
-            </MapView>
-            {
-            <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width:'100%', borderWidth: 1, backgroundColor: '#454545', overflow:'hidden' }}>
-                { this.travelCardArray }
-            </ScrollView>
-            }
+                        
+                        {
+                            this.state.lastStepClicked.imageUris.map((imageUri, index) => (
+                                <View style={{width: deviceWidth-60, height: deviceWidth-60, alignContent:'center'}} key={index}>
+                                    <Image
+                                        resizeMode='contain'  
+                                        style={{width: deviceWidth-60, height: deviceWidth-60}} source={{uri: imageUri}} 
+                                    />
+                                </View>
+                            ))
+                        }
+
+                        </ScrollView>
+                            <TouchableHighlight
+                                onPress={() => {
+                                    this.setState({
+                                        photoModalVisible: false
+                                    })
+                                }}>
+                                <Text>Hide Modal</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </SafeAreaView>
+                </Modal>
             </View>
         );
-    
+
     }
 }
 
 const styles = StyleSheet.create({
     markerWrap: {
-      alignItems: "center",
-      justifyContent: "center",
+        alignItems: "center",
+        justifyContent: "center",
     },
     marker: {
-      width: 8,
-      height: 8,
-      borderRadius: 4,
-      backgroundColor: "rgba(130,4,150, 0.9)",
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: "rgba(130,4,150, 0.9)",
     },
     ring: {
-      width: 24,
-      height: 24,
-      borderRadius: 12,
-      backgroundColor: "rgba(130,4,150, 0.3)",
-      position: "absolute",
-      borderWidth: 1,
-      borderColor: "rgba(130,4,150, 0.5)",
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: "rgba(130,4,150, 0.3)",
+        position: "absolute",
+        borderWidth: 1,
+        borderColor: "rgba(130,4,150, 0.5)",
     },
     imageBox: {
-      width: 30,
-      height: 30,
-      borderWidth: 1
+        width: 50,
+        height: 50,
+        borderWidth: 1
     }
 });

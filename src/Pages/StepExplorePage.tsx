@@ -133,7 +133,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                     visible={this.state.photoModalVisible}
                     transparent={true}>
 
-                    <SafeAreaView style={{ margin: 30 }}>
+                    <SafeAreaView style={{ margin: 30, flex: 1, alignContent:'center', justifyContent: 'center' }}>
                         <View style={{
                             backgroundColor: '#ffffffff'
                         }}>
@@ -141,11 +141,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                             showsHorizontalScrollIndicator={false} //hides native scrollbar
                             scrollEventThrottle={10} //how often we update the position of the indicator bar
                             pagingEnabled={true} //scrolls from one image to the next, instead of allowing any value inbetween
-                            onScroll={
-                                Animated.event(
-                                  [{ nativeEvent: { contentOffset: { x: this.animVal } } }]
-                                )
-                              }
                             style={{aspectRatio: 1}}
                             snapToAlignment='center'
                             snapToInterval={deviceWidth-60}
@@ -172,6 +167,10 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                 }}>
                                 <Text>Hide Modal</Text>
                             </TouchableHighlight>
+                        </View>
+
+                        <View style={{height: '30%', backgroundColor:'#ffffffff'}}>
+                            <Text>Comments go here </Text>    
                         </View>
                     </SafeAreaView>
                 </Modal>

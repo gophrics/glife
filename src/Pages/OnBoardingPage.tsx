@@ -15,8 +15,8 @@ interface IState {
 
 export class OnBoardingPage extends React.Component<IProps, IState> {
 
-    homes: {[key: number]: string} = {};
-    timestamps: {[key:number]: number} = {}
+    homes: { [key: number]: string } = {};
+    timestamps: { [key: number]: number } = {}
 
     cursor: number = 0
 
@@ -33,15 +33,15 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         console.log(this.cursor);
         console.log(this.homes);
         console.log(this.state.dates);
-        for(var i = 0; i <= this.cursor; i++) {
-            if(this.homes[i] == undefined || this.state.dates[i] == undefined) return false;
+        for (var i = 0; i <= this.cursor; i++) {
+            if (this.homes[i] == undefined || this.state.dates[i] == undefined) return false;
         }
         return true
     }
 
 
     onButtonClick = () => {
-        if(!this.validateData()) return;
+        if (!this.validateData()) return;
         this.setState({
             numberOfHomes: this.state.numberOfHomes + 1
         })
@@ -57,6 +57,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             showPicker: false,
             dates: dates
         })
+        this.onButtonClick();
     }
 
     onPickerCancel = () => {
@@ -90,9 +91,9 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             timestamp: NaN//this.timestamps[0]
         } as ClusterModal)
         */
-        
+
         homesClusterModal.push({
-            latitude:  37.763804,
+            latitude: 37.763804,
             longitude: -122.438588,
             timestamp: 1464030230000//this.timestamps[1]
         } as ClusterModal)
@@ -102,7 +103,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             longitude: 73.878204,
             timestamp: 1464036771000//this.timestamps[2]
         } as ClusterModal)
-        
+
         homesClusterModal.push({
             latitude: 12.902886,
             longitude: 77.675271,
@@ -114,69 +115,45 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             longitude: 78.370166,
             timestamp: NaN//this.timestamps[2]
         } as ClusterModal)
-        
+
         this.props.onDone(homesClusterModal)
     }
 
     render() {
-        if(this.state == null) return (<View />)
+        if (this.state == null) return (<View />)
 
-        var textInputs = []
-        for(var i = 0; i < this.state.numberOfHomes; i++) {
-            textInputs.push(
-                    <TextInput
-                        key={i}
-                        placeholder="Enter home city"
-                        onChangeText={(text) => this.onLocationTextChange(i-1, text)}
-                        style={{fontSize: 16, color:'white', borderWidth: 2, borderRadius: 10}}
-                        />)
-            textInputs.push(
-                <Text style={{color:'white'}}>{i == 0 ? "Long long ago" : this.state.dates[i-1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
-            )
-        }
-
-        var buttonInputs = []
-        for(var i = 0; i < this.state.numberOfHomes; i++) {
-            buttonInputs.push(<Text style={{alignSelf: 'center', color:'white'}}>=</Text>)
-            buttonInputs.push(<Text style={{alignSelf: 'center', color:'white'}}>=</Text>)
-        }
-
-        var calenderInputs = []
-        for(var i = 0; i < this.state.numberOfHomes; i++) {  
-            calenderInputs.push(
-                <TouchableOpacity key={i} onPress={() => this.onCalenderClick(i-1)}>
-                    <Image style={{width: 30, height: 30}} source={require('../Assets/icons8-calendar-52.png')}/>
-                </TouchableOpacity>
+        var inputs = []
+        for (var i = 0; i < this.state.numberOfHomes; i++) {
+            inputs.push(
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'column', width: '90%', alignContent: 'center', justifyContent: 'center' }}>
+                        <TextInput
+                            key={i}
+                            placeholder="Enter home city"
+                            onChangeText={(text) => this.onLocationTextChange(i - 1, text)}
+                            style={{ fontSize: 20, padding: 3, color: 'white', borderWidth: 2, borderRadius: 10 }}
+                        />
+                        <Text style={{ color: 'white', marginBottom: 20 }}>{i == 0 ? "Long long ago" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
+                    </View>
+                    <TouchableOpacity key={i} onPress={() => this.onCalenderClick(i - 1)}>
+                        <Image style={{ width: 30, height: 30 }} source={require('../Assets/icons8-calendar-52.png')} />
+                    </TouchableOpacity>
+                </View>
             )
         }
 
         return (
             <View>
-            <View style={{flexDirection:'row'}} >
+
                 <DateTimePicker
                     isVisible={this.state.showPicker}
                     onConfirm={this.onPickerConfirm.bind(this)}
                     onCancel={this.onPickerCancel.bind(this)}
                 />
-                <View style={{flex: 1, alignSelf: 'flex-end'}}>
-                    {
-                        buttonInputs
-                    }
-                    <Button title={"+"} onPress={this.onButtonClick.bind(this)} />
+                <View style={{ flexDirection: 'column' }} >
+                    {inputs}
                 </View>
-                <View style={{flex: 8}}>
-                    {
-                        textInputs
-                    }
-                </View>
-                <View style={{flex: 1, paddingLeft: 10, alignSelf: 'flex-start'}}>
-                    {
-                        calenderInputs
-                    }
-                </View>
-            </View>
-
-            <Button title="Done" onPress={this.onNextButtonClick} />
+                <Button title="Done" onPress={this.onNextButtonClick} />
             </View>
         )
     }

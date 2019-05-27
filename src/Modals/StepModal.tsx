@@ -9,6 +9,8 @@ export class StepModal {
     timelineData: string[]
     imageUris: string[]
     markers: Region[]
+    masterImageUri: string
+    masterMarker: Region
 
     constructor() {
         this.meanLatitude = 0;
@@ -18,5 +20,7 @@ export class StepModal {
         this.imageUris = []
         this.timelineData = [];
         this.markers = [];
+        this.masterImageUri = "";
+        this.masterMarker = {} as Region
     }
 }

@@ -35,8 +35,8 @@ export class ClusterProcessor {
         var _it = 0
 
         for(var item of trip) {
-            // If distance between two modals are less than 20 km
-            if(ClusterProcessor.EarthDistance(item, firstItem) < 20) {
+            // If distance between two modals are less than 10 km
+            if(ClusterProcessor.EarthDistance(item, firstItem) < 10) {
                 // We divide based on time
                 if(item.timestamp <= firstTimestamp + 8.64e7)
                     _stepCluster[_it].push(item)
@@ -81,6 +81,8 @@ export class ClusterProcessor {
             _step.startTimestamp = cluster[0].timestamp;
             _step.endTimestamp = cluster[cluster.length - 1].timestamp
             _step.imageUris = imageUris
+            _step.masterImageUri = imageUris[0];
+            _step.masterMarker = markers[0];
 
             stepResult.push(_step)
         }
@@ -101,7 +103,7 @@ export class ClusterProcessor {
         var prevData: ClusterModal = clusterData[0];
         for(var data of clusterData) {
             // If distance from home is more than 100 km
-            if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 100
+            if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 40
             // Noise filtering, if two pictures are taken 10 days apart, consider it a new trip
             && (ClusterProcessor.TimeDistance(data, prevData) < 8.64e7*10)) {
                 trip.push(data)

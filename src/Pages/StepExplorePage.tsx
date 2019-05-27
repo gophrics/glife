@@ -16,8 +16,7 @@ interface IState {
     triangulatedLocation: Region,
     imageUriData: string[],
     polylineArr: any[],
-    photoModalVisible: boolean,
-    lastStepClicked: StepModal
+    photoModalVisible: boolean
 }
 
 interface IProps {
@@ -30,7 +29,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
     travelCardArray: any = []
     mapView: any = "";
-    animVal = new Animated.Value(0)
+    lastStepClicked: StepModal = new StepModal()
 
     constructor(props: any) {
         super(props);
@@ -64,15 +63,15 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             markers: markers,
             imageUriData: imageUriData,
             polylineArr: polylineArr,
-            photoModalVisible: false,
-            lastStepClicked: new StepModal()
+            photoModalVisible: false
         }
     }
 
     onStepClick = (step: StepModal) => {
-        this.setState({
-            lastStepClicked : step
-        });
+        //this.setState({
+        //    lastStepClicked : step
+        //});
+        this.lastStepClicked = step
         this.mapView.animateToRegion({
             latitude: step.meanLatitude,
             longitude: step.meanLongitude,
@@ -81,24 +80,25 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         } as Region, 1000)
     }
 
-    onMarkerPress = (e: any) => {
-        console.log(e.nativeEvent)
+    onMarkerPress = (e: any, index: number) => {
+        if( this.props.data.tripAsSteps[index].meanLatitude != this.lastStepClicked.meanLatitude || 
+            this.props.data.tripAsSteps[index].meanLatitude != this.lastStepClicked.meanLongitude ) {
+                this.lastStepClicked = this.props.data.tripAsSteps[index]
+                this.mapView.animateToRegion({
+                    latitude: this.props.data.tripAsSteps[index].meanLatitude,
+                    longitude: this.props.data.tripAsSteps[index].meanLongitude,
+                    latitudeDelta: .3,
+                    longitudeDelta: .3
+                } as Region, 1000)
+            }
         this.setState({
-            triangulatedLocation: {
-                latitude: this.state.lastStepClicked.meanLatitude,
-                longitude: this.state.lastStepClicked.meanLongitude,
-                latitudeDelta: .3,
-                longitudeDelta: .3
-            } as Region,
+            triangulatedLocation: new Region(this.lastStepClicked.meanLatitude, this.lastStepClicked.meanLongitude, 0, 0),
             photoModalVisible: true
         })
     }
 
     render() {
         if (this.props.data == undefined) return (<View />)
-        this.state.lastStepClicked.imageUris.map((imageUri, index) => (
-            console.log(imageUri)
-        ))
         return (
             <View>
                 <View>
@@ -107,15 +107,15 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         region={this.state.triangulatedLocation}
                     >
                         {
-                            this.state.markers.map((marker, index) => (
+                            this.props.data.tripAsSteps.map((step, index) => (
                                 <Marker
                                     key={index}
-                                    coordinate={marker}
+                                    coordinate={step.masterMarker}
                                     style={styles.imageBox}
-                                    onPress={(e) => this.onMarkerPress(e)}
+                                    onPress={(e) => this.onMarkerPress(e, index)}
                                 >
                                     <View style={styles.imageBox}>
-                                        <Image style={styles.imageBox} source={{ uri: this.state.imageUriData[index] }}></Image>
+                                        <Image style={styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
                                     </View>
                                 </Marker>
                             ))
@@ -135,43 +135,49 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
                     <SafeAreaView style={{ margin: 30, flex: 1, alignContent:'center', justifyContent: 'center' }}>
                         <View style={{
-                            backgroundColor: '#ffffffff'
-                        }}>
-                        <ScrollView horizontal={true} //scrolling left to right instead of top to bottom
-                            showsHorizontalScrollIndicator={false} //hides native scrollbar
-                            scrollEventThrottle={10} //how often we update the position of the indicator bar
-                            pagingEnabled={true} //scrolls from one image to the next, instead of allowing any value inbetween
-                            style={{aspectRatio: 1}}
-                            snapToAlignment='center'
-                            snapToInterval={deviceWidth-60}
-                            decelerationRate={0}
-                        >
-                        
-                        {
-                            this.state.lastStepClicked.imageUris.map((imageUri, index) => (
-                                <View style={{width: deviceWidth-60, height: deviceWidth-60, alignContent:'center'}} key={index}>
-                                    <Image
-                                        resizeMode='contain'  
-                                        style={{width: deviceWidth-60, height: deviceWidth-60}} source={{uri: imageUri}} 
-                                    />
-                                </View>
-                            ))
-                        }
+                                backgroundColor: '#808080ff',
+                                borderRadius: 10
+                            }}> 
+                            <View>
 
-                        </ScrollView>
-                            <TouchableHighlight
-                                onPress={() => {
-                                    this.setState({
-                                        photoModalVisible: false
-                                    })
-                                }}>
-                                <Text>Hide Modal</Text>
-                            </TouchableHighlight>
+                                
+                                <TouchableHighlight
+                                        onPress={() => {
+                                            this.setState({
+                                                photoModalVisible: false
+                                            })
+                                        }}
+                                        style={{padding: 10}}>
+                                        <Text>X</Text>
+                                </TouchableHighlight>
+                                <ScrollView horizontal={true} //scrolling left to right instead of top to bottom
+                                    showsHorizontalScrollIndicator={false} //hides native scrollbar
+                                    scrollEventThrottle={10} //how often we update the position of the indicator bar
+                                    pagingEnabled={true} //scrolls from one image to the next, instead of allowing any value inbetween
+                                    style={{aspectRatio: 1}}
+                                    snapToAlignment='center'
+                                    snapToInterval={deviceWidth-60}
+                                    decelerationRate={0}
+                                >
+                                {
+                                    this.lastStepClicked.imageUris.map((imageUri, index) => (
+                                        <View style={{width: deviceWidth-60, height: deviceWidth-60, alignContent:'center', backgroundColor: 'white'}} key={index}>
+                                            <Image
+                                                resizeMode='contain'  
+                                                style={{width: deviceWidth-60, height: deviceWidth-60}} source={{uri: imageUri}} 
+                                            />
+                                        </View>
+                                    ))
+                                }
+
+                                </ScrollView>
+                            </View>
+
+                            <View style={{height: '30%', backgroundColor:'#808080ff'}}>
+                                <Text>Comments go here </Text>    
+                            </View>
                         </View>
 
-                        <View style={{height: '30%', backgroundColor:'#ffffffff'}}>
-                            <Text>Comments go here </Text>    
-                        </View>
                     </SafeAreaView>
                 </Modal>
             </View>
@@ -201,8 +207,8 @@ const styles = StyleSheet.create({
         borderColor: "rgba(130,4,150, 0.5)",
     },
     imageBox: {
-        width: 50,
-        height: 50,
+        width: 30,
+        height: 30,
         borderWidth: 1
     }
 });

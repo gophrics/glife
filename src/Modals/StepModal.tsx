@@ -2,6 +2,9 @@ import {Image} from 'react-native';
 import {Region} from 'react-native-maps';
 
 export class StepModal {
+
+    id: number
+    
     meanLatitude: number
     meanLongitude: number
     startTimestamp: number

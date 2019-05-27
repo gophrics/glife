@@ -181,6 +181,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         _stepModal.meanLongitude = homeStep.longitude
         _stepModal.startTimestamp = homeStep.timestamp
         _stepModal.endTimestamp = homeStep.timestamp
+        _stepModal.id = 0;
         tripResult.tripAsSteps.push(_stepModal)
 
         var i = 0;
@@ -217,7 +218,12 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         _stepModal.meanLongitude = homeStep.longitude
         _stepModal.startTimestamp = homeStep.timestamp
         _stepModal.endTimestamp = homeStep.timestamp
+        _stepModal.id = tripResult.tripAsSteps.length
         tripResult.tripAsSteps.push(_stepModal)
+        i++;
+        distanceTravelled += ClusterProcessor.EarthDistance({latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude} as ClusterModal,
+            {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal)
+
 
         tripResult.tripId = tripId;
         tripResult.daysOfTravel = Math.floor(Math.abs(steps[steps.length-1].endTimestamp - steps[0].startTimestamp)/8.64e7)

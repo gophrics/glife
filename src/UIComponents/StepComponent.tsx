@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Text, Button } from "react-native";
+import { View, TouchableOpacity, Text, Button, Dimensions } from "react-native";
 import { StepModal } from '../Modals/StepModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
 
@@ -15,7 +15,7 @@ interface IState {
     temperature: number,
 }
 
-
+const deviceWidth = Dimensions.get('window').width
 export class StepComponent extends React.Component<IProps, IState> {
 
     retryCount = 20;
@@ -59,7 +59,7 @@ export class StepComponent extends React.Component<IProps, IState> {
     render() {
 
         return (
-            <TouchableOpacity onPress={this.onPress.bind(this)}>
+            <TouchableOpacity onPress={this.onPress.bind(this)} style={{width: deviceWidth*3/4}}>
                 <Text style={{alignSelf: 'center', fontSize: 30, color:'white'}}>{"Day " + this.props.daysOfTravel}</Text>
                 <View style={{flexDirection:'column', height:"75%", marginLeft:5, marginRight:5, padding:10, borderRadius: 15, borderWidth: 2}}>
                     <View style={{width: "100%", flexDirection: 'row', flexGrow: 1}}>

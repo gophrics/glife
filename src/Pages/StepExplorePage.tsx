@@ -78,6 +78,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             latitudeDelta: .3,
             longitudeDelta: .3
         } as Region, 1000)
+        this.refs.scrollRef.scrollTo({x: deviceWidth*step.id*3/4 - deviceWidth*3/16 + deviceWidth*3/32, y: 0, Animated: true})
     }
 
     onMarkerPress = (e: any, index: number) => {
@@ -90,7 +91,8 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                     latitudeDelta: .3,
                     longitudeDelta: .3
                 } as Region, 1000)
-            }
+                this.refs.scrollRef.scrollTo({x: deviceWidth*this.lastStepClicked.id*3/4 - deviceWidth*3/16 + deviceWidth*3/32, y: 0, Animated: true})
+        }
         this.setState({
             triangulatedLocation: new Region(this.lastStepClicked.meanLatitude, this.lastStepClicked.meanLongitude, 0, 0),
             photoModalVisible: true
@@ -123,7 +125,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
                     </MapView>
                     {
-                        <ScrollView horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: '#454545', overflow: 'hidden' }}>
+                        <ScrollView ref={'scrollRef'} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: '#454545', overflow: 'hidden' }}>
                             {this.travelCardArray}
                         </ScrollView>
                     }

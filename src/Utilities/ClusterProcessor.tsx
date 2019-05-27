@@ -54,6 +54,8 @@ export class ClusterProcessor {
             }
         }
 
+        // ID Starts at 1, since 0 is for home
+        var i = 1;
         for(var cluster of _stepCluster) {
 
             if(cluster.length == 0) continue
@@ -82,9 +84,10 @@ export class ClusterProcessor {
             _step.endTimestamp = cluster[cluster.length - 1].timestamp
             _step.imageUris = imageUris
             _step.masterImageUri = imageUris[0];
-            _step.masterMarker = markers[0];
-
+            _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
+            _step.id = i;
             stepResult.push(_step)
+            i++;
         }
 
         return stepResult;

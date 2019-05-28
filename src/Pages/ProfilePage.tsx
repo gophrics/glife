@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Button, ScrollView } from 'react-native';
 import { ProfileComponent } from '../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
@@ -35,6 +35,10 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         this.props.setPage(Page[Page.STEPEXPLORE], tripModal)
     }
 
+    newTripButtonPress = () => {
+        
+    }
+
     render() {
 
         return (
@@ -49,6 +53,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     </View>
                     <View style={{height: 10}}/>
                     {this.tripRenderArray}
+                    <Button title="Add Trip" onPress={this.newTripButtonPress.bind(this)} />
                 </ScrollView>
         )
     }

@@ -114,6 +114,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 initialTimestamp = endTimestamp;
             }
 
+            TravelUtils.setHomesData(this.homesDataForClustering)        
+
             var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
 
             i = 0;
@@ -132,7 +134,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
                     if(asynci == trips.length) {
                         this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
-                        AsyncStorage.setItem('parsedData', JSON.stringify(this.dataToSendToNextPage))
                         this.props.onDone(this.dataToSendToNextPage);
                     }
                 })
@@ -197,7 +198,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         return  TravelUtils.getLocationFromCoordinates(tripResult.location.latitude, tripResult.location.longitude)
                 .then((res) => {
                     if(!res.address) { console.log(res); return; }
-                    tripResult.country = res.address.country
+                    tripResult.title = res.address.country
                     tripResult.countryCode = (res.address.country_code as string).toLocaleUpperCase()
                 })
                 .then(() => {

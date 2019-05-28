@@ -49,7 +49,7 @@ export class TripComponent extends React.Component<IProps, IState> {
             <TouchableOpacity onPress={(e) => this.props.onPress(this.props.tripModal)}>
                 <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15, borderWidth: 2}}>
                     <View style={{flex: 2, flexDirection: 'column', alignContent: 'flex-start'}}>
-                        <Text style={{flex: 1, color: 'white', fontSize: 18}}>{this.props.tripModal.country}</Text>
+                        <Text style={{flex: 1, color: 'white', fontSize: 18}}>{this.props.tripModal.title}</Text>
                         <Text style={{flex: 2, color: 'white', fontSize: 12}}>{this.props.tripModal.startDate + "\n"}{this.props.tripModal.endDate ? this.props.tripModal.endDate : "Present"}</Text>
                         {
                             // TODO: Don't forget to add degree celsius}

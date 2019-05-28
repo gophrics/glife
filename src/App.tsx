@@ -9,6 +9,8 @@ import { TopNavigator } from './UIComponents/TopNavigator';
 import { OnBoardingPage } from './Pages/OnBoardingPage';
 import StepExplorePage from './Pages/StepExplorePage';
 import { SplashScreen } from './Pages/SplashScreen';
+import { NewTripPage } from './Pages/NewTripPage';
+import { TravelUtils } from './Utilities/TravelUtils';
 
 // RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 // (res) => { console.log("Location: " + res) });
@@ -47,9 +49,18 @@ export default class App extends React.Component<IProps, IState> {
         })
       }
     })
+
+    AsyncStorage.getItem("homesData")
+    .then((res) => {
+      if(res)
+        TravelUtils.homesForDataClustering = JSON.parse(res)
+    })
   }
 
   setPage(page: string, data: any) {
+    if(page == Page[Page.PROFILE]) {
+      AsyncStorage.setItem('parsedData', JSON.stringify(data))
+    }
     this.state.pageDataPipe[page] = data;
     // AsyncStorage.setItem('lastPage', page);
     // console.log()
@@ -59,10 +70,10 @@ export default class App extends React.Component<IProps, IState> {
     });
   }
 
-  sliderChange(item: number) {
+  sliderChange(item: string) {
     console.log("Slider changed!! " + item);
     this.setState({
-      page: Page[item]
+      page: item
     })
   }
 
@@ -84,6 +95,8 @@ export default class App extends React.Component<IProps, IState> {
               <StepExplorePage data={this.state.pageDataPipe[Page[Page.STEPEXPLORE]]}/>
             : this.state.page == Page[Page.SPLASHSCREEN] ? 
               <SplashScreen />
+            : this.state.page == Page[Page.NEWTRIP] ? 
+              <NewTripPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.PROFILE]]}/>
             : <View />
           }
         </View>

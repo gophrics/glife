@@ -4,23 +4,32 @@ import { months } from '../Modals/ApplicationEnums';
 export class TravelUtils {
 
     static getLocationFromCoordinates(latitude: number, longitude: number): Promise<any> {
-        return fetch('https://us1.locationiq.com/v1/reverse.php?key=daecd8873d0c8e&lat='+latitude+'&lon='+longitude+'&format=json', {
-            method: 'GET'
+        return fetch('http://192.168.0.104:8080/api/v1/travel/searchcoordinates', {
+            method: 'POST',
+            body: JSON.stringify({
+                latitude: latitude,
+                longitude: longitude
+            })
         })
         .then((res) => {
             return res.json()
         }).then((res) => {
-            return res;
+            console.log(res)
+            return res
         })
     }
 
     static getCoordinatesFromLocation(location: string): Promise<any> {
-        return fetch('https://us1.locationiq.com/v1/search.php?key=daecd8873d0c8e&q=' + location + '&format=json', {
-            method: 'GET'
+        return fetch('http://192.168.0.104:8080/api/v1/travel/searchlocation', {
+            method: 'POST',
+            body: JSON.stringify({
+                location: location
+            })
         })
         .then((res) => {
             return res.json()
-        }).then((res) => {
+        })
+        .then((res) => {
             console.log(res)
             return res
         })

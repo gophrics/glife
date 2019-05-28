@@ -152,28 +152,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var tripResult : TripModal = new TripModal();
         var distanceTravelled = 0;
 
-        // Home to first step
-        /*
-        distanceTravelled += ClusterProcessor.EarthDistance({
-            latitude: steps[0].meanLatitude,
-            longitude: steps[0].meanLongitude
-        } as ClusterModal,
-        {
-            latitude: this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)].latitude,
-            longitude: this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)].longitude
-        } as ClusterModal);
-
-        // Last step to back home
-        distanceTravelled += ClusterProcessor.EarthDistance({
-            latitude: steps[steps.length-1].meanLatitude,
-            longitude: steps[steps.length-1].meanLongitude
-        } as ClusterModal,
-        {
-            latitude: this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)].latitude,
-            longitude: this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)].longitude
-        } as ClusterModal)
-        */
-
         var homeStep = this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
         var _stepModal = new StepModal()
@@ -186,21 +164,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
         var i = 0;
         for(var step of steps) {
-            /*
-            var initialDate = new Date(steps[0].startTimestamp);
-            var finalDate = new Date(steps[steps.length-1].endTimestamp);
-    
-            var timelineData : Array<string> = []
-    
-            while( initialDate.getTime() <= finalDate.getTime() ) {
-                var dateInStringFormat = initialDate.getDate().toString() + " " + months[initialDate.getMonth()] + " " 
-                + initialDate.getFullYear().toString();
-                timelineData.push(dateInStringFormat);
-                initialDate = new Date(initialDate.getTime() + 86400);
-            }
-
-            step.timelineData = timelineData;
-            */
             tripResult.tripAsSteps.push(step);
 
             if(i > 0)

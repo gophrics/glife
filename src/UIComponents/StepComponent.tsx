@@ -29,6 +29,7 @@ export class StepComponent extends React.Component<IProps, IState> {
         this.setState({
             temperature: temperature
         })
+        this.getLocation();
     }
 
     getLocation() {
@@ -37,10 +38,11 @@ export class StepComponent extends React.Component<IProps, IState> {
         TravelUtils.getLocationFromCoordinates(this.props.modal.meanLatitude, this.props.modal.meanLongitude)
         .then((res: any) => {
             if(res.address) {
-                res = res.address.state_district
-                if(res.includes("/")) res=res.split('/')[1]
+                var district: string = res.address.state_district
+                if(district == undefined) district = res.address.county
+                if(district.toLowerCase().endsWith("district")) district = district.substring(0, district.length-8)
                 this.setState({
-                    location: res
+                    location: district
                 })
             } else {
                 this.getLocation();

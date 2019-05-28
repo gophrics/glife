@@ -78,6 +78,15 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             latitudeDelta: .3,
             longitudeDelta: .3
         } as Region, 1000)
+        
+        setTimeout(() => {
+            this.setState({
+                triangulatedLocation: {
+                    latitude: step.meanLatitude,
+                    longitude: step.meanLongitude
+                } as Region
+            })
+        }, 1200)
         this.refs.scrollRef.scrollTo({x: deviceWidth*step.id*3/4 - deviceWidth*3/16 + deviceWidth*3/32, y: 0, Animated: true})
     }
 
@@ -113,11 +122,12 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                 <Marker
                                     key={index}
                                     coordinate={step.masterMarker}
-                                    style={styles.imageBox}
-                                    onPress={(e) => this.onMarkerPress(e, index)}
+                                    style={this.lastStepClicked.id == step.id ? styles.largeImageBoxMarker : styles.imageBox}
+                                    onPress={(e) => this.onMarkerPress(e, index)} 
                                 >
-                                    <View style={styles.imageBox}>
-                                        <Image style={styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
+                                    <View style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
+                                            <Image 
+                                                style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
                                     </View>
                                 </Marker>
                             ))
@@ -211,6 +221,15 @@ const styles = StyleSheet.create({
     imageBox: {
         width: 30,
         height: 30,
-        borderWidth: 1
+        borderRadius: 5
+    },
+    largeImageBoxMarker: {
+        width: 200,
+        height: 200
+    },
+    largeImageBox: {
+        width: 200,
+        height: 200,
+        borderRadius: 5
     }
 });

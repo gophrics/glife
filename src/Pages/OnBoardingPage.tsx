@@ -29,11 +29,8 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     validateData = () => {
-        console.log(this.cursor);
-        console.log(this.homes);
-        console.log(this.state.dates);
         for (var i = 0; i <= this.cursor; i++) {
-            if (this.homes[i] == undefined || this.state.dates[i] == undefined) return false;
+            if (this.homes[i] == undefined) return false;
         }
         return true
     }
@@ -117,7 +114,11 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         } as ClusterModal)
         */
 
-        this.props.onDone(this.homes)
+        if(this.validateData())
+            this.props.onDone(this.homes)
+        else {
+
+        }
     }
 
     render() {

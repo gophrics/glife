@@ -4,7 +4,6 @@ import {Region} from 'react-native-maps';
 export class StepModal {
 
     id: number
-    
     meanLatitude: number
     meanLongitude: number
     startTimestamp: number
@@ -16,6 +15,7 @@ export class StepModal {
     masterMarker: Region
 
     constructor() {
+        this.id = 0;
         this.meanLatitude = 0;
         this.meanLongitude = 0;
         this.startTimestamp = 0;

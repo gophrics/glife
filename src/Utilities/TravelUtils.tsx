@@ -14,7 +14,6 @@ export class TravelUtils {
         .then((res) => {
             return res.json()
         }).then((res) => {
-            console.log(res)
             return res
         })
     }
@@ -30,7 +29,6 @@ export class TravelUtils {
             return res.json()
         })
         .then((res) => {
-            console.log(res)
             return res
         })
     }   

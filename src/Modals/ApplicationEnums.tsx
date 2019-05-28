@@ -1,12 +1,13 @@
 
 export enum Page {
     NONE = 0,
-    ONBOARDING = 1,
-    LOADING = 2,
-    PROFILE = 3,
-    TRIPEXPLORE = 4,
-    STEPEXPLORE = 5,
-    HOME = 6
+    SPLASHSCREEN = 1,
+    ONBOARDING = 2,
+    LOADING = 3,
+    PROFILE = 4,
+    TRIPEXPLORE = 5,
+    STEPEXPLORE = 6,
+    HOME = 7
 }
 
 

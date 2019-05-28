@@ -29,19 +29,6 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         this.state = {
             bottom: this.tripRenderArray.length*60
         }
-        this.fetchProfileData()
-    }
-
-    fetchProfileData = () => {
-        fetch('http://192.168.0.3:8081/api/v1/profile/getmyprofile', {
-            method: 'post',
-            body: JSON.stringify({
-                'profileId': '1'
-            })
-        })
-        .then((response) => {
-            console.log(response)
-        })
     }
 
     onTripPress = (tripModal: TripModal) => {
@@ -50,20 +37,15 @@ export default class ProfilePage extends React.Component<IProps, IState> {
 
     render() {
 
-        var activities = Array<string>()
-        activities.push("Hiking")
-        activities.push("Parasailing")
-        activities.push("Cultural Exchange")
-
         return (
                 <ScrollView style={{flex: 1}} 
                     contentInset={{top: 0, bottom: this.state.bottom}}>
                     <ProfileComponent />
-                    <WorldMapColouredComponent visitedCountryList={ProfileModalInstance.countriesVisited}/> 
+                    <WorldMapColouredComponent visitedCountryList={this.props.data.countriesVisited}/> 
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                        <StatsAsCardComponent text={"You travelled " + ProfileModalInstance.percentageWorldTravelled + "% of the world"}/>
+                        <StatsAsCardComponent text={"You travelled " + this.props.data.percentageWorldTravelled + "% of the world"}/>
                         <View style={{width:10}}/>
-                        <StatsAsCardComponent text={"You've collected " + ProfileModalInstance.countriesVisited.length + " flags"}/>
+                        <StatsAsCardComponent text={"You've collected " + this.props.data.countriesVisited.length + " flags"}/>
                     </View>
                     <View style={{height: 10}}/>
                     {this.tripRenderArray}

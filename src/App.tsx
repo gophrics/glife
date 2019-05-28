@@ -4,11 +4,11 @@ import { View, AsyncStorage, SafeAreaView } from 'react-native';
 import {Page} from './Modals/ApplicationEnums';
 import TripExplorePage from './Pages/TripExplorePage';
 import LoadingPage from './Pages/LoadingPage';
-import SocialPage from './Pages/SocialPage/SocialPage';
 import ProfilePage from './Pages/ProfilePage';
 import { TopNavigator } from './UIComponents/TopNavigator';
 import { OnBoardingPage } from './Pages/OnBoardingPage';
 import StepExplorePage from './Pages/StepExplorePage';
+import { SplashScreen } from './Pages/SplashScreen';
 
 // RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 // (res) => { console.log("Location: " + res) });
@@ -29,9 +29,24 @@ export default class App extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       // Change to Page.NONE
-      page: Page[Page.ONBOARDING],
+      page: Page[Page.SPLASHSCREEN],
       pageDataPipe: {} 
     };
+    // Uncomment for development
+    //AsyncStorage.clear()
+    AsyncStorage.getItem('parsedData')
+    .then((res) => {
+      if(res == null) {
+        this.setPage(Page[Page.ONBOARDING], null)
+      }
+      else {
+        console.log(res)
+        this.state.pageDataPipe[Page[Page.PROFILE]] = JSON.parse(res);
+        this.setState({
+          page: Page[Page.PROFILE]
+        })
+      }
+    })
   }
 
   setPage(page: string, data: any) {
@@ -67,6 +82,8 @@ export default class App extends React.Component<IProps, IState> {
               <OnBoardingPage onDone={(data) => this.setPage(Page[Page.LOADING], data)}/>
             : this.state.page == Page[Page.STEPEXPLORE] ?
               <StepExplorePage data={this.state.pageDataPipe[Page[Page.STEPEXPLORE]]}/>
+            : this.state.page == Page[Page.SPLASHSCREEN] ? 
+              <SplashScreen />
             : <View />
           }
         </View>

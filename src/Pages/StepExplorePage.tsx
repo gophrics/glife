@@ -65,13 +65,14 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             polylineArr: polylineArr,
             photoModalVisible: false
         }
+        setTimeout(() => {
+            this.onStepClick(this.props.data.tripAsSteps[0])
+        }, 1000)
     }
 
     onStepClick = (step: StepModal) => {
-        //this.setState({
-        //    lastStepClicked : step
-        //});
         this.lastStepClicked = step
+        this.setState({})
         this.mapView.animateToRegion({
             latitude: step.meanLatitude,
             longitude: step.meanLongitude,
@@ -122,12 +123,12 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                 <Marker
                                     key={index}
                                     coordinate={step.masterMarker}
-                                    style={this.lastStepClicked.id == step.id ? styles.largeImageBoxMarker : styles.imageBox}
+                                    style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox}
                                     onPress={(e) => this.onMarkerPress(e, index)} 
                                 >
                                     <View style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
                                             <Image 
-                                                style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
+                                                style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri == "" ? "ABC" : step.masterImageUri }}></Image>
                                     </View>
                                 </Marker>
                             ))
@@ -176,7 +177,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                         <View style={{width: deviceWidth-60, height: deviceWidth-60, alignContent:'center', backgroundColor: 'white'}} key={index}>
                                             <Image
                                                 resizeMode='contain'  
-                                                style={{width: deviceWidth-60, height: deviceWidth-60}} source={{uri: imageUri}} 
+                                                style={{width: deviceWidth-60, height: deviceWidth-60}} source={{uri: imageUri == "" ? "ABC" : imageUri}} 
                                             />
                                         </View>
                                     ))
@@ -221,15 +222,13 @@ const styles = StyleSheet.create({
     imageBox: {
         width: 30,
         height: 30,
-        borderRadius: 5
-    },
-    largeImageBoxMarker: {
-        width: 200,
-        height: 200
+        borderRadius: 5,
+        zIndex: 0
     },
     largeImageBox: {
         width: 200,
         height: 200,
+        zIndex: 1,
         borderRadius: 5
     }
 });

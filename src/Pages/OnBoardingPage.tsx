@@ -29,6 +29,8 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     validateData = () => {
+
+        //Buggy
         for (var i = 0; i <= this.cursor; i++) {
             if (this.homes[i] == undefined) return false;
         }
@@ -138,7 +140,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                         <Text style={{ color: 'white', marginBottom: 20 }}>{i == 0 ? "Long long ago" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
                     </View>
                     <TouchableOpacity key={i} onPress={() => this.onCalenderClick(i - 1)}>
-                        <Image style={{ width: 30, height: 30 }} source={require('../Assets/icons8-calendar-52.png')} />
+                        <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../Assets/icons8-calendar-52.png')} />
                     </TouchableOpacity>
                 </View>
             )
@@ -152,7 +154,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                     onConfirm={this.onPickerConfirm.bind(this)}
                     onCancel={this.onPickerCancel.bind(this)}
                 />
-                <View style={{ flexDirection: 'column' }} >
+                <View style={{ marginTop: 20, flexDirection: 'column' }} >
                     {inputs}
                 </View>
                 <Button title="Done" onPress={this.onNextButtonClick} />

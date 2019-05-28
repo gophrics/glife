@@ -21,3 +21,7 @@ post_install do |installer|
     end
   end
 end
+
+# Add new pods below this line
+pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+

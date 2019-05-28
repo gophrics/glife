@@ -3,6 +3,7 @@ package com.glife;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new SQLitePluginPackage(),   // register SQLite Plugin here
             new MainReactPackage(),
+            new AsyncStoragePackage(),
             new MapsPackage(),
       	    new SvgPackage()
 	);

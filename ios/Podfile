@@ -23,7 +23,7 @@ post_install do |installer|
 end
 
 # Add new pods below this line
+pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+
 pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
-pod 'GooglePlacePicker', '= 2.0.1'
-pod 'GooglePlaces', '= 2.0.1'
-pod 'GoogleMaps', '= 2.0.1'

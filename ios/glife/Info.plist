@@ -39,8 +39,10 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Can I Use Location</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Can I see your naked pictures add?</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Can I use photo Library for Educational Purposes?</string>
+	<string>Can I see your naked pictures?</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

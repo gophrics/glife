@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, Animated,
+import { Modal, Button,
     StyleSheet, 
     Dimensions,
     ScrollView, View, Image, Text, TouchableHighlight, SafeAreaView } from 'react-native';
@@ -10,13 +10,15 @@ import { StepModal } from '../Modals/StepModal';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { ClusterProcessor } from '../Utilities/ClusterProcessor';
 import Region from '../Modals/Region';
+import { NewStepPage } from './NewStepPage';
 
 interface IState {
     markers: Region[],
     triangulatedLocation: Region,
     imageUriData: string[],
     polylineArr: any[],
-    photoModalVisible: boolean
+    photoModalVisible: boolean,
+    newStep: boolean
 }
 
 interface IProps {
@@ -39,7 +41,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         var trip = this.props.data;
         var markers: Region[] = []
         var imageUriData: string[] = []
-        var key = 0;
+        var key: number = 0;
         var tripStartTimestamp = trip.tripAsSteps[0].startTimestamp;
         var distanceTravelled = 0
         var polylineArr = []
@@ -51,6 +53,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             latitudeSum += step.meanLatitude
             longitudeSum += step.meanLongitude
             this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={distanceTravelled} onPress={(step: StepModal) => this.onStepClick(step)} />)
+            this.travelCardArray.push(<Button key={key+'b'} title={"+"} onPress={() => this.onNewStepPress(key)} />)
             markers.push.apply(markers, step.markers)
             imageUriData.push.apply(imageUriData, step.imageUris)
             polylineArr.push({ latitude: step.meanLatitude, longitude: step.meanLongitude })
@@ -63,11 +66,19 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             markers: markers,
             imageUriData: imageUriData,
             polylineArr: polylineArr,
-            photoModalVisible: false
+            photoModalVisible: false,
+            newStep: false
         }
+
         setTimeout(() => {
             this.onStepClick(this.props.data.tripAsSteps[0])
         }, 1000)
+    }
+
+    onNewStepPress = (id: number) => {
+        this.setState({
+            newStep: true
+        })
     }
 
     onStepClick = (step: StepModal) => {
@@ -193,6 +204,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
                     </SafeAreaView>
                 </Modal>
+                <NewStepPage visible={this.state.newStep} onDone={() => {this.setState({newStep: false})}}/>
             </View>
         );
 

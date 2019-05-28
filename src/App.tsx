@@ -42,7 +42,6 @@ export default class App extends React.Component<IProps, IState> {
         this.setPage(Page[Page.ONBOARDING], null)
       }
       else {
-        console.log(res)
         this.state.pageDataPipe[Page[Page.PROFILE]] = JSON.parse(res);
         this.setState({
           page: Page[Page.PROFILE]

@@ -84,7 +84,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
     // Helper methods
     initialize () {
-        console.log(this.homes)
         PhotoLibraryProcessor.getPhotosFromLibrary()
         .then((photoRollInfos: Array<ImageDataModal>) => {
     
@@ -118,8 +117,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             // TODAY
             this.homesDataForClustering[endTimestamp+1] = this.homes[this.homes.length-1]
 
-
-            console.log("Final timestmap for home clustering" + endTimestamp+1)
             BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
             var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
@@ -154,7 +151,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var distanceTravelled = 0;
 
         var homeStep = this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1]
-        console.log(homeStep);
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
         var _stepModal = new StepModal()
         _stepModal.meanLatitude = homeStep.latitude
@@ -163,7 +159,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         _stepModal.endTimestamp = homeStep.timestamp
         _stepModal.id = 0;
         tripResult.tripAsSteps.push(_stepModal)
-
+        
         var i = 0;
         for(var step of steps) {
             tripResult.tripAsSteps.push(step);
@@ -176,10 +172,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
 
         homeStep = this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1]
-
-        console.log(homeStep)
-        console.log(Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1)
-        console.log(homeStep)
         homeStep.timestamp = Math.floor(steps[steps.length-1].endTimestamp + 8.64e7)
 
         var _stepModal = new StepModal()
@@ -187,7 +179,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         _stepModal.meanLongitude = homeStep.longitude
         _stepModal.startTimestamp = homeStep.timestamp
         _stepModal.endTimestamp = homeStep.timestamp
-        _stepModal.id = tripResult.tripAsSteps.length
+        _stepModal.id = (tripResult.tripAsSteps.length+1)*100
         tripResult.tripAsSteps.push(_stepModal)
         i++;
         distanceTravelled += ClusterProcessor.EarthDistance({latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude} as ClusterModal,
@@ -209,7 +201,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
         return  TravelUtils.getLocationFromCoordinates(tripResult.location.latitude, tripResult.location.longitude)
                 .then((res) => {
-                    if(!res.address) { console.log(res); return; }
+                    if(!res.address) { return; }
                     tripResult.title = res.address.country
                     tripResult.countryCode = (res.address.country_code as string).toLocaleUpperCase()
                 })

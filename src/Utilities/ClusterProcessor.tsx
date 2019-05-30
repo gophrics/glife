@@ -54,19 +54,25 @@ export class ClusterProcessor {
             }
         }
 
-        // ID Starts at 1, since 0 is for home
-        var i = 1;
         for(var cluster of _stepCluster) {
-            var _step = ClusterProcessor.convertClusterToStep(cluster, i)
+            var _step = ClusterProcessor.convertClusterToStep(cluster)
             if(_step.id != -1) stepResult.push(_step)
-            // Leaving gap for 99 more steps in between
-            i+=100;
+        }
+
+        stepResult.sort((a, b) => {
+            return a.endTimestamp - b.endTimestamp;
+        })
+
+        var i = 100;
+        for(var step of stepResult) {
+            step.id = i
+            i+= 100;
         }
 
         return stepResult;
     }
 
-    static convertClusterToStep = (cluster: ClusterModal[], stepId: number) : StepModal => {
+    static convertClusterToStep = (cluster: ClusterModal[]) : StepModal => {
 
         if(cluster.length == 0){
             var _step = new StepModal();
@@ -99,7 +105,6 @@ export class ClusterProcessor {
         _step.imageUris = imageUris
         _step.masterImageUri = imageUris[0];
         _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
-        _step.id = stepId;
 
         return _step;
     }

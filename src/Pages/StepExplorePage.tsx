@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Modal, Button,
-    StyleSheet, 
+import {
+    Modal, Button,
+    StyleSheet,
     Dimensions,
-    ScrollView, View, Image, Text, TouchableHighlight, SafeAreaView } from 'react-native';
+    ScrollView, View, Image, Text, TouchableHighlight, SafeAreaView
+} from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { StepComponent } from '../UIComponents/StepComponent';
 import { TripModal } from '../Modals/TripModal';
@@ -14,6 +16,7 @@ import { NewStepPage } from './NewStepPage';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
 import ImageDataModal from '../Modals/ImageDataModal';
+import { CustomButton } from '../UIComponents/CustomButton';
 
 interface IState {
     markers: Region[],
@@ -38,7 +41,11 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     lastStepClicked: StepModal = new StepModal()
     constructor(props: any) {
         super(props);
+        this.initialize();
+    }
 
+    initialize() {
+        this.travelCardArray = []
         //Populate travelcard Array for each step
         var latitudeSum = 0;
         var longitudeSum = 0;
@@ -57,7 +64,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             latitudeSum += step.meanLatitude
             longitudeSum += step.meanLongitude
             this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={distanceTravelled} onPress={(step: StepModal) => this.onStepClick(step)} />)
-            this.travelCardArray.push(<Button key={key+'b'} title={"+"} onPress={() => this.onNewStepPress(step)} />)
+            this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
             markers.push.apply(markers, step.markers)
             imageUriData.push.apply(imageUriData, step.imageUris)
             polylineArr.push({ latitude: step.meanLatitude, longitude: step.meanLongitude })
@@ -75,7 +82,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             newStepId: -1,
             myData: trip
         }
-
         setTimeout(() => {
             this.onStepClick(this.state.myData.tripAsSteps[0])
         }, 1000)
@@ -97,34 +103,77 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             latitudeDelta: .3,
             longitudeDelta: .3
         } as Region, 1000)
-        
+
         setTimeout(() => {
             this.setState({
                 triangulatedLocation: {
                     latitude: step.meanLatitude,
-                    longitude: step.meanLongitude
+                    longitude: step.meanLongitude,
+                    latitudeDelta: 0,
+                    longitudeDelta: 0
                 } as Region
             })
         }, 1200)
-        this.refs.scrollRef.scrollTo({x: deviceWidth*step.id*3/4 - deviceWidth*3/16 + deviceWidth*3/32, y: 0, Animated: true})
     }
 
     onMarkerPress = (e: any, index: number) => {
-        if( this.state.myData.tripAsSteps[index].meanLatitude != this.lastStepClicked.meanLatitude || 
-            this.state.myData.tripAsSteps[index].meanLatitude != this.lastStepClicked.meanLongitude ) {
-                this.lastStepClicked = this.state.myData.tripAsSteps[index]
-                this.mapView.animateToRegion({
-                    latitude: this.state.myData.tripAsSteps[index].meanLatitude,
-                    longitude: this.state.myData.tripAsSteps[index].meanLongitude,
-                    latitudeDelta: .3,
-                    longitudeDelta: .3
-                } as Region, 1000)
-                this.refs.scrollRef.scrollTo({x: deviceWidth*this.lastStepClicked.id*3/4 - deviceWidth*3/16 + deviceWidth*3/32, y: 0, Animated: true})
+        if (this.state.myData.tripAsSteps[index].meanLatitude != this.lastStepClicked.meanLatitude ||
+            this.state.myData.tripAsSteps[index].meanLatitude != this.lastStepClicked.meanLongitude) {
+            this.lastStepClicked = this.state.myData.tripAsSteps[index]
+            this.mapView.animateToRegion({
+                latitude: this.state.myData.tripAsSteps[index].meanLatitude,
+                longitude: this.state.myData.tripAsSteps[index].meanLongitude,
+                latitudeDelta: .3,
+                longitudeDelta: .3
+            } as Region, 1000)
         }
         this.setState({
             triangulatedLocation: new Region(this.lastStepClicked.meanLatitude, this.lastStepClicked.meanLongitude, 0, 0),
             photoModalVisible: true
         })
+    }
+
+    newStepOnDone = (data: any) => {
+
+        var step = new StepModal()
+        step.imageUris = data['images']
+        var imageDataList: Array<ImageDataModal> = []
+        for (var image of data['images']) {
+            console.log(image)
+            if (image.latitude && image.longitude) {
+                imageDataList.push(new ImageDataModal(new Region(image.latitude, image.longitude, 0, 0), image.uri, (new Date(image.timestamp)).getTime()))
+            }
+        }
+
+        var clusterData: Array<ClusterModal> = [];
+        for (var i = 0; i < imageDataList.length; i++) {
+            clusterData.push({
+                image: imageDataList[i].image,
+                latitude: imageDataList[i].location.latitude,
+                longitude: imageDataList[i].location.longitude,
+                timestamp: imageDataList[i].timestamp,
+                id: i
+            } as ClusterModal)
+        }
+
+        var _step = ClusterProcessor.convertClusterToStep(clusterData);
+        _step.id = this.state.newStepId;
+
+
+        //Right now, we're calcualting step based on images, and not overriding them
+
+        var trip = this.state.myData
+        trip.tripAsSteps.push(_step);
+        trip.tripAsSteps.sort((a: StepModal, b: StepModal) => {
+            return a.id - b.id;
+        })
+
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
+        this.setState({
+            newStep: false,
+            myData: trip
+        })
+        this.initialize()
     }
 
     render() {
@@ -138,17 +187,21 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                     >
                         {
                             this.state.myData.tripAsSteps.map((step, index) => (
-                                <Marker
-                                    key={index}
-                                    coordinate={step.masterMarker}
-                                    style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox}
-                                    onPress={(e) => this.onMarkerPress(e, index)} 
-                                >
-                                    <View style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
-                                            <Image 
-                                                style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri == "" ? "ABC" : step.masterImageUri }}></Image>
-                                    </View>
-                                </Marker>
+                                step.masterMarker != undefined ? 
+                                        <Marker
+                                            key={index}
+                                            coordinate={step.masterMarker}
+                                            style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox}
+                                            onPress={(e) => this.onMarkerPress(e, index)}
+                                        >
+                                            {step.masterImageUri != "" ?
+                                                <View style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
+                                                    <Image
+                                                        style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
+                                                </View>
+                                                : <View />}
+                                        </Marker>
+                                : <View />
                             ))
                         }
                         <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
@@ -164,95 +217,60 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                     visible={this.state.photoModalVisible}
                     transparent={true}>
 
-                    <SafeAreaView style={{ margin: 30, flex: 1, alignContent:'center', justifyContent: 'center' }}>
+                    <SafeAreaView style={{ margin: 30, flex: 1, alignContent: 'center', justifyContent: 'center' }}>
                         <View style={{
-                                backgroundColor: '#808080ff',
-                                borderRadius: 10
-                            }}> 
+                            backgroundColor: '#808080ff',
+                            borderRadius: 10
+                        }}>
                             <View>
 
-                                
+
                                 <TouchableHighlight
-                                        onPress={() => {
-                                            this.setState({
-                                                photoModalVisible: false
-                                            })
-                                        }}
-                                        style={{padding: 10}}>
-                                        <Text>X</Text>
+                                    onPress={() => {
+                                        this.setState({
+                                            photoModalVisible: false
+                                        })
+                                    }}
+                                    style={{ padding: 10 }}>
+                                    <Text>X</Text>
                                 </TouchableHighlight>
                                 <ScrollView horizontal={true} //scrolling left to right instead of top to bottom
                                     showsHorizontalScrollIndicator={false} //hides native scrollbar
                                     scrollEventThrottle={10} //how often we update the position of the indicator bar
                                     pagingEnabled={true} //scrolls from one image to the next, instead of allowing any value inbetween
-                                    style={{aspectRatio: 1}}
+                                    style={{ aspectRatio: 1 }}
                                     snapToAlignment='center'
-                                    snapToInterval={deviceWidth-60}
+                                    snapToInterval={deviceWidth - 60}
                                     decelerationRate={0}
                                 >
-                                {
-                                    this.lastStepClicked.imageUris.map((imageUri, index) => (
-                                        <View style={{width: deviceWidth-60, height: deviceWidth-60, alignContent:'center', backgroundColor: 'white'}} key={index}>
-                                            <Image
-                                                resizeMode='contain'  
-                                                style={{width: deviceWidth-60, height: deviceWidth-60}} source={{uri: imageUri == "" ? "ABC" : imageUri}} 
-                                            />
-                                        </View>
-                                    ))
-                                }
+                                    {
+                                        this.lastStepClicked.imageUris.map((imageUri, index) => (
+                                            imageUri != "" ?
+                                                <View style={{ width: deviceWidth - 60, height: deviceWidth - 60, alignContent: 'center', backgroundColor: 'white' }} key={index}>
+                                                    <Image
+                                                        resizeMode='contain'
+                                                        style={{ width: deviceWidth - 60, height: deviceWidth - 60 }} source={{ uri: imageUri }}
+                                                    />
+                                                </View>
+                                                : <View />
+                                        ))
+                                    }
 
                                 </ScrollView>
                             </View>
 
-                            <View style={{height: '30%', backgroundColor:'#808080ff'}}>
-                                <Text>Comments go here </Text>    
+                            <View style={{ height: '30%', backgroundColor: '#808080ff' }}>
+                                <Text>Comments go here </Text>
                             </View>
                         </View>
 
                     </SafeAreaView>
                 </Modal>
-                <NewStepPage visible={this.state.newStep} onClose={(data: StepModal) => this.newStepOnDone(data)}/>
+                <NewStepPage visible={this.state.newStep} onClose={(data: StepModal) => this.newStepOnDone(data)} />
             </View>
         );
     }
 
-    newStepOnDone = (data: any) => {
-
-        var step = new StepModal()
-        step.imageUris = data['images']
-        var imageDataList : Array<ImageDataModal> = []
-        for(var image of data['images']) {
-            console.log(image)
-            if (image.latitude && image.longitude) {
-                imageDataList.push(new ImageDataModal(new Region(image.latitude, image.longitude, 0, 0), image.data, (new Date(image.timestamp)).getTime() ))
-            }
-        }
-
-        var clusterData: Array<ClusterModal> = [];
-        for(var i = 0; i < imageDataList.length; i++) {
-            clusterData.push({
-                image: imageDataList[i].image,
-                latitude: imageDataList[i].location.latitude, 
-                longitude: imageDataList[i].location.longitude, 
-                timestamp: imageDataList[i].timestamp,
-                id: i} as ClusterModal )
-        }
-
-        var _step = ClusterProcessor.convertClusterToStep(clusterData, this.state.newStepId);
-
-        //Right now, we're calcualting step based on images, and not overriding them
-
-        var trip = this.state.myData
-        trip.tripAsSteps.push(_step);
-        trip.tripAsSteps.sort((a: StepModal, b: StepModal) => {
-            return a.id - b.id;
-        })
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
-        this.setState({
-            newStep: false,
-            myData: trip
-        })
-    }
 }
 
 const styles = StyleSheet.create({

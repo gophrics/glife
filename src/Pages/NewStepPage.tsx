@@ -36,6 +36,7 @@ export class NewStepPage extends React.Component<IProps, IState> {
         ImagePicker.launchImageLibrary({}, (response: any) => {
             // Same code as in above section!
             this.data['images'].push(response)
+            this.setState({});
         });
     }
 
@@ -77,8 +78,12 @@ export class NewStepPage extends React.Component<IProps, IState> {
                     height: "90%",
                     borderRadius: 10,
                 }}>
+                <Text>Go ahead, select your images. We'll generate the step for you</Text>
+                {/*
                     <TextInput placeholder={"Location"} onChangeText={(text) => this.onLocationTextChange(text)} />
+                */}
                     <Button title={"Image Picker"} onPress={this.onImagePickerPress.bind(this)} />
+                    {/*
                     <View style={{position: 'absolute', left: 0}}>
                         <Text>From</Text>
                         <TouchableOpacity onPress={() => this.onCalenderClick(0)}>
@@ -93,6 +98,12 @@ export class NewStepPage extends React.Component<IProps, IState> {
                         </TouchableOpacity>
                         <Text>{this.to.getDate()+"-"+this.to.getMonth()+"-"+this.to.getFullYear()}</Text>
                     </View>
+                    */}
+                    {
+                        this.data['images'].map((image:any) => {
+                            <Image source={{uri: image.uri}} />
+                        })
+                    }
                     <Button title={"Done"} onPress={this.onDone} />
                 </SafeAreaView>
             </Modal>

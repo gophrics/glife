@@ -39,5 +39,6 @@ export class BlobSaveAndLoad {
 
     setBlobValue = (page: string, data: any) => {
         this.pageDataPipe[page] = data;
+        this.saveBlob()
     }
 }

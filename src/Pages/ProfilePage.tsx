@@ -7,22 +7,26 @@ import { TripComponent } from '../UIComponents/TripComponent';
 import { TripModal } from '../Modals/TripModal';
 import { Page } from '../Modals/ApplicationEnums';
 import { ProfileModalInstance } from '../Modals/ProfileModalSingleton';
+import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 
 interface IState {
     bottom: number
 }
 
 interface IProps {
-    setPage: any,
-    data: any
+    setPage: any
 }
 
 export default class ProfilePage extends React.Component<IProps, IState> {
     tripRenderArray: any = []
 
+    myData: any = {}
+
     constructor(props: IProps) {
         super(props)
-        for(var trip of this.props.data.trips) {
+        this.myData = BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]]
+
+        for(var trip of this.myData.trips) {
             this.tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress}/>)
             this.tripRenderArray.push(<View style={{height:10}} />)
         }
@@ -36,7 +40,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
     }
 
     newTripButtonPress = () => {
-        
+        this.props.setPage(Page[Page.NEWTRIP], null)
     }
 
     render() {
@@ -45,11 +49,11 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                 <ScrollView style={{flex: 1}} 
                     contentInset={{top: 0, bottom: this.state.bottom}}>
                     <ProfileComponent />
-                    <WorldMapColouredComponent visitedCountryList={this.props.data.countriesVisited}/> 
+                    <WorldMapColouredComponent visitedCountryList={this.myData.countriesVisited}/> 
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                        <StatsAsCardComponent text={"You travelled " + this.props.data.percentageWorldTravelled + "% of the world"}/>
+                        <StatsAsCardComponent text={"You travelled " + this.myData.percentageWorldTravelled + "% of the world"}/>
                         <View style={{width:10}}/>
-                        <StatsAsCardComponent text={"You've collected " + this.props.data.countriesVisited.length + " flags"}/>
+                        <StatsAsCardComponent text={"You've collected " + this.myData.countriesVisited.length + " flags"}/>
                     </View>
                     <View style={{height: 10}}/>
                     {this.tripRenderArray}

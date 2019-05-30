@@ -11,6 +11,8 @@ import { TripModal } from '../Modals/TripModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
 import { ProfileModalInstance } from '../Modals/ProfileModalSingleton';
 import AsyncStorage from '@react-native-community/async-storage';
+import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
+import { Page } from '../Modals/ApplicationEnums';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -32,7 +34,6 @@ var styles = StyleSheet.create<Styles>({
 
 interface IProps {
     onDone: (data: any) => void,
-    homes: { name: string, timestamp: number }[]
 }
 
 interface IState {
@@ -44,13 +45,14 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     dataToSendToNextPage: MapPhotoPageModal = new MapPhotoPageModal([]);
     homesDataForClustering: {[key:number]: ClusterModal} = {}
     homes: ClusterModal[]  = []
-
+    myData: any
     retryCount = 20;
     constructor(props:any) {
         super(props);
 
+        this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
         var i = 0;
-        for(var element of this.props.homes) {
+        for(var element of this.myData) {
             TravelUtils.getCoordinatesFromLocation(element.name)
             .then((res) => {
                 if(res.length <= 0) return;
@@ -64,7 +66,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 } as ClusterModal)
 
                 i++;
-                if(i == this.props.homes.length) this.initialize();
+                if(i == this.myData.length) this.initialize();
             })
         }
     }
@@ -113,8 +115,12 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 }
                 initialTimestamp = endTimestamp;
             }
+            // TODAY
+            this.homesDataForClustering[endTimestamp+1] = this.homes[this.homes.length-1]
 
-            TravelUtils.setHomesData(this.homesDataForClustering)        
+
+            console.log("Final timestmap for home clustering" + endTimestamp+1)
+            BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
             var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
 
@@ -140,7 +146,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 i++;
             }
 
-        });
+        })
     }
 
     populateTripModalData = (steps: StepModal[], tripId: number) => {
@@ -148,6 +154,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var distanceTravelled = 0;
 
         var homeStep = this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1]
+        console.log(homeStep);
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
         var _stepModal = new StepModal()
         _stepModal.meanLatitude = homeStep.latitude
@@ -169,7 +176,12 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
 
         homeStep = this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1]
+
+        console.log(homeStep)
+        console.log(Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1)
+        console.log(homeStep)
         homeStep.timestamp = Math.floor(steps[steps.length-1].endTimestamp + 8.64e7)
+
         var _stepModal = new StepModal()
         _stepModal.meanLatitude = homeStep.latitude
         _stepModal.meanLongitude = homeStep.longitude

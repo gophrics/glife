@@ -2,9 +2,11 @@ import * as React from 'react'
 import { Image, View, TextInput, Button, Text, TouchableOpacity } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { ClusterModal } from '../Modals/ClusterModal';
+import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
+import { Page } from '../Modals/ApplicationEnums';
 
 interface IProps {
-    onDone: (data: any) => void
+    onDone: (page: string, data: any) => void
 }
 
 interface IState {
@@ -74,7 +76,6 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onLocationTextChange = (pos: number, text: string) => {
-        console.log(pos);
         this.cursor = pos
         if(this.homes.length <= this.cursor) this.homes.push({name: "", timestamp: NaN})
         this.homes[pos].name = text
@@ -116,8 +117,9 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         } as ClusterModal)
         */
 
-        if(this.validateData())
-            this.props.onDone(this.homes)
+        if(this.validateData()) {
+            this.props.onDone(Page[Page.LOADING], this.homes)
+        }
         else {
 
         }

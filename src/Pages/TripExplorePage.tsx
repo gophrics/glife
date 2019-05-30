@@ -6,6 +6,7 @@ import { TripComponent } from '../UIComponents/TripComponent';
 import { Page } from '../Modals/ApplicationEnums';
 import { TripModal } from '../Modals/TripModal';
 import Region from '../Modals/Region';
+import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 
 interface IState {
     markers: Region[],
@@ -14,22 +15,23 @@ interface IState {
 }
   
 interface IProps {
-    setPage: (page: string, data: any) => void,
-    data: MapPhotoPageModal
+    setPage: (page: string, data: any) => void
 }
 
 export default class TripExplorePage extends React.Component<IProps, IState> {
 
     tripRenderArray: any = []
+    myData: MapPhotoPageModal;
+
     constructor(props: any) {
         super(props);
-
+        this.myData = BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.TRIPEXPLORE]]
         // var locationData: Region[] = []
         // var imageData: string[] = []
         // var meanLatitudeTrip : number = 0;
         // var meanLongitudeTrip: number = 0;
 
-        for(var trip of this.props.data.trips) {
+        for(var trip of this.myData.trips) {
             this.tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress}/>)
             // for(var step of trip.tripAsSteps) {
             //     locationData.push.apply(locationData, step.markers);
@@ -57,7 +59,7 @@ export default class TripExplorePage extends React.Component<IProps, IState> {
     }
 
     render() {
-        if(this.props.data == undefined) return(<View />)
+        if(this.myData == undefined) return(<View />)
         
         return (
             <View style={{backgroundColor: '#454545'}}>

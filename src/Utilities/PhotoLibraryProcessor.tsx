@@ -8,20 +8,21 @@ export function getPhotosFromLibrary() {
             
             var imageDataList: Array<ImageDataModal> = [];
             for (var image of res.edges) {
-                var regionData: Region;
-                var imageData: ImageDataModal;
-
                 if (image && image.node && image.node.location &&
                     image.node.location.latitude && image.node.location.longitude) {
-                    
-                    regionData = new Region(image.node.location.latitude, image.node.location.longitude, 0, 0);
-                    imageData = new ImageDataModal(regionData, image.node.image.uri, image.node.timestamp*1000);
+                    var imageData = convertImagetoImageModal(image)
                     imageDataList.push(imageData);
                 }
             }
 
             return imageDataList;
         });
+}
+
+export function convertImagetoImageModal(image: any) {
+    var regionData = new Region(image.node.location.latitude, image.node.location.longitude, 0, 0);
+    var imageData = new ImageDataModal(regionData, image.node.image.uri, image.node.timestamp*1000);
+    return imageData;
 }
 
 

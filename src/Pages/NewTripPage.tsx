@@ -5,9 +5,9 @@ import { TripModal } from '../Modals/TripModal';
 import { Page } from '../Modals/ApplicationEnums';
 import { StepModal } from '../Modals/StepModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
+import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 
 interface IProps {
-    data: any,
     setPage: any
 }
 
@@ -20,12 +20,14 @@ export class NewTripPage extends React.Component<IProps, IState> {
     from: Date = new Date(0);
     to: Date = new Date();
     tripTitle: string = "";
+    myData: any
 
     constructor(props: IProps) {
         super(props)
         this.state = {
             showPicker: false
         }
+        this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
     }
 
     onTitleChange = (title: string) => {
@@ -70,14 +72,16 @@ export class NewTripPage extends React.Component<IProps, IState> {
         var homeStep: StepModal = new StepModal();
         homeStep.startTimestamp = this.from.getTime()
         homeStep.endTimestamp = this.from.getTime() + 3600000;
-        homeStep.meanLatitude = TravelUtils.homesForDataClustering[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
-        homeStep.meanLongitude = TravelUtils.homesForDataClustering[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
+        homeStep.meanLatitude = this.myData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
+        homeStep.meanLongitude = this.myData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
 
         trip.tripAsSteps.push(homeStep)
 
-        var profileData = this.props.data
+        var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
         profileData.trips.push(trip)
-        this.props.setPage(Page[Page.PROFILE], profileData)
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
+
+        this.props.setPage(Page[Page.PROFILE], null)
     }
 
     render() {

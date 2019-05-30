@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, AsyncStorage, SafeAreaView } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 // import RNBackgroundService from 'react-native-background-service';
 import {Page} from './Modals/ApplicationEnums';
 import TripExplorePage from './Pages/TripExplorePage';
@@ -10,15 +10,15 @@ import { OnBoardingPage } from './Pages/OnBoardingPage';
 import StepExplorePage from './Pages/StepExplorePage';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/NewTripPage';
-import { TravelUtils } from './Utilities/TravelUtils';
+import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
 // (res) => { console.log("Location: " + res) });
 
 
 interface IState {
-  page: string,
-  pageDataPipe: {[key:string]: any}
+  page: string
 }
 
 interface IProps {
@@ -32,35 +32,22 @@ export default class App extends React.Component<IProps, IState> {
     this.state = {
       // Change to Page.NONE
       page: Page[Page.SPLASHSCREEN],
-      pageDataPipe: {} 
     };
     // Uncomment for development
-    //AsyncStorage.clear()
-    AsyncStorage.getItem('parsedData')
+    AsyncStorage.clear()
+    
+    BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
-      if(res == null) {
-        this.setPage(Page[Page.ONBOARDING], null)
-      }
-      else {
-        this.state.pageDataPipe[Page[Page.PROFILE]] = JSON.parse(res);
-        this.setState({
-          page: Page[Page.PROFILE]
-        })
-      }
+      this.setState({
+        page: res == null ? Page[Page.ONBOARDING] : Page[Page.PROFILE]
+      })
     })
 
-    AsyncStorage.getItem("homesData")
-    .then((res) => {
-      if(res)
-        TravelUtils.homesForDataClustering = JSON.parse(res)
-    })
   }
 
   setPage(page: string, data: any) {
-    if(page == Page[Page.PROFILE]) {
-      AsyncStorage.setItem('parsedData', JSON.stringify(data))
-    }
-    this.state.pageDataPipe[page] = data;
+    BlobSaveAndLoad.Instance.setBlobValue(page, data);
+    BlobSaveAndLoad.Instance.saveBlob();
     // AsyncStorage.setItem('lastPage', page);
     // console.log()
     // AsyncStorage.setItem('lastPageDataPipe', JSON.stringify(this.state.pageDataPipe));
@@ -83,19 +70,19 @@ export default class App extends React.Component<IProps, IState> {
           <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
           {
             this.state.page == Page[Page.LOADING] ?
-              <LoadingPage onDone={(data) => this.setPage(Page[Page.PROFILE], data)} homes={this.state.pageDataPipe[Page[Page.LOADING]]}/>
+              <LoadingPage onDone={(data) => this.setPage(Page[Page.PROFILE], data)} />
             : this.state.page == Page[Page.PROFILE] ? 
-              <ProfilePage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.PROFILE]]} />
+              <ProfilePage setPage={this.setPage.bind(this)} />
             : this.state.page == Page[Page.TRIPEXPLORE] ? 
-              <TripExplorePage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.PROFILE]]} />
+              <TripExplorePage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.ONBOARDING] ? 
-              <OnBoardingPage onDone={(data) => this.setPage(Page[Page.LOADING], data)}/>
+              <OnBoardingPage onDone={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.STEPEXPLORE] ?
-              <StepExplorePage data={this.state.pageDataPipe[Page[Page.STEPEXPLORE]]}/>
+              <StepExplorePage/>
             : this.state.page == Page[Page.SPLASHSCREEN] ? 
               <SplashScreen />
             : this.state.page == Page[Page.NEWTRIP] ? 
-              <NewTripPage setPage={this.setPage.bind(this)} data={this.state.pageDataPipe[Page[Page.PROFILE]]}/>
+              <NewTripPage setPage={this.setPage.bind(this)}/>
             : <View />
           }
         </View>

@@ -57,42 +57,52 @@ export class ClusterProcessor {
         // ID Starts at 1, since 0 is for home
         var i = 1;
         for(var cluster of _stepCluster) {
-
-            if(cluster.length == 0) continue
-
-            var latitudeSum = 0;
-            var longitudeSum = 0;
-            var imageUris: string[] = [] 
-            var markers: Region[] = []
-
-            cluster.sort((a, b) => {
-                return a.timestamp-b.timestamp;
-            })
-
-            for(var item of cluster) {
-                latitudeSum += item.latitude;
-                longitudeSum += item.longitude;
-                imageUris.push(item.image)
-                markers.push(new Region(item.latitude, item.longitude, 0, 0))
-            }
-
-            var _step: StepModal = new StepModal()
-            _step.meanLatitude = latitudeSum/cluster.length;
-            _step.meanLongitude = longitudeSum/cluster.length;
-            _step.markers = markers;
-            _step.startTimestamp = cluster[0].timestamp;
-            _step.endTimestamp = cluster[cluster.length - 1].timestamp
-            _step.imageUris = imageUris
-            _step.masterImageUri = imageUris[0];
-            _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
-            _step.id = i;
-            stepResult.push(_step)
-            i++;
+            var _step = ClusterProcessor.convertClusterToStep(cluster, i)
+            if(_step.id != -1) stepResult.push(_step)
+            // Leaving gap for 99 more steps in between
+            i+=100;
         }
 
         return stepResult;
     }
 
+    static convertClusterToStep = (cluster: ClusterModal[], stepId: number) : StepModal => {
+
+        if(cluster.length == 0){
+            var _step = new StepModal();
+            _step.id = -1;
+            return _step;   
+        }
+
+        var latitudeSum = 0;
+        var longitudeSum = 0;
+        var imageUris: string[] = [] 
+        var markers: Region[] = []
+
+        cluster.sort((a, b) => {
+            return a.timestamp-b.timestamp;
+        })
+
+        for(var item of cluster) {
+            latitudeSum += item.latitude;
+            longitudeSum += item.longitude;
+            imageUris.push(item.image)
+            markers.push(new Region(item.latitude, item.longitude, 0, 0))
+        }
+
+        var _step: StepModal = new StepModal()
+        _step.meanLatitude = latitudeSum/cluster.length;
+        _step.meanLongitude = longitudeSum/cluster.length;
+        _step.markers = markers;
+        _step.startTimestamp = cluster[0].timestamp;
+        _step.endTimestamp = cluster[cluster.length - 1].timestamp
+        _step.imageUris = imageUris
+        _step.masterImageUri = imageUris[0];
+        _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
+        _step.id = stepId;
+
+        return _step;
+    }
 
     static RunMasterClustering = (clusterData: Array<ClusterModal>, homes: {[key:number]: ClusterModal}) : ClusterModal[][] => {
        

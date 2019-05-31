@@ -82,7 +82,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         return (
             <View style={{width: '100%', justifyContent:'center', flex: 1}}>
                 <Text style={styles.infoText}>Going through your photo library</Text>
-                <View style={{width: "60%"}}>
+                <View style={{width: "60%", alignSelf: 'center'}}>
                 {
                     Platform.OS == 'ios' ? 
                         <ProgressViewIOS progressViewStyle={'bar'} progress={this.state.finished/this.state.total}/>
@@ -154,10 +154,12 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                         finished: asynci
                     })
 
-                    if(this.dataToSendToNextPage.countriesVisited.indexOf(res.countryCode) == -1)
-                        this.dataToSendToNextPage.countriesVisited.push(res.countryCode)
+                    this.dataToSendToNextPage.countriesVisited.push.apply(this.dataToSendToNextPage.countriesVisited, res.countryCode)
 
                     if(asynci == trips.length) {
+                        let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
+                        this.dataToSendToNextPage.countriesVisited = x(this.dataToSendToNextPage.countriesVisited); // Removing duplicates
+                        console.log(this.dataToSendToNextPage.countriesVisited)
                         this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
                         this.dataToSendToNextPage.trips.sort((a, b) => {
                             return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
@@ -188,6 +190,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         
         var i = 0;
         var countries: string[] = []
+        var places: string[] = []
+
         var tripName = "";
         for(var step of steps) {
             tripResult.tripAsSteps.push(step);
@@ -214,13 +218,17 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         for(var step of steps) {
             await TravelUtils.getLocationFromCoordinates(step.meanLatitude, step.meanLongitude)
             .then((res) => {
-                if(res.address) {
+                if(res && res.address && (res.address.county || res.address.state_district)) {
                     step.location = res.address.county || res.address.state_district
                     if(countries.indexOf(res.address.country) == -1) {
                         if(countries.length == 0) tripName = (res.address.country)
                         else tripName += (", " + res.address.country)
+                        countries.push(res.address.country)
                     }
-                    countries.push(res.address.country)
+                    if(places.indexOf(step.location) == -1) {
+                        places.push(step.location)
+                    }
+                    tripResult.countryCode.push((res.address.country_code as string).toLocaleUpperCase())
                 }
             })
         }
@@ -240,6 +248,20 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             latitudeDelta: 0,
             longitudeDelta: 0
         };
+
+        if(countries.length == 1) {
+            // Only home country, use places
+            tripName = ""
+            var index = 0;
+            for(var place of places) {
+                if(index == 0) {
+                    tripName = place
+                } else 
+                tripName += ", " + place 
+                if(index == 2) break;
+                index++;
+            }
+        }
         tripResult.title = tripName
 
         return  tripResult

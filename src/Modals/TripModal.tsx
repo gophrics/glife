@@ -6,7 +6,7 @@ export class TripModal {
     tripAsSteps: StepModal[]
     location : Region
     title: string
-    countryCode: string
+    countryCode: string[]
     temperature : number
     daysOfTravel: number
     distanceTravelled : number
@@ -25,6 +25,6 @@ export class TripModal {
         this.startDate = ""
         this.endDate = ""
         this.title = ""
-        this.countryCode = ""
+        this.countryCode = []
     }
 }

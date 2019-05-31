@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 
 interface IProps {
-    navigatorFunc: (item: string, value: number) => {}
+    navigatorFunc: (item: string) => {}
     visible: boolean
 }
 
@@ -20,15 +20,15 @@ export class TopNavigator extends React.Component<IProps, IState> {
     }
 
     onProfilePress = () => {
-        this.props.navigatorFunc(Page[Page.PROFILE], 0)
+        this.props.navigatorFunc(Page[Page.PROFILE])
     }
 
     onNewTripPress = () => {
-        this.props.navigatorFunc(Page[Page.NEWTRIP], 0)
+        this.props.navigatorFunc(Page[Page.NEWTRIP])
     }
 
-    onMapPress = () => {
-        this.props.navigatorFunc(Page[Page.LOADING], 0)
+    onSettingPress = () => {
+        this.props.navigatorFunc(Page[Page.SETTING])
     }
 
     render() {
@@ -36,7 +36,7 @@ export class TopNavigator extends React.Component<IProps, IState> {
         return (
             this.props.visible ? 
             <View style={{ width: '100%', height: 60, flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
-                <TouchableOpacity style={{ height: 60 }} onPress={this.onProfilePress.bind(this)}>
+                <TouchableOpacity style={{ height: 60 }} onPress={this.onSettingPress.bind(this)}>
                     <Icon size={60} name='setting' />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ height: 60 }} onPress={this.onProfilePress.bind(this)}>

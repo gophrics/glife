@@ -64,9 +64,16 @@ export class ClusterProcessor {
         })
 
         var i = 100;
+        var previousStep: StepModal = new StepModal();
+        var distanceTravelled = 0
         for(var step of stepResult) {
             step.id = i
+            if(i > 100)
+            distanceTravelled += Math.floor(ClusterProcessor.EarthDistance({ latitude: step.meanLatitude, longitude: step.meanLongitude } as ClusterModal,
+                { latitude: previousStep.meanLatitude, longitude: previousStep.meanLongitude } as ClusterModal))
+            step.distanceTravelled = distanceTravelled;
             i+= 100;
+            previousStep = step;
         }
 
         return stepResult;

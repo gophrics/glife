@@ -138,6 +138,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                             placeholder="Enter home city"
                             onChangeText={(text) => this.onLocationTextChange(i - 1, text)}
                             style={{ fontSize: 20, padding: 3, color: 'black', borderWidth: 2, borderRadius: 10 }}
+                            textContentType={'addressCity'}
                         />
                         <Text style={{ color: 'black', marginBottom: 20 }}>{i == 0 ? "Long long ago" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
                     </View>

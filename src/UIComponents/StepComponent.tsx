@@ -11,7 +11,6 @@ interface IProps {
 }
 
 interface IState {
-    location: string,
     temperature: number,
 }
 
@@ -22,32 +21,11 @@ export class StepComponent extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
-            location: "Unknown",
             temperature: 0
         }
         var temperature = TravelUtils.getTemperatureFromLocationAndTime(this.props.modal.meanLatitude, this.props.modal.meanLongitude, this.props.modal.endTimestamp)
         this.setState({
             temperature: temperature
-        })
-        this.getLocation();
-    }
-
-    getLocation() {
-        if(this.retryCount <= 0) return;
-        this.retryCount--
-        TravelUtils.getLocationFromCoordinates(this.props.modal.meanLatitude, this.props.modal.meanLongitude)
-        .then((res: any) => {
-            if(res.address) {
-                var district: string = res.address.state_district
-                if(district == undefined) district = res.address.county
-                if(district == undefined) return
-                if(district.toLowerCase().endsWith("district")) district = district.substring(0, district.length-8)
-                this.setState({
-                    location: district
-                })
-            } else {
-                this.getLocation();
-            }
         })
     }
 
@@ -68,7 +46,7 @@ export class StepComponent extends React.Component<IProps, IState> {
                     <View style={{width: "100%", flexDirection: 'row', flexGrow: 1}}>
                         
                         <View style={{flex: 2, flexDirection: 'column', alignContent: 'flex-start'}}>
-                            <Text style={{flex: 1, fontSize: 18, color: 'black'}}>{this.state.location}</Text>
+                            <Text style={{flex: 1, fontSize: 18, color: 'black'}}>{this.props.modal.location == "" ? "Unknown" : this.props.modal.location}</Text>
                             {
                                 // TODO: Don't forget to add degree celsius}
                             }

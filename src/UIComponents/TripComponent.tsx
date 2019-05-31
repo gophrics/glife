@@ -20,7 +20,7 @@ export class TripComponent extends React.Component<IProps, IState> {
     style = StyleSheet.create({
         main: {
             borderRadius: 15,
-            backgroundColor: 'lightgrey',
+            backgroundColor: '#886cc1',
             padding: 10,
             marginLeft: 10,
             marginRight: 10

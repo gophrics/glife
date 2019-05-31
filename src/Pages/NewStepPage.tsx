@@ -9,6 +9,7 @@ interface IProps {
 
 interface IState {
     showPicker: boolean
+    imageUris: string[]
 }
 
 export class NewStepPage extends React.Component<IProps, IState> {
@@ -23,7 +24,8 @@ export class NewStepPage extends React.Component<IProps, IState> {
             'images': []
         }
         this.state = {
-            showPicker: false
+            showPicker: false,
+            imageUris: []
         }
     }
 
@@ -37,6 +39,13 @@ export class NewStepPage extends React.Component<IProps, IState> {
           }).then(images => {
             console.log(images);
             this.data['images'] = images;
+            var imageUris: string[] = []
+            for(var item of this.data['images']) {
+                imageUris.push(item.sourceURL)
+            }
+            this.setState({
+                imageUris: imageUris
+            })
           });
     }
 
@@ -77,10 +86,13 @@ export class NewStepPage extends React.Component<IProps, IState> {
                     width: "80%",
                     height: "90%",
                     borderRadius: 10,
+                    margin: 50,
+                    padding: 50,
+                    backgroundColor:"#00000000"
                 }}>
                 <Text>Go ahead, select your images. We'll generate the step for you</Text>
                 
-                    <TextInput placeholder={"Location"} onChangeText={(text) => this.onLocationTextChange(text)} />
+                    <TextInput style={{ fontSize: 20, padding: 3, color: 'black', borderWidth: 2, borderRadius: 10 }} placeholder={"Location"} onChangeText={(text) => this.onLocationTextChange(text)} />
                 
                     <Button title={"Image Picker"} onPress={this.onImagePickerPress.bind(this)} />
                     {/*
@@ -100,8 +112,8 @@ export class NewStepPage extends React.Component<IProps, IState> {
                     </View>
                     */}
                     {
-                        this.data['images'].map((image:any) => {
-                            <Image source={{uri: image.uri}} />
+                        this.state.imageUris.map((image:string) => {
+                            <Image source={{uri: image}} />
                         })
                     }
                     <Button title={"Done"} onPress={this.onDone} />

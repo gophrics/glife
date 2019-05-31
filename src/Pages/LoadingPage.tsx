@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle, ImageProgressEventDataIOS } from 'react-native';
+import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, ImageProgressEventDataIOS, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
 import Spinner from '../UIComponents/Spinner';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
 import ImageDataModal from '../Modals/ImageDataModal';
@@ -9,8 +9,6 @@ import { ClusterProcessor } from '../Utilities/ClusterProcessor';
 import { StepModal } from '../Modals/StepModal';
 import { TripModal } from '../Modals/TripModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
-import { ProfileModalInstance } from '../Modals/ProfileModalSingleton';
-import AsyncStorage from '@react-native-community/async-storage';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
 
@@ -38,7 +36,8 @@ interface IProps {
 }
 
 interface IState {
-
+    finished: number,
+    total: number
 }
 
 export default class LoadingPage extends React.Component<IProps, IState> {
@@ -55,6 +54,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
         this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
         var i = 0;
+
+        this.state = {
+            finished: 0,
+            total: 100
+        }
         for(var element of this.myData) {
             TravelUtils.getCoordinatesFromLocation(element.name)
             .then((res) => {
@@ -78,6 +82,14 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         return (
             <View style={{width: '100%', justifyContent:'center', flex: 1}}>
                 <Text style={styles.infoText}>Going through your photo library</Text>
+                <View style={{width: "60%"}}>
+                {
+                    Platform.OS == 'ios' ? 
+                        <ProgressViewIOS progressViewStyle={'bar'} progress={this.state.finished/this.state.total}/>
+                    : 
+                        <ProgressBarAndroid progress={this.state.finished/this.state.total}/>
+                }
+                </View>
                 <View style={styles.spinnerContainer}>
                     <Spinner/>
                 </View>
@@ -123,7 +135,9 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
             var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
-
+            this.setState({
+                total: trips.length
+            })
             i = 0;
             var asynci = 0;
             for(var trip of trips) {
@@ -135,6 +149,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 .then((res) => {
                     this.dataToSendToNextPage.trips.push(res);
                     asynci++;
+
+                    this.setState({
+                        finished: asynci
+                    })
+
                     if(this.dataToSendToNextPage.countriesVisited.indexOf(res.countryCode) == -1)
                         this.dataToSendToNextPage.countriesVisited.push(res.countryCode)
 
@@ -153,9 +172,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         })
     }
 
-    populateTripModalData = (steps: StepModal[], tripId: number) => {
+    async populateTripModalData (steps: StepModal[], tripId: number) {
         var tripResult : TripModal = new TripModal();
-        var distanceTravelled = 0;
 
         var homeStep = this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
@@ -165,17 +183,15 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         _stepModal.startTimestamp = homeStep.timestamp
         _stepModal.endTimestamp = homeStep.timestamp
         _stepModal.id = 0;
+        _stepModal.distanceTravelled = 0;
         tripResult.tripAsSteps.push(_stepModal)
         
         var i = 0;
+        var countries: string[] = []
+        var tripName = "";
         for(var step of steps) {
             tripResult.tripAsSteps.push(step);
-
-            if(i > 0)
-            distanceTravelled += ClusterProcessor.EarthDistance({latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude} as ClusterModal,
-                                {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal)
             i++;
-
         }
 
         homeStep = this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1]
@@ -187,18 +203,34 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         _stepModal.startTimestamp = homeStep.timestamp
         _stepModal.endTimestamp = homeStep.timestamp
         _stepModal.id = (tripResult.tripAsSteps.length+1)*100
+        _stepModal.distanceTravelled = Math.floor(tripResult.tripAsSteps[i-1].distanceTravelled + 
+            ClusterProcessor.EarthDistance({latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude} as ClusterModal,
+            {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal))
+
         tripResult.tripAsSteps.push(_stepModal)
         i++;
-        distanceTravelled += ClusterProcessor.EarthDistance({latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude} as ClusterModal,
-            {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal)
 
+        // Load locations
+        for(var step of steps) {
+            await TravelUtils.getLocationFromCoordinates(step.meanLatitude, step.meanLongitude)
+            .then((res) => {
+                if(res.address) {
+                    step.location = res.address.county || res.address.state_district
+                    if(countries.indexOf(res.address.country) == -1) {
+                        if(countries.length == 0) tripName = (res.address.country)
+                        else tripName += (", " + res.address.country)
+                    }
+                    countries.push(res.address.country)
+                }
+            })
+        }
 
         tripResult.tripId = tripId;
         tripResult.daysOfTravel = Math.abs(Math.floor(steps[steps.length-1].endTimestamp/8.64e7) - Math.floor(steps[0].startTimestamp/8.64e7))
         // Handling edge case
         if(tripResult.daysOfTravel == 0) tripResult.daysOfTravel = 1;
         
-        tripResult.distanceTravelled = Math.floor(distanceTravelled)
+        tripResult.distanceTravelled = tripResult.tripAsSteps[tripResult.tripAsSteps.length - 1].distanceTravelled
         tripResult.startDate = TravelUtils.getDateFromTimestamp(steps[0].startTimestamp);
         tripResult.endDate = TravelUtils.getDateFromTimestamp(steps[steps.length-1].endTimestamp);
         tripResult.location = {
@@ -208,16 +240,9 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             latitudeDelta: 0,
             longitudeDelta: 0
         };
+        tripResult.title = tripName
 
-        return  TravelUtils.getLocationFromCoordinates(tripResult.location.latitude, tripResult.location.longitude)
-                .then((res) => {
-                    if(!res.address) { return; }
-                    tripResult.title = res.address.country
-                    tripResult.countryCode = (res.address.country_code as string).toLocaleUpperCase()
-                })
-                .then(() => {
-                    return tripResult;
-                })
+        return  tripResult
     }
        
 }

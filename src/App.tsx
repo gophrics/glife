@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { View, SafeAreaView } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  DatePickerIOS,
+} from 'react-native'
 // import RNBackgroundService from 'react-native-background-service';
 import {Page} from './Modals/ApplicationEnums';
 import TripExplorePage from './Pages/TripExplorePage';

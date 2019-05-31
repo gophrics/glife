@@ -26,7 +26,8 @@ interface IState {
     photoModalVisible: boolean,
     newStep: boolean,
     newStepId: number,
-    myData: TripModal
+    myData: TripModal,
+    lastStepClicked: StepModal
 }
 
 interface IProps {
@@ -38,7 +39,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
     travelCardArray: any = []
     mapView: any = "";
-    lastStepClicked: StepModal = new StepModal()
     constructor(props: any) {
         super(props);
         this.initialize();
@@ -63,7 +63,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
             latitudeSum += step.meanLatitude
             longitudeSum += step.meanLongitude
-            this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={distanceTravelled} onPress={(step: StepModal) => this.onStepClick(step)} />)
+            this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
             this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
             markers.push.apply(markers, step.markers)
             imageUriData.push.apply(imageUriData, step.imageUris)
@@ -80,10 +80,11 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            myData: trip
+            myData: trip,
+            lastStepClicked: trip.tripAsSteps[0]
         }
         setTimeout(() => {
-            this.onStepClick(this.state.myData.tripAsSteps[0])
+            this.zoomToStep(this.state.myData.tripAsSteps[0])
         }, 1000)
     }
 
@@ -94,9 +95,9 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         })
     }
 
-    onStepClick = (step: StepModal) => {
-        this.lastStepClicked = step
-        this.setState({})
+    zoomToStep = (step: StepModal) => {
+        if(step == undefined) return;
+        
         this.mapView.animateToRegion({
             latitude: step.meanLatitude,
             longitude: step.meanLongitude,
@@ -111,29 +112,32 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                     longitude: step.meanLongitude,
                     latitudeDelta: 0,
                     longitudeDelta: 0
-                } as Region
+                } as Region,
+                lastStepClicked: step
             })
         }, 1200)
     }
 
-    onMarkerPress = (e: any, index: number) => {
-        if (this.state.myData.tripAsSteps[index].meanLatitude != this.lastStepClicked.meanLatitude ||
-            this.state.myData.tripAsSteps[index].meanLatitude != this.lastStepClicked.meanLongitude) {
-            this.lastStepClicked = this.state.myData.tripAsSteps[index]
+    onMarkerPress = (e: any, step: StepModal) => {
+        if (step.meanLatitude != this.state.lastStepClicked.meanLatitude ||
+            step.meanLatitude != this.state.lastStepClicked.meanLongitude) {
             this.mapView.animateToRegion({
-                latitude: this.state.myData.tripAsSteps[index].meanLatitude,
-                longitude: this.state.myData.tripAsSteps[index].meanLongitude,
+                latitude: step.meanLatitude,
+                longitude: step.meanLongitude,
                 latitudeDelta: .3,
                 longitudeDelta: .3
             } as Region, 1000)
         }
         this.setState({
-            triangulatedLocation: new Region(this.lastStepClicked.meanLatitude, this.lastStepClicked.meanLongitude, 0, 0),
-            photoModalVisible: true
+            triangulatedLocation: new Region(this.state.lastStepClicked.meanLatitude, this.state.lastStepClicked.meanLongitude, 0, 0),
+            photoModalVisible: true,
+            lastStepClicked: step
         })
     }
 
     newStepOnDone = (data: any) => {
+
+        if(data['images'].length == 0) return
 
         var step = new StepModal()
         step.imageUris = data['images']
@@ -159,7 +163,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         var _step = ClusterProcessor.convertClusterToStep(clusterData);
         _step.id = this.state.newStepId;
 
-
         //Right now, we're calcualting step based on images, and not overriding them
 
         var trip = this.state.myData
@@ -176,8 +179,18 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         this.initialize()
     }
 
+
+    onScroll = (event: any) => {
+        console.log(event.nativeEvent.contentOffset.x);
+        this.setState({
+            lastStepClicked: this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x/(deviceWidth*.75))]
+        }) 
+        this.zoomToStep(this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x/(deviceWidth*.75))])
+    }
+
     render() {
-        if (this.state.myData == undefined) return (<View />)
+        if (this.state.myData == undefined || 
+            this.state.lastStepClicked == undefined ) return (<View />)
         return (
             <View>
                 <View>
@@ -191,13 +204,13 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                         <Marker
                                             key={index}
                                             coordinate={step.masterMarker}
-                                            style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox}
-                                            onPress={(e) => this.onMarkerPress(e, index)}
+                                            style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox}
+                                            onPress={(e) => this.onMarkerPress(e, step)}
                                         >
                                             {step.masterImageUri != "" ?
-                                                <View style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
+                                                <View style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
                                                     <Image
-                                                        style={this.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
+                                                        style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
                                                 </View>
                                                 : <View />}
                                         </Marker>
@@ -207,7 +220,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
                     </MapView>
                     {
-                        <ScrollView ref={'scrollRef'} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: '#454545', overflow: 'hidden' }}>
+                        <ScrollView decelerationRate={0.6} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: '#454545', overflow: 'hidden' }}>
                             {this.travelCardArray}
                         </ScrollView>
                     }
@@ -244,7 +257,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                     decelerationRate={0}
                                 >
                                     {
-                                        this.lastStepClicked.imageUris.map((imageUri, index) => (
+                                        this.state.lastStepClicked.imageUris.map((imageUri, index) => (
                                             imageUri != "" ?
                                                 <View style={{ width: deviceWidth - 60, height: deviceWidth - 60, alignContent: 'center', backgroundColor: 'white' }} key={index}>
                                                     <Image

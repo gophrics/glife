@@ -137,6 +137,10 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
                     if(asynci == trips.length) {
                         this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
+                        this.dataToSendToNextPage.trips.sort((a, b) => {
+                            return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+                        })
+                        for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
                         this.props.onDone(this.dataToSendToNextPage);
                     }
                 })

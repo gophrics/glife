@@ -221,7 +221,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
                     </MapView>
                     {
-                        <ScrollView decelerationRate={0.6}  snapToInterval={(deviceWidth*3/4 + 25)} scrollEventThrottle={10000} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: '#454545', overflow: 'hidden' }}>
+                        <ScrollView decelerationRate={0.6}  snapToInterval={(deviceWidth*3/4 + 25)} scrollEventThrottle={10000} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: 'lightgreen', overflow: 'hidden' }}>
                             {this.travelCardArray}
                         </ScrollView>
                     }
@@ -260,7 +260,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                     {
                                         this.state.lastStepClicked.imageUris.map((imageUri, index) => (
                                             imageUri != "" ?
-                                                <View style={{ width: deviceWidth - 60, height: deviceWidth - 60, alignContent: 'center', backgroundColor: 'white' }} key={index}>
+                                                <View style={{ width: deviceWidth - 60, height: deviceWidth - 60, alignContent: 'center', backgroundColor: 'black' }} key={index}>
                                                     <Image
                                                         resizeMode='contain'
                                                         style={{ width: deviceWidth - 60, height: deviceWidth - 60 }} source={{ uri: imageUri }}

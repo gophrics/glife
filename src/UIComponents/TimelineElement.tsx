@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         left: 20,
         borderRadius: 6,
         borderWidth: 6,
-        borderColor: 'white'
+        borderColor: 'black'
     }
 });
 
@@ -41,7 +41,7 @@ export default class TimelineElement extends React.Component<IProps, any> {
                 <View>
                     <View style={styles.el} />
                     <View style={styles.point} />
-                    <Text style={{left: 0, color: 'white', top: 25}}> {this.props.year + "\n" + this.props.month}  </Text>
+                    <Text style={{left: 0, color: 'black', top: 25}}> {this.props.year + "\n" + this.props.month}  </Text>
                 </View>
             </TouchableHighlight>
         );

@@ -28,7 +28,7 @@ var styles = StyleSheet.create<Styles>({
         flex: 9,
         padding: '20%',
         alignSelf: 'center',
-        color:'white'
+        color:'black'
     }
 });
 

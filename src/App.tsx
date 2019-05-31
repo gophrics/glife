@@ -69,7 +69,7 @@ export default class App extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <SafeAreaView style={{flex:1, backgroundColor:'#505050' }} >
+      <SafeAreaView style={{flex:1, backgroundColor:'#31de70' }} >
         <View style={{flexDirection: 'column', height: "100%"}}>
           <View style={{height: 60}}>
             <TopNavigator visible={true} navigatorFunc={this.sliderChange.bind(this)}/>

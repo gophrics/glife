@@ -57,7 +57,6 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     </View>
                     <View style={{height: 10}}/>
                     {this.tripRenderArray}
-                    <Button title="Add Trip" onPress={this.newTripButtonPress.bind(this)} />
                 </ScrollView>
         )
     }

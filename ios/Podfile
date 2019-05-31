@@ -23,6 +23,8 @@ post_install do |installer|
 end
 
 # Add new pods below this line
+pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
+
 pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
 pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'

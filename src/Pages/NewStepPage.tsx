@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { View, TouchableOpacity, Text, Image, Modal, TextInput, Button, SafeAreaView } from 'react-native'
-
-var ImagePicker = require("react-native-image-picker")
+import ImagePicker from 'react-native-image-crop-picker';
 
 interface IProps {
     visible: boolean,
@@ -33,11 +32,12 @@ export class NewStepPage extends React.Component<IProps, IState> {
     }
 
     onImagePickerPress = () => {
-        ImagePicker.launchImageLibrary({}, (response: any) => {
-            // Same code as in above section!
-            this.data['images'].push(response)
-            this.setState({});
-        });
+        ImagePicker.openPicker({
+            multiple: true
+          }).then(images => {
+            console.log(images);
+            this.data['images'] = images;
+          });
     }
 
     onCalenderClick = (index: number) => {

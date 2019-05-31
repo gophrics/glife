@@ -29,18 +29,18 @@ export class StatsAsCardComponent extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
     card: {
-        borderRadius: 20,
-        borderWidth: 0.5,
-        borderColor: '#d6d7da',
+        borderRadius: 15,
+        borderColor: 'black',
         width: '45%',
         height: '100%',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        backgroundColor: 'lightblue'
     },
 
     text: {
         fontSize: 18,
         textAlign: 'right',
         padding: 10,
-        color:'white'
+        color:'black'
     }
 });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { TripModal } from '../Modals/TripModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
 import { throwStatement } from '@babel/types';
@@ -17,6 +17,15 @@ interface IProps {
 export class TripComponent extends React.Component<IProps, IState> {
 
     retryCount = 20;
+    style = StyleSheet.create({
+        main: {
+            borderRadius: 15,
+            backgroundColor: 'lightgrey',
+            padding: 10,
+            marginLeft: 10,
+            marginRight: 10
+        }
+    })
 
     constructor(props: IProps) {
         super(props)
@@ -46,11 +55,11 @@ export class TripComponent extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <TouchableOpacity onPress={(e) => this.props.onPress(this.props.tripModal)}>
-                <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15, borderWidth: 2}}>
+            <TouchableOpacity onPress={(e) => this.props.onPress(this.props.tripModal)} style={this.style.main}>
+                <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15}}>
                     <View style={{flex: 2, flexDirection: 'column', alignContent: 'flex-start'}}>
-                        <Text style={{flex: 1, color: 'white', fontSize: 18}}>{this.props.tripModal.title}</Text>
-                        <Text style={{flex: 2, color: 'white', fontSize: 12}}>{this.props.tripModal.startDate + "\n"}{this.props.tripModal.endDate ? this.props.tripModal.endDate : "Present"}</Text>
+                        <Text style={{flex: 1, color: 'black', fontSize: 18}}>{this.props.tripModal.title}</Text>
+                        <Text style={{flex: 2, color: 'black', fontSize: 12}}>{this.props.tripModal.startDate + "\n"}{this.props.tripModal.endDate ? this.props.tripModal.endDate : "Present"}</Text>
                         {
                             // TODO: Don't forget to add degree celsius}
                         }
@@ -59,12 +68,12 @@ export class TripComponent extends React.Component<IProps, IState> {
                     <View style={{width:40}}>
                     </View>
                     <View style={{flex: 3, flexDirection: 'column'}}>
-                        <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.tripModal.daysOfTravel + " days"}</Text>
-                        <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.tripModal.distanceTravelled + " km"}</Text>
-                        <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{""}</Text>
+                        <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{this.props.tripModal.daysOfTravel + " days"}</Text>
+                        <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{this.props.tripModal.distanceTravelled + " km"}</Text>
+                        <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{""}</Text>
                         {
                             this.props.tripModal.activities ? this.props.tripModal.activities.map((val, index) => (
-                                <Text key={index} style={{alignSelf: 'flex-end', color: 'white', fontSize: 14}}>{val}</Text>
+                                <Text key={index} style={{alignSelf: 'flex-end', color: 'black', fontSize: 14}}>{val}</Text>
                             )) : null
                         }
                     </View>

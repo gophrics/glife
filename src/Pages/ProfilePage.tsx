@@ -31,7 +31,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
 
         for(var trip of this.myData.trips) {
             this.tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress}/>)
-            this.tripRenderArray.push(<View style={{height:10}} />)
+            this.tripRenderArray.push(<View key={trip.tripId+'v'} style={{height:10}} />)
         }
         this.state = {
             bottom: this.tripRenderArray.length*60

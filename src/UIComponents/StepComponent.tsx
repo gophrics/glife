@@ -62,9 +62,9 @@ export class StepComponent extends React.Component<IProps, IState> {
     render() {
 
         return (
-            <TouchableOpacity onPress={this.onPress.bind(this)} style={{width: deviceWidth*3/4, backgroundColor: 'lightorange'}}>
+            <TouchableOpacity onPress={this.onPress.bind(this)} style={{width: deviceWidth*3/4}}>
                 <Text style={{alignSelf: 'center', fontSize: 30, color:'black'}}>{"Day " + this.props.daysOfTravel}</Text>
-                <View style={{flexDirection:'column', height:"75%", marginLeft:5, marginRight:5, padding:10, borderRadius: 15, borderWidth: 2}}>
+                <View style={{flexDirection:'column', height:"75%", marginLeft:5, marginRight:5, padding:10, borderRadius: 15, backgroundColor: 'lightgreen', borderWidth: 2}}>
                     <View style={{width: "100%", flexDirection: 'row', flexGrow: 1}}>
                         
                         <View style={{flex: 2, flexDirection: 'column', alignContent: 'flex-start'}}>

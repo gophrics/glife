@@ -37,7 +37,7 @@ export class TravelUtils {
 
     static getDateFromTimestamp(timestamp: number): string {
         var date = new Date(timestamp)
-        return date.getDay() + " " + months[date.getMonth()] + " " + date.getFullYear()
+        return date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()
     }
 
     static getTemperatureFromLocationAndTime(latitude: number, longitude: number, timestamp: number) : number {

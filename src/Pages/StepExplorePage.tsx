@@ -18,10 +18,10 @@ import { Page } from '../Modals/ApplicationEnums';
 import ImageDataModal from '../Modals/ImageDataModal';
 import { CustomButton } from '../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { TravelUtils } from '../Utilities/TravelUtils';
 
 interface IState {
     markers: Region[],
-    triangulatedLocation: Region,
     imageUriData: string[],
     polylineArr: any[],
     photoModalVisible: boolean,
@@ -41,7 +41,7 @@ const deviceWidth = Dimensions.get('window').width
 export default class StepExplorePage extends React.Component<IProps, IState> {
 
     travelCardArray: any = []
-    mapView: any = "";
+    mapView: MapView | null = null;
     constructor(props: any) {
         super(props);
         this.props.setNavigator(false)
@@ -75,9 +75,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             key++;
         }
 
-        var triangulatedLocation = new Region(latitudeSum / trip.tripAsSteps.length, longitudeSum / trip.tripAsSteps.length, 0, 0)
         this.state = {
-            triangulatedLocation: triangulatedLocation,
             markers: markers,
             imageUriData: imageUriData,
             polylineArr: polylineArr,
@@ -87,9 +85,10 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             myData: trip,
             lastStepClicked: trip.tripAsSteps[0]
         }
-        setTimeout(() => {
-            this.zoomToStep(this.state.myData.tripAsSteps[0])
-        }, 1000)
+    }
+
+    componentDidMount() {
+        this.zoomToStep(this.state.myData.tripAsSteps[0])
     }
 
     onNewStepPress = (step: StepModal) => {
@@ -101,32 +100,24 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     }
 
     zoomToStep = (step: StepModal) => {
-        if(step == undefined) return;
-        
-        this.mapView.animateToRegion({
+        if (step == undefined) return;
+
+        (this.mapView as MapView).animateToRegion({
             latitude: step.meanLatitude,
             longitude: step.meanLongitude,
             latitudeDelta: .3,
             longitudeDelta: .3
-        } as Region, 1000)
+        } as Region)
 
-        setTimeout(() => {
-            this.setState({
-                triangulatedLocation: {
-                    latitude: step.meanLatitude,
-                    longitude: step.meanLongitude,
-                    latitudeDelta: 0,
-                    longitudeDelta: 0
-                } as Region,
-                lastStepClicked: step
-            })
-        }, 4000)
+        this.setState({
+            lastStepClicked: step
+        })
     }
 
     onMarkerPress = (e: any, step: StepModal) => {
         if (step.meanLatitude != this.state.lastStepClicked.meanLatitude ||
             step.meanLatitude != this.state.lastStepClicked.meanLongitude) {
-            this.mapView.animateToRegion({
+            (this.mapView as MapView).animateToRegion({
                 latitude: step.meanLatitude,
                 longitude: step.meanLongitude,
                 latitudeDelta: .3,
@@ -134,7 +125,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             } as Region, 1000)
         }
         this.setState({
-            triangulatedLocation: new Region(this.state.lastStepClicked.meanLatitude, this.state.lastStepClicked.meanLongitude, 0, 0),
             photoModalVisible: true,
             lastStepClicked: step
         })
@@ -142,55 +132,62 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
     newStepOnDone = (data: any) => {
 
-        if(data['images'].length == 0) {
+        if (data['images'].length == 0) {
             this.setState({
-                newStep: false})
-                return}
-
-        var step = new StepModal()
-        step.imageUris = data['images']
-        var imageDataList: Array<ImageDataModal> = []
-        for (var image of data['images']) {
-            console.log(image)
-            if (image.latitude && image.longitude) {
-                imageDataList.push(new ImageDataModal(new Region(image.latitude, image.longitude, 0, 0), image.uri, (new Date(image.timestamp)).getTime()))
-            }
+                newStep: false
+            })
+            return
         }
 
-        var clusterData: Array<ClusterModal> = [];
-        for (var i = 0; i < imageDataList.length; i++) {
-            clusterData.push({
-                image: imageDataList[i].image,
-                latitude: imageDataList[i].location.latitude,
-                longitude: imageDataList[i].location.longitude,
-                timestamp: imageDataList[i].timestamp,
-                id: i
-            } as ClusterModal)
-        }
+        TravelUtils.getCoordinatesFromLocation(data['location'])
+            .then((res: any) => {
+                res = res[0]
 
-        var _step = ClusterProcessor.convertClusterToStep(clusterData);
-        _step.id = this.state.newStepId;
+                var step = new StepModal()
+                step.imageUris = data['images']
+                var imageDataList: Array<ImageDataModal> = []
+                for (var image of data['images']) {
+                    if (image.latitude && image.longitude) {
+                        imageDataList.push(new ImageDataModal(new Region(res.lat, res.lon, 0, 0), image.sourceURL, (new Date(image.timestamp)).getTime()))
+                    }
+                }
 
-        //Right now, we're calcualting step based on images, and not overriding them
+                var clusterData: Array<ClusterModal> = [];
+                for (var i = 0; i < imageDataList.length; i++) {
+                    clusterData.push({
+                        image: imageDataList[i].image,
+                        latitude: imageDataList[i].location.latitude,
+                        longitude: imageDataList[i].location.longitude,
+                        timestamp: imageDataList[i].timestamp,
+                        id: i
+                    } as ClusterModal)
+                }
 
-        var trip = this.state.myData
-        trip.tripAsSteps.push(_step);
-        trip.tripAsSteps.sort((a: StepModal, b: StepModal) => {
-            return a.id - b.id;
-        })
+                var _step = ClusterProcessor.convertClusterToStep(clusterData);
+                _step.id = this.state.newStepId;
 
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
-        this.setState({
-            newStep: false,
-            myData: trip
-        })
-        this.initialize()
+                //Right now, we're calcualting step based on images, and not overriding them
+
+                var trip = this.state.myData
+                trip.tripAsSteps.push(_step);
+                trip.tripAsSteps.sort((a: StepModal, b: StepModal) => {
+                    return a.id - b.id;
+                })
+
+                BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
+                this.setState({
+                    newStep: false,
+                    myData: trip
+                })
+                this.initialize()
+            })
+
     }
 
 
     onScroll = (event: any) => {
-        if(event.nativeEvent.contentOffset.x < 0 || (Math.floor(event.nativeEvent.contentOffset.x/(deviceWidth*.75))) > this.state.myData.tripAsSteps.length) return; 
-        this.zoomToStep(this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x/(deviceWidth*.75))])
+        if (event.nativeEvent.contentOffset.x < 0 || (Math.ceil(event.nativeEvent.contentOffset.x / (deviceWidth * 3/4 + 25))) > this.state.myData.tripAsSteps.length) return;
+        this.zoomToStep(this.state.myData.tripAsSteps[Math.ceil(event.nativeEvent.contentOffset.x / (deviceWidth * 3/4 + 25))])
     }
 
     onBackPress = () => {
@@ -198,43 +195,42 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     }
 
     render() {
-        if (this.state.myData == undefined || 
-            this.state.lastStepClicked == undefined ) return (<View />)
+        if (this.state.myData == undefined ||
+            this.state.lastStepClicked == undefined) return (<View />)
         return (
             <View>
                 <View>
                     <MapView style={{ width: '100%', height: '77%' }}
                         ref={ref => this.mapView = ref}
-                        region={this.state.triangulatedLocation}
                     >
                         {
                             this.state.myData.tripAsSteps.map((step, index) => (
-                                step.masterMarker != undefined ? 
-                                        <Marker
-                                            key={index}
-                                            coordinate={step.masterMarker}
-                                            style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox}
-                                            onPress={(e) => this.onMarkerPress(e, step)}
-                                        >
-                                            {step.masterImageUri != "" ?
-                                                <View style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
-                                                    <Image
-                                                        style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
-                                                </View>
-                                                : <View />}
-                                        </Marker>
-                                : <View />
+                                step.masterMarker != undefined ?
+                                    <Marker
+                                        key={index}
+                                        coordinate={step.masterMarker}
+                                        style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox}
+                                        onPress={(e) => this.onMarkerPress(e, step)}
+                                    >
+                                        {step.masterImageUri != "" ?
+                                            <View style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
+                                                <Image
+                                                    style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
+                                            </View>
+                                            : <View />}
+                                    </Marker>
+                                    : <View />
                             ))
                         }
                         <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
                         <Callout>
-                            <TouchableOpacity onPress={this.onBackPress.bind(this)}  style={{padding: 10}} >
-                                <Icon size={60} name='caretleft'/>
+                            <TouchableOpacity onPress={this.onBackPress.bind(this)} style={{ padding: 10 }} >
+                                <Icon size={60} name='caretleft' />
                             </TouchableOpacity>
                         </Callout>
                     </MapView>
                     {
-                        <ScrollView decelerationRate={0.6}  snapToInterval={(deviceWidth*3/4 + 25)} scrollEventThrottle={10000} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: 'lightgreen', overflow: 'hidden' }}>
+                        <ScrollView decelerationRate={0.6} snapToInterval={(deviceWidth * 3 / 4 + 25)} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', overflow: 'hidden' }}>
                             {this.travelCardArray}
                         </ScrollView>
                     }

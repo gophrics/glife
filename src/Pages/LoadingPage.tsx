@@ -194,7 +194,10 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
 
         tripResult.tripId = tripId;
-        tripResult.daysOfTravel = Math.floor(Math.abs(steps[steps.length-1].endTimestamp - steps[0].startTimestamp)/8.64e7)
+        tripResult.daysOfTravel = Math.abs(Math.floor(steps[steps.length-1].endTimestamp/8.64e7) - Math.floor(steps[0].startTimestamp/8.64e7))
+        // Handling edge case
+        if(tripResult.daysOfTravel == 0) tripResult.daysOfTravel = 1;
+        
         tripResult.distanceTravelled = Math.floor(distanceTravelled)
         tripResult.startDate = TravelUtils.getDateFromTimestamp(steps[0].startTimestamp);
         tripResult.endDate = TravelUtils.getDateFromTimestamp(steps[steps.length-1].endTimestamp);

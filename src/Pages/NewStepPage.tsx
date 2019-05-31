@@ -79,9 +79,9 @@ export class NewStepPage extends React.Component<IProps, IState> {
                     borderRadius: 10,
                 }}>
                 <Text>Go ahead, select your images. We'll generate the step for you</Text>
-                {/*
+                
                     <TextInput placeholder={"Location"} onChangeText={(text) => this.onLocationTextChange(text)} />
-                */}
+                
                     <Button title={"Image Picker"} onPress={this.onImagePickerPress.bind(this)} />
                     {/*
                     <View style={{position: 'absolute', left: 0}}>

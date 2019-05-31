@@ -27,7 +27,7 @@ export class NewTripPage extends React.Component<IProps, IState> {
         this.state = {
             showPicker: false
         }
-        this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
+        this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP])
     }
 
     onTitleChange = (title: string) => {
@@ -79,9 +79,7 @@ export class NewTripPage extends React.Component<IProps, IState> {
 
         var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
         profileData.trips.push(trip)
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
-
-        this.props.setPage(Page[Page.PROFILE], null)
+        this.props.setPage(Page[Page.PROFILE], profileData)
     }
 
     render() {

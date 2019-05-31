@@ -89,6 +89,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     }
 
     onNewStepPress = (step: StepModal) => {
+        console.log("onNewStepPress called")
         this.setState({
             newStep: true,
             newStepId: step.id + 1
@@ -115,7 +116,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 } as Region,
                 lastStepClicked: step
             })
-        }, 1200)
+        }, 4000)
     }
 
     onMarkerPress = (e: any, step: StepModal) => {
@@ -137,7 +138,10 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
     newStepOnDone = (data: any) => {
 
-        if(data['images'].length == 0) return
+        if(data['images'].length == 0) {
+            this.setState({
+                newStep: false})
+                return}
 
         var step = new StepModal()
         step.imageUris = data['images']
@@ -181,10 +185,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
 
     onScroll = (event: any) => {
-        console.log(event.nativeEvent.contentOffset.x);
-        this.setState({
-            lastStepClicked: this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x/(deviceWidth*.75))]
-        }) 
+        if(event.nativeEvent.contentOffset.x < 0 || (Math.floor(event.nativeEvent.contentOffset.x/(deviceWidth*.75))) > this.state.myData.tripAsSteps.length) return; 
         this.zoomToStep(this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x/(deviceWidth*.75))])
     }
 
@@ -220,7 +221,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
                     </MapView>
                     {
-                        <ScrollView decelerationRate={0.6} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: '#454545', overflow: 'hidden' }}>
+                        <ScrollView decelerationRate={0.6}  snapToInterval={(deviceWidth*3/4 + 25)} scrollEventThrottle={10000} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: '#454545', overflow: 'hidden' }}>
                             {this.travelCardArray}
                         </ScrollView>
                     }

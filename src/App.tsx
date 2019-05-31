@@ -71,7 +71,9 @@ export default class App extends React.Component<IProps, IState> {
     return (
       <SafeAreaView style={{flex:1, backgroundColor:'#505050' }} >
         <View style={{flexDirection: 'column', height: "100%"}}>
-          <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
+          <View style={{height: 60}}>
+            <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
+          </View>
           {
             this.state.page == Page[Page.LOADING] ?
               <LoadingPage onDone={(data) => this.setPage(Page[Page.PROFILE], data)} />

@@ -34,6 +34,7 @@ export class TopNavigator extends React.Component<IProps, IState> {
     render() {
 
         return (
+            this.props.visible ? 
             <View style={{ width: '100%', height: 60, flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
                 <TouchableOpacity style={{ height: 60 }} onPress={this.onProfilePress.bind(this)}>
                     <Icon size={60} name='setting' />
@@ -45,6 +46,7 @@ export class TopNavigator extends React.Component<IProps, IState> {
                     <Icon size={60} name='plus' />
                 </TouchableOpacity>
             </View>
+            : <View />
         )
     }
 }

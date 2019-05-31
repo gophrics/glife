@@ -22,7 +22,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 interface IState {
-  page: string
+  page: string,
+  navigatorVisible: boolean
 }
 
 interface IProps {
@@ -36,6 +37,7 @@ export default class App extends React.Component<IProps, IState> {
     this.state = {
       // Change to Page.NONE
       page: Page[Page.SPLASHSCREEN],
+      navigatorVisible: true
     };
     // Uncomment for development
     //AsyncStorage.clear()
@@ -50,7 +52,8 @@ export default class App extends React.Component<IProps, IState> {
   }
 
   setPage(page: string, data: any) {
-    BlobSaveAndLoad.Instance.setBlobValue(page, data);
+    if(data != null) 
+      BlobSaveAndLoad.Instance.setBlobValue(page, data);
     BlobSaveAndLoad.Instance.saveBlob();
     // AsyncStorage.setItem('lastPage', page);
     // console.log()
@@ -67,26 +70,34 @@ export default class App extends React.Component<IProps, IState> {
     })
   }
 
+  setNavigator = (value: boolean) => {
+    this.setState({
+      navigatorVisible: value
+    })
+  }
+
   render() {
     return (
       <SafeAreaView style={{flex:1, backgroundColor:'#31de70' }} >
         <View style={{flexDirection: 'column', height: "100%"}}>
-          <View style={{height: 60}}>
-            <TopNavigator visible={true} navigatorFunc={this.sliderChange.bind(this)}/>
+        {this.state.navigatorVisible ? 
+          <View style={{height: 60, backgroundColor: '#00000000'}}>
+              <TopNavigator visible={this.state.navigatorVisible} navigatorFunc={this.sliderChange.bind(this)}/> 
           </View>
+        : <View />}
           {
             this.state.page == Page[Page.LOADING] ?
-              <LoadingPage onDone={(data) => this.setPage(Page[Page.PROFILE], data)} />
+              <LoadingPage setNavigator={this.setNavigator} onDone={(data) => this.setPage(Page[Page.PROFILE], data)} />
             : this.state.page == Page[Page.PROFILE] ? 
-              <ProfilePage setPage={this.setPage.bind(this)} />
+              <ProfilePage setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
             : this.state.page == Page[Page.TRIPEXPLORE] ? 
               <TripExplorePage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.ONBOARDING] ? 
               <OnBoardingPage onDone={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.STEPEXPLORE] ?
-              <StepExplorePage/>
+              <StepExplorePage setPage={this.setPage.bind(this)} setNavigator={this.setNavigator}/>
             : this.state.page == Page[Page.SPLASHSCREEN] ? 
-              <SplashScreen />
+              <SplashScreen setNavigator={this.setNavigator} />
             : this.state.page == Page[Page.NEWTRIP] ? 
               <NewTripPage setPage={this.setPage.bind(this)}/>
             : <View />

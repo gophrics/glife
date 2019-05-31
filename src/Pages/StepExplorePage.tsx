@@ -3,9 +3,9 @@ import {
     Modal, Button,
     StyleSheet,
     Dimensions,
-    ScrollView, View, Image, Text, TouchableHighlight, SafeAreaView
+    ScrollView, View, Image, Text, TouchableHighlight, SafeAreaView, TouchableOpacity
 } from 'react-native';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
 import { StepComponent } from '../UIComponents/StepComponent';
 import { TripModal } from '../Modals/TripModal';
 import { StepModal } from '../Modals/StepModal';
@@ -17,6 +17,7 @@ import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
 import ImageDataModal from '../Modals/ImageDataModal';
 import { CustomButton } from '../UIComponents/CustomButton';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 interface IState {
     markers: Region[],
@@ -31,6 +32,8 @@ interface IState {
 }
 
 interface IProps {
+    setPage: any,
+    setNavigator: any
 }
 
 const deviceWidth = Dimensions.get('window').width
@@ -41,6 +44,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     mapView: any = "";
     constructor(props: any) {
         super(props);
+        this.props.setNavigator(false)
         this.initialize();
     }
 
@@ -189,13 +193,17 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         this.zoomToStep(this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x/(deviceWidth*.75))])
     }
 
+    onBackPress = () => {
+        this.props.setPage(Page[Page.PROFILE], null)
+    }
+
     render() {
         if (this.state.myData == undefined || 
             this.state.lastStepClicked == undefined ) return (<View />)
         return (
             <View>
                 <View>
-                    <MapView style={{ width: '100%', height: '70%' }}
+                    <MapView style={{ width: '100%', height: '77%' }}
                         ref={ref => this.mapView = ref}
                         region={this.state.triangulatedLocation}
                     >
@@ -219,6 +227,11 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                             ))
                         }
                         <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
+                        <Callout>
+                            <TouchableOpacity onPress={this.onBackPress.bind(this)}  style={{padding: 10}} >
+                                <Icon size={60} name='caretleft'/>
+                            </TouchableOpacity>
+                        </Callout>
                     </MapView>
                     {
                         <ScrollView decelerationRate={0.6}  snapToInterval={(deviceWidth*3/4 + 25)} scrollEventThrottle={10000} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', borderWidth: 1, backgroundColor: 'lightgreen', overflow: 'hidden' }}>

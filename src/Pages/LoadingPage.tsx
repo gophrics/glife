@@ -34,6 +34,7 @@ var styles = StyleSheet.create<Styles>({
 
 interface IProps {
     onDone: (data: any) => void,
+    setNavigator: any
 }
 
 interface IState {
@@ -49,6 +50,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     retryCount = 20;
     constructor(props:any) {
         super(props);
+
+        this.props.setNavigator(false)
 
         this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
         var i = 0;

@@ -14,7 +14,8 @@ interface IState {
 }
 
 interface IProps {
-    setPage: any
+    setPage: any,
+    setNavigator: any
 }
 
 export default class ProfilePage extends React.Component<IProps, IState> {
@@ -24,6 +25,8 @@ export default class ProfilePage extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props)
+
+        this.props.setNavigator(true)
         this.myData = BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]]
 
         for(var trip of this.myData.trips) {

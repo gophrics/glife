@@ -38,7 +38,7 @@ export default class App extends React.Component<IProps, IState> {
       page: Page[Page.SPLASHSCREEN],
     };
     // Uncomment for development
-    AsyncStorage.clear()
+    //AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
@@ -72,7 +72,7 @@ export default class App extends React.Component<IProps, IState> {
       <SafeAreaView style={{flex:1, backgroundColor:'#505050' }} >
         <View style={{flexDirection: 'column', height: "100%"}}>
           <View style={{height: 60}}>
-            <TopNavigator navigatorFunc={this.sliderChange.bind(this)}/>
+            <TopNavigator visible={true} navigatorFunc={this.sliderChange.bind(this)}/>
           </View>
           {
             this.state.page == Page[Page.LOADING] ?

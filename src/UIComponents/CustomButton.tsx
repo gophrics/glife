@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Button } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { StepModal } from '../Modals/StepModal';
-
+import Icon from 'react-native-vector-icons/AntDesign'
 
 interface IProps {
     title: string
@@ -26,7 +26,9 @@ export class CustomButton extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <Button  title={this.props.title} onPress={this.onPress} />
+            <TouchableOpacity style={{alignSelf: 'center'}} onPress={this.onPress} >
+                <Icon size={20} name='pluscircleo' />
+            </TouchableOpacity>
         )
     }
 }

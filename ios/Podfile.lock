@@ -8,8 +8,6 @@ PODS:
   - glog (0.3.5)
   - React (0.59.8):
     - React/Core (= 0.59.8)
-  - react-native-image-picker (0.28.1):
-    - React
   - react-native-sqlite-storage (3.3.10):
     - React
   - React/Core (0.59.8):
@@ -23,17 +21,19 @@ PODS:
     - React
   - RNSVG (9.4.0):
     - React
+  - RNVectorIcons (6.4.2):
+    - React
   - yoga (0.59.8.React)
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - React/RCTImage (from `../node_modules/react-native`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -49,14 +49,14 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
-  react-native-image-picker:
-    :path: "../node_modules/react-native-image-picker"
   react-native-sqlite-storage:
     :path: "../node_modules/react-native-sqlite-storage"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -66,12 +66,12 @@ SPEC CHECKSUMS:
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
-  react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   react-native-sqlite-storage: e2514e75e65458cc2c6590d181bd1947ec6f4e3f
   RNCAsyncStorage: 285698b8a4f219573174d99e863a78b93f389272
   RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
+  RNVectorIcons: 6607bd3a30291d0edb56f9bbe7ae411ee2b928b0
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: 0a315748f6223a6b5a0344e076798e42435f4dd7
+PODFILE CHECKSUM: d3150ed7ec4f7f4c2255a912edfdd64b52df95a7
 
 COCOAPODS: 1.6.1

@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   DatePickerIOS,
 } from 'react-native'
-// import RNBackgroundService from 'react-native-background-service';
 import {Page} from './Modals/ApplicationEnums';
 import TripExplorePage from './Pages/TripExplorePage';
 import LoadingPage from './Pages/LoadingPage';
@@ -16,10 +15,6 @@ import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/NewTripPage';
 import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';
 import AsyncStorage from '@react-native-community/async-storage';
-
-// RNBackgroundService.RNBackgroundServiceLocationListener.addListener('LocationListener',
-// (res) => { console.log("Location: " + res) });
-
 
 interface IState {
   page: string,
@@ -78,7 +73,7 @@ export default class App extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <SafeAreaView style={{flex:1, backgroundColor:'#31de70' }} >
+      <SafeAreaView style={{flex:1, backgroundColor:'#00DC13' }} >
         <View style={{flexDirection: 'column', height: "100%"}}>
         {this.state.navigatorVisible ? 
           <View style={{height: 60, backgroundColor: '#00000000'}}>

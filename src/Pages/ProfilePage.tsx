@@ -6,7 +6,6 @@ import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
 import { TripComponent } from '../UIComponents/TripComponent';
 import { TripModal } from '../Modals/TripModal';
 import { Page } from '../Modals/ApplicationEnums';
-import { ProfileModalInstance } from '../Modals/ProfileModalSingleton';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 
 interface IState {
@@ -51,7 +50,9 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         return (
                 <ScrollView style={{flex: 1}} 
                     contentInset={{top: 0, bottom: this.state.bottom}}>
-                    <ProfileComponent />
+                    {
+                        //<ProfileComponent />
+                    }
                     <WorldMapColouredComponent visitedCountryList={this.myData.countriesVisited}/> 
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                         <StatsAsCardComponent text={"You travelled " + this.myData.percentageWorldTravelled + "% of the world"}/>

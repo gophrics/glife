@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Text } from 'react-native';
+import { View, Image, Dimensions } from 'react-native';
 
 interface IProps {
     setNavigator: any
@@ -8,6 +8,8 @@ interface IProps {
 interface IState {
 
 }
+
+const deviceWidth = Dimensions.get('window').width
 
 export class SplashScreen extends React.Component<IProps, IState> {
 
@@ -18,8 +20,8 @@ export class SplashScreen extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View>
-                <Text>Splash screen goes here</Text>
+            <View style={{flex:1, justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
+                <Image style={{height:deviceWidth*.5, width: deviceWidth*.5, marginRight: deviceWidth*.15}} source={require('../Assets/glife_logo.png')} />
             </View>
         )
     }

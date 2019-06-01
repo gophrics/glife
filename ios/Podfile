@@ -23,12 +23,14 @@ post_install do |installer|
 end
 
 # Add new pods below this line
+pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
 pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
 
 pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
 pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-
+pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
 pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'

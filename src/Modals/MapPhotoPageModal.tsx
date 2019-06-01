@@ -4,7 +4,10 @@ export class MapPhotoPageModal {
     countriesVisited: string[]
     percentageWorldTravelled: number
     coverPicURL: string
+
+    // Profile stuff
     profilePicURL: string
+    profileId: string
     
     constructor(trips: TripModal[]) {
         this.trips = trips;
@@ -12,5 +15,6 @@ export class MapPhotoPageModal {
         this.percentageWorldTravelled = 0
         this.coverPicURL = ""
         this.profilePicURL = ""
+        this.profileId = ""
     }
 }

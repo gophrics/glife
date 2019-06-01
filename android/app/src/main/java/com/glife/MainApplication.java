@@ -3,6 +3,7 @@ package com.glife;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new SQLitePluginPackage(),   // register SQLite Plugin here
             new MainReactPackage(),
+            new LinearGradientPackage(),
             new PickerPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),

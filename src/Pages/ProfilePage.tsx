@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
+import { View,Text, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
 import { ProfileComponent } from '../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
@@ -9,7 +9,7 @@ import { Page } from '../Modals/ApplicationEnums';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { TravelUtils } from '../Utilities/TravelUtils';
+import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
 
 interface IState {
     bottom: number,
@@ -24,13 +24,13 @@ interface IProps {
 
 
 const HEADER_MAX_HEIGHT = Dimensions.get('window').height * .6
-const HEADER_MIN_HEIGHT = 50;
+const HEADER_MIN_HEIGHT = 0;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 export default class ProfilePage extends React.Component<IProps, IState> {
     tripRenderArray: any = []
 
-    myData: any = {}
+    myData: MapPhotoPageModal;
     constructor(props: IProps) {
         super(props)
 
@@ -43,7 +43,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         this.state = {
             bottom: this.tripRenderArray.length * 60,
             scrollY: new Animated.Value(0),
-            coverPicURL: this.myData.coverPic
+            coverPicURL: this.myData.coverPicURL
         }
     }
 
@@ -58,13 +58,16 @@ export default class ProfilePage extends React.Component<IProps, IState> {
     pickCoverPic = () => {
         ImagePicker.openPicker({
           }).then((image: any) => {
-            console.log(image)
-            this.myData.coverPic = image.sourceURL
+            this.myData.coverPicURL = image.path
             BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], this.myData)
             this.setState({
-                coverPicURL: image.sourceURL
+                coverPicURL: image.path
             })
           });
+    }
+
+    componentDidMount = () => {
+        this.setState({})
     }
 
     render() {
@@ -76,7 +79,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     height: this.state.scrollY.interpolate({
                         inputRange: [0, HEADER_SCROLL_DISTANCE],
                         outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-                        extrapolate: 'extend',
+                        extrapolate: 'clamp',
                     })
                 }]}>
                     <Animated.Image
@@ -105,6 +108,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                         <ProfileComponent />
                     </View>
                 </Animated.View>
+
                 <ScrollView style={{ flex: 1 }}
                     scrollEventThrottle={16}
                     onScroll={Animated.event(
@@ -144,11 +148,7 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        width: undefined,
-        height: HEADER_MAX_HEIGHT,
-        resizeMode: 'cover',
+        width: '100%',
+        height: HEADER_MAX_HEIGHT
     },
 })

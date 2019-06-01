@@ -167,7 +167,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 var step = new StepModal()
                 var imageDataList: Array<ImageDataModal> = []
                 for (var image of data['images']) {
-                    imageDataList.push(new ImageDataModal(new Region(res.lat, res.lon, 0, 0), image.sourceURL, (new Date(Number.parseInt(image.creationDate) * 1000)).getTime()))
+                    imageDataList.push(new ImageDataModal(new Region(res.lat, res.lon, 0, 0), image.path, (new Date(Number.parseInt(image.creationDate) * 1000)).getTime()))
                 }
 
                 step.masterImageUri = imageDataList[0].image;

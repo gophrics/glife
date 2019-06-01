@@ -72,6 +72,7 @@ export class ClusterProcessor {
             distanceTravelled += Math.floor(ClusterProcessor.EarthDistance({ latitude: step.meanLatitude, longitude: step.meanLongitude } as ClusterModal,
                 { latitude: previousStep.meanLatitude, longitude: previousStep.meanLongitude } as ClusterModal))
             step.distanceTravelled = distanceTravelled;
+            step.description = "I travelled .... damn babe"
             i+= 100;
             previousStep = step;
         }

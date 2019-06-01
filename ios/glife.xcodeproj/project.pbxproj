@@ -45,8 +45,6 @@
 		6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6391C19ECC604B43B0673441 /* libAirMaps.a */; };
 		726E1938225BA39D003EA830 /* EmptySwiftFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726E1937225BA39D003EA830 /* EmptySwiftFile.swift */; };
 		726E193F225BA5A5003EA830 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 726E193E225BA569003EA830 /* libRCTCameraRoll.a */; };
-		729BF65B22A1BFA0009C8C56 /* IMG_0016.png in Resources */ = {isa = PBXBuildFile; fileRef = 729BF65922A1BF9F009C8C56 /* IMG_0016.png */; };
-		729BF65C22A1BFA0009C8C56 /* IMG_0017.png in Resources */ = {isa = PBXBuildFile; fileRef = 729BF65A22A1BF9F009C8C56 /* IMG_0017.png */; };
 		7A60C3DCD774477EB77A7250 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8DE15B82C2784E1DBD11E12C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 125595E7CE4C4AF0AC055891 /* MaterialIcons.ttf */; };
@@ -404,8 +402,6 @@
 		726E1936225BA39C003EA830 /* glife-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "glife-Bridging-Header.h"; sourceTree = "<group>"; };
 		726E1937225BA39D003EA830 /* EmptySwiftFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySwiftFile.swift; sourceTree = "<group>"; };
 		726E1939225BA569003EA830 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
-		729BF65922A1BF9F009C8C56 /* IMG_0016.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_0016.png; path = ../../../Desktop/IMG_0016.png; sourceTree = "<group>"; };
-		729BF65A22A1BF9F009C8C56 /* IMG_0017.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_0017.png; path = ../../../Desktop/IMG_0017.png; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		821AA665FFB34FFA86DA8EC7 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -570,8 +566,6 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				729BF65922A1BF9F009C8C56 /* IMG_0016.png */,
-				729BF65A22A1BF9F009C8C56 /* IMG_0017.png */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -1233,7 +1227,6 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				056CC3A5C8ED441A8AE49EF5 /* AntDesign.ttf in Resources */,
-				729BF65C22A1BFA0009C8C56 /* IMG_0017.png in Resources */,
 				B7634D2C0F3349ACBA8B3DF0 /* Entypo.ttf in Resources */,
 				25351DE847C349B797123362 /* EvilIcons.ttf in Resources */,
 				35D6111F01B44DB9AAADF1AF /* Feather.ttf in Resources */,
@@ -1245,7 +1238,6 @@
 				C231C1972F794512BA524291 /* Ionicons.ttf in Resources */,
 				AB60B00BDFC146F7B9033A70 /* MaterialCommunityIcons.ttf in Resources */,
 				8DE15B82C2784E1DBD11E12C /* MaterialIcons.ttf in Resources */,
-				729BF65B22A1BFA0009C8C56 /* IMG_0016.png in Resources */,
 				A79E588F9CBD438893105095 /* Octicons.ttf in Resources */,
 				C1D391DCDE1544FCBD2F0787 /* SimpleLineIcons.ttf in Resources */,
 				4FECC0B9977743079020166F /* Zocial.ttf in Resources */,

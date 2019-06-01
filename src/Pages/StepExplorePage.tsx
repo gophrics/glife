@@ -38,6 +38,7 @@ interface IProps {
 }
 
 const deviceWidth = Dimensions.get('window').width
+const deviceHeight = Dimensions.get('window').height
 
 export default class StepExplorePage extends React.Component<IProps, IState> {
 
@@ -64,6 +65,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     }
 
     initialize() {
+        console.log(deviceHeight)
         this.travelCardArray = []
         //Populate travelcard Array for each step
         var markers: Region[] = []
@@ -108,8 +110,8 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         (this.mapView as MapView).animateToRegion({
             latitude: step.meanLatitude,
             longitude: step.meanLongitude,
-            latitudeDelta: .5,
-            longitudeDelta: .5
+            latitudeDelta: 6,
+            longitudeDelta: .6
         } as Region, 1000)
 
         this.setState({
@@ -123,8 +125,8 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             (this.mapView as MapView).animateToRegion({
                 latitude: step.meanLatitude,
                 longitude: step.meanLongitude,
-                latitudeDelta: .5,
-                longitudeDelta: .5
+                latitudeDelta: .6,
+                longitudeDelta: .6
             } as Region, 1000)
         }
         this.setState({
@@ -204,6 +206,8 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 <View>
                     <MapView style={{ width: '100%', height: '77%' }}
                         ref={ref => this.mapView = ref}
+                        mapType='hybrid'
+                        
                     >
                         {
                             this.state.myData.tripAsSteps.map((step, index) => (
@@ -229,6 +233,12 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                             <TouchableOpacity onPress={this.onBackPress.bind(this)} style={{ padding: 10 }} >
                                 <Icon size={60} name='caretleft' />
                             </TouchableOpacity>
+                        </Callout>
+
+                        <Callout style={{top: Dimensions.get('window').height-330}}>
+                            <ScrollView>
+                                <Text style={{color:'white'}}>{this.state.lastStepClicked.description}</Text>
+                            </ScrollView>
                         </Callout>
                     </MapView>
                     {

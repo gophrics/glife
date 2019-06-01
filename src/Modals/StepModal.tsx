@@ -15,6 +15,7 @@ export class StepModal {
     masterImageUri: string
     masterMarker: Region
     distanceTravelled: number
+    description: string
 
     constructor() {
         this.id = 0;
@@ -29,5 +30,6 @@ export class StepModal {
         this.masterImageUri = "";
         this.masterMarker = {} as Region
         this.distanceTravelled = 0;
+        this.description = "";
     }
 }

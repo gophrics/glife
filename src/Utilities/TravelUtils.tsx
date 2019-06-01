@@ -6,7 +6,7 @@ import { AsyncStorage } from 'react-native';
 export class TravelUtils {
 
     static getLocationFromCoordinates(latitude: number, longitude: number): Promise<any> {
-        return fetch('http://beerwithai.com/api/v1/travel/searchcoordinates', {
+        return fetch('http://192.168.0.104:8080/api/v1/travel/searchcoordinates', {
             method: 'POST',
             body: JSON.stringify({
                 latitude: latitude,
@@ -21,7 +21,7 @@ export class TravelUtils {
     }
 
     static getCoordinatesFromLocation(location: string): Promise<any> {
-        return fetch('http://beerwithai.com/api/v1/travel/searchlocation', {
+        return fetch('http://192.168.0.104:8080/api/v1/travel/searchlocation', {
             method: 'POST',
             body: JSON.stringify({
                 location: location

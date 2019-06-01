@@ -15,6 +15,7 @@ interface IState {
     bottom: number,
     scrollY: Animated.Value,
     coverPicURL: string
+    profilePicURL: string
 }
 
 interface IProps {
@@ -40,15 +41,26 @@ export default class ProfilePage extends React.Component<IProps, IState> {
             this.tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress} />)
             this.tripRenderArray.push(<View key={trip.tripId + 'v'} style={{ height: 10 }} />)
         }
+        console.log(this.myData.profilePicURL)
         this.state = {
             bottom: this.tripRenderArray.length * 60,
             scrollY: new Animated.Value(0),
-            coverPicURL: this.myData.coverPicURL
+            coverPicURL: this.myData.coverPicURL,
+            profilePicURL: this.myData.profilePicURL
         }
     }
 
     onTripPress = (tripModal: TripModal) => {
         this.props.setPage(Page[Page.STEPEXPLORE], tripModal)
+    }
+
+    onProfilePicChange = (imageURL: string) => {
+        console.log(imageURL)
+        this.myData.profilePicURL = imageURL;
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], this.myData)
+        this.setState({
+            profilePicURL: imageURL
+        })
     }
 
     newTripButtonPress = () => {
@@ -105,7 +117,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                         <Icon name='edit' size={25}/>
                     </TouchableOpacity>
                     <View style={styles.bar}>
-                        <ProfileComponent />
+                        <ProfileComponent scrollY={this.state.scrollY} HEADER_SCROLL_DISTANCE={HEADER_SCROLL_DISTANCE} profilePic={this.state.profilePicURL} onProfilePicChange={this.onProfilePicChange} />
                     </View>
                 </Animated.View>
 

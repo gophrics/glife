@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Modal, Button,
+    Modal, TextInput,
     StyleSheet,
     Dimensions,
     ScrollView, View, Image, Text, TouchableHighlight, SafeAreaView, TouchableOpacity
@@ -30,6 +30,8 @@ interface IState {
     newStepId: number,
     myData: TripModal,
     lastStepClicked: StepModal
+    editStepDescription: boolean
+    modalBottom: any
 }
 
 interface IProps {
@@ -44,6 +46,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
     travelCardArray: any = []
     mapView: MapView | null = null;
+
     constructor(props: any) {
         super(props);
         this.props.setNavigator(false)
@@ -57,7 +60,9 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            lastStepClicked: trip.tripAsSteps[0]
+            lastStepClicked: trip.tripAsSteps[0],
+            editStepDescription: false,
+            modalBottom: undefined
         }
 
 
@@ -110,7 +115,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         (this.mapView as MapView).animateToRegion({
             latitude: step.meanLatitude,
             longitude: step.meanLongitude,
-            latitudeDelta: 6,
+            latitudeDelta: .6,
             longitudeDelta: .6
         } as Region, 1000)
 
@@ -152,7 +157,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 var step = new StepModal()
                 var imageDataList: Array<ImageDataModal> = []
                 for (var image of data['images']) {
-                    imageDataList.push(new ImageDataModal(new Region(res.lat, res.lon, 0, 0), image.sourceURL, (new Date(Number.parseInt(image.creationDate)*1000)).getTime()))
+                    imageDataList.push(new ImageDataModal(new Region(res.lat, res.lon, 0, 0), image.sourceURL, (new Date(Number.parseInt(image.creationDate) * 1000)).getTime()))
                 }
 
                 step.masterImageUri = imageDataList[0].image;
@@ -179,7 +184,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                     return a.id - b.id;
                 })
 
-                BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
+                BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], trip)
                 this.setState({
                     myData: trip
                 })
@@ -207,7 +212,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                     <MapView style={{ width: '100%', height: '77%' }}
                         ref={ref => this.mapView = ref}
                         mapType='hybrid'
-                        
                     >
                         {
                             this.state.myData.tripAsSteps.map((step, index) => (
@@ -222,10 +226,13 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                             <View style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
                                                 <Image
                                                     style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
+
+                            {this.state.lastStepClicked.id == step.id ?  <Text style={{ color: 'white' }}>{this.state.lastStepClicked.description}</Text> : <View /> }
                                             </View>
                                             : <View />}
                                     </Marker>
                                     : <View />
+                                
                             ))
                         }
                         <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
@@ -235,10 +242,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                             </TouchableOpacity>
                         </Callout>
 
-                        <Callout style={{top: Dimensions.get('window').height-330}}>
-                            <ScrollView>
-                                <Text style={{color:'white'}}>{this.state.lastStepClicked.description}</Text>
-                            </ScrollView>
+                        <Callout style={{ top: Dimensions.get('window').height - 330 }}>
                         </Callout>
                     </MapView>
                     {
@@ -251,9 +255,23 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                     <Modal
                         animationType='fade'
                         visible={this.state.photoModalVisible}
-                        transparent={true}>
+                        transparent={true}
+                        onDismiss={() => {
+                            var trip = this.state.myData
+                            for(var _step of trip.tripAsSteps) {
+                                if(_step.id == this.state.lastStepClicked.id) {
+                                    _step = this.state.lastStepClicked
+                                }
+                                BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
+                                this.setState({
+                                    myData: trip,
+                                    editStepDescription: false,
+                                    modalBottom: undefined
+                                })
+                            }
+                        }}>
 
-                        <SafeAreaView style={{ margin: 30, flex: 1, alignContent: 'center', justifyContent: 'center' }}>
+                        <SafeAreaView style={{ margin: 30, bottom: this.state.modalBottom, flex: 1, alignContent: 'center', justifyContent: 'center' }}>
                             <View style={{
                                 backgroundColor: '#808080ff',
                                 borderRadius: 10
@@ -288,17 +306,37 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                                             style={{ width: deviceWidth - 60, height: deviceWidth - 60 }} source={{ uri: imageUri }}
                                                         />
                                                     </View>
-                                                : <View />
+                                                    : <View />
                                             ))
                                         }
                                     </ScrollView>
-                                </View>
-                                {
-                                    <View style={{ height: '5%', backgroundColor: '#808080ff' }}>
-                                        {/* <Text>Comments go here </Text>
-                               */ }
+                                    <View style={{ height: '10%', backgroundColor: '#ffffffff', padding: 2 }}>
+                                        <TextInput multiline={true} editable={true} onChangeText={(text) => {
+                                            this.state.lastStepClicked.description = text;
+                                        }} 
+                                        style={{
+                                            backgroundColor: '#ffffffff',
+                                            padding: 5,
+                                            color: 'black'
+                                        }}
+                                        onFocus= {
+                                            () => {
+                                                this.setState({
+                                                    modalBottom: 200
+                                                })
+                                            }
+                                        }
+
+                                        onBlur = {
+                                            () => {
+                                                this.setState({
+                                                    modalBottom: undefined
+                                                })
+                                            }
+                                        }
+                                        >{this.state.lastStepClicked.description}</TextInput>
                                     </View>
-                                }
+                                </View>
                             </View>
 
                         </SafeAreaView>

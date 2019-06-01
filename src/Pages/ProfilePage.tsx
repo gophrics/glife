@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
 import { ProfileComponent } from '../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
@@ -7,10 +7,14 @@ import { TripComponent } from '../UIComponents/TripComponent';
 import { TripModal } from '../Modals/TripModal';
 import { Page } from '../Modals/ApplicationEnums';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
+import ImagePicker from 'react-native-image-crop-picker';
+import Icon from 'react-native-vector-icons/AntDesign';
+import { TravelUtils } from '../Utilities/TravelUtils';
 
 interface IState {
     bottom: number,
-    scrollY: Animated.Value
+    scrollY: Animated.Value,
+    coverPicURL: string
 }
 
 interface IProps {
@@ -39,6 +43,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         this.state = {
             bottom: this.tripRenderArray.length * 60,
             scrollY: new Animated.Value(0),
+            coverPicURL: this.myData.coverPic
         }
     }
 
@@ -48,6 +53,18 @@ export default class ProfilePage extends React.Component<IProps, IState> {
 
     newTripButtonPress = () => {
         this.props.setPage(Page[Page.NEWTRIP], null)
+    }
+
+    pickCoverPic = () => {
+        ImagePicker.openPicker({
+          }).then((image: any) => {
+            console.log(image)
+            this.myData.coverPic = image.sourceURL
+            BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], this.myData)
+            this.setState({
+                coverPicURL: image.sourceURL
+            })
+          });
     }
 
     render() {
@@ -79,8 +96,11 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                                 }]
                             },
                         ]}
-                        source={require('../Assets/glife_logo.png')}
+                        source={{uri: this.state.coverPicURL}}
                     />
+                    <TouchableOpacity style={{alignItems:'flex-end', padding: 20}} onPress={this.pickCoverPic} >
+                        <Icon name='edit' size={25}/>
+                    </TouchableOpacity>
                     <View style={styles.bar}>
                         <ProfileComponent />
                     </View>

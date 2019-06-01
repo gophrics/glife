@@ -86,7 +86,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     </View>
                 </Animated.View>
                 <ScrollView style={{ flex: 1 }}
-                    scrollEventThrottle={200}
+                    scrollEventThrottle={16}
                     onScroll={Animated.event(
                         [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
                     )}

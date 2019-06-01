@@ -7,6 +7,7 @@ interface IProps {
     title: string
     step: StepModal
     onPress: any
+    onLayout?: any
 }
 
 interface IState {
@@ -26,7 +27,7 @@ export class CustomButton extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <TouchableOpacity style={{alignSelf: 'center'}} onPress={this.onPress} >
+            <TouchableOpacity onLayout={this.props.onLayout} style={{alignSelf: 'center'}} onPress={this.onPress} >
                 <Icon size={20} name='pluscircleo' />
             </TouchableOpacity>
         )

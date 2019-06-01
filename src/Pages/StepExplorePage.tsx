@@ -41,6 +41,7 @@ interface IProps {
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
+let snapOffsets: Array<number> = []
 
 export default class StepExplorePage extends React.Component<IProps, IState> {
 
@@ -69,6 +70,11 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         this.initialize();
     }
 
+    getWidth = (width: number) => {
+        // console.log(event.nativeEvent.layout.width)
+        snapOffsets.push(width + 20) // 20 being width of + button in between
+    }
+
     initialize() {
         console.log(deviceHeight)
         this.travelCardArray = []
@@ -78,9 +84,13 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         var key: number = 0;
         var tripStartTimestamp = this.state.myData.tripAsSteps[0].startTimestamp;
         var polylineArr = []
+        snapOffsets = [];
+
         for (var step of this.state.myData.tripAsSteps) {
             this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
             this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
+            
+            snapOffsets.push(snapOffsets.length == 0 ? deviceWidth*3/4 + 20: snapOffsets[key-1] + deviceWidth*3/4 + 20)
             markers.push.apply(markers, step.markers)
             imageUriData.push.apply(imageUriData, step.imageUris)
             polylineArr.push({ latitude: step.meanLatitude, longitude: step.meanLongitude })
@@ -211,6 +221,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 <View>
                     <MapView style={{ width: '100%', height: '77%' }}
                         ref={ref => this.mapView = ref}
+                        //Check with 'hybrid, the performance
                         mapType='hybrid'
                     >
                         {
@@ -246,7 +257,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         </Callout>
                     </MapView>
                     {
-                        <ScrollView decelerationRate={0.6} snapToInterval={(deviceWidth * 3 / 4 + 24)} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', overflow: 'hidden' }}>
+                        <ScrollView decelerationRate={0.6} snapToOffsets={snapOffsets} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', overflow: 'hidden' }}>
                             {this.travelCardArray}
                         </ScrollView>
                     }

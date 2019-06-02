@@ -8,6 +8,19 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - GoogleSignIn (4.4.0):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.2.1):
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+  - GoogleToolboxForMac/Defines (2.2.1)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.1)":
+    - GoogleToolboxForMac/DebugUtils (= 2.2.1)
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
+  - GTMSessionFetcher/Core (1.2.2)
   - QBImagePickerController (3.4.0)
   - React (0.59.8):
     - React/Core (= 0.59.8)
@@ -23,6 +36,9 @@ PODS:
   - React/RCTNetwork (0.59.8):
     - React/Core
   - RNCAsyncStorage (1.4.2):
+    - React
+  - RNGoogleSignin (2.0.0):
+    - GoogleSignIn (~> 4.4.0)
     - React
   - RNImageCropPicker (0.24.1):
     - QBImagePickerController
@@ -44,6 +60,7 @@ DEPENDENCIES:
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - React/RCTImage (from `../node_modules/react-native`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - RNGoogleSignin (from `../node_modules/react-native-google-signin`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -52,6 +69,9 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - boost-for-react-native
+    - GoogleSignIn
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
     - QBImagePickerController
     - RSKImageCropper
 
@@ -72,6 +92,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-sqlite-storage"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNGoogleSignin:
+    :path: "../node_modules/react-native-google-signin"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
   RNSVG:
@@ -87,17 +109,21 @@ SPEC CHECKSUMS:
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
+  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
+  GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
+  GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   react-native-sqlite-storage: e2514e75e65458cc2c6590d181bd1947ec6f4e3f
   RNCAsyncStorage: 285698b8a4f219573174d99e863a78b93f389272
+  RNGoogleSignin: d030c6c6591db24c3cee649f64c7babf0a1699a0
   RNImageCropPicker: 6134b66a3d5bc13e2895a97c630a4254006902b4
   RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
   RNVectorIcons: 6607bd3a30291d0edb56f9bbe7ae411ee2b928b0
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: 7a3129103a0a2b8aae31636b5e3942867aab2194
+PODFILE CHECKSUM: e551a5d2c3f7d8985039b91843ff803375a88ac2
 
 COCOAPODS: 1.7.1

@@ -46,6 +46,7 @@
 		726E1938225BA39D003EA830 /* EmptySwiftFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726E1937225BA39D003EA830 /* EmptySwiftFile.swift */; };
 		726E193F225BA5A5003EA830 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 726E193E225BA569003EA830 /* libRCTCameraRoll.a */; };
 		7270EF9222A275B2000F2EED /* glife_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7270EF6C22A275B2000F2EED /* glife_logo.png */; };
+		72C8EDD622A3C5DF00148244 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */; };
 		7A60C3DCD774477EB77A7250 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8DE15B82C2784E1DBD11E12C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 125595E7CE4C4AF0AC055891 /* MaterialIcons.ttf */; };
@@ -404,6 +405,7 @@
 		726E1937225BA39D003EA830 /* EmptySwiftFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySwiftFile.swift; sourceTree = "<group>"; };
 		726E1939225BA569003EA830 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		7270EF6C22A275B2000F2EED /* glife_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = glife_logo.png; path = ../src/Assets/glife_logo.png; sourceTree = "<group>"; };
+		72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		821AA665FFB34FFA86DA8EC7 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -567,6 +569,7 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				7270EF6C22A275B2000F2EED /* glife_logo.png */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -1238,6 +1241,7 @@
 				3123CD7800054ED09349FA51 /* FontAwesome5_Regular.ttf in Resources */,
 				D6081B5448AB4AA281152B9D /* FontAwesome5_Solid.ttf in Resources */,
 				7270EF9222A275B2000F2EED /* glife_logo.png in Resources */,
+				72C8EDD622A3C5DF00148244 /* GoogleService-Info.plist in Resources */,
 				9B177FAC63B04660B1832E50 /* Foundation.ttf in Resources */,
 				C231C1972F794512BA524291 /* Ionicons.ttf in Resources */,
 				AB60B00BDFC146F7B9033A70 /* MaterialCommunityIcons.ttf in Resources */,
@@ -1323,6 +1327,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-glife/Pods-glife-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -1343,6 +1348,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",

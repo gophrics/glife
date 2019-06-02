@@ -21,8 +21,11 @@ post_install do |installer|
     end
   end
 end
+pod 'GoogleSignIn', '~> 4.4.0'
 
 # Add new pods below this line
+pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
+
 pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
 pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'

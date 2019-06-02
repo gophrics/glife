@@ -1,7 +1,9 @@
 export class SettingsModal {
-    fbLoggedIn: boolean
-    
+    loggedIn: boolean
+    loginProvider: string
+
     constructor() {
-        this.fbLoggedIn = false;
+        this.loggedIn = false;
+        this.loginProvider = "";
     }
 }

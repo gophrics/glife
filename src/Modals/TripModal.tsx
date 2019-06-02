@@ -13,6 +13,7 @@ export class TripModal {
     activities: Array<string>
     startDate: string
     endDate: string
+    masterPicURL: string
     
     constructor() {
         this.tripId = 0;
@@ -26,5 +27,6 @@ export class TripModal {
         this.endDate = ""
         this.title = ""
         this.countryCode = []
+        this.masterPicURL = ""
     }
 }

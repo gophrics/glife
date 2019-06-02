@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import { TripModal } from '../Modals/TripModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
-import { throwStatement } from '@babel/types';
 
 interface IState {
     location: string
@@ -14,16 +13,17 @@ interface IProps {
 }
 
 
+const deviceHeight = Dimensions.get('window').height
 export class TripComponent extends React.Component<IProps, IState> {
 
     retryCount = 20;
     style = StyleSheet.create({
         main: {
             borderRadius: 15,
-            backgroundColor: '#886cc1',
             padding: 10,
             marginLeft: 10,
-            marginRight: 10
+            marginRight: 10,
+            height: deviceHeight*.25
         }
     })
 
@@ -53,31 +53,35 @@ export class TripComponent extends React.Component<IProps, IState> {
         })
     }
 
+    //'#98FB98', '#228B22']
+    //'#ccac00', '#ffe766'
     render() {
         return (
-            <TouchableOpacity onPress={(e) => this.props.onPress(this.props.tripModal)} style={this.style.main}>
+            <TouchableOpacity onPress={(e) => this.props.onPress(this.props.tripModal)} >
+            <ImageBackground resizeMode='cover' source={{uri: this.props.tripModal.masterPicURL}} style={this.style.main}>
                 <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15}}>
-                    <View style={{flex: 2, flexDirection: 'column', alignContent: 'flex-start'}}>
-                        <Text style={{flex: 1, color: 'black', fontSize: 18}}>{this.props.tripModal.title}</Text>
-                        <Text style={{flex: 2, color: 'black', fontSize: 12}}>{this.props.tripModal.startDate + "\n"}{this.props.tripModal.endDate ? this.props.tripModal.endDate : "Present"}</Text>
+                    <View style={{flexDirection: 'column', width:'40%', justifyContent:'space-between'}}>
+                        <View>
+                        <Text style={{color: 'white', fontSize: 18}}>{this.props.tripModal.title}</Text>
+                        <Text style={{color: 'white', fontSize: 12}}>{this.props.tripModal.startDate + "\n"}{this.props.tripModal.endDate ? "" : "On-going"}</Text>
+                        </View>
                         {
                             // TODO: Don't forget to add degree celsius}
                         }
-                        <Text style={{flex: 1, fontSize: 30}}>{this.props.tripModal.temperature + "C"}</Text>
-                    </View>
-                    <View style={{width:40}}>
+                        <Text style={{fontSize: 30, color:'white'}}>{this.props.tripModal.temperature + "C"}</Text>
                     </View>
                     <View style={{flex: 3, flexDirection: 'column'}}>
-                        <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{this.props.tripModal.daysOfTravel + " days"}</Text>
-                        <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{this.props.tripModal.distanceTravelled + " km"}</Text>
-                        <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{""}</Text>
+                        <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.tripModal.daysOfTravel + " days"}</Text>
+                        <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.tripModal.distanceTravelled + " km"}</Text>
+                        <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{""}</Text>
                         {
                             this.props.tripModal.activities ? this.props.tripModal.activities.map((val, index) => (
-                                <Text key={index} style={{alignSelf: 'flex-end', color: 'black', fontSize: 14}}>{val}</Text>
+                                <Text key={index} style={{alignSelf: 'flex-end', color: 'white', fontSize: 14}}>{val}</Text>
                             )) : null
                         }
                     </View>
                 </View>
+            </ImageBackground>
             </TouchableOpacity>
         )
     }

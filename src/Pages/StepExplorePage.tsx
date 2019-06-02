@@ -17,7 +17,7 @@ import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
 import ImageDataModal from '../Modals/ImageDataModal';
 import { CustomButton } from '../UIComponents/CustomButton';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Octicons';
 import { TravelUtils } from '../Utilities/TravelUtils';
 
 
@@ -249,7 +249,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
                         <Callout>
                             <TouchableOpacity onPress={this.onBackPress.bind(this)} style={{ padding: 10 }} >
-                                <Icon size={60} name='caretleft' />
+                                <Icon size={40} style={{padding:10}} name='x' />
                             </TouchableOpacity>
                         </Callout>
 

@@ -43,7 +43,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         }
         console.log(this.myData.profilePicURL)
         this.state = {
-            bottom: this.tripRenderArray.length * 60,
+            bottom: this.tripRenderArray.length * 50,
             scrollY: new Animated.Value(0),
             coverPicURL: this.myData.coverPicURL,
             profilePicURL: this.myData.profilePicURL
@@ -70,7 +70,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
     pickCoverPic = () => {
         ImagePicker.openPicker({
           }).then((image: any) => {
-            this.myData.coverPicURL = image.path
+            this.myData.coverPicURL = image.path;
             BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], this.myData)
             this.setState({
                 coverPicURL: image.path

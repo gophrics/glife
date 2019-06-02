@@ -234,6 +234,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
 
         tripResult.tripId = tripId;
+        tripResult.masterPicURL = steps[steps.length-1].masterImageUri;
         tripResult.daysOfTravel = Math.abs(Math.floor(steps[steps.length-1].endTimestamp/8.64e7) - Math.floor(steps[0].startTimestamp/8.64e7))
         // Handling edge case
         if(tripResult.daysOfTravel == 0) tripResult.daysOfTravel = 1;

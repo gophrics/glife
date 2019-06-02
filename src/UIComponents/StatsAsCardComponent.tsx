@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface IState {
 
@@ -18,11 +19,13 @@ export class StatsAsCardComponent extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View style={styles.card}>
+            <LinearGradient colors={['#ffe766', '#ccac00']} style={styles.card}>
+            <View >
                 <View style={{height: 40}}/>
                 <Text style={styles.text}>{this.props.text}</Text>
                 <View style={{height: 40}}/>
             </View>
+            </LinearGradient>
         )
     }
 }

@@ -14,7 +14,8 @@ import StepExplorePage from './Pages/StepExplorePage';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/NewTripPage';
 import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';
-import AsyncStorage from '@react-native-community/async-storage';
+import LinearGradient from 'react-native-linear-gradient';
+import { SettingsPage } from './Pages/SettingsPage';
 
 interface IState {
   page: string,
@@ -73,7 +74,8 @@ export default class App extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <SafeAreaView style={{flex:1, backgroundColor:'#00DC13' }} >
+      <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}>
+        <SafeAreaView>
         <View style={{flexDirection: 'column', height: "100%"}}>
         {this.state.navigatorVisible ? 
           <View style={{height: 60, backgroundColor: '#00000000'}}>
@@ -95,10 +97,13 @@ export default class App extends React.Component<IProps, IState> {
               <SplashScreen setNavigator={this.setNavigator} />
             : this.state.page == Page[Page.NEWTRIP] ? 
               <NewTripPage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.SETTING] ? 
+              <SettingsPage setPage={this.setPage.bind(this)}/>
             : <View />
           }
         </View>
-      </SafeAreaView>
+        </SafeAreaView>
+        </LinearGradient>
     )
   }
 }

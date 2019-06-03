@@ -35,7 +35,7 @@ export class SettingsPage extends React.Component<IProps, IState> {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.props.setPage(Page[Page.SETTING], this.myData)
-      AuthProvider.RegisterUserWithGoogle({
+      AuthProvider._RegisterUserWithGoogle({
         Name: userInfo.user.name,
         Email: userInfo.user.email,
         Phone: "-1",
@@ -56,7 +56,7 @@ export class SettingsPage extends React.Component<IProps, IState> {
       this.setState({
         isSigninInProgress: false
       })
-      console.log(error)
+
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {

@@ -10,7 +10,8 @@ export enum Page {
     HOME = 7,
     NEWTRIP = 8,
     NEWSTEP = 9,
-    SETTING = 10
+    SETTING = 10,
+    PAGE = 11
 }
 
 export const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];

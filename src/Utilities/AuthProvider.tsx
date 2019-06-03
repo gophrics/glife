@@ -7,6 +7,7 @@ export interface RegisterUserModal {
     Phone: string
     Country: string
     Email: string
+    Password: string
 }
 
 export interface LoginUserModal {

@@ -1,53 +1,30 @@
 import * as React from 'react'
-import { View, TextInput, Button } from 'react-native'
+import { View, TextInput } from 'react-native'
 import { GoogleSigninButton, statusCodes } from 'react-native-google-signin';
-import { AuthProvider, RegisterUserModal } from '../Utilities/AuthProvider';
-import { Page } from '../Modals/ApplicationEnums';
+import { AuthProvider, RegisterUserModal, LoginUserModal } from '../Utilities/AuthProvider'
+interface IProps{ 
 
-interface IProps {
-    setPage: any
 }
 
-interface IState {
+interface IState{
     name: string
+    country: string
     email: string
     phone: string
-    country: string
     password: string
     isSigninInProgress: boolean
 }
 
-export class RegisterUserPage extends React.Component<IProps, IState> {
-
-    myData: any;
-
+export class LoginUserPage extends React.Component<IProps, IState> {
+    myData: any
     constructor(props: IProps) {
         super(props)
-
-        this.myData = {};
-    }
-
-    onNameChange = (data: string) => {
-        this.setState({
-            name: data
-        })
+        this.myData = {}
     }
 
     onEmailChange = (data: string) => {
         this.setState({
             email: data
-        })
-    }   
-
-    onPhoneChange = (data: string) => {
-        this.setState({
-            phone: data
-        })
-    }
-
-    onCountryChange = (data: string) => {
-        this.setState({
-            country: data
         })
     }
 
@@ -56,22 +33,6 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
             password: data
         })
     }
-
-    registerManual = () => {
-        AuthProvider.RegisterUser({
-            Name: this.state.name,
-            Email: this.state.email,
-            Phone: this.state.phone,
-            Country: this.state.country,
-            Password: this.state.password
-        } as RegisterUserModal)
-        .then((res) => {
-            if(res) {
-                this.props.setPage(Page[Page.HOME])
-            }
-        })
-    }
-
 
     signUpUsingGoogle = async () => {
         try {
@@ -82,8 +43,7 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
                 Name: this.state.name,
                 Email: this.state.email,
                 Country: this.state.country,
-                Phone: this.state.phone,
-                Password: this.state.password
+                Phone: this.state.phone
             } as RegisterUserModal)
         } catch (error) {
             this.setState({
@@ -102,16 +62,11 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
         }
     }
 
-
     render() {
         return (
-            <View style={{justifyContent:'center', alignContent:'center'}}>
-                <TextInput onChangeText={this.onNameChange} placeholder="Enter Name" />
-                <TextInput onChangeText={this.onEmailChange} placeholder="Enter Email" />
-                <TextInput onChangeText={this.onPhoneChange} placeholder="Enter Phone" />
-                <TextInput onChangeText={this.onCountryChange} placeholder="Enter Country" />
-                <TextInput onChangeText={this.onPasswordChange} placeholder="Enter Password" />
-                <Button title={"Submit"} onPress={this.registerManual} />
+            <View>
+                <TextInput onChangeText={this.onEmailChange} />
+                <TextInput onChangeText={this.onPasswordChange} />
                 <GoogleSigninButton
                     style={{ width: 192, height: 48 }}
                     size={GoogleSigninButton.Size.Wide}

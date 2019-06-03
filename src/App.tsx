@@ -63,7 +63,7 @@ export default class App extends React.Component<IProps, IState> {
   signInGoogleSilently = async () => {
     try {
     const userInfo = await GoogleSignin.signIn();
-    AuthProvider.LoginUser(userInfo.user.email, userInfo.idToken)
+    AuthProvider.LoginUserWithGoogle(userInfo.user.email, userInfo.idToken)
     .then((res) => {
       if(res) {
         var data = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.SETTING])

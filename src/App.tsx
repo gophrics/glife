@@ -18,6 +18,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
 import { AuthProvider } from './Utilities/AuthProvider';
+import { RegisterUserPage } from './Pages/RegisterUserPage';
+import { LoginUserPage } from './Pages/LoginUserPage';
 
 interface IState {
   page: string,
@@ -77,7 +79,7 @@ export default class App extends React.Component<IProps, IState> {
     }
   }
 
-  setPage(page: string, data: any) {
+  setPage(page: string, data: any = null) {
     if(data != null) 
       BlobSaveAndLoad.Instance.setBlobValue(page, data);
     BlobSaveAndLoad.Instance.saveBlob();
@@ -129,6 +131,10 @@ export default class App extends React.Component<IProps, IState> {
               <NewTripPage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.SETTING] ? 
               <SettingsPage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.REGISTER] ? 
+              <RegisterUserPage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.LOGIN] ? 
+              <LoginUserPage setPage={this.setPage.bind(this)}/>
             : <View />
           }
         </View>

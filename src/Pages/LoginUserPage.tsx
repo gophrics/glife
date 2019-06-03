@@ -1,9 +1,11 @@
 import * as React from 'react'
-import { View, TextInput } from 'react-native'
+import { View, TextInput, Button } from 'react-native'
 import { GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { AuthProvider, RegisterUserModal, LoginUserModal } from '../Utilities/AuthProvider'
-interface IProps{ 
+import { Page } from '../Modals/ApplicationEnums';
 
+interface IProps{ 
+    setPage: any
 }
 
 interface IState{
@@ -31,6 +33,18 @@ export class LoginUserPage extends React.Component<IProps, IState> {
     onPasswordChange = (data: string) => {
         this.setState({
             password: data
+        })
+    }
+
+    login = () => {
+        AuthProvider.LoginUser({
+            Email: this.state.email,
+            Password: this.state.password
+        } as LoginUserModal)
+        .then((res) => {
+            if(res) {
+                this.props.setPage(Page[Page.HOME]);
+            }
         })
     }
 
@@ -67,6 +81,7 @@ export class LoginUserPage extends React.Component<IProps, IState> {
             <View>
                 <TextInput onChangeText={this.onEmailChange} />
                 <TextInput onChangeText={this.onPasswordChange} />
+                <Button title={"Login"} onPress={this.login} />
                 <GoogleSigninButton
                     style={{ width: 192, height: 48 }}
                     size={GoogleSigninButton.Size.Wide}

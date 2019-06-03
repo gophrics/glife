@@ -11,7 +11,8 @@ export enum Page {
     NEWTRIP = 8,
     NEWSTEP = 9,
     SETTING = 10,
-    PAGE = 11
+    REGISTER = 11,
+    LOGIN = 12
 }
 
 export const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];

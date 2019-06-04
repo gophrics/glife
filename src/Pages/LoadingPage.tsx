@@ -24,9 +24,12 @@ var styles = StyleSheet.create<Styles>({
     },
     infoText: {
         flex: 9,
+        fontFamily: 'AppleSDGothicNeo-Regular',
+        fontSize: 28,
+        textAlign: 'center',
         padding: '20%',
         alignSelf: 'center',
-        color:'black'
+        color:'white'
     }
 });
 
@@ -115,6 +118,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     id: i} as ClusterModal )
             }
 
+            console.log('1')
+
             // Expanding homes to timestamp
             var initialTimestamp = 0;
             var endTimestamp = 0;
@@ -132,6 +137,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             // TODAY
             this.homesDataForClustering[endTimestamp+1] = this.homes[this.homes.length-1]
 
+            console.log(2)
             BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
             var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
@@ -141,6 +147,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             i = 0;
             var asynci = 0;
             for(var trip of trips) {
+                console.log(trip)
                 trip.sort((a: ClusterModal, b: ClusterModal) => {
                     return a.timestamp-b.timestamp
                 });
@@ -165,6 +172,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                             return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
                         })
                         for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
+                        this.dataToSendToNextPage.coverPicURL = "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
+                        this.dataToSendToNextPage.profilePicURL = "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
                         this.props.onDone(this.dataToSendToNextPage);
                     }
                 })

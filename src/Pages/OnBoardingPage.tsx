@@ -132,15 +132,15 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         for (var i = 0; i < this.state.numberOfHomes; i++) {
             inputs.push(
                 <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flexDirection: 'column', width: '90%', alignContent: 'center', justifyContent: 'center' }}>
+                    <View style={{ flexDirection: 'column', width: '90%'}}>
                         <TextInput
                             key={i}
-                            placeholder="Enter home city"
+                            placeholder={"Your "+ (i+1) +((i==0) ? "st" : (i == 1) ? "nd" : "th") + " home city"}
                             onChangeText={(text) => this.onLocationTextChange(i - 1, text)}
-                            style={{ fontSize: 20, padding: 3, color: 'black', borderWidth: 2, borderRadius: 10 }}
+                            style={{ fontSize: 20, padding: 3, color: 'white', borderWidth: 2, borderRadius: 10 }}
                             textContentType={'addressCity'}
                         />
-                        <Text style={{ color: 'black', marginBottom: 20 }}>{i == 0 ? "Long long ago" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
+                        <Text style={{ color: 'white', marginBottom: 20 }}>{i == 0 ? "Beginning of time" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
                     </View>
                     <TouchableOpacity key={i} onPress={() => this.onCalenderClick(i - 1)}>
                         <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../Assets/icons8-calendar-52.png')} />
@@ -157,7 +157,10 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                     onConfirm={this.onPickerConfirm.bind(this)}
                     onCancel={this.onPickerCancel.bind(this)}
                 />
-                <View style={{ marginTop: 20, flexDirection: 'column' }} >
+                <View>
+                    <Text style={{fontSize:32, color:'white', textAlign:'center', fontFamily:'AppleSDGothicNeo-Regular', padding:20}}>Tell us your home cities, for the magic to happen</Text>
+                </View>
+                <View style={{ marginTop: 20, alignContent: 'center', justifyContent: 'center' }} >
                     {inputs}
                 </View>
                 <Button title="Done" onPress={this.onNextButtonClick} />

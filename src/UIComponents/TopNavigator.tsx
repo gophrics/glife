@@ -40,7 +40,7 @@ export class TopNavigator extends React.Component<IProps, IState> {
                     <Icon style={{padding:10}} size={40} name='settings' />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ height: 60 }} onPress={this.onProfilePress.bind(this)}>
-                    <Image style={{ width: 60, height: 60 }} source={require('../Assets/glife_logo.png')} />
+                    <Image style={{ width: 60, height: 60 }} source={require('../Assets/glife_logo_transparent.png')} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ height: 60 }} onPress={this.onNewTripPress.bind(this)}>
                     <Icon style={{padding:10}} size={40} name='plus' />

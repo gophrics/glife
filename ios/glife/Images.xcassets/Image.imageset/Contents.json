@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "IMG_0017.png",
+      "filename" : "glife_logo_transparent.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "IMG_0017-1.png",
+      "filename" : "glife_logo_transparent-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "IMG_0017-2.png",
+      "filename" : "glife_logo_transparent-2.png",
       "scale" : "3x"
     }
   ],

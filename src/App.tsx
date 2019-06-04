@@ -20,7 +20,7 @@ import { GoogleSignin } from 'react-native-google-signin';
 import { AuthProvider } from './Utilities/AuthProvider';
 import { RegisterUserPage } from './Pages/RegisterUserPage';
 import { LoginUserPage } from './Pages/LoginUserPage';
-
+import AsyncStorage  from '@react-native-community/async-storage'
 interface IState {
   page: string,
   navigatorVisible: boolean
@@ -40,7 +40,7 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    //AsyncStorage.clear()
+    AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
@@ -68,7 +68,7 @@ export default class App extends React.Component<IProps, IState> {
     AuthProvider.LoginUserWithGoogle(userInfo.user.email, userInfo.idToken)
     .then((res) => {
       if(res) {
-        var data = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.SETTING])
+        var data = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.SETTING]) || {}
         data.loginProvider = 'GOOGLE'
         data.loggedIn = true
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.SETTING], data)
@@ -76,6 +76,7 @@ export default class App extends React.Component<IProps, IState> {
     })
     } catch(error) {
       // User not registered
+      console.log(error)
     }
   }
 

@@ -19,6 +19,7 @@ import ImageDataModal from '../Modals/ImageDataModal';
 import { CustomButton } from '../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
 import { TravelUtils } from '../Utilities/TravelUtils';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 interface IState {
@@ -282,9 +283,9 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                             }
                         }}>
 
-                        <SafeAreaView style={{ margin: 30, bottom: this.state.modalBottom, flex: 1, alignContent: 'center', justifyContent: 'center' }}>
+                        <SafeAreaView style={{ margin: 30, borderRadius: 10, bottom: this.state.modalBottom, flex: 1, alignContent: 'center', justifyContent: 'center' }}>
+                            <LinearGradient colors={['#98FB98', '#50C878', '#00A572']}>
                             <View style={{
-                                backgroundColor: '#808080ff',
                                 borderRadius: 10
                             }}>
                                 <View>
@@ -321,12 +322,13 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                             ))
                                         }
                                     </ScrollView>
-                                    <View style={{ height: '10%', backgroundColor: '#ffffffff', padding: 2 }}>
+                                    <View style={{ height: '10%', padding: 2 }}>
                                         <TextInput multiline={true} editable={true} onChangeText={(text) => {
                                             this.state.lastStepClicked.description = text;
                                         }} 
                                         style={{
-                                            backgroundColor: '#ffffffff',
+                                            backgroundColor: '#4c669f',
+                                            borderRadius: 5,
                                             padding: 5,
                                             color: 'black'
                                         }}
@@ -349,7 +351,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                     </View>
                                 </View>
                             </View>
-
+                            </LinearGradient>
                         </SafeAreaView>
                     </Modal>
                     : <View />}

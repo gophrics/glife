@@ -137,7 +137,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                             key={i}
                             placeholder={"Your "+ (i+1) +((i==0) ? "st" : (i == 1) ? "nd" : "th") + " home city"}
                             onChangeText={(text) => this.onLocationTextChange(i - 1, text)}
-                            style={{ fontSize: 20, padding: 3, color: 'white', borderWidth: 2, borderRadius: 10 }}
+                            style={{ fontSize: 22, padding: 3, color: 'white'}}
                             textContentType={'addressCity'}
                         />
                         <Text style={{ color: 'white', marginBottom: 20 }}>{i == 0 ? "Beginning of time" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>

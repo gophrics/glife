@@ -68,7 +68,7 @@ export class TripComponent extends React.Component<IProps, IState> {
                         {
                             // TODO: Don't forget to add degree celsius}
                         }
-                        <Text style={{fontSize: 30, color:'white'}}>{this.props.tripModal.temperature + "C"}</Text>
+                        <Text style={{fontSize: 30, color:'white'}}>{this.props.tripModal.temperature}</Text>
                     </View>
                     <View style={{flex: 3, flexDirection: 'column'}}>
                         <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.tripModal.daysOfTravel + " days"}</Text>

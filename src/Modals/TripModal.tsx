@@ -7,7 +7,7 @@ export class TripModal {
     location : Region
     title: string
     countryCode: string[]
-    temperature : number
+    temperature : string
     daysOfTravel: number
     distanceTravelled : number
     activities: Array<string>
@@ -19,7 +19,7 @@ export class TripModal {
         this.tripId = 0;
         this.tripAsSteps = [];
         this.location = {} as Region
-        this.temperature = 0
+        this.temperature = ""
         this.daysOfTravel = 0
         this.distanceTravelled = 0
         this.activities = []

@@ -16,6 +16,7 @@ export class StepModal {
     masterMarker: Region
     distanceTravelled: number
     description: string
+    temperature: string
 
     constructor() {
         this.id = 0;
@@ -31,5 +32,6 @@ export class StepModal {
         this.masterMarker = {} as Region
         this.distanceTravelled = 0;
         this.description = "";
+        this.temperature = "";
     }
 }

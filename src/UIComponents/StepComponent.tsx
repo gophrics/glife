@@ -46,21 +46,21 @@ export class StepComponent extends React.Component<IProps, IState> {
                     
                         <View style={{flexDirection: 'column', alignContent:'space-between'}}>
                             
-                            <Text style={{color:'grey'}}>{"Day " + this.props.daysOfTravel}</Text>
+                            <Text style={{color:'white'}}>{"Day " + this.props.daysOfTravel}</Text>
 
-                            <Text style={{fontSize: 18, color: 'grey'}}>{this.props.modal.location == "" ? "Unknown" : this.props.modal.location}</Text>
+                            <Text style={{fontSize: 18, color: 'white'}}>{this.props.modal.location == "" ? "Unknown" : this.props.modal.location}</Text>
                             
                             {
                                 // TODO: Don't forget to add degree celsius}
                             }
-                            <Text style={{fontSize: 40, color: 'grey'}}>{this.state.temperature + " C"}</Text>
+                            <Text style={{fontSize: 40, color: 'white'}}>{this.state.temperature}</Text>
                         </View>
                         
                         <View style={{flexDirection: 'column', alignContent: 'space-between'}}>
-                            <Text style={{alignSelf: 'flex-end', color: 'grey', fontSize: 18}}>{this.props.distanceTravelled + " km"}</Text>
-                            <Text style={{alignSelf: 'flex-end', color: 'grey', fontSize: 18}}>{this.props.modal.imageUris.length + " photos taken"}</Text>
-                            <Text style={{alignSelf: 'flex-end', color: 'grey', fontSize: 18}}>{""}</Text>
-                            <Text style={{alignSelf: 'flex-end', color: 'grey', fontSize: 18}}>{""}</Text>
+                            <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.distanceTravelled + " km"}</Text>
+                            <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.modal.imageUris.length + " photos taken"}</Text>
+                            <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{""}</Text>
+                            <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{""}</Text>
                             {
                                 //Add activities ?
                             }

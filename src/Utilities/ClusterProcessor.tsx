@@ -72,7 +72,7 @@ export class ClusterProcessor {
             distanceTravelled += Math.floor(ClusterProcessor.EarthDistance({ latitude: step.meanLatitude, longitude: step.meanLongitude } as ClusterModal,
                 { latitude: previousStep.meanLatitude, longitude: previousStep.meanLongitude } as ClusterModal))
             step.distanceTravelled = distanceTravelled;
-            step.description = "I travelled .... damn babe"
+            step.description = "<Add description>"
             i+= 100;
             previousStep = step;
         }
@@ -128,14 +128,14 @@ export class ClusterProcessor {
         
         var prevData: ClusterModal = clusterData[0];
         for(var data of clusterData) {
-            // If distance from home is more than 100 km
+            // If distance from home is more than 40 km
             if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 40
-            // Noise filtering, if two pictures are taken 10 days apart, consider it a new trip
-            && (ClusterProcessor.TimeDistance(data, prevData) < 8.64e7*10)) {
+            // Noise filtering, if two pictures are taken 7 days apart, consider it a new trip
+            && (ClusterProcessor.TimeDistance(data, prevData) < 8.64e7*7)) {
                 trip.push(data)
             } else if(trip.length > 0){
-                // If more than 10 photos were taken for the trip
-                if(trip.length > 10)
+                // If more than 1 photo was taken for the trip
+                if(trip.length > 1)
                     trips.push(trip)
                 trip = []
             }

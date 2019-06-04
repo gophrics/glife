@@ -5,6 +5,21 @@ import { AsyncStorage } from 'react-native';
 
 export class TravelUtils {
 
+    static getWeatherFromCoordinates(latitude: number, longitude: number): Promise<any> {
+        return fetch('http://192.168.0.102:8082/api/v1/travel/searchweatherbylocation', {
+            method: 'POST',
+            body: JSON.stringify({
+                latitude: latitude,
+                longitude: longitude
+            })
+        })
+        .then((res) => {
+            return res.json()
+        }).then((res) => {
+            return res
+        })
+    }
+
     static getLocationFromCoordinates(latitude: number, longitude: number): Promise<any> {
         return fetch('http://192.168.0.102:8082/api/v1/travel/searchcoordinates', {
             method: 'POST',

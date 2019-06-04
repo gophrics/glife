@@ -118,8 +118,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     id: i} as ClusterModal )
             }
 
-            console.log('1')
-
             // Expanding homes to timestamp
             var initialTimestamp = 0;
             var endTimestamp = 0;
@@ -137,7 +135,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             // TODAY
             this.homesDataForClustering[endTimestamp+1] = this.homes[this.homes.length-1]
 
-            console.log(2)
             BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
             var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
@@ -147,7 +144,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             i = 0;
             var asynci = 0;
             for(var trip of trips) {
-                console.log(trip)
                 trip.sort((a: ClusterModal, b: ClusterModal) => {
                     return a.timestamp-b.timestamp
                 });
@@ -166,7 +162,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     if(asynci == trips.length) {
                         let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
                         this.dataToSendToNextPage.countriesVisited = x(this.dataToSendToNextPage.countriesVisited); // Removing duplicates
-                        console.log(this.dataToSendToNextPage.countriesVisited)
                         this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
                         this.dataToSendToNextPage.trips.sort((a, b) => {
                             return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
@@ -203,6 +198,10 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
         var tripName = "";
         for(var step of steps) {
+            if(i > 0)
+            step.distanceTravelled = Math.floor(tripResult.tripAsSteps[i-1].distanceTravelled + 
+                ClusterProcessor.EarthDistance({latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude} as ClusterModal,
+                {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal))
             tripResult.tripAsSteps.push(step);
             i++;
         }
@@ -219,6 +218,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         _stepModal.distanceTravelled = Math.floor(tripResult.tripAsSteps[i-1].distanceTravelled + 
             ClusterProcessor.EarthDistance({latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude} as ClusterModal,
             {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal))
+
 
         tripResult.tripAsSteps.push(_stepModal)
         i++;
@@ -240,6 +240,14 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     tripResult.countryCode.push((res.address.country_code as string).toLocaleUpperCase())
                 }
             })
+
+            await TravelUtils.getWeatherFromCoordinates(step.meanLatitude, step.meanLongitude)
+            .then((res) => {
+                if(res && res.main) {
+                    step.location = step.location || res.name
+                    step.temperature = Math.floor(Number.parseFloat(res.main.temp)-273.15) + "ºC"
+                }
+            })
         }
 
         tripResult.tripId = tripId;
@@ -258,6 +266,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             latitudeDelta: 0,
             longitudeDelta: 0
         };
+        tripResult.temperature = steps[steps.length-1].temperature;
 
         if(countries.length == 1) {
             // Only home country, use places

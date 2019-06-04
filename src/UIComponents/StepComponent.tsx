@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Text, Button, Dimensions } from "react-native";
+import { View, TouchableOpacity, Text, Button, Dimensions, ImageBackground } from "react-native";
 import { StepModal } from '../Modals/StepModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
 import LinearGradient from 'react-native-linear-gradient';
@@ -41,37 +41,36 @@ export class StepComponent extends React.Component<IProps, IState> {
     render() {
 
         return (
-            <TouchableOpacity onPress={this.onPress.bind(this)} style={{width: deviceWidth*3/4}}>
-                <Text style={{alignSelf: 'center', fontSize: 30, color:'black'}}>{"Day " + this.props.daysOfTravel}</Text>
+            <TouchableOpacity onPress={this.onPress.bind(this)} >
+                <ImageBackground resizeMode='cover' style={{width: deviceWidth*3/4, padding: 10, margin: 10, height: 150}} source={{uri: this.props.modal.masterImageUri}}>
+                    
+                        <View style={{flexDirection: 'column', alignContent:'space-between'}}>
+                            
+                            <Text style={{color:'grey'}}>{"Day " + this.props.daysOfTravel}</Text>
 
-                <View style={{flexDirection:'column', height:"75%", marginLeft:5, marginRight:5, padding:10, borderRadius: 15, backgroundColor:'lightgrey', borderWidth: 2}}>
-                    <View style={{width: "100%", flexDirection: 'row', flexGrow: 1}}>
-                        
-                        <View style={{flex: 2, flexDirection: 'column', alignContent: 'flex-start'}}>
-                            <Text style={{flex: 1, fontSize: 18, color: 'black'}}>{this.props.modal.location == "" ? "Unknown" : this.props.modal.location}</Text>
+                            <Text style={{fontSize: 18, color: 'grey'}}>{this.props.modal.location == "" ? "Unknown" : this.props.modal.location}</Text>
+                            
                             {
                                 // TODO: Don't forget to add degree celsius}
                             }
-                            <Text style={{flex: 1, fontSize: 40, color: 'black'}}>{this.state.temperature + " C"}</Text>
+                            <Text style={{fontSize: 40, color: 'grey'}}>{this.state.temperature + " C"}</Text>
                         </View>
                         
-                        <View style={{flex: 3, flexDirection: 'column'}}>
-                            <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{this.props.distanceTravelled + " km"}</Text>
-                            <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{this.props.modal.imageUris.length + " photos taken"}</Text>
-                            <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{""}</Text>
-                            <Text style={{alignSelf: 'flex-end', color: 'black', fontSize: 18}}>{""}</Text>
+                        <View style={{flexDirection: 'column', alignContent: 'space-between'}}>
+                            <Text style={{alignSelf: 'flex-end', color: 'grey', fontSize: 18}}>{this.props.distanceTravelled + " km"}</Text>
+                            <Text style={{alignSelf: 'flex-end', color: 'grey', fontSize: 18}}>{this.props.modal.imageUris.length + " photos taken"}</Text>
+                            <Text style={{alignSelf: 'flex-end', color: 'grey', fontSize: 18}}>{""}</Text>
+                            <Text style={{alignSelf: 'flex-end', color: 'grey', fontSize: 18}}>{""}</Text>
                             {
                                 //Add activities ?
                             }
                         </View>
-                    </View>
                     {/*
                     <View style={{alignSelf:'center'}}>
                         <Button title={"Share"} onPress={this.shareStep.bind(this)} />
                     </View>
                     */}
-                </View>
-
+                </ImageBackground>
             </TouchableOpacity>
         )
     }

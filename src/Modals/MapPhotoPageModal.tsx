@@ -8,6 +8,7 @@ export class MapPhotoPageModal {
     // Profile stuff
     profilePicURL: string
     profileId: string
+    name: string
     
     constructor(trips: TripModal[]) {
         this.trips = trips;
@@ -16,5 +17,6 @@ export class MapPhotoPageModal {
         this.coverPicURL = ""
         this.profilePicURL = ""
         this.profileId = ""
+        this.name = ""
     }
 }

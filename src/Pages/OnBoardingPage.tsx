@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Image, View, TextInput, Button, Text, TouchableOpacity } from 'react-native'
+import { Image, View, TextInput, Button, Text, TouchableOpacity, Dimensions } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { ClusterModal } from '../Modals/ClusterModal';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
@@ -18,8 +18,8 @@ interface IState {
 export class OnBoardingPage extends React.Component<IProps, IState> {
 
     homes: { name: string, timestamp: number }[] = [];
-
     cursor: number = 0
+    name: string = "";
 
     constructor(props: IProps) {
         super(props)
@@ -28,15 +28,13 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             showPicker: false,
             dates: {}
         }
+        this.name = BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name
     }
 
     validateData = () => {
-
-        //Buggy
-        for (var i = 0; i <= this.cursor; i++) {
-            if (this.homes[i] == undefined) return false;
-        }
-        return true
+        var count = 0;
+        for(var home of this.homes) count++
+        return count != 0;
     }
 
 
@@ -49,7 +47,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onPickerConfirm = (date: string) => {
-        if(this.homes.length <= this.cursor) this.homes.push({name: "", timestamp: 0})
+        if (this.homes.length <= this.cursor) this.homes.push({ name: "", timestamp: 0 })
 
         var dates = this.state.dates;
         var dateObject: Date = new Date(date)
@@ -77,47 +75,12 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
 
     onLocationTextChange = (pos: number, text: string) => {
         this.cursor = pos
-        if(this.homes.length <= this.cursor) this.homes.push({name: "", timestamp: NaN})
+        if (this.homes.length <= this.cursor) this.homes.push({ name: "", timestamp: NaN })
         this.homes[pos].name = text
     }
 
     onNextButtonClick = () => {
-        // TODO: Fetch using API, the geocodes
-
-        /*
-        homesClusterModal.push({
-            latitude:  37.763804,
-            longitude: -122.438588,
-            timestamp: NaN//this.timestamps[0]
-        } as ClusterModal)
-        
-
-        homesClusterModal.push({
-            latitude: 37.763804,
-            longitude: -122.438588,
-            timestamp: 1464030230000//this.timestamps[1]
-        } as ClusterModal)
-
-        homesClusterModal.push({
-            latitude: 15.390570,
-            longitude: 73.878204,
-            timestamp: 1464036771000//this.timestamps[2]
-        } as ClusterModal)
-
-        homesClusterModal.push({
-            latitude: 12.902886,
-            longitude: 77.675271,
-            timestamp: 1540327971000//this.timestamps[2]
-        } as ClusterModal)
-
-        homesClusterModal.push({
-            latitude: 17.449202,
-            longitude: 78.370166,
-            timestamp: NaN//this.timestamps[2]
-        } as ClusterModal)
-        */
-
-        if(this.validateData()) {
+        if (this.validateData()) {
             this.props.onDone(Page[Page.LOADING], this.homes)
         }
         else {
@@ -132,12 +95,12 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         for (var i = 0; i < this.state.numberOfHomes; i++) {
             inputs.push(
                 <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flexDirection: 'column', width: '90%'}}>
+                    <View style={{ flexDirection: 'column', width: '90%' }}>
                         <TextInput
                             key={i}
-                            placeholder={"Your "+ (i+1) +((i==0) ? "st" : (i == 1) ? "nd" : "th") + " home city"}
+                            placeholder={"Your " + (i + 1) + ((i == 0) ? "st" : (i == 1) ? "nd" : "th") + " home city"}
                             onChangeText={(text) => this.onLocationTextChange(i - 1, text)}
-                            style={{ fontSize: 22, padding: 3, color: 'white'}}
+                            style={{ fontSize: 22, padding: 3, color: 'white' }}
                             textContentType={'addressCity'}
                         />
                         <Text style={{ color: 'white', marginBottom: 20 }}>{i == 0 ? "Beginning of time" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
@@ -151,19 +114,24 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
 
         return (
             <View>
+                <View>
+                    <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Hi {this.name}</Text>
+                    <Text style={{ marginTop: 20, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Tell us your home cities, for the magic to happen</Text>
+                </View>
+                <View style={{height: '100%'}}>
+                    <View style={{ marginTop: 5, padding: 20 }} >
+                        {inputs}
+                    </View>
+                </View>
+                <TouchableOpacity style={{position:'absolute', bottom: 300, right: 20, alignSelf:'center', backgroundColor: 'white', borderRadius: 10, padding: 10}} onPress={this.onNextButtonClick}>
+                    <Text style={{fontSize: 22}}>Next</Text>    
+                </TouchableOpacity>
 
                 <DateTimePicker
                     isVisible={this.state.showPicker}
                     onConfirm={this.onPickerConfirm.bind(this)}
                     onCancel={this.onPickerCancel.bind(this)}
                 />
-                <View>
-                    <Text style={{fontSize:32, color:'white', textAlign:'center', fontFamily:'AppleSDGothicNeo-Regular', padding:20}}>Tell us your home cities, for the magic to happen</Text>
-                </View>
-                <View style={{ marginTop: 20, alignContent: 'center', justifyContent: 'center' }} >
-                    {inputs}
-                </View>
-                <Button title="Done" onPress={this.onNextButtonClick} />
             </View>
         )
     }

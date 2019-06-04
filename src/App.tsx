@@ -21,6 +21,7 @@ import { AuthProvider } from './Utilities/AuthProvider';
 import { RegisterUserPage } from './Pages/RegisterUserPage';
 import { LoginUserPage } from './Pages/LoginUserPage';
 import AsyncStorage  from '@react-native-community/async-storage'
+import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 interface IState {
   page: string,
   navigatorVisible: boolean
@@ -40,12 +41,12 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    AsyncStorage.clear()
+    // AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
       this.setState({
-        page: res == null ? Page[Page.ONBOARDING] : Page[Page.PROFILE]
+        page: res == null ? Page[Page.PREONBOARDING] : Page[Page.PROFILE]
       })
       this.signInGoogleSilently()
     })
@@ -122,6 +123,8 @@ export default class App extends React.Component<IProps, IState> {
               <ProfilePage setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
             : this.state.page == Page[Page.TRIPEXPLORE] ? 
               <TripExplorePage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.PREONBOARDING] ? 
+              <PreOnBoardingPage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.ONBOARDING] ? 
               <OnBoardingPage onDone={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.STEPEXPLORE] ?

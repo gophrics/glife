@@ -253,9 +253,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                 <Icon size={40} style={{padding:10}} name='x' />
                             </TouchableOpacity>
                         </Callout>
-
-                        <Callout style={{ top: Dimensions.get('window').height - 330 }}>
-                        </Callout>
                     </MapView>
                     {
                         <ScrollView decelerationRate={0.6} snapToOffsets={snapOffsets} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', overflow: 'hidden' }}>

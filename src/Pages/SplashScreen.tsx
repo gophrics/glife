@@ -10,6 +10,7 @@ interface IState {
 }
 
 const deviceWidth = Dimensions.get('window').width
+const deviceHeight = Dimensions.get('window').height
 
 export class SplashScreen extends React.Component<IProps, IState> {
 
@@ -20,8 +21,8 @@ export class SplashScreen extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View style={{flex:1, justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
-                <Image style={{height:deviceWidth*.5, width: deviceWidth*.5, marginRight: deviceWidth*.15}} source={require('../Assets/glife_logo.png')} />
+            <View style={{height: '100%', width: '100%', justifyContent: 'center', alignContent: 'center'}}>
+                <Image style={{alignSelf:'center', height:deviceWidth*.5, width: deviceWidth*.5}} source={require('../Assets/glife_logo_transparent.png')} />
             </View>
         )
     }

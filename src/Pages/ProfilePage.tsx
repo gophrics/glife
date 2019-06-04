@@ -10,6 +10,8 @@ import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
+import { AuthProvider } from '../Utilities/AuthProvider';
+import { GoogleSignin } from 'react-native-google-signin';
 
 interface IState {
     bottom: number,
@@ -27,7 +29,6 @@ interface IProps {
 const HEADER_MAX_HEIGHT = Dimensions.get('window').height * .6
 const HEADER_MIN_HEIGHT = 0;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
-
 export default class ProfilePage extends React.Component<IProps, IState> {
     tripRenderArray: any = []
 
@@ -43,12 +44,33 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         }
         console.log(this.myData.profilePicURL)
         this.state = {
-            bottom: this.tripRenderArray.length * 50,
+            bottom: 50,
             scrollY: new Animated.Value(0),
             coverPicURL: this.myData.coverPicURL,
             profilePicURL: this.myData.profilePicURL
         }
+        this.signInGoogleSilently()
     }
+
+
+
+  signInGoogleSilently = async () => {
+    try {
+    const userInfo = await GoogleSignin.signIn();
+    AuthProvider.LoginUserWithGoogle(userInfo.user.email, userInfo.idToken)
+    .then((res) => {
+      if(res) {
+        var data = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.SETTING]) || {}
+        data.loginProvider = 'GOOGLE'
+        data.loggedIn = true
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.SETTING], data)
+      }
+    })
+    } catch(error) {
+      // User not registered
+      console.log(error)
+    }
+  }
 
     onTripPress = (tripModal: TripModal) => {
         this.props.setPage(Page[Page.STEPEXPLORE], tripModal)

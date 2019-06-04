@@ -41,14 +41,13 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-  AsyncStorage.clear()
+    // AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
       this.setState({
         page: res == null ? Page[Page.PREONBOARDING] : Page[Page.PROFILE]
       })
-      this.signInGoogleSilently()
     })
 
     GoogleSignin.configure({
@@ -61,24 +60,6 @@ export default class App extends React.Component<IProps, IState> {
       accountName: '', // [Android] specifies an account name on the device that should be used
     })
 
-  }
-
-  signInGoogleSilently = async () => {
-    try {
-    const userInfo = await GoogleSignin.signIn();
-    AuthProvider.LoginUserWithGoogle(userInfo.user.email, userInfo.idToken)
-    .then((res) => {
-      if(res) {
-        var data = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.SETTING]) || {}
-        data.loginProvider = 'GOOGLE'
-        data.loggedIn = true
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.SETTING], data)
-      }
-    })
-    } catch(error) {
-      // User not registered
-      console.log(error)
-    }
   }
 
   setPage(page: string, data: any = null) {

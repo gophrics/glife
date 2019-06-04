@@ -51,7 +51,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Can I Use Location</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Can I see your naked pictures add?</string>
+	<string>We don't store your photos in the cloud</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Can I see your naked pictures?</string>
 	<key>UIAppFonts</key>

@@ -1,5 +1,5 @@
-import {Image} from 'react-native';
 import {Region} from 'react-native-maps';
+import { TravelUtils } from '../Utilities/TravelUtils';
 
 export class StepModal {
 
@@ -18,6 +18,17 @@ export class StepModal {
     description: string
     temperature: string
 
+    checkAndFillData = () => {
+        if(this.location == "" && (this.meanLatitude != 0 && this.meanLongitude != 0)) {
+            TravelUtils.getLocationFromCoordinates(this.meanLatitude, this.meanLongitude)
+            .then((res) => {
+                if(res.address)
+                    this.location = res.address.county || res.address.state_district;
+            })
+        }
+    }
+
+
     constructor() {
         this.id = 0;
         this.meanLatitude = 0;
@@ -33,5 +44,7 @@ export class StepModal {
         this.distanceTravelled = 0;
         this.description = "";
         this.temperature = "";
+
+        //setInterval(this.checkAndFillData, Math.floor(Math.random()*1000));
     }
 }

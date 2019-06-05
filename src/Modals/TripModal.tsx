@@ -1,5 +1,6 @@
 import { StepModal } from "./StepModal";
 import Region from "./Region";
+import { TravelUtils } from "../Utilities/TravelUtils";
 
 export class TripModal {
     tripId: number
@@ -15,6 +16,20 @@ export class TripModal {
     endDate: string
     masterPicURL: string
     
+
+    checkAndFillData = () => {
+        if(this.tripAsSteps.length >=3 && this.title == "") {
+            TravelUtils.getLocationFromCoordinates(this.location.latitude, this.location.longitude)
+            .then((res) => {
+                if(res.address) {
+                    this.title = res.address.country
+                    this.countryCode = res.address.country_code
+                }
+            })
+        }
+    }
+
+
     constructor() {
         this.tripId = 0;
         this.tripAsSteps = [];
@@ -28,5 +43,7 @@ export class TripModal {
         this.title = ""
         this.countryCode = []
         this.masterPicURL = ""
+
+        //setInterval(this.checkAndFillData, Math.floor(Math.random()*1000))
     }
 }

@@ -243,10 +243,14 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 }
             })
 
+            // Showing current weather now
             await TravelUtils.getWeatherFromCoordinates(step.meanLatitude, step.meanLongitude)
             .then((res) => {
                 if(res && res.main) {
-                    step.location = step.location || res.name
+                    if(step.location == "" ) {
+                        step.location = res.name
+                        places.push(step.location)
+                    }
                     step.temperature = Math.floor(Number.parseFloat(res.main.temp)-273.15) + "ºC"
                 }
             })

@@ -25,7 +25,8 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
     validate = () => {
         this.setState({
             valid: BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]] != undefined && 
-            BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name != undefined
+            BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name != undefined &&
+            (BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name as string).trim().length > 0
         })
         return BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]] != undefined && 
             BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name != undefined

@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { Image, View, TextInput, Button, Text, TouchableOpacity, Dimensions } from 'react-native'
+import { Image, View, TextInput, Button, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { ClusterModal } from '../Modals/ClusterModal';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
 import { TravelUtils } from '../Utilities/TravelUtils';
@@ -15,6 +14,8 @@ interface IState {
     showPicker: boolean,
     dates: any
     valid: boolean
+    validationInProgress: boolean
+    culprits: Array<boolean>
 }
 
 export class OnBoardingPage extends React.Component<IProps, IState> {
@@ -22,7 +23,6 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     homes: { name: string, timestamp: number }[] = [];
     cursor: number = 0
     name: string = "";
-    culprits: Array<number> = []
 
     constructor(props: IProps) {
         super(props)
@@ -30,21 +30,31 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             numberOfHomes: 1,
             showPicker: false,
             dates: {},
-            valid: true
+            valid: true,
+            validationInProgress: false,
+            culprits: [true]
         }
         this.name = BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name
     }
 
     validateData = async() => {
+        this.setState({
+            validationInProgress: true
+        })
         var count = 0, asyncCount = 0;
+
+        var culprits = this.state.culprits;
+        for(var i = 0; i < culprits.length; i++) culprits[i] = false;
         for(var home of this.homes) {
-            await TravelUtils.getCoordinatesFromLocation(home.name)
-            .then((res) => {
-                if(res.address != undefined) asyncCount++
-                else this.culprits.push(count)
-            })
+            var res = await TravelUtils.getCoordinatesFromLocation(home.name)
+            if(res && res.length > 0) { asyncCount++;  culprits[count] = true } 
             count++
         }
+        
+        this.setState({
+            validationInProgress: false,
+            culprits: culprits
+        })
         return count == asyncCount && count != 0;
     }
 
@@ -63,6 +73,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         var dateObject: Date = new Date(date)
         dates[this.cursor] = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
         this.homes[this.cursor].timestamp = dateObject.getTime();
+        this.state.culprits.push(true)
         this.setState({
             showPicker: false,
             dates: dates
@@ -90,18 +101,20 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onNextButtonClick = () => {
-        if (this.validateData()) {
-            this.setState({
-                valid: true
-            })
-            this.props.onDone(Page[Page.LOADING], this.homes)
-        }
-        else {
-            this.setState({
-                valid: false
-            })
-            return
-        }
+        this.validateData()
+        .then((res) => {
+            if (res) {
+                this.setState({
+                    valid: true
+                })
+                this.props.onDone(Page[Page.LOADING], this.homes)
+            }
+            else {
+                this.setState({
+                    valid: false
+                })
+            }
+        })
     }
 
     render() {
@@ -116,7 +129,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                             key={i}
                             placeholder={"Your " + (i + 1) + ((i == 0) ? "st" : (i == 1) ? "nd" : "th") + " home city"}
                             onChangeText={(text) => this.onLocationTextChange(i - 1, text)}
-                            style={[{ fontSize: 22, padding: 3, color: 'white' }, {borderRadius: ((this.culprits.indexOf(i) == -1) ? 1: 0), borderColor: ((this.culprits.indexOf(i) == -1) ? 'red': '')}]}
+                            style={[{ fontSize: 22, padding: 3, color: 'white' }, {borderWidth: ((this.state.culprits[i] == false) ? 1: 0), borderColor: ((this.state.culprits[i] == false) ? 'red': 'white')}]}
                             textContentType={'addressCity'}
                         />
                         <Text style={{ color: 'white', marginBottom: 20 }}>{i == 0 ? "Beginning of time" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
@@ -142,7 +155,6 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                 <TouchableOpacity style={{position:'absolute', bottom: 300, right: 20, alignSelf:'center', backgroundColor: 'white', borderRadius: 10, padding: 10}} onPress={this.onNextButtonClick}>
                     <Text style={{fontSize: 22}}>Next</Text>    
                 </TouchableOpacity>
-
                 <DateTimePicker
                     isVisible={this.state.showPicker}
                     onConfirm={this.onPickerConfirm.bind(this)}

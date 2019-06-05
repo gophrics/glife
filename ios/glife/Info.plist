@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>glife</string>
+	<string>Glimpse</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -49,11 +49,11 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Can I Use Location</string>
+	<string>Need location</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We don't store your photos in the cloud</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Can I see your naked pictures?</string>
+	<string>We don't store your photos in the cloud</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

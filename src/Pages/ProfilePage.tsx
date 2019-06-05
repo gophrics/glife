@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View,Text, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
+import { View, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
 import { ProfileComponent } from '../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
@@ -18,6 +18,7 @@ interface IState {
     scrollY: Animated.Value,
     coverPicURL: string
     profilePicURL: string
+    refreshing: boolean
 }
 
 interface IProps {
@@ -42,12 +43,13 @@ export default class ProfilePage extends React.Component<IProps, IState> {
             this.tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress} />)
             this.tripRenderArray.push(<View key={trip.tripId + 'v'} style={{ height: 10 }} />)
         }
-        console.log(this.myData.profilePicURL)
+        
         this.state = {
             bottom: 50,
             scrollY: new Animated.Value(0),
             coverPicURL: this.myData.coverPicURL,
-            profilePicURL: this.myData.profilePicURL
+            profilePicURL: this.myData.profilePicURL,
+            refreshing: false
         }
     }
 
@@ -103,10 +105,29 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         this.setState({})
     }
 
+    _onRefresh = () => {
+        this.props.setPage(Page[Page.LOADING])
+    }
+
     render() {
 
         return (
-            <View style={{ height: '100%' }}>
+            <View style={{ height: '100%' }} >
+
+                <ScrollView style={{ flex: 1 }}
+                    scrollEventThrottle={16}
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
+                    )}
+                    contentInset={{ top: 0, bottom: this.state.bottom }}
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={this.state.refreshing}
+                          onRefresh={this._onRefresh}
+                        />
+                    }
+                    >
+
 
                 <Animated.View style={[styles.header, {
                     height: this.state.scrollY.interpolate({
@@ -141,13 +162,6 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                         <ProfileComponent scrollY={this.state.scrollY} HEADER_SCROLL_DISTANCE={HEADER_SCROLL_DISTANCE} profilePic={this.state.profilePicURL} onProfilePicChange={this.onProfilePicChange} />
                     </View>
                 </Animated.View>
-
-                <ScrollView style={{ flex: 1 }}
-                    scrollEventThrottle={16}
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
-                    )}
-                    contentInset={{ top: 0, bottom: this.state.bottom }}>
                     <WorldMapColouredComponent visitedCountryList={this.myData.countriesVisited} />
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <StatsAsCardComponent text={"You travelled " + this.myData.percentageWorldTravelled + "% of the world"} />

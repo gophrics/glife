@@ -41,7 +41,7 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    // AsyncStorage.clear()
+    AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {

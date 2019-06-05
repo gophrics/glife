@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Button } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { Page } from '../Modals/ApplicationEnums';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { SettingsModal } from '../Modals/SettingsModal';
 import { AuthProvider, RegisterUserModal } from '../Utilities/AuthProvider';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface IProps {
   setPage: any
@@ -69,6 +70,10 @@ export class SettingsPage extends React.Component<IProps, IState> {
     }
   }
 
+  onClearCache = () => {
+    AsyncStorage.clear()
+  }
+
   render() {
     return (
       <View>
@@ -79,6 +84,7 @@ export class SettingsPage extends React.Component<IProps, IState> {
           onPress={this.signUpUsingGoogle}
           disabled={false//this.state.isSigninInProgress || this.myData.loggedIn
           } />
+        <Button title={"Clear Cache"} onPress={this.onClearCache} />
       </View>
     )
   }

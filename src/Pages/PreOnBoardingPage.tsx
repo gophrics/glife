@@ -9,7 +9,7 @@ interface IProps {
 }
 
 interface IState {
-
+    valid: boolean
 }
 
 const deviceHeight = Dimensions.get('window').height
@@ -17,16 +17,30 @@ const deviceHeight = Dimensions.get('window').height
 export class PreOnBoardingPage extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
+        this.state = {
+            valid: true
+        }
+    }
+
+    validate = () => {
+        this.setState({
+            valid: BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]] != undefined && 
+            BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name != undefined
+        })
+        return BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]] != undefined && 
+            BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name != undefined
     }
 
     onNameTextChange = (text: string) => {
         if(!BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]])
             BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]] = {}
         BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name = text
+        this.validate()
     }
 
     onNextButtonClick = () => {
-        this.props.setPage(Page[Page.ONBOARDING])
+        if(this.validate())
+            this.props.setPage(Page[Page.ONBOARDING])
     }
 
     render() {
@@ -41,7 +55,7 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
                     <TextInput
                         placeholder={"Enter name"}
                         onChangeText={(text) => this.onNameTextChange(text)}
-                        style={{ alignSelf:"center", fontSize: 22, padding: 3, color: 'white' }}
+                        style={[{ alignSelf:"center", fontSize: 22, padding: 3, color: 'white'}, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
                         textContentType={'givenName'}
                     />
 

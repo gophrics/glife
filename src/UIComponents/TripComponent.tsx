@@ -23,7 +23,8 @@ export class TripComponent extends React.Component<IProps, IState> {
             padding: 10,
             marginLeft: 10,
             marginRight: 10,
-            height: deviceHeight*.25
+            height: deviceHeight*.25,
+            backgroundColor: 'grey'
         }
     })
 

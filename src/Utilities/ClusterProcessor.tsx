@@ -72,7 +72,7 @@ export class ClusterProcessor {
             distanceTravelled += Math.floor(ClusterProcessor.EarthDistance({ latitude: step.meanLatitude, longitude: step.meanLongitude } as ClusterModal,
                 { latitude: previousStep.meanLatitude, longitude: previousStep.meanLongitude } as ClusterModal))
             step.distanceTravelled = distanceTravelled;
-            step.description = "<Add description>"
+            step.description = "Description goes here..."
             i+= 100;
             previousStep = step;
         }
@@ -134,8 +134,8 @@ export class ClusterProcessor {
             && (ClusterProcessor.TimeDistance(data, prevData) < 8.64e7*7)) {
                 trip.push(data)
             } else if(trip.length > 0){
-                // If more than 1 photo was taken for the trip
-                if(trip.length > 1)
+                // If more than 3 photo were taken for the trip, it's officially considered a trip
+                if(trip.length > 3)
                     trips.push(trip)
                 trip = []
             }

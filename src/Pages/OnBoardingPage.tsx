@@ -4,6 +4,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { ClusterModal } from '../Modals/ClusterModal';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
+import { TravelUtils } from '../Utilities/TravelUtils';
 
 interface IProps {
     onDone: (page: string, data: any) => void
@@ -13,6 +14,7 @@ interface IState {
     numberOfHomes: number,
     showPicker: boolean,
     dates: any
+    valid: boolean
 }
 
 export class OnBoardingPage extends React.Component<IProps, IState> {
@@ -20,26 +22,34 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     homes: { name: string, timestamp: number }[] = [];
     cursor: number = 0
     name: string = "";
+    culprits: Array<number> = []
 
     constructor(props: IProps) {
         super(props)
         this.state = {
             numberOfHomes: 1,
             showPicker: false,
-            dates: {}
+            dates: {},
+            valid: true
         }
         this.name = BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name
     }
 
-    validateData = () => {
-        var count = 0;
-        for(var home of this.homes) count++
-        return count != 0;
+    validateData = async() => {
+        var count = 0, asyncCount = 0;
+        for(var home of this.homes) {
+            await TravelUtils.getCoordinatesFromLocation(home.name)
+            .then((res) => {
+                if(res.address != undefined) asyncCount++
+                else this.culprits.push(count)
+            })
+            count++
+        }
+        return count == asyncCount && count != 0;
     }
 
 
     onButtonClick = () => {
-        if (!this.validateData()) return;
         this.setState({
             numberOfHomes: this.state.numberOfHomes + 1
         })
@@ -81,10 +91,16 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
 
     onNextButtonClick = () => {
         if (this.validateData()) {
+            this.setState({
+                valid: true
+            })
             this.props.onDone(Page[Page.LOADING], this.homes)
         }
         else {
-
+            this.setState({
+                valid: false
+            })
+            return
         }
     }
 
@@ -100,7 +116,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                             key={i}
                             placeholder={"Your " + (i + 1) + ((i == 0) ? "st" : (i == 1) ? "nd" : "th") + " home city"}
                             onChangeText={(text) => this.onLocationTextChange(i - 1, text)}
-                            style={{ fontSize: 22, padding: 3, color: 'white' }}
+                            style={[{ fontSize: 22, padding: 3, color: 'white' }, {borderRadius: ((this.culprits.indexOf(i) == -1) ? 1: 0), borderColor: ((this.culprits.indexOf(i) == -1) ? 'red': '')}]}
                             textContentType={'addressCity'}
                         />
                         <Text style={{ color: 'white', marginBottom: 20 }}>{i == 0 ? "Beginning of time" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>

@@ -71,11 +71,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         this.initialize();
     }
 
-    getWidth = (width: number) => {
-        // console.log(event.nativeEvent.layout.width)
-        snapOffsets.push(width + 20) // 20 being width of + button in between
-    }
-
     initialize() {
         console.log(deviceHeight)
         this.travelCardArray = []
@@ -91,7 +86,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
             this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
             
-            snapOffsets.push(snapOffsets.length == 0 ? deviceWidth*3/4 + 20: snapOffsets[key-1] + deviceWidth*3/4 + 20)
+            snapOffsets.push(snapOffsets.length == 0 ? deviceWidth*3/4 + 20 + 20: snapOffsets[key-1] + deviceWidth*3/4 + 20 + 20)
             markers.push.apply(markers, step.markers)
             imageUriData.push.apply(imageUriData, step.imageUris)
             polylineArr.push({ latitude: step.meanLatitude, longitude: step.meanLongitude })
@@ -206,8 +201,8 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
 
     onScroll = (event: any) => {
-        if (event.nativeEvent.contentOffset.x < 0 || (Math.ceil(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 24))) > this.state.myData.tripAsSteps.length) return;
-        this.zoomToStep(this.state.myData.tripAsSteps[Math.ceil(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 24))])
+        if (event.nativeEvent.contentOffset.x < 0 || (Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20))) > this.state.myData.tripAsSteps.length) return;
+        this.zoomToStep(this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20))])
     }
 
     onBackPress = () => {
@@ -239,7 +234,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                                                 <Image
                                                     style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
 
-                            {this.state.lastStepClicked.id == step.id ?  <Text style={{ color: 'white' }}>{this.state.lastStepClicked.description}</Text> : <View /> }
+                            {this.state.lastStepClicked.id == step.id ?  <Text style={{ color: 'white', fontStyle: 'italic' }}>{this.state.lastStepClicked.description}</Text> : <View /> }
                                             </View>
                                             : <View />}
                                     </Marker>

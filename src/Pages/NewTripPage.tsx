@@ -4,7 +4,6 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { TripModal } from '../Modals/TripModal';
 import { Page } from '../Modals/ApplicationEnums';
 import { StepModal } from '../Modals/StepModal';
-import { TravelUtils } from '../Utilities/TravelUtils';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 
 interface IProps {
@@ -17,8 +16,8 @@ interface IState {
 
 export class NewTripPage extends React.Component<IProps, IState> {
     calenderCursor: number = 0;
-    from: Date = new Date(0);
     to: Date = new Date();
+    from: Date = new Date(this.to.getTime()-365*24*60*60*1000);
     tripTitle: string = "";
     myData: any
 
@@ -86,30 +85,16 @@ export class NewTripPage extends React.Component<IProps, IState> {
 
         return (
             <View>
-                <DateTimePicker
-                    isVisible={this.state.showPicker}
-                    onConfirm={this.onPickerConfirm.bind(this)}
-                    onCancel={this.onPickerCancel.bind(this)}
-                />
-                <TextInput placeholder="Enter title" style={{fontSize: 20, borderWidth: 3, borderRadius: 5, padding: 5}} onChangeText={(text) => this.onTitleChange(text)} />
-                <View style={{flexDirection:'row'}}>
-                    <View style={{position: 'absolute', left: 0}}>
-                        <Text>From</Text>
-                        <TouchableOpacity onPress={() => this.onCalenderClick(0)}>
-                            <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../Assets/icons8-calendar-52.png')} />
-                        </TouchableOpacity>
-                        <Text>{this.from.getDate()+"-"+this.from.getMonth()+"-"+this.from.getFullYear()}</Text>
-                    </View>
-                    <View style={{position: 'absolute', right: 0}}>
-                        <Text>To</Text>
-                        <TouchableOpacity onPress={() => this.onCalenderClick(1)}>
-                            <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../Assets/icons8-calendar-52.png')} />
-                        </TouchableOpacity>
-                        <Text>{this.to.getDate()+"-"+this.to.getMonth()+"-"+this.to.getFullYear()}</Text>
-                    </View>
+                <Text style={{ marginTop: 20, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Enter the trip name. Add the steps later.</Text>
+                <View style={{justifyContent:'center', height: '60%', padding: 20}}>
+                    <TextInput placeholder="Enter trip name" style={{fontSize: 20, color:'white', padding: 5, alignSelf:'center'}} onChangeText={(text) => this.onTitleChange(text)} />
+                
                 </View>
-                <View style={{marginTop: 100}}>
-                    <Button title={"Next"} onPress={this.onNextClick.bind(this)} />
+
+                <View style={{justifyContent:'center', alignContent:'center', backgroundColor:'white', margin:10, borderRadius: 5, padding: 10}}>
+                    <TouchableOpacity onPress={this.onNextClick.bind(this)}>
+                        <Text style={{fontSize:22, textAlign:'center'}}>Done</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         )

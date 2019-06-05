@@ -49,7 +49,6 @@ export default class ProfilePage extends React.Component<IProps, IState> {
             coverPicURL: this.myData.coverPicURL,
             profilePicURL: this.myData.profilePicURL
         }
-        this.signInGoogleSilently()
     }
 
 

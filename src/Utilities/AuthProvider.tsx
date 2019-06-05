@@ -15,7 +15,7 @@ export interface LoginUserModal {
     Password: string
 }
 
-const ServerURLWithoutEndingSlash = 'http://192.168.0.102:8080'
+const ServerURLWithoutEndingSlash = 'http://beerwithai.com'
 
 export class AuthProvider {
 

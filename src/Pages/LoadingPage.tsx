@@ -47,7 +47,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
     dataToSendToNextPage: MapPhotoPageModal = new MapPhotoPageModal([]);
     homesDataForClustering: {[key:number]: ClusterModal} = {}
-    homes: ClusterModal[]  = []
+    homes: {latitude: number, longitude: number, timestamp: number}[]  = []
     myData: any
     retryCount = 20;
     constructor(props:any) {
@@ -56,14 +56,19 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         this.props.setNavigator(false)
 
         this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
-        var i = 0;
 
         this.state = {
             finished: 0,
             total: 100
         }
+
+        this.loadHomes();
+    }
+
+    loadHomes = async() => {
+        var i = 0;
         for(var element of this.myData) {
-            TravelUtils.getCoordinatesFromLocation(element.name)
+            await TravelUtils.getCoordinatesFromLocation(element.name)
             .then((res) => {
                 if(res.length <= 0) return;
                 // Taking first home only, when multiple places can have same name
@@ -72,9 +77,9 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 this.homes.push({
                     latitude: Number.parseFloat(res.lat),
                     longitude: Number.parseFloat(res.lon),
-                    timestamp: element.timestamp
-                } as ClusterModal)
-
+                    timestamp: (element.timestamp as number)
+                })
+                console.log(this.homes)
                 i++;
                 if(i == this.myData.length) this.initialize();
             })
@@ -121,12 +126,16 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             // Expanding homes to timestamp
             var initialTimestamp = 0;
             var endTimestamp = 0;
-            for(var data in this.homes) {
-                endTimestamp = Math.floor(this.homes[data].timestamp/8.64e7)
+            console.log("Expanding homes..")
+            for(var data of this.homes) {
+                console.log(data.timestamp)
+                endTimestamp = Math.floor(data.timestamp/8.64e7)
+                console.log(initialTimestamp + " - " + endTimestamp)
+                console.log(data)
                 if(Number.isNaN(endTimestamp)) //Current day
                     endTimestamp = Math.floor((new Date()).getTime()/8.64e7)
                 for(var i = initialTimestamp; i <= endTimestamp; i++) {
-                    this.homesDataForClustering[i] = this.homes[data]
+                    this.homesDataForClustering[i] = data
                     // For some reason this is not working. To be checked later
                     this.homesDataForClustering[i].timestamp = i*8.64e7
                 }

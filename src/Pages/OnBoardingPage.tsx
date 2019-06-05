@@ -39,31 +39,29 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onLocationPress = (e: any) => {
-        console.log(e)
         this.validateData()
     }
 
     findExactName(obj: any, name: string) {
-        for(var key of obj)
-            if((key.name + ", " + key.country) == name) {
+        for(var key of obj) {
+            if((key.name + ", " + key.country).trim() == name.trim()) {
                 return true;
             }
+        }
+           
         return false;
     }
 
     removeDuplicates = (obj: any) => {
         var result: {name: string, country: string}[] = []
         for(var key of obj) {
-            console.log(key)
-            var t = key.display_name.split(',')
+            var t = key.display_name.split(', ')
             if(!this.findExactName(result, t[0] + ", " + t[t.length-1]))
             result.push({
                 name: t[0],
                 country: t[t.length-1]
             })
         }
-
-        console.log(result)
         return result
     }
 
@@ -72,8 +70,9 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             validationInProgress: true
         })
         var count = 0, asyncCount = 0;
+        // Deep copy
+        var culprits = this.state.culprits.slice();
 
-        var culprits = this.state.culprits;
         for(var i = 0; i < culprits.length; i++) culprits[i] = 1;
         for(var home of this.homes) {
             var res = await TravelUtils.getCoordinatesFromLocation(home.name)
@@ -81,10 +80,10 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             var j = 1;
             this.tempLocations = []
             for(var obj of res) {
-                this.tempLocations.push(<Text style={{color:'lightgrey'}} >{"\n " + j + ". " + obj.name + ", " + obj.country + "\n"}</Text>)
+                this.tempLocations.push(<Text style={{color:'lightgrey'}} >{"\n " + j + ". " + obj.name.trim() + ", " + obj.country.trim() + "\n"}</Text>)
                 j++;
             }
-            if(res && res.length == 1) { asyncCount++;  culprits[count] = 0 } 
+            if(res && res.length == 1 || (this.findExactName(res, home.name))) { asyncCount++;  culprits[count] = 0 } 
             else if(res) culprits[count] = 2
             count++
         }
@@ -147,6 +146,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onNextButtonClick = () => {
+        console.log(this.homes)
         this.validateData()
         .then((res) => {
             if (res) {

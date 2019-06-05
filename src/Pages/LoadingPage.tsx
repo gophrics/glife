@@ -69,20 +69,19 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var i = 0;
         for(var element of this.myData) {
             await TravelUtils.getCoordinatesFromLocation(element.name)
-            .then((res) => {
-                if(res.length <= 0) return;
-                // Taking first home only, when multiple places can have same name
-                // Fix this bug, TODO:
-                res = res[0];
-                this.homes.push({
-                    latitude: Number.parseFloat(res.lat),
-                    longitude: Number.parseFloat(res.lon),
-                    timestamp: (element.timestamp as number)
+                .then((res) => {
+                    if(res.length <= 0) return;
+                    // Taking first home only, when multiple places can have same name
+                    // Fix this bug, TODO:
+                    res = res[0];
+                    this.homes.push({
+                        latitude: Number.parseFloat(res.lat),
+                        longitude: Number.parseFloat(res.lon),
+                        timestamp: (element.timestamp as number)
+                    })
+                    i++;
+                    if(i == this.myData.length) this.initialize();
                 })
-                console.log(this.homes)
-                i++;
-                if(i == this.myData.length) this.initialize();
-            })
         }
     }
 
@@ -107,6 +106,22 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
     // Helper methods
     initialize () {
+
+        // Expanding homes to timestamp
+        var endTimestamp = Math.floor((new Date()).getTime()/8.64e7);
+        console.log("Expanding homes..")
+
+        this.homes.sort((a, b) => {
+            return b.timestamp - a.timestamp;
+        })
+
+        for(var data of this.homes) {
+            console.log(endTimestamp)
+            console.log(data)
+            while((endTimestamp--) >= Math.floor(data.timestamp/8.64e7)) this.homesDataForClustering[endTimestamp] = data as ClusterModal;
+            console.log(endTimestamp)
+        }
+
         PhotoLibraryProcessor.getPhotosFromLibrary()
         .then((photoRollInfos: Array<ImageDataModal>) => {
     
@@ -115,6 +130,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
             var clusterData: Array<ClusterModal> = [];
             for(var i = 0; i < markers.length; i++) {
+                if(photoRollInfos[i].timestamp < endTimestamp) continue;
                 clusterData.push({
                     image: photoRollInfos[i].image,
                     latitude: markers[i].latitude, 
@@ -122,27 +138,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     timestamp: timelineData[i],
                     id: i} as ClusterModal )
             }
-
-            // Expanding homes to timestamp
-            var initialTimestamp = 0;
-            var endTimestamp = 0;
-            console.log("Expanding homes..")
-            for(var data of this.homes) {
-                console.log(data.timestamp)
-                endTimestamp = Math.floor(data.timestamp/8.64e7)
-                console.log(initialTimestamp + " - " + endTimestamp)
-                console.log(data)
-                if(Number.isNaN(endTimestamp)) //Current day
-                    endTimestamp = Math.floor((new Date()).getTime()/8.64e7)
-                for(var i = initialTimestamp; i <= endTimestamp; i++) {
-                    this.homesDataForClustering[i] = data
-                    // For some reason this is not working. To be checked later
-                    this.homesDataForClustering[i].timestamp = i*8.64e7
-                }
-                initialTimestamp = endTimestamp;
-            }
-            // TODAY
-            this.homesDataForClustering[endTimestamp+1] = this.homes[this.homes.length-1]
 
             BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 

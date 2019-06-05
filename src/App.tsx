@@ -22,6 +22,7 @@ import { LoginUserPage } from './Pages/LoginUserPage';
 import AsyncStorage  from '@react-native-community/async-storage'
 import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
+import { SearchPage } from './Pages/SearchPage';
 interface IState {
   page: string,
   navigatorVisible: boolean
@@ -41,12 +42,12 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    // AsyncStorage.clear()
+    AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
       this.setState({
-        page: res == null ? Page[Page.PREONBOARDING] : Page[Page.PROFILE]
+        page: res == null || res[Page[Page.PROFILE]] == undefined ? Page[Page.PREONBOARDING] : Page[Page.PROFILE]
       })
     })
 
@@ -120,6 +121,8 @@ export default class App extends React.Component<IProps, IState> {
               <RegisterUserPage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.LOGIN] ? 
               <LoginUserPage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.SEARCH] ?
+              <SearchPage setPage={this.setPage.bind(this)}/>
             : <View />
           }
           

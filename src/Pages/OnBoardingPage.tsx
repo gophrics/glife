@@ -43,6 +43,28 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         this.validateData()
     }
 
+    findExactName(obj: any, name: string) {
+        for(var key of obj)
+            if(key.name == name) return true;
+        return false;
+    }
+
+    removeDuplicates = (obj: any) => {
+        var result: {name: string, country: string}[] = []
+        for(var key of obj) {
+            console.log(key)
+            var t = key.display_name.split(',')
+            if(!this.findExactName(result, t[0]))
+            result.push({
+                name: t[0],
+                country: t[t.length-1]
+            })
+        }
+
+        console.log(result)
+        return result
+    }
+
     validateData = async() => {
         this.setState({
             validationInProgress: true
@@ -53,13 +75,14 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         for(var i = 0; i < culprits.length; i++) culprits[i] = 1;
         for(var home of this.homes) {
             var res = await TravelUtils.getCoordinatesFromLocation(home.name)
+            res = this.removeDuplicates(res)
             var j = 1;
             this.tempLocations = []
             for(var obj of res) {
-                this.tempLocations.push(<Text style={{color:'lightgrey'}} >{"\n " + j + ". " + obj.display_name + "\n"}</Text>)
+                this.tempLocations.push(<Text style={{color:'lightgrey'}} >{"\n " + j + ". " + obj.name + ", " + obj.country + "\n"}</Text>)
                 j++;
             }
-            if(res && res.length == 1) { asyncCount++;  culprits[count] = 0 } 
+            if(res && res.length == 1 || this.findExactName(res, home.name)) { asyncCount++;  culprits[count] = 0 } 
             else if(res) culprits[count] = 2
             count++
         }
@@ -79,7 +102,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         this.cursor++;
     }
 
-    onPickerConfirm = (date: string) => {
+    onPickerConfirm = (dateObject: Date) => {
         this.validateData().then((res) => {
             if(!res){
                 this.setState({
@@ -91,7 +114,6 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             if (this.homes.length <= this.cursor) this.homes.push({ name: "", timestamp: 0 })
 
             var dates = this.state.dates;
-            var dateObject: Date = new Date(date)
             dates[this.cursor] = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
             this.homes[this.cursor].timestamp = dateObject.getTime();
             this.state.culprits.push(0)

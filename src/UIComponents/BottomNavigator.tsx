@@ -28,20 +28,22 @@ export class BottomNavigator extends React.Component<IProps, IState> {
     }
 
     onSearchPress = () => {
+        this.props.navigatorFunc(Page[Page.SEARCH])
     }
 
 
     render() {
         return (
             <View style={{flexDirection: 'row', padding: 5, justifyContent:'space-between', background: '#4c669f', width: deviceWidth}}>
-                <TouchableOpacity onPress={this.onProfilePress}>
-                <Icon name='profile' size={30} />
-                </TouchableOpacity>
+                
                 <TouchableOpacity onPress={this.onAddTripPress}>
                 <Icon name='plus' size={30} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.onSearchPress}>
                 <Icon name='search1' size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.onProfilePress}>
+                <Icon name='profile' size={30} />
                 </TouchableOpacity>
             </View>
         )

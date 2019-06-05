@@ -16,7 +16,8 @@ interface IState {
     dates: any
     valid: boolean
     validationInProgress: boolean
-    culprits: Array<number>
+    culprits: Array<number>,
+    homes: { name: string, timestamp: number }[]
 }
 
 export class OnBoardingPage extends React.Component<IProps, IState> {
@@ -34,7 +35,8 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             dates: {},
             valid: true,
             validationInProgress: false,
-            culprits: [0]
+            culprits: [0],
+            homes: [{name: "", timestamp: 0}]
         }
         this.name = BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name
     }
@@ -75,7 +77,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         var culprits = this.state.culprits.slice();
 
         for(var i = 0; i < culprits.length; i++) culprits[i] = 1;
-        for(var home of this.homes) {
+        for(var home of this.state.homes) {
             var res = await TravelUtils.getCoordinatesFromLocation(home.name)
             res = this.removeDuplicates(res)
             var j = 1;
@@ -113,11 +115,11 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                 return;
             }
 
-            if (this.homes.length <= this.cursor + 1) this.homes.push({ name: "", timestamp: 0 })
+            if (this.state.homes.length <= this.cursor + 1) this.state.homes.push({ name: "", timestamp: 0 })
 
             var dates = this.state.dates;
             dates[this.cursor] = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
-            this.homes[this.cursor].timestamp = dateObject.getTime();
+            this.state.homes[this.cursor].timestamp = dateObject.getTime();
             this.state.culprits.push(0)
             this.setState({
                 showPicker: false,
@@ -142,19 +144,18 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
 
     onLocationTextChange = (pos: number, text: string) => {
         this.cursor = pos
-        if (this.homes.length <= this.cursor) this.homes.push({ name: "", timestamp: NaN })
-        this.homes[pos].name = text
+        if (this.state.homes.length <= this.cursor) this.state.homes.push({ name: "", timestamp: NaN })
+        this.state.homes[pos].name = text
     }
 
     onNextButtonClick = () => {
-        console.log(this.homes)
         this.validateData()
         .then((res) => {
             if (res) {
                 this.setState({
                     valid: true
                 })
-                this.props.onDone(Page[Page.LOADING], this.homes)
+                this.props.onDone(Page[Page.LOADING], this.state.homes)
             }
             else {
                 this.setState({
@@ -169,11 +170,27 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onCancelClick = (pos: number) => {
+        console.log(pos)
+        console.log(this.state.homes)
         var homes = []
-        for(var i = 0; i < this.homes.length; i++) 
-            if(i != pos) homes.push(this.homes[i])
-        this.homes = homes
-        this.render();
+        var dates = []
+        for(var i = 0; i < this.state.homes.length; i++) {
+            if(i != pos) {
+                if(i == pos-1) {
+                    homes.push({name: this.state.homes[i].name, timestamp: this.state.homes[pos].timestamp})
+                    dates.push(this.state.dates[pos] || NaN)
+                } else {
+                    homes.push(this.state.homes[i])
+                    dates.push(this.state.dates[i] || NaN)
+                }
+            } 
+        }
+        console.log(homes)
+        console.log(dates)
+        this.setState({
+            homes: homes,
+            dates: dates
+        })
     }
 
     render() {
@@ -187,8 +204,8 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                 <View style={{height: '100%'}}>
                     <ScrollView style={{ marginTop: 5, padding: 20 }} contentInset={{top: 0, bottom: 500}} >
                         {
-                            this.homes.map((el, i) => (
-<View key={i + 'a'} style={{ flexDirection: 'row' }} onTouchStart={(e) => this.shiftCursor(i)} >
+                            this.state.homes.map((el, i) => (
+<View key={i + 'a'} style={{ flexDirection: 'row' }}>
                     <View style={{ flexDirection: 'column', width: '90%' }}>
                         <TextInput
                             onEndEditing={this.validateData}
@@ -196,7 +213,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                             onChangeText={(text) => this.onLocationTextChange(i, text)}
                             style={[{ fontSize: 22, padding: 3, color: 'white' }, {borderWidth: ((this.state.culprits[i] != 0) ? 1: 0), borderColor: ((this.state.culprits[i] != 0) ? 'red': 'white')}]}
                             textContentType={'addressCity'}
-                        />
+                        >{el.name}</TextInput>
                         {this.state.culprits[i] != 0 ? <Text style={{color:'red', padding: 3}} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overloard can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India" } </Text> : <View />}
                         {this.state.culprits[i] == 2 ? <Text style={{color:'lightgrey', padding: 3}}>Places found: </Text> : <View />}
                         {this.state.culprits[i] == 2 ? this.tempLocations: <View /> }
@@ -207,7 +224,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                     </TouchableOpacity>
                     {i != 0 ? 
                     <TouchableOpacity onPress={() => this.onCancelClick(i)}>
-                        <Icon name='cross' size={30} />
+                        <Icon name='closecircle' size={30} />
                     </TouchableOpacity>
                     : <View />}
                 </View>

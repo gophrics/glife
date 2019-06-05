@@ -17,11 +17,11 @@ import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
-import { AuthProvider } from './Utilities/AuthProvider';
 import { RegisterUserPage } from './Pages/RegisterUserPage';
 import { LoginUserPage } from './Pages/LoginUserPage';
 import AsyncStorage  from '@react-native-community/async-storage'
 import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
+import { BottomNavigator } from './UIComponents/BottomNavigator';
 interface IState {
   page: string,
   navigatorVisible: boolean
@@ -41,7 +41,7 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    AsyncStorage.clear()
+    // AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
@@ -122,8 +122,14 @@ export default class App extends React.Component<IProps, IState> {
               <LoginUserPage setPage={this.setPage.bind(this)}/>
             : <View />
           }
+          
         </View>
         </SafeAreaView>
+        {this.state.navigatorVisible ? 
+          <View style={{position: 'absolute', bottom: 0, height: 60, backgroundColor: '#ffffffff'}}>
+              <BottomNavigator visible={this.state.navigatorVisible} navigatorFunc={this.sliderChange.bind(this)}/> 
+          </View>
+        : <View />}
         </LinearGradient>
     )
   }

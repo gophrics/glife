@@ -19,7 +19,6 @@ export class TripComponent extends React.Component<IProps, IState> {
     retryCount = 20;
     style = StyleSheet.create({
         main: {
-            borderRadius: 15,
             padding: 10,
             marginLeft: 10,
             marginRight: 10,

@@ -56,7 +56,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             var j = 1;
             this.tempLocations = []
             for(var obj of res) {
-                this.tempLocations.push(<Text key={j} style={{color:'lightgrey'}} >{"\n " + j + ". " + obj.display_name + "\n"}</Text>)
+                this.tempLocations.push(<Text style={{color:'lightgrey'}} >{"\n " + j + ". " + obj.display_name + "\n"}</Text>)
                 j++;
             }
             if(res && res.length == 1) { asyncCount++;  culprits[count] = 0 } 
@@ -149,6 +149,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                     <View style={{ flexDirection: 'column', width: '90%' }}>
                         <TextInput
                             key={i}
+                            onEndEditing={this.validateData}
                             placeholder={"Your " + (i + 1) + ((i == 0) ? "st" : (i == 1) ? "nd" : "th") + " home city"}
                             onChangeText={(text) => this.onLocationTextChange(i - 1, text)}
                             style={[{ fontSize: 22, padding: 3, color: 'white' }, {borderWidth: ((this.state.culprits[i] != 0) ? 1: 0), borderColor: ((this.state.culprits[i] != 0) ? 'red': 'white')}]}

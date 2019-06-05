@@ -38,12 +38,12 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         super(props)
 
         this.props.setNavigator(true)
-        this.myData = BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]]
+        this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
         for (var trip of this.myData.trips) {
             this.tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress} />)
             this.tripRenderArray.push(<View key={trip.tripId + 'v'} style={{ height: 10 }} />)
         }
-        
+
         this.state = {
             bottom: 50,
             scrollY: new Animated.Value(0),
@@ -163,7 +163,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     </View>
                 </Animated.View>
                     <WorldMapColouredComponent visitedCountryList={this.myData.countriesVisited} />
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 10 }}>
                         <StatsAsCardComponent text={"You travelled " + this.myData.percentageWorldTravelled + "% of the world"} />
                         <View style={{ width: 10 }} />
                         <StatsAsCardComponent text={"You've collected " + this.myData.countriesVisited.length + " flags"} />

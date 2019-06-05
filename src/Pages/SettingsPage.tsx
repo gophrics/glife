@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, Text } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { Page } from '../Modals/ApplicationEnums';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
@@ -77,6 +77,7 @@ export class SettingsPage extends React.Component<IProps, IState> {
   render() {
     return (
       <View>
+        <Text style={{textAlign:'center', marginTop: 20, fontSize: 32, fontFamily:'AppleSDGothicNeo-Regular'}}> Lots of exciting features are in development, stay tuned! </Text>
         <GoogleSigninButton
           style={{ width: 192, height: 48 }}
           size={GoogleSigninButton.Size.Wide}

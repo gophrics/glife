@@ -15,7 +15,7 @@ interface IState {
     dates: any
     valid: boolean
     validationInProgress: boolean
-    culprits: Array<boolean>
+    culprits: Array<number>
 }
 
 export class OnBoardingPage extends React.Component<IProps, IState> {
@@ -23,6 +23,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     homes: { name: string, timestamp: number }[] = [];
     cursor: number = 0
     name: string = "";
+    tempLocations: string[] = [];
 
     constructor(props: IProps) {
         super(props)
@@ -32,7 +33,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             dates: {},
             valid: true,
             validationInProgress: false,
-            culprits: [true]
+            culprits: [0]
         }
         this.name = BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name
     }
@@ -44,10 +45,16 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         var count = 0, asyncCount = 0;
 
         var culprits = this.state.culprits;
-        for(var i = 0; i < culprits.length; i++) culprits[i] = false;
+        for(var i = 0; i < culprits.length; i++) culprits[i] = 1;
         for(var home of this.homes) {
             var res = await TravelUtils.getCoordinatesFromLocation(home.name)
-            if(res && res.length > 0) { asyncCount++;  culprits[count] = true } 
+            var j = 1;
+            for(var obj of res) {
+                this.tempLocations.push("\n " + j + ". " + obj.display_name + "\n")
+                j++;
+            }
+            if(res && res.length == 1) { asyncCount++;  culprits[count] = 0 } 
+            else if(res) culprits[count] = 2
             count++
         }
         
@@ -73,7 +80,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         var dateObject: Date = new Date(date)
         dates[this.cursor] = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
         this.homes[this.cursor].timestamp = dateObject.getTime();
-        this.state.culprits.push(true)
+        this.state.culprits.push(0)
         this.setState({
             showPicker: false,
             dates: dates
@@ -129,9 +136,11 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                             key={i}
                             placeholder={"Your " + (i + 1) + ((i == 0) ? "st" : (i == 1) ? "nd" : "th") + " home city"}
                             onChangeText={(text) => this.onLocationTextChange(i - 1, text)}
-                            style={[{ fontSize: 22, padding: 3, color: 'white' }, {borderWidth: ((this.state.culprits[i] == false) ? 1: 0), borderColor: ((this.state.culprits[i] == false) ? 'red': 'white')}]}
+                            style={[{ fontSize: 22, padding: 3, color: 'white' }, {borderWidth: ((this.state.culprits[i] != 0) ? 1: 0), borderColor: ((this.state.culprits[i] != 0) ? 'red': 'white')}]}
                             textContentType={'addressCity'}
                         />
+                        {this.state.culprits[i] != 0 ? <Text style={{color:'red', padding: 3}} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overloard can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India" } </Text> : <View />}
+                        {this.state.culprits[i] == 2 ? <Text style={{color:'white', padding: 3}}>Places found: {this.tempLocations} </Text> : <View />}
                         <Text style={{ color: 'white', marginBottom: 20 }}>{i == 0 ? "Beginning of time" : this.state.dates[i - 1]} - {this.state.dates[i] ? this.state.dates[i] : "Current"}</Text>
                     </View>
                     <TouchableOpacity key={i} onPress={() => this.onCalenderClick(i - 1)}>

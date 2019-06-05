@@ -32,12 +32,10 @@ export class StatsAsCardComponent extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
     card: {
-        borderRadius: 15,
-        borderColor: 'black',
         width: '45%',
         height: '100%',
-        alignSelf: 'center',
-        backgroundColor: 'lightblue'
+        alignContent: 'space-between',
+        backgroundColor: 'lightblue',
     },
 
     text: {

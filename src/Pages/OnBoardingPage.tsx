@@ -45,7 +45,9 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
 
     findExactName(obj: any, name: string) {
         for(var key of obj)
-            if(key.name == name) return true;
+            if((key.name + ", " + key.country) == name) {
+                return true;
+            }
         return false;
     }
 
@@ -54,7 +56,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         for(var key of obj) {
             console.log(key)
             var t = key.display_name.split(',')
-            if(!this.findExactName(result, t[0]))
+            if(!this.findExactName(result, t[0] + ", " + t[t.length-1]))
             result.push({
                 name: t[0],
                 country: t[t.length-1]
@@ -82,7 +84,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                 this.tempLocations.push(<Text style={{color:'lightgrey'}} >{"\n " + j + ". " + obj.name + ", " + obj.country + "\n"}</Text>)
                 j++;
             }
-            if(res && res.length == 1 || this.findExactName(res, home.name)) { asyncCount++;  culprits[count] = 0 } 
+            if(res && res.length == 1) { asyncCount++;  culprits[count] = 0 } 
             else if(res) culprits[count] = 2
             count++
         }

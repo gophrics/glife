@@ -24,7 +24,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
 
     cursor: number = 0
     name: string = "";
-    tempLocations: JSX.Element[] = [];
+    tempLocations: JSX.Element[][] = [];
 
     constructor(props: IProps) {
         super(props)
@@ -76,13 +76,15 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         var culprits = this.state.culprits.slice();
 
         for (var i = 0; i < culprits.length; i++) culprits[i] = 1;
+
+        this.tempLocations = []
         for (var home of this.state.homes) {
             var res = await TravelUtils.getCoordinatesFromLocation(home.name)
             res = this.removeDuplicates(res)
             var j = 1;
-            this.tempLocations = []
+            this.tempLocations.push([])
             for (var obj of res) {
-                this.tempLocations.push(<Text style={{ color: 'lightgrey' }} >{"\n " + j + ". " + obj.name.trim() + ", " + obj.country.trim() + "\n"}</Text>)
+                this.tempLocations[count].push(<Text style={{ color: 'lightgrey' }} >{"\n " + j + ". " + obj.name.trim() + ", " + obj.country.trim() + "\n"}</Text>)
                 j++;
             }
             if (res && res.length == 1 || (this.findExactName(res, home.name))) { asyncCount++; culprits[count] = 0 }
@@ -201,11 +203,11 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                     <ScrollView style={{ marginTop: 5, padding: 20 }} contentInset={{ top: 0, bottom: 500 }} >
                         {
                             this.state.homes.map((el, i) => (
-                                <View key={i + 'a'} style={{ flexDirection: 'row' }}>
+                                <View key={i + 'a'} style={{ margin: 10, flexDirection: 'row' }}>
                                     <TouchableOpacity onPress={() => this.onCalenderClick(i)}>
                                         <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../Assets/icons8-calendar-52.png')} />
                                     </TouchableOpacity>
-                                    <View style={{ flexDirection: 'column', width: '90%' }}>
+                                    <View style={{ flexDirection: 'column', marginLeft: 5, marginRight: 5, width: '80%' }}>
                                         <TextInput
                                             onEndEditing={this.validateData}
                                             placeholder={(i == 0) ? "Your most recent home city" : "Your previous home city"}
@@ -215,7 +217,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                                         >{el.name}</TextInput>
                                         {this.state.culprits[i] != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overloard can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India"} </Text> : <View />}
                                         {this.state.culprits[i] == 2 ? <Text style={{ color: 'lightgrey', padding: 3 }}>Places found: </Text> : <View />}
-                                        {this.state.culprits[i] == 2 ? this.tempLocations : <View />}
+                                        {this.state.culprits[i] == 2 ? this.tempLocations[i] : <View />}
                                         <Text style={{ color: 'white', fontSize: 20, marginBottom: 20 }}>{this.state.dates[i] ? this.state.dates[i] : "01/01/1970"} - {this.state.dates[i-1] ? this.state.dates[i-1] : "Current"}</Text>
                                     </View>
                                     {i != 0 ?

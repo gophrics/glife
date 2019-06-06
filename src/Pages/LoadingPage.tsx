@@ -116,9 +116,10 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         })
 
         for(var data of this.homes) {
-            console.log(endTimestamp)
-            console.log(data)
-            while((endTimestamp--) >= Math.floor(data.timestamp/8.64e7)) this.homesDataForClustering[endTimestamp] = data as ClusterModal;
+            while(endTimestamp >= Math.floor(data.timestamp/8.64e7) && endTimestamp >= 0) {
+                this.homesDataForClustering[endTimestamp] = data as ClusterModal;
+                endTimestamp--;
+            }
             console.log(endTimestamp)
         }
 
@@ -185,6 +186,9 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     async populateTripModalData (steps: StepModal[], tripId: number) {
         var tripResult : TripModal = new TripModal();
 
+        console.log(steps[0])
+        console.log(Math.floor(steps[0].startTimestamp/8.64e7))
+        console.log(this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1])
         var homeStep = this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
         var _stepModal = new StepModal()

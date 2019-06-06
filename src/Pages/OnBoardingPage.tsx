@@ -79,6 +79,10 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
 
         this.tempLocations = []
         for (var home of this.state.homes) {
+            if(home.name == "") {
+                culprits[count] = 1;
+                count++; continue;
+            }
             var res = await TravelUtils.getCoordinatesFromLocation(home.name)
             res = this.removeDuplicates(res)
             var j = 1;

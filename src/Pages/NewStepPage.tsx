@@ -1,10 +1,16 @@
 import * as React from 'react'
-import { View, TouchableOpacity, Text, Image, Modal, TextInput, Button, SafeAreaView } from 'react-native'
+import { Text, Image, Modal, TextInput, Button, SafeAreaView } from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
+import { StepModal } from '../Modals/StepModal';
+import { TravelUtils } from '../Utilities/TravelUtils';
+import ImageDataModal from '../Modals/ImageDataModal';
+import Region from '../Modals/Region';
+import { ClusterModal } from '../Modals/ClusterModal';
+import { ClusterProcessor } from '../Utilities/ClusterProcessor';
 
 interface IProps {
     visible: boolean,
-    onClose: any
+    onClose: (_step: StepModal|null) => void
 }
 
 interface IState {
@@ -75,8 +81,36 @@ export class NewStepPage extends React.Component<IProps, IState> {
         })
     }
 
-    onDone = () => {
-        this.props.onClose(this.data)
+    onDone = async() => {
+        if (this.data['images'].length == 0) {
+            this.props.onClose(null)
+            return
+        }
+
+        var res = await TravelUtils.getCoordinatesFromLocation(this.data['location'])
+        res = res[0]
+
+        var step = new StepModal()
+        var imageDataList: Array<ImageDataModal> = []
+        for (var image of this.data['images']) {
+            imageDataList.push(new ImageDataModal(new Region(res.lat, res.lon, 0, 0), image.path, (new Date(Number.parseInt(image.creationDate) * 1000)).getTime()))
+        }
+
+        step.masterImageUri = imageDataList[0].image;
+
+        var clusterData: Array<ClusterModal> = [];
+        for (var i = 0; i < imageDataList.length; i++) {
+            clusterData.push({
+                image: imageDataList[i].image,
+                latitude: imageDataList[i].location.latitude,
+                longitude: imageDataList[i].location.longitude,
+                timestamp: imageDataList[i].timestamp,
+                id: i
+            } as ClusterModal)
+        }
+
+        var _step = ClusterProcessor.convertClusterToStep(clusterData);
+        this.props.onClose(_step)
     };
     
     render() {
@@ -95,22 +129,6 @@ export class NewStepPage extends React.Component<IProps, IState> {
                     <TextInput style={{ fontSize: 20, padding: 3, color: 'black', borderWidth: 2, borderRadius: 10 }} placeholder={"Location"} onChangeText={(text) => this.onLocationTextChange(text)} />
                 
                     <Button title={"Image Picker"} onPress={this.onImagePickerPress.bind(this)} />
-                    {/*
-                    <View style={{position: 'absolute', left: 0}}>
-                        <Text>From</Text>
-                        <TouchableOpacity onPress={() => this.onCalenderClick(0)}>
-                            <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../Assets/icons8-calendar-52.png')} />
-                        </TouchableOpacity>
-                        <Text>{this.from.getDate()+"-"+this.from.getMonth()+"-"+this.from.getFullYear()}</Text>
-                    </View>
-                    <View style={{position: 'absolute', right: 0}}>
-                        <Text>To</Text>
-                        <TouchableOpacity onPress={() => this.onCalenderClick(1)}>
-                            <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../Assets/icons8-calendar-52.png')} />
-                        </TouchableOpacity>
-                        <Text>{this.to.getDate()+"-"+this.to.getMonth()+"-"+this.to.getFullYear()}</Text>
-                    </View>
-                    */}
                     {
                         this.state.imageUris.map((image:string) => {
                             <Image source={{uri: image}} />

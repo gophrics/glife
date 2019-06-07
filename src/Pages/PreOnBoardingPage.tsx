@@ -6,13 +6,14 @@ import { Page } from '../Modals/ApplicationEnums';
 
 interface IProps {
     setPage: any
+    navigatorVisible: boolean
 }
 
 interface IState {
     valid: boolean
 }
 
-const deviceHeight = Dimensions.get('window').height
+const deviceHeight = Dimensions.get('screen').height
 
 export class PreOnBoardingPage extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -61,7 +62,7 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
                     />
 
                 </View>
-                <TouchableOpacity style={{ position: 'absolute', bottom: 250, right: 20, alignSelf: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
+                <TouchableOpacity style={{ position: 'absolute', bottom: (deviceHeight*.4 + (this.props.navigatorVisible ? deviceHeight*.05 : 0)), right: 20, alignSelf: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
                     <Text style={{ fontSize: 22 }}>Next</Text>
                 </TouchableOpacity>
             </View>

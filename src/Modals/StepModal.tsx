@@ -28,7 +28,6 @@ export class StepModal {
         }
     }
 
-
     constructor() {
         this.id = 0;
         this.meanLatitude = 0;

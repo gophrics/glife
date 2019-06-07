@@ -106,9 +106,9 @@ export default class App extends React.Component<IProps, IState> {
             : this.state.page == Page[Page.TRIPEXPLORE] ? 
               <TripExplorePage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.PREONBOARDING] ? 
-              <PreOnBoardingPage setPage={this.setPage.bind(this)}/>
+              <PreOnBoardingPage navigatorVisible={this.state.navigatorVisible} setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.ONBOARDING] ? 
-              <OnBoardingPage onDone={this.setPage.bind(this)}/>
+              <OnBoardingPage navigatorVisible={this.state.navigatorVisible} onDone={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.STEPEXPLORE] ?
               <StepExplorePage setPage={this.setPage.bind(this)} setNavigator={this.setNavigator}/>
             : this.state.page == Page[Page.SPLASHSCREEN] ? 

@@ -56,7 +56,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         this.props.setNavigator(false)
 
         this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
-
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], {})
         this.state = {
             finished: 0,
             total: 100
@@ -71,8 +71,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             await TravelUtils.getCoordinatesFromLocation(element.name)
                 .then((res) => {
                     if(res.length <= 0) return;
-                    // Taking first home only, when multiple places can have same name
-                    // Fix this bug, TODO:
+
                     res = res[0];
                     this.homes.push({
                         latitude: Number.parseFloat(res.lat),
@@ -104,13 +103,13 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         );
     }
 
+
+
     // Helper methods
-    initialize () {
+    initialize  = async() => {
 
         // Expanding homes to timestamp
         var endTimestamp = Math.floor((new Date()).getTime()/8.64e7);
-        console.log("Expanding homes..")
-
         this.homes.sort((a, b) => {
             return b.timestamp - a.timestamp;
         })
@@ -120,84 +119,58 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 this.homesDataForClustering[endTimestamp] = data as ClusterModal;
                 endTimestamp--;
             }
-            console.log(endTimestamp)
         }
 
-        PhotoLibraryProcessor.getPhotosFromLibrary()
-        .then((photoRollInfos: Array<ImageDataModal>) => {
-    
-            var markers = PhotoLibraryProcessor.getMarkers(photoRollInfos);
-            var timelineData: Array<number> = PhotoLibraryProcessor.getTimelineData(photoRollInfos);
+        var photoRollInfos = await PhotoLibraryProcessor.getPhotosFromLibrary();
+        var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(photoRollInfos, endTimestamp)
 
-            var clusterData: Array<ClusterModal> = [];
-            for(var i = 0; i < markers.length; i++) {
-                if(photoRollInfos[i].timestamp < endTimestamp) continue;
-                clusterData.push({
-                    image: photoRollInfos[i].image,
-                    latitude: markers[i].latitude, 
-                    longitude: markers[i].longitude, 
-                    timestamp: timelineData[i],
-                    id: i} as ClusterModal )
-            }
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
-            BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
-
-            var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
-            this.setState({
-                total: trips.length
-            })
-            i = 0;
-            var asynci = 0;
-            for(var trip of trips) {
-                trip.sort((a: ClusterModal, b: ClusterModal) => {
-                    return a.timestamp-b.timestamp
-                });
-                
-                this.populateTripModalData(ClusterProcessor.RunStepClustering(trip), i)
-                .then((res) => {
-                    this.dataToSendToNextPage.trips.push(res);
-                    asynci++;
-
-                    this.setState({
-                        finished: asynci
-                    })
-
-                    this.dataToSendToNextPage.countriesVisited.push.apply(this.dataToSendToNextPage.countriesVisited, res.countryCode)
-
-                    if(asynci == trips.length) {
-                        let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
-                        this.dataToSendToNextPage.countriesVisited = x(this.dataToSendToNextPage.countriesVisited); // Removing duplicates
-                        this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
-                        this.dataToSendToNextPage.trips.sort((a, b) => {
-                            return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
-                        })
-                        for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
-                        this.dataToSendToNextPage.coverPicURL = "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
-                        this.dataToSendToNextPage.profilePicURL = "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
-                        this.props.onDone(this.dataToSendToNextPage);
-                    }
-                })
-                i++;
-            }
-
+        var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
+        this.setState({
+            total: trips.length
         })
+
+        var asynci = 0;
+        for(var trip of trips) {
+            trip.sort((a: ClusterModal, b: ClusterModal) => {
+                return a.timestamp-b.timestamp
+            });
+            
+            var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
+            var _trip: TripModal = await this.populateTripModalData(_steps, asynci);
+
+            this.dataToSendToNextPage.trips.push(_trip);
+
+
+            this.setState({
+                finished: asynci
+            })
+
+            this.dataToSendToNextPage.countriesVisited.push.apply(this.dataToSendToNextPage.countriesVisited, _trip.countryCode)
+
+            asynci++;
+            if(asynci == trips.length) {
+                let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
+                this.dataToSendToNextPage.countriesVisited = x(this.dataToSendToNextPage.countriesVisited); // Removing duplicates
+                this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
+                this.dataToSendToNextPage.trips.sort((a, b) => {
+                    return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+                })
+                for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
+                this.dataToSendToNextPage.coverPicURL = "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
+                this.dataToSendToNextPage.profilePicURL = "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
+                this.props.onDone(this.dataToSendToNextPage);
+            }
+        }
     }
 
     async populateTripModalData (steps: StepModal[], tripId: number) {
         var tripResult : TripModal = new TripModal();
 
-        console.log(steps[0])
-        console.log(Math.floor(steps[0].startTimestamp/8.64e7))
-        console.log(this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1])
         var homeStep = this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
-        var _stepModal = new StepModal()
-        _stepModal.meanLatitude = homeStep.latitude
-        _stepModal.meanLongitude = homeStep.longitude
-        _stepModal.startTimestamp = homeStep.timestamp
-        _stepModal.endTimestamp = homeStep.timestamp
-        _stepModal.id = 0;
-        _stepModal.distanceTravelled = 0;
+        var _stepModal: StepModal = ClusterProcessor.convertClusterToStep([homeStep])
         _stepModal.location = "Home";
         tripResult.tripAsSteps.push(_stepModal)
         
@@ -215,88 +188,50 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             i++;
         }
 
-        homeStep = this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1]
-        homeStep.timestamp = Math.floor(steps[steps.length-1].endTimestamp + 8.64e7)
+        var homeStep2 = this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1]
+        homeStep2.timestamp = Math.floor(steps[steps.length-1].endTimestamp + 8.64e7)
 
-        var _stepModal = new StepModal()
-        _stepModal.meanLatitude = homeStep.latitude
-        _stepModal.meanLongitude = homeStep.longitude
-        _stepModal.startTimestamp = homeStep.timestamp
-        _stepModal.endTimestamp = homeStep.timestamp
-        _stepModal.id = (tripResult.tripAsSteps.length+1)*100
-        _stepModal.location = "Home";
-        _stepModal.distanceTravelled = Math.floor(tripResult.tripAsSteps[i-1].distanceTravelled + 
+        var _stepModal2: StepModal = ClusterProcessor.convertClusterToStep([homeStep2])
+        _stepModal2.location = "Home";
+        _stepModal2.distanceTravelled = Math.floor(tripResult.tripAsSteps[i-1].distanceTravelled + 
             ClusterProcessor.EarthDistance({latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude} as ClusterModal,
             {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal))
 
 
-        tripResult.tripAsSteps.push(_stepModal)
-        i++;
+        tripResult.tripAsSteps.push(_stepModal2)
 
         // Load locations
         for(var step of steps) {
-            await TravelUtils.getLocationFromCoordinates(step.meanLatitude, step.meanLongitude)
-            .then((res) => {
-                if(res && res.address && (res.address.county || res.address.state_district)) {
-                    step.location = res.address.county || res.address.state_district
-                    if(countries.indexOf(res.address.country) == -1) {
-                        if(countries.length == 0) tripName = (res.address.country)
-                        else tripName += (", " + res.address.country)
-                        countries.push(res.address.country)
-                    }
-                    if(places.indexOf(step.location) == -1) {
-                        places.push(step.location)
-                    }
-                    tripResult.countryCode.push((res.address.country_code as string).toLocaleUpperCase())
+            var result = await TravelUtils.getLocationFromCoordinates(step.meanLatitude, step.meanLongitude)
+            
+            if(result && result.address && (result.address.county || result.address.state_district)) {
+                step.location = result.address.county || result.address.state_district
+                if(countries.indexOf(result.address.country) == -1) {
+                    if(countries.length == 0) tripName = (result.address.country)
+                    else tripName += (", " + result.address.country)
+                    countries.push(result.address.country)
                 }
-            })
+                if(places.indexOf(step.location) == -1) {
+                    places.push(step.location)
+                }
+                tripResult.countryCode.push((result.address.country_code as string).toLocaleUpperCase())
+            }
 
             // Showing current weather now
-            await TravelUtils.getWeatherFromCoordinates(step.meanLatitude, step.meanLongitude)
-            .then((res) => {
-                if(res && res.main) {
-                    if(step.location == "" ) {
-                        step.location = res.name
-                        places.push(step.location)
-                    }
-                    step.temperature = Math.floor(Number.parseFloat(res.main.temp)-273.15) + "ºC"
+            result = await TravelUtils.getWeatherFromCoordinates(step.meanLatitude, step.meanLongitude)
+            if(result && result.main) {
+                if(step.location == "" ) {
+                    step.location = result.name
+                    places.push(step.location)
                 }
-            })
+                step.temperature = Math.floor(Number.parseFloat(result.main.temp)-273.15) + "ºC"
+            }
         }
 
         tripResult.tripId = tripId;
-        tripResult.masterPicURL = steps[steps.length-1].masterImageUri;
-        tripResult.daysOfTravel = Math.abs(Math.floor(steps[steps.length-1].endTimestamp/8.64e7) - Math.floor(steps[0].startTimestamp/8.64e7))
-        // Handling edge case
-        if(tripResult.daysOfTravel == 0) tripResult.daysOfTravel = 1;
+        tripResult.populateAll();
+        tripResult.populateTitle(countries, places);
         
-        tripResult.distanceTravelled = tripResult.tripAsSteps[tripResult.tripAsSteps.length - 1].distanceTravelled
-        tripResult.startDate = TravelUtils.getDateFromTimestamp(steps[0].startTimestamp);
-        tripResult.endDate = TravelUtils.getDateFromTimestamp(steps[steps.length-1].endTimestamp);
-        tripResult.location = {
-            // TODO: Fix this, country visited is not first step, first step is home
-            latitude: tripResult.tripAsSteps[1].meanLatitude,
-            longitude: tripResult.tripAsSteps[1].meanLongitude,
-            latitudeDelta: 0,
-            longitudeDelta: 0
-        };
-        tripResult.temperature = steps[steps.length-1].temperature;
-
-        if(countries.length == 1) {
-            // Only home country, use places
-            tripName = ""
-            var index = 0;
-            for(var place of places) {
-                if(index == 0) {
-                    tripName = place
-                } else 
-                tripName += ", " + place 
-                if(index == 2) break;
-                index++;
-            }
-        }
-        tripResult.title = tripName
-
         return  tripResult
     }
        

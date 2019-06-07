@@ -1,6 +1,7 @@
 import { CameraRoll } from 'react-native';
 import ImageDataModal from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
+import { ClusterModal } from '../Modals/ClusterModal';
 
 export function getPhotosFromLibrary() {
     return CameraRoll.getPhotos({ first: 1000000000, assetType: "Photos", groupTypes: "All" })
@@ -25,6 +26,20 @@ export function convertImagetoImageModal(image: any) {
     return imageData;
 }
 
+export function convertImageToCluster (images: Array<ImageDataModal>, endTimestamp: number) {
+    var clusterData: Array<ClusterModal> = [];
+    for(var i = 0; i < images.length; i++) {
+        if(images[i].timestamp < endTimestamp) continue;
+        clusterData.push({
+            image: images[i].image,
+            latitude: images[i].location.latitude, 
+            longitude: images[i].location.longitude, 
+            timestamp: images[i].timestamp,
+            id: i} as ClusterModal )
+    }
+
+    return clusterData
+}
 
 export function getMarkers(imageDataArray: Array<ImageDataModal>): Array<Region> {
     var markers: Array<Region> = [];

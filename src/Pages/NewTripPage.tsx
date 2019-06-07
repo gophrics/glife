@@ -91,7 +91,7 @@ export class NewTripPage extends React.Component<IProps, IState> {
                 
                 </View>
 
-                <View style={{justifyContent:'center', alignContent:'center', backgroundColor:'white', margin:10, borderRadius: 5, padding: 10}}>
+                <View style={{justifyContent:'center', width:'20%', alignSelf:'center', alignContent:'center', backgroundColor:'#A0A0A0', margin:10, borderRadius: 5, padding: 10}}>
                     <TouchableOpacity onPress={this.onNextClick.bind(this)}>
                         <Text style={{fontSize:22, textAlign:'center'}}>Done</Text>
                     </TouchableOpacity>

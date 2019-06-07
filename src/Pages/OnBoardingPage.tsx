@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Image, Button, View, TextInput, ScrollView, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { Image, Button, View, TextInput, ScrollView, Text, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
@@ -7,6 +7,7 @@ import { TravelUtils } from '../Utilities/TravelUtils';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 interface IProps {
+    navigatorVisible: boolean
     onDone: (page: string, data: any) => void
 }
 
@@ -20,6 +21,8 @@ interface IState {
     homes: { name: string, timestamp: number }[]
 }
 
+const deviceHeight = Dimensions.get('screen').height;
+
 export class OnBoardingPage extends React.Component<IProps, IState> {
 
     cursor: number = 0
@@ -31,7 +34,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         this.state = {
             numberOfHomes: 1,
             showPicker: false,
-            dates: ["01/01/1970"],
+            dates: ["Long long ago.."],
             valid: true,
             validationInProgress: false,
             culprits: [0],
@@ -167,8 +170,6 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onCancelClick = (pos: number) => {
-        console.log(pos)
-        console.log(this.state.homes)
         var homes = []
         var dates = []
         for (var i = 0; i < this.state.homes.length; i++) {
@@ -182,8 +183,6 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                 }
             }
         }
-        console.log(homes)
-        console.log(dates)
         this.setState({
             homes: homes,
             dates: dates
@@ -222,7 +221,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                                         {this.state.culprits[i] != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overloard can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India"} </Text> : <View />}
                                         {this.state.culprits[i] == 2 ? <Text style={{ color: 'lightgrey', padding: 3 }}>Places found: </Text> : <View />}
                                         {this.state.culprits[i] == 2 ? this.tempLocations[i] : <View />}
-                                        <Text style={{ color: 'white', fontSize: 20, marginBottom: 20 }}>{this.state.dates[i] ? this.state.dates[i] : "01/01/1970"} - {this.state.dates[i-1] ? this.state.dates[i-1] : "Current"}</Text>
+                                        <Text style={{ color: 'white', fontSize: 20, marginBottom: 20 }}>{this.state.dates[i] ? this.state.dates[i] : "Long long ago.."} - {this.state.dates[i-1] ? this.state.dates[i-1] : "Current"}</Text>
                                     </View>
                                     {i != 0 ?
                                     <TouchableOpacity onPress={() => this.onCancelClick(i)}>
@@ -235,7 +234,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                         <Text>To add previous home cities, select the calender date when you started living in the above city</Text>
                     </ScrollView>
                 </View>
-                <TouchableOpacity style={{ position: 'absolute', bottom: 300, right: 20, alignSelf: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
+                <TouchableOpacity style={{ position: 'absolute', bottom: (deviceHeight*.4 + (this.props.navigatorVisible ? deviceHeight*.05 : 0)), right: 20, alignSelf: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
                     <Text style={{ fontSize: 22 }}>Next</Text>
                 </TouchableOpacity>
                 <DateTimePicker

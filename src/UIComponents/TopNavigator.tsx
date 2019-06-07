@@ -24,7 +24,7 @@ export class TopNavigator extends React.Component<IProps, IState> {
     }
 
     onNewTripPress = () => {
-        this.props.navigatorFunc(Page[Page.NEWTRIP])
+        this.props.navigatorFunc(Page[Page.ONBOARDING])
     }
 
     onSettingPress = () => {
@@ -43,7 +43,7 @@ export class TopNavigator extends React.Component<IProps, IState> {
                     <Image style={{ width: 60, height: 60 }} source={require('../Assets/glife_logo_transparent.png')} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ height: 60 }} onPress={this.onNewTripPress.bind(this)}>
-                    <Icon style={{padding:10}} size={40} name='plus' />
+                    <Icon style={{padding:10}} size={40} name='sync' />
                 </TouchableOpacity>
             </View>
             : <View />

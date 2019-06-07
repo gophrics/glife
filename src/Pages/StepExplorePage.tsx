@@ -20,6 +20,7 @@ import { CustomButton } from '../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
 import { TravelUtils } from '../Utilities/TravelUtils';
 import LinearGradient from 'react-native-linear-gradient';
+import { PhotoPopUpModal } from './PhotoPopUpModal';
 
 
 interface IState {
@@ -255,105 +256,51 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         </ScrollView>
                     }
                 </View>
-                {this.state.photoModalVisible ?
-                    <Modal
-                        animationType='fade'
-                        visible={this.state.photoModalVisible}
-                        transparent={true}
-                        onDismiss={() => {
-                            var trip = this.state.myData
-                            for(var _step of trip.tripAsSteps) {
-                                if(_step.id == this.state.lastStepClicked.id) {
-                                    _step = this.state.lastStepClicked
-                                }
-                                BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
-                                this.setState({
-                                    myData: trip,
-                                    editStepDescription: false,
-                                    modalBottom: undefined
-                                })
-                            }
-                        }}>
-
-                        <SafeAreaView style={{ margin: 30, borderRadius: 10, bottom: this.state.modalBottom, flex: 1, alignContent: 'center', justifyContent: 'center' }}>
-                            <LinearGradient colors={['#98FB98', '#50C878', '#00A572']}>
-                            <View style={{
-                                borderRadius: 10
-                            }}>
-                                <View>
-
-
-                                    <TouchableHighlight
-                                        onPress={() => {
-                                            this.setState({
-                                                photoModalVisible: false
-                                            })
-                                        }}
-                                        style={{ padding: 10 }}>
-                                        <Text>X</Text>
-                                    </TouchableHighlight>
-                                    <ScrollView horizontal={true} //scrolling left to right instead of top to bottom
-                                        scrollEventThrottle={10} //how often we update the position of the indicator bar
-                                        pagingEnabled={true} //scrolls from one image to the next, instead of allowing any value inbetween
-                                        style={{ aspectRatio: 1 }}
-                                        snapToAlignment='center'
-                                        snapToInterval={deviceWidth - 60}
-                                        decelerationRate={0}
-                                        stickyHeaderIndices={[0]}
-                                    >
-                                        {
-                                            this.state.lastStepClicked.imageUris.map((imageUri, index) => (
-                                                imageUri != "" ?
-                                                    <View style={{ width: deviceWidth - 60, height: deviceWidth - 60, alignContent: 'center', backgroundColor: 'black' }} key={index}>
-                                                        <Image
-                                                            resizeMode='contain'
-                                                            style={{ width: deviceWidth - 60, height: deviceWidth - 60 }} source={{ uri: imageUri }}
-                                                        />
-                                                    </View>
-                                                    : <View />
-                                            ))
-                                        }
-                                    </ScrollView>
-                                    <View style={{ height: '10%', padding: 2 }}>
-                                        <TextInput multiline={true} editable={true} onChangeText={(text) => {
-                                            this.state.lastStepClicked.description = text;
-                                        }} 
-                                        style={{
-                                            backgroundColor: '#4c669f',
-                                            borderRadius: 5,
-                                            padding: 5,
-                                            color: 'black'
-                                        }}
-                                        onFocus= {
-                                            () => {
-                                                this.setState({
-                                                    modalBottom: 200
-                                                })
-                                            }
-                                        }
-
-                                        onBlur = {
-                                            () => {
-                                                this.setState({
-                                                    modalBottom: undefined
-                                                })
-                                            }
-                                        }
-                                        >{this.state.lastStepClicked.description}</TextInput>
-                                    </View>
-                                </View>
-                            </View>
-                            </LinearGradient>
-                        </SafeAreaView>
-                    </Modal>
-                    : <View />}
-                {this.state.newStep ?
+                {
+                    this.state.photoModalVisible ? 
+                    <PhotoPopUpModal 
+                        photoModalVisible={this.state.photoModalVisible}
+                        lastStepClicked={this.state.lastStepClicked}
+                        bottom={this.state.modalBottom}
+                        onDescriptionChange={this.onPhotoModalDescriptionChange}
+                        onDismiss={this.onPhotoModalDismiss}
+                        onModalClose={this.onPhotoModalClose}
+                    />: 
+                    <View />
+                }
+                {
+                    this.state.newStep ?
                     <NewStepPage visible={this.state.newStep} onClose={(data: StepModal) => this.newStepOnDone(data)} />
-                    : <View />}
+                    : <View />
+                }
             </View>
         );
     }
 
+    onPhotoModalDescriptionChange = (text: string) => {
+        this.state.lastStepClicked.description = text
+    }
+
+    onPhotoModalDismiss = () => {
+        var trip = this.state.myData
+        for(var _step of trip.tripAsSteps) {
+            if(_step.id == this.state.lastStepClicked.id) {
+                _step = this.state.lastStepClicked
+            }
+            BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
+            this.setState({
+                myData: trip,
+                editStepDescription: false,
+                modalBottom: undefined
+            })
+        }
+    }
+
+    onPhotoModalClose = () => {
+        this.setState({
+            photoModalVisible: false
+        })
+    }
 }
 
 const styles = StyleSheet.create({

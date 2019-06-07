@@ -178,7 +178,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var countries: string[] = []
         var places: string[] = []
 
-        var tripName = "";
         for(var step of steps) {
             if(i > 0)
             step.distanceTravelled = Math.floor(tripResult.tripAsSteps[i-1].distanceTravelled + 
@@ -206,10 +205,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             
             if(result && result.address && (result.address.county || result.address.state_district)) {
                 step.location = result.address.county || result.address.state_district
+                
                 if(countries.indexOf(result.address.country) == -1) {
-                    if(countries.length == 0) tripName = (result.address.country)
-                    else tripName += (", " + result.address.country)
-                    countries.push(result.address.country)
+                    if(countries.length == 0) countries.push(result.address.country)
+                    else countries.push(", " + result.address.country)
+                    
                 }
                 if(places.indexOf(step.location) == -1) {
                     places.push(step.location)
@@ -233,6 +233,5 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         tripResult.populateTitle(countries, places);
         
         return  tripResult
-    }
-       
+    }      
 }

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Image, Button, View, TextInput, ScrollView, Text, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native'
+import { Image, View, TextInput, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
@@ -28,7 +28,8 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     cursor: number = 0
     name: string = "";
     tempLocations: JSX.Element[][] = [];
-
+    cachedDate: Date = new Date();
+    
     constructor(props: IProps) {
         super(props)
         this.state = {
@@ -115,6 +116,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     onPickerConfirm = (dateObject: Date) => {
+        this.cachedDate = dateObject;
         this.validateData();
         if (this.state.homes.length <= this.cursor + 1) this.state.homes.push({ name: "", timestamp: 0 })
 
@@ -218,7 +220,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                                             style={[{ fontSize: 22, padding: 3, color: 'white' }, { borderWidth: ((this.state.culprits[i] != 0) ? 1 : 0), borderColor: ((this.state.culprits[i] != 0) ? 'red' : 'white') }]}
                                             textContentType={'addressCity'}
                                         >{el.name}</TextInput>
-                                        {this.state.culprits[i] != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overloard can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India"} </Text> : <View />}
+                                        {this.state.culprits[i] != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overlords can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India"} </Text> : <View />}
                                         {this.state.culprits[i] == 2 ? <Text style={{ color: 'lightgrey', padding: 3 }}>Places found: </Text> : <View />}
                                         {this.state.culprits[i] == 2 ? this.tempLocations[i] : <View />}
                                         <Text style={{ color: 'white', fontSize: 20, marginBottom: 20 }}>{this.state.dates[i] ? this.state.dates[i] : "Long long ago.."} - {this.state.dates[i-1] ? this.state.dates[i-1] : "Current"}</Text>
@@ -238,6 +240,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                     <Text style={{ fontSize: 22 }}>Next</Text>
                 </TouchableOpacity>
                 <DateTimePicker
+                    date={this.cachedDate}
                     isVisible={this.state.showPicker}
                     onConfirm={this.onPickerConfirm.bind(this)}
                     onCancel={this.onPickerCancel.bind(this)}

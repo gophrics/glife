@@ -109,7 +109,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     initialize  = async() => {
 
         // Expanding homes to timestamp
-        var endTimestamp = Math.floor((new Date()).getTime()/8.64e7);
+        var endTimestamp = Math.ceil((new Date()).getTime()/8.64e7);
         this.homes.sort((a, b) => {
             return b.timestamp - a.timestamp;
         })
@@ -127,6 +127,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
         var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
+        console.log("Trips")
+        console.log(trips)
         this.setState({
             total: trips.length
         })
@@ -139,7 +141,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             
             var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
             var _trip: TripModal = await this.populateTripModalData(_steps, asynci);
-
+            console.log(_trip)
             this.dataToSendToNextPage.trips.push(_trip);
 
 
@@ -196,7 +198,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             ClusterProcessor.EarthDistance({latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude} as ClusterModal,
             {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal))
 
-
         tripResult.tripAsSteps.push(_stepModal2)
 
         // Load locations
@@ -231,7 +232,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         tripResult.tripId = tripId;
         tripResult.populateAll();
         tripResult.populateTitle(countries, places);
-        
+
         return  tripResult
     }      
 }

@@ -4,7 +4,7 @@ import Region from '../Modals/Region';
 import { ClusterModal } from '../Modals/ClusterModal';
 
 export function getPhotosFromLibrary() {
-    return CameraRoll.getPhotos({ first: 1000000000, assetType: "Photos", groupTypes: "All" })
+    return CameraRoll.getPhotos({ first: 1000000000000000, assetType: "Photos", groupTypes: "All" })
         .then((res) => {
             
             var imageDataList: Array<ImageDataModal> = [];
@@ -16,6 +16,7 @@ export function getPhotosFromLibrary() {
                 }
             }
 
+            console.log("Loaded: " + imageDataList.length)
             return imageDataList;
         });
 }

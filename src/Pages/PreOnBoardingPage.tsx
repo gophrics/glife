@@ -60,9 +60,8 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
                         style={[{ alignSelf:"center", fontSize: 22, padding: 3, color: 'white'}, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
                         textContentType={'givenName'}
                     />
-
                 </View>
-                <TouchableOpacity style={{ position: 'absolute', bottom: (deviceHeight*.4 + (this.props.navigatorVisible ? deviceHeight*.05 : 0)), right: 20, alignSelf: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
+                <TouchableOpacity style={{ position: 'absolute', bottom: (deviceHeight*.339 + (this.props.navigatorVisible ? deviceHeight*.05 : 0)), right: 20, alignSelf: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
                     <Text style={{ fontSize: 22 }}>Next</Text>
                 </TouchableOpacity>
             </View>

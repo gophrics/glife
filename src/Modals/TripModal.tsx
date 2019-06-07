@@ -36,7 +36,6 @@ export class TripModal {
         this.populateDates();
         this.populateLocation();
         this.populateTemperature();
-        this.populateTitle();
     }
 
     populateMasterPic = () => {

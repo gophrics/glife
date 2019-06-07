@@ -1,25 +1,19 @@
 import * as React from 'react';
 import {
-    Modal, TextInput,
     StyleSheet,
     Dimensions,
-    ScrollView, View, Image, Text, TouchableHighlight, SafeAreaView, TouchableOpacity
+    ScrollView, View, Image, Text, TouchableOpacity
 } from 'react-native';
 import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
 import { StepComponent } from '../UIComponents/StepComponent';
 import { TripModal } from '../Modals/TripModal';
 import { StepModal } from '../Modals/StepModal';
-import { ClusterModal } from '../Modals/ClusterModal';
-import { ClusterProcessor } from '../Utilities/ClusterProcessor';
 import Region from '../Modals/Region';
 import { NewStepPage } from './NewStepPage';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
-import ImageDataModal from '../Modals/ImageDataModal';
 import { CustomButton } from '../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
-import { TravelUtils } from '../Utilities/TravelUtils';
-import LinearGradient from 'react-native-linear-gradient';
 import { PhotoPopUpModal } from './PhotoPopUpModal';
 
 

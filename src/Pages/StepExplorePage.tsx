@@ -156,7 +156,8 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         this.props.setPage(Page[Page.PROFILE], null)
     }
 
-    newStepOnDone = (_step: StepModal) => {
+    newStepOnDone = (_step: StepModal|null) => {
+
         if(_step == null) {
             this.setState({
                 newStep: false
@@ -174,6 +175,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         })
 
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], trip)
+
         this.initialize()
         this.setState({
             myData: trip,
@@ -266,7 +268,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 }
                 {
                     this.state.newStep ?
-                        <NewStepPage visible={this.state.newStep} onClose={(data: StepModal) => this.newStepOnDone(data)} />
+                        <NewStepPage visible={this.state.newStep} onClose={this.newStepOnDone} />
                         : <View />
                 }
             </View>

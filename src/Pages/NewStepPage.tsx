@@ -43,7 +43,6 @@ export class NewStepPage extends React.Component<IProps, IState> {
         ImagePicker.openPicker({
             multiple: true
           }).then(images => {
-            console.log(images);
             this.data['images'] = images;
             var imageUris: string[] = []
             for(var item of this.data['images']) {

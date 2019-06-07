@@ -128,7 +128,6 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     }
                     >
 
-
                 <Animated.View style={[styles.header, {
                     height: this.state.scrollY.interpolate({
                         inputRange: [0, HEADER_SCROLL_DISTANCE],

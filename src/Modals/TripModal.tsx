@@ -39,7 +39,7 @@ export class TripModal {
     }
 
     populateMasterPic = () => {
-        this.masterPicURL = this.tripAsSteps[this.tripAsSteps.length-1].masterImageUri;
+        this.masterPicURL = this.tripAsSteps[this.tripAsSteps.length-2].masterImageUri;
     }
 
     populateDaysOfTravel = () => {
@@ -83,6 +83,13 @@ export class TripModal {
                 if(index == 2) break;
                 index++;
             }
+        }
+        else {
+            var i = 0;
+            for(var country of countries) {
+                if(i == 0) this.title += country
+                else this.title += ", " + country
+            } 
         }
         this.title = tripName
     }

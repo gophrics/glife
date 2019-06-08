@@ -42,12 +42,12 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    AsyncStorage.clear()
+    // AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
       this.setState({
-        page: res == null || res[Page[Page.PROFILE]] == undefined ? Page[Page.PREONBOARDING] : Page[Page.PROFILE]
+        page: res == null || res[Page[Page.PROFILE]] == undefined || res[Page[Page.PROFILE]].countriesVisited == undefined ? Page[Page.PREONBOARDING] : Page[Page.PROFILE]
       })
     })
 

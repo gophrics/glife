@@ -78,6 +78,7 @@ export class SettingsPage extends React.Component<IProps, IState> {
     return (
       <View>
         <Text style={{textAlign:'center', marginTop: 20, fontSize: 32, fontFamily:'AppleSDGothicNeo-Regular'}}> Lots of exciting features are in development, stay tuned! </Text>
+        { /*
         <GoogleSigninButton
           style={{ width: 192, height: 48 }}
           size={GoogleSigninButton.Size.Wide}
@@ -86,6 +87,8 @@ export class SettingsPage extends React.Component<IProps, IState> {
           disabled={false//this.state.isSigninInProgress || this.myData.loggedIn
           } />
         <Button title={"Clear Cache"} onPress={this.onClearCache} />
+        */
+        }
       </View>
     )
   }

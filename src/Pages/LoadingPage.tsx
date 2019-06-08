@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, ImageProgressEventDataIOS, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
 import Spinner from '../UIComponents/Spinner';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
-import ImageDataModal from '../Modals/ImageDataModal';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { ClusterProcessor } from '../Utilities/ClusterProcessor';
@@ -127,8 +126,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
         var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
-        console.log("Trips")
-        console.log(trips)
         this.setState({
             total: trips.length
         })
@@ -141,7 +138,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             
             var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
             var _trip: TripModal = await this.populateTripModalData(_steps, asynci);
-            console.log(_trip)
             this.dataToSendToNextPage.trips.push(_trip);
 
 
@@ -157,7 +153,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 this.dataToSendToNextPage.countriesVisited = x(this.dataToSendToNextPage.countriesVisited); // Removing duplicates
                 this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
                 this.dataToSendToNextPage.trips.sort((a, b) => {
-                    return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+                    return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
                 })
                 for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
                 this.dataToSendToNextPage.coverPicURL = "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"

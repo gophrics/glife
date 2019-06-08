@@ -46,7 +46,6 @@
 		726E1938225BA39D003EA830 /* EmptySwiftFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726E1937225BA39D003EA830 /* EmptySwiftFile.swift */; };
 		726E193F225BA5A5003EA830 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 726E193E225BA569003EA830 /* libRCTCameraRoll.a */; };
 		7270EF9222A275B2000F2EED /* glife_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7270EF6C22A275B2000F2EED /* glife_logo.png */; };
-		72C8EDD622A3C5DF00148244 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */; };
 		7A60C3DCD774477EB77A7250 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8DE15B82C2784E1DBD11E12C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 125595E7CE4C4AF0AC055891 /* MaterialIcons.ttf */; };
@@ -845,18 +844,22 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 42R76S82DR;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 42R76S82DR;
 						LastSwiftMigration = 1020;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 42R76S82DR;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E48F1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 42R76S82DR;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
@@ -1241,7 +1244,6 @@
 				3123CD7800054ED09349FA51 /* FontAwesome5_Regular.ttf in Resources */,
 				D6081B5448AB4AA281152B9D /* FontAwesome5_Solid.ttf in Resources */,
 				7270EF9222A275B2000F2EED /* glife_logo.png in Resources */,
-				72C8EDD622A3C5DF00148244 /* GoogleService-Info.plist in Resources */,
 				9B177FAC63B04660B1832E50 /* Foundation.ttf in Resources */,
 				C231C1972F794512BA524291 /* Ionicons.ttf in Resources */,
 				AB60B00BDFC146F7B9033A70 /* MaterialCommunityIcons.ttf in Resources */,
@@ -1453,6 +1455,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 42R76S82DR;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1482,6 +1485,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 42R76S82DR;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-background-service/ios",
@@ -1507,6 +1511,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 42R76S82DR;
@@ -1524,6 +1530,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.beerwithai.glimpse;
 				PRODUCT_NAME = glife;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "glife-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1537,6 +1544,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 42R76S82DR;
 				HEADER_SEARCH_PATHS = (
@@ -1553,6 +1562,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.beerwithai.glimpse;
 				PRODUCT_NAME = glife;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "glife-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1569,6 +1579,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 42R76S82DR;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1602,6 +1613,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 42R76S82DR;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1632,6 +1644,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 42R76S82DR;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1664,6 +1677,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 42R76S82DR;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

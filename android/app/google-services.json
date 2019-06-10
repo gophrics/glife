@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "249369235819",
+    "firebase_url": "https://glife-1558484304686.firebaseio.com",
+    "project_id": "glife-1558484304686",
+    "storage_bucket": "glife-1558484304686.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249369235819:android:a0288e33998001a0",
+        "android_client_info": {
+          "package_name": "com.beerwithai.glimpse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249369235819-11cfia1ht584n1kmk6gh6kbba8ab429u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjLfnT9AHb801U-NeAZocEt_9YojEJ4gQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249369235819-11cfia1ht584n1kmk6gh6kbba8ab429u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "249369235819-uc0l7d7imtlsebj80s93ucb1mvj6vo8v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.beerwithai.glimpse"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

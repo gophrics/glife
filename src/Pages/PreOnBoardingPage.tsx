@@ -57,7 +57,7 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
                     <TextInput
                         placeholder={"Enter name"}
                         onChangeText={(text) => this.onNameTextChange(text)}
-                        style={[{ alignSelf:"center", fontSize: 22, padding: 3, color: 'white'}, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
+                        style={[{ alignSelf:"center", textAlign:'center', fontSize: 22, padding: 3, color: 'white'}, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
                         textContentType={'givenName'}
                     />
                 </View>

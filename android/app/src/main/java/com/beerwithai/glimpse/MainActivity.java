@@ -1,4 +1,4 @@
-package com.glife;
+package com.beerwithai.glimpse;
 
 import com.facebook.react.ReactActivity;
 

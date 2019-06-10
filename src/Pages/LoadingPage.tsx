@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, ImageProgressEventDataIOS, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
+import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, PermissionsAndroid, ProgressViewIOS, ProgressBarAndroid, Rationale } from 'react-native';
 import Spinner from '../UIComponents/Spinner';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
@@ -64,7 +64,38 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         this.loadHomes();
     }
 
+    requestPermissionAndroid = async() : Promise<boolean> => {
+        try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+              {
+                title: 'Cool Photo App Camera Permission',
+                message:
+                'Cool Photo App needs access to your camera ' +
+                'so you can take awesome pictures.',
+                buttonNeutral: 'Ask Me Later',
+                buttonNegative: 'Cancel',
+                buttonPositive: 'OK',
+              }
+            )
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log("You can use read from the storage")
+                return true;
+            } else {
+              console.log("Storage permission denied")
+              return false
+            }
+          } catch (err) {
+            console.warn(err)
+            return false
+          }
+    }
+
     loadHomes = async() => {
+        var canContinue : boolean = false;
+        if(Platform.OS == "android") canContinue = await this.requestPermissionAndroid()
+        if(!canContinue) return;
+
         var i = 0;
         for(var element of this.myData) {
             await TravelUtils.getCoordinatesFromLocation(element.name)
@@ -84,6 +115,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     }
 
     render() {
+
         return (
             <View style={{width: '100%', justifyContent:'center', flex: 1}}>
                 <Text style={styles.infoText}>Going through your photo library</Text>
@@ -93,7 +125,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     Platform.OS == 'ios' ? 
                         <ProgressViewIOS progressViewStyle={'bar'} progress={this.state.finished/this.state.total}/>
                     : 
-                        <ProgressBarAndroid progress={this.state.finished/this.state.total}/>
+                        <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={this.state.finished/this.state.total}/>
                 }
                 </View>
                 <View style={styles.spinnerContainer}>
@@ -128,7 +160,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
         var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
         this.setState({
-            total: trips.length
+            total: trips.length == 0 ? 1 : trips.length
         })
 
         var asynci = 0;

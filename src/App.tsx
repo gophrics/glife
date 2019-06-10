@@ -52,7 +52,7 @@ export default class App extends React.Component<IProps, IState> {
     })
 
     GoogleSignin.configure({
-      scopes: [''], // what API you want to access on behalf of the user, default is email and profile
+      scopes: ['profile', 'email'], // what API you want to access on behalf of the user, default is email and profile
       iosClientId: '249369235819-uc0l7d7imtlsebj80s93ucb1mvj6vo8v.apps.googleusercontent.com', // only for iOS
       webClientId: '249369235819-11cfia1ht584n1kmk6gh6kbba8ab429u.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER

@@ -95,6 +95,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var canContinue : boolean = false;
         if(Platform.OS == "android") canContinue = await this.requestPermissionAndroid()
         if(!canContinue) return;
+
         var i = 0;
         for(var element of this.myData) {
             await TravelUtils.getCoordinatesFromLocation(element.name)
@@ -114,6 +115,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     }
 
     render() {
+
         return (
             <View style={{width: '100%', justifyContent:'center', flex: 1}}>
                 <Text style={styles.infoText}>Going through your photo library</Text>
@@ -122,7 +124,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     Platform.OS == 'ios' ? 
                         <ProgressViewIOS progressViewStyle={'bar'} progress={this.state.finished/this.state.total}/>
                     : 
-                        <ProgressBarAndroid progress={this.state.finished/this.state.total}/>
+                        <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={this.state.finished/this.state.total}/>
                 }
                 </View>
                 <View style={styles.spinnerContainer}>
@@ -156,10 +158,9 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
         var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
-        console.log("Trips")
-        console.log(trips)
+        
         this.setState({
-            total: trips.length
+            total: trips.length == 0 ? 1 : trips.length
         })
 
         var asynci = 0;
@@ -170,7 +171,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             
             var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
             var _trip: TripModal = await this.populateTripModalData(_steps, asynci);
-            console.log(_trip)
+            
             this.dataToSendToNextPage.trips.push(_trip);
 
 

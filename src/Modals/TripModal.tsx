@@ -87,8 +87,9 @@ export class TripModal {
         else {
             var i = 0;
             for(var country of countries) {
-                if(i == 0) this.title += country
-                else this.title += ", " + country
+                if(i == 0) tripName += country
+                else tripName += ", " + country
+                i++;
             } 
         }
         this.title = tripName

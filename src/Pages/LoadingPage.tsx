@@ -87,6 +87,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         return (
             <View style={{width: '100%', justifyContent:'center', flex: 1}}>
                 <Text style={styles.infoText}>Going through your photo library</Text>
+                <Text style={{fontSize: 16, textAlign:'center', padding: 20, color:"white"}}>Make sure you don't close the app, and phone doesn't get locked</Text>
                 <View style={{width: "60%", alignSelf: 'center'}}>
                 {
                     Platform.OS == 'ios' ? 
@@ -204,9 +205,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 step.location = result.address.county || result.address.state_district
                 
                 if(countries.indexOf(result.address.country) == -1) {
-                    if(countries.length == 0) countries.push(result.address.country)
-                    else countries.push(", " + result.address.country)
-                    
+                    countries.push(result.address.country)
                 }
                 if(places.indexOf(step.location) == -1) {
                     places.push(step.location)

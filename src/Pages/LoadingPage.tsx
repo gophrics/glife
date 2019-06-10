@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, PermissionsAndroid, ProgressViewIOS, ProgressBarAndroid, Rationale } from 'react-native';
+import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, PermissionsAndroid, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
 import Spinner from '../UIComponents/Spinner';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
@@ -92,7 +92,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     }
 
     loadHomes = async() => {
-        var canContinue : boolean = false;
+        var canContinue : boolean = true;
         if(Platform.OS == "android") canContinue = await this.requestPermissionAndroid()
         if(!canContinue) return;
 
@@ -163,35 +163,42 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             total: trips.length == 0 ? 1 : trips.length
         })
 
+        console.log(this.state.total)
         var asynci = 0;
-        for(var trip of trips) {
-            trip.sort((a: ClusterModal, b: ClusterModal) => {
-                return a.timestamp-b.timestamp
-            });
-            
-            var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
-            var _trip: TripModal = await this.populateTripModalData(_steps, asynci);
-            this.dataToSendToNextPage.trips.push(_trip);
+        for(var i = 0; i < trips.length; i++){
+            try {
+                var trip = trips[i]
+                console.log(asynci)
+                trip.sort((a: ClusterModal, b: ClusterModal) => {
+                    return a.timestamp-b.timestamp
+                });
+                
+                var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
+                var _trip: TripModal = await this.populateTripModalData(_steps, asynci);
+                this.dataToSendToNextPage.trips.push(_trip);
 
 
-            this.setState({
-                finished: asynci
-            })
-
-            this.dataToSendToNextPage.countriesVisited.push.apply(this.dataToSendToNextPage.countriesVisited, _trip.countryCode)
-
-            asynci++;
-            if(asynci == trips.length) {
-                let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
-                this.dataToSendToNextPage.countriesVisited = x(this.dataToSendToNextPage.countriesVisited); // Removing duplicates
-                this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
-                this.dataToSendToNextPage.trips.sort((a, b) => {
-                    return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+                this.setState({
+                    finished: asynci
                 })
-                for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
-                this.dataToSendToNextPage.coverPicURL = "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
-                this.dataToSendToNextPage.profilePicURL = "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
-                this.props.onDone(this.dataToSendToNextPage);
+
+                this.dataToSendToNextPage.countriesVisited.push.apply(this.dataToSendToNextPage.countriesVisited, _trip.countryCode)
+
+                asynci++;
+                if(asynci == trips.length) {
+                    let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
+                    this.dataToSendToNextPage.countriesVisited = x(this.dataToSendToNextPage.countriesVisited); // Removing duplicates
+                    this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
+                    this.dataToSendToNextPage.trips.sort((a, b) => {
+                        return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+                    })
+                    for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
+                    this.dataToSendToNextPage.coverPicURL = "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
+                    this.dataToSendToNextPage.profilePicURL = "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
+                    this.props.onDone(this.dataToSendToNextPage);
+                }
+            } catch(err) {
+                i--;
             }
         }
     }

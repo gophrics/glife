@@ -1,10 +1,12 @@
-import { CameraRoll } from 'react-native';
+import { CameraRoll, GetPhotosParamType, Platform } from 'react-native';
 import ImageDataModal from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
 import { ClusterModal } from '../Modals/ClusterModal';
 
 export function getPhotosFromLibrary() {
-    return CameraRoll.getPhotos({ first: 1000000000000000, assetType: "Photos"})
+    var options = { first: 1000000000000000, assetType: "Photos"} as GetPhotosParamType;
+    if(Platform.OS == 'ios') options.groupTypes = "All"
+    return CameraRoll.getPhotos(options)
         .then((res) => {
             
             var imageDataList: Array<ImageDataModal> = [];

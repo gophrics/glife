@@ -14,7 +14,7 @@ interface IProps {
 }
 
 interface IState {
-
+    modalBottom: number
 }
 
 const deviceWidth = Dimensions.get('window').width;
@@ -23,6 +23,9 @@ export class PhotoPopUpModal extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props)
+        this.state = {
+            modalBottom: 0
+        }
     }
 
     render() {
@@ -32,7 +35,7 @@ export class PhotoPopUpModal extends React.Component<IProps, IState> {
             transparent={true}
             onDismiss={this.props.onDismiss} >
 
-            <SafeAreaView style={{ margin: 30, borderRadius: 10, bottom: this.props.bottom, flex: 1, alignContent: 'center', justifyContent: 'center' }}>
+            <SafeAreaView style={{ margin: 30, borderRadius: 10, bottom: this.state.modalBottom, flex: 1, alignContent: 'center', justifyContent: 'center' }}>
                 <LinearGradient colors={['#98FB98', '#50C878', '#00A572']}>
                     <View style={{
                         borderRadius: 10

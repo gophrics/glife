@@ -27,7 +27,6 @@ interface IState {
     myData: TripModal,
     lastStepClicked: StepModal
     editStepDescription: boolean
-    modalBottom: any
 }
 
 interface IProps {
@@ -58,8 +57,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             newStep: false,
             newStepId: -1,
             lastStepClicked: trip.tripAsSteps[0],
-            editStepDescription: false,
-            modalBottom: undefined
+            editStepDescription: false
         }
 
 
@@ -191,8 +189,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
             this.setState({
                 myData: trip,
-                editStepDescription: false,
-                modalBottom: undefined
+                editStepDescription: false
             })
         }
     }
@@ -253,7 +250,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         <PhotoPopUpModal
                             photoModalVisible={this.state.photoModalVisible}
                             lastStepClicked={this.state.lastStepClicked}
-                            bottom={this.state.modalBottom}
                             onDescriptionChange={this.onPhotoModalDescriptionChange}
                             onDismiss={this.onPhotoModalDismiss}
                             onModalClose={this.onPhotoModalClose}

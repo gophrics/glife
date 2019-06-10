@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, ImageProgressEventDataIOS, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
+import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, PermissionsAndroid, ProgressViewIOS, ProgressBarAndroid, Rationale } from 'react-native';
 import Spinner from '../UIComponents/Spinner';
 import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
-import ImageDataModal from '../Modals/ImageDataModal';
 import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { ClusterProcessor } from '../Utilities/ClusterProcessor';
@@ -65,7 +64,37 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         this.loadHomes();
     }
 
+    requestPermissionAndroid = async() : Promise<boolean> => {
+        try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+              {
+                title: 'Cool Photo App Camera Permission',
+                message:
+                'Cool Photo App needs access to your camera ' +
+                'so you can take awesome pictures.',
+                buttonNeutral: 'Ask Me Later',
+                buttonNegative: 'Cancel',
+                buttonPositive: 'OK',
+              }
+            )
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log("You can use read from the storage")
+                return true;
+            } else {
+              console.log("Storage permission denied")
+              return false
+            }
+          } catch (err) {
+            console.warn(err)
+            return false
+          }
+    }
+
     loadHomes = async() => {
+        var canContinue : boolean = false;
+        if(Platform.OS == "android") canContinue = await this.requestPermissionAndroid()
+        if(!canContinue) return;
         var i = 0;
         for(var element of this.myData) {
             await TravelUtils.getCoordinatesFromLocation(element.name)

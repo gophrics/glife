@@ -204,6 +204,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         this.setState({
             homes: homes
         })
+        this.validateData()
     }
 
     render() {

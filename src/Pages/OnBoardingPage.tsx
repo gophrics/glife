@@ -27,7 +27,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
 
     cursor: number = 0
     name: string = "";
-    tempLocations: JSX.Element[][] = [];
+    tempLocations: any[][] = [];
     cachedDate: Date = new Date();
     
     constructor(props: IProps) {
@@ -92,7 +92,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             var j = 1;
             this.tempLocations.push([])
             for (var obj of res) {
-                this.tempLocations[count].push(<Text style={{ color: 'lightgrey' }} >{"\n " + j + ". " + obj.name.trim() + ", " + obj.country.trim() + "\n"}</Text>)
+                this.tempLocations[count].push(obj);//<Text style={{ color: 'lightgrey' }} >{"\n " + j + ". " + obj.name.trim() + ", " + obj.country.trim() + "\n"}</Text>)
                 j++;
             }
             if (res && res.length == 1 || (this.findExactName(res, home.name))) { asyncCount++; culprits[count] = 0 }
@@ -195,6 +195,16 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
         this.state.homes.push({name: "", timestamp: NaN})
     }
 
+    setLocation = (index: number, obj: any) => {
+        console.log(index)
+        console.log(obj)
+        var homes = this.state.homes;
+
+        homes[index].name = obj.name.trim() + ", " + obj.country.trim()
+        this.setState({
+            homes: homes
+        })
+    }
 
     render() {
 
@@ -214,6 +224,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                                     </TouchableOpacity>
                                     <View style={{ flexDirection: 'column', marginLeft: 5, marginRight: 5, width: '80%' }}>
                                         <TextInput
+                                            editable={true}
                                             onEndEditing={this.validateData}
                                             placeholder={(i == 0) ? "Your most recent home city" : "Your previous home city"}
                                             onChangeText={(text) => this.onLocationTextChange(i, text)}
@@ -222,7 +233,10 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                                         >{el.name}</TextInput>
                                         {this.state.culprits[i] != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overlords can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India"} </Text> : <View />}
                                         {this.state.culprits[i] == 2 ? <Text style={{ color: 'lightgrey', padding: 3 }}>Places found: </Text> : <View />}
-                                        {this.state.culprits[i] == 2 ? this.tempLocations[i] : <View />}
+                                        {this.state.culprits[i] == 2 && this.tempLocations[i] != undefined? 
+                                            this.tempLocations[i].map((el, index) => (
+                                                <Text style={{ color: 'lightgrey' }} onPress={(e: any) => this.setLocation(i, el)}>{"\n " + (index+1) + ". " + el.name.trim() + ", " + el.country.trim() + "\n"}</Text>
+                                            )) : <View />}
                                         <Text style={{ color: 'white', fontSize: 20, marginBottom: 20 }}>{this.state.dates[i] ? this.state.dates[i] : "Long long ago.."} - {this.state.dates[i-1] ? this.state.dates[i-1] : "Current"}</Text>
                                     </View>
                                     {i != 0 ?

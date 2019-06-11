@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -48,6 +48,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription </key>
+	<string>The app needs your location information to track your travel</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The app needs your location information to track your travel</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Let the app access your photo library to process the photos and generate trips. We don't store any information in our servers.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

@@ -56,6 +56,8 @@ export class ProfileComponent extends React.Component<IProps, IState> {
                             },
                         ]} source={{uri: this.props.profilePic}}/> 
                 </TouchableOpacity>
+                {
+                /*
                 <View style={styles.followButtonGroup}>
                     <TouchableOpacity style={styles.button} onPress={this.onFollowButtonPress.bind(this)}>
                         <Text style={styles.text}>Follow</Text>
@@ -64,6 +66,8 @@ export class ProfileComponent extends React.Component<IProps, IState> {
                         <Text style={styles.text}>Donate</Text>
                     </TouchableOpacity>
                 </View> 
+                */
+                }
             </View>
         )
     }

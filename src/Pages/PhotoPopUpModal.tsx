@@ -7,14 +7,13 @@ import { StepModal } from '../Modals/StepModal';
 interface IProps {
     photoModalVisible: boolean
     lastStepClicked: StepModal
-    bottom: number
     onDismiss: () => void
     onDescriptionChange: (text: string) => void
     onModalClose: () => void
 }
 
 interface IState {
-    modalBottom: number
+    modalBottom: any
 }
 
 const deviceWidth = Dimensions.get('window').width;

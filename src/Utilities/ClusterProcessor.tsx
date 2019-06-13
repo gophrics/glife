@@ -81,7 +81,6 @@ export class ClusterProcessor {
     }
 
     static convertClusterToStep = (cluster: ClusterModal[]) : StepModal => {
-
         if(cluster.length == 0){
             var _step = new StepModal();
             _step.id = -1;

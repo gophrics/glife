@@ -65,7 +65,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     }
 
     initialize() {
-        console.log(deviceHeight)
         this.travelCardArray = []
         //Populate travelcard Array for each step
         var markers: Region[] = []
@@ -124,19 +123,22 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     }
 
     onMarkerPress = (e: any, step: StepModal) => {
-        if (step.meanLatitude != this.state.lastStepClicked.meanLatitude ||
-            step.meanLatitude != this.state.lastStepClicked.meanLongitude) {
+        if ((step.meanLatitude != this.state.lastStepClicked.meanLatitude ||
+            step.meanLatitude != this.state.lastStepClicked.meanLongitude) &&
+            (step.location != "Home")) {
+
             (this.mapView as MapView).animateToRegion({
                 latitude: step.meanLatitude,
                 longitude: step.meanLongitude,
                 latitudeDelta: .6,
                 longitudeDelta: .6
             } as Region, 1000)
+
+            this.setState({
+                photoModalVisible: true,
+                lastStepClicked: step
+            })
         }
-        this.setState({
-            photoModalVisible: true,
-            lastStepClicked: step
-        })
     }
 
     onScroll = (event: any) => {

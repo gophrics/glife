@@ -55,7 +55,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         this.props.setNavigator(false)
 
         this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], {})
+        var data: MapPhotoPageModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
+        data.trips = []
+        data.countriesVisited = [];
+        data.percentageWorldTravelled = 0;
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], data)
         this.state = {
             finished: 0,
             total: 100
@@ -163,7 +167,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             total: trips.length == 0 ? 1 : trips.length
         })
 
-        console.log(this.state.total)
         var asynci = 0;
         for(var i = 0; i < trips.length; i++){
             try {
@@ -210,6 +213,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
         var _stepModal: StepModal = ClusterProcessor.convertClusterToStep([homeStep])
         _stepModal.location = "Home";
+        _stepModal.id = 0;
         tripResult.tripAsSteps.push(_stepModal)
         
         var i = 0;
@@ -233,6 +237,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         _stepModal2.distanceTravelled = Math.floor(tripResult.tripAsSteps[i-1].distanceTravelled + 
             ClusterProcessor.EarthDistance({latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude} as ClusterModal,
             {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal))
+        _stepModal2.id = tripResult.tripAsSteps[tripResult.tripAsSteps.length - 1].id + 100
 
         tripResult.tripAsSteps.push(_stepModal2)
 

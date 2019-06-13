@@ -133,6 +133,10 @@ export class NewStepPage extends React.Component<IProps, IState> {
         if (res && res.length == 1 || (this.findExactName(res, this.state.location))) { locationWrong = 0 }
         else if (res) locationWrong = 2
 
+        this.setState({
+            locationWrong: locationWrong
+        })
+
         return locationWrong == 0;
     }
 
@@ -163,6 +167,7 @@ export class NewStepPage extends React.Component<IProps, IState> {
         }
 
         var _step = ClusterProcessor.convertClusterToStep(clusterData);
+        _step.location = this.state.location
         this.props.onClose(_step)
     };
     

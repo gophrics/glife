@@ -163,7 +163,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
 
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
-        
+
+        // Create a No photos found warning page
+        if(photoRollInfos.length == 0) {
+            this.props.setPage(Page[Page.PROFILE])
+        }
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(photoRollInfos, endTimestamp)
 
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 

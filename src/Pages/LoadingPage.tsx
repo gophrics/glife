@@ -98,10 +98,13 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     }
 
     loadHomes = async() => {
-        var canContinue : boolean = true;
-        if(Platform.OS == "android") canContinue = await this.requestPermissionAndroid()
-        if(!canContinue) return;
-
+        if(Platform.OS == "android") await this.requestPermissionAndroid()
+        else if(Platform.OS == "ios") await PhotoLibraryProcessor.checkPhotoPermission()
+        if(!(await PhotoLibraryProcessor.checkPhotoPermission())) {
+            this.props.setPage(Page[Page.NOPERMISSIONIOS])
+            return;
+        }
+        
         var i = 0;
         for(var element of this.myData) {
             await TravelUtils.getCoordinatesFromLocation(element.name)
@@ -159,11 +162,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             }
         }
 
-        if(!(await PhotoLibraryProcessor.checkPhotoPermission())) {
-            this.props.setPage(Page[Page.NOPERMISSIONIOS])
-            return;
-        }
-        
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
         
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(photoRollInfos, endTimestamp)

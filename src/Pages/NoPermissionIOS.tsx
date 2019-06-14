@@ -19,12 +19,12 @@ export class NoPermissionIOS extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View style={{justifyContent: 'center', alignContent:'center', width: '100%', height:'100%'}}>
-                <Text style={{alignSelf:'center', textAlign:'center', fontSize: 20, color:'white'}}> Glimpse can't work without permission to access the photo library </Text>
+            <View style={{justifyContent: 'center', padding: 20, alignContent:'center', width: '100%', height:'100%'}}>
+                <Text style={{alignSelf:'center', textAlign:'center', fontSize: 20, color:'white'}}> Glimpse can't process your photos without permission to access the photo library </Text>
                 <Text> </Text>
                 <Text style={{alignSelf:'center', fontSize: 20, color:'white'}}> To give permission, go to </Text>
                 <Text> </Text>
-                <Text style={{fontWeight: 'bold', fontSize: 24, alignSelf: 'center', color:'white'}}> Settings -> Glimpse -> Photos</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 23, alignSelf: 'center', color:'white'}}> Settings -> Glimpse -> Photos</Text>
                 <Text> </Text>
                 <Text style={{alignSelf:'center', textAlign:'center', fontSize: 20, color:'white'}}> and restart Glimpse </Text>
             </View>

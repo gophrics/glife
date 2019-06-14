@@ -10,6 +10,8 @@ import { TripModal } from '../Modals/TripModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
+import { SettingsModal } from '../Modals/SettingsModal';
+import ImageDataModal from '../Modals/ImageDataModal';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -33,8 +35,8 @@ var styles = StyleSheet.create<Styles>({
 });
 
 interface IProps {
-    onDone: (data: any) => void,
-    setNavigator: any
+    setNavigator: any,
+    setPage: any
 }
 
 interface IState {
@@ -157,7 +159,13 @@ export default class LoadingPage extends React.Component<IProps, IState> {
             }
         }
 
-        var photoRollInfos = await PhotoLibraryProcessor.getPhotosFromLibrary();
+        if(!(await PhotoLibraryProcessor.checkPhotoPermission())) {
+            this.props.setPage(Page[Page.NOPERMISSIONIOS])
+            return;
+        }
+        
+        var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
+        
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(photoRollInfos, endTimestamp)
 
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
@@ -198,7 +206,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
                     this.dataToSendToNextPage.coverPicURL = "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
                     this.dataToSendToNextPage.profilePicURL = "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
-                    this.props.onDone(this.dataToSendToNextPage);
+                    this.props.setPage(Page[Page.PROFILE], this.dataToSendToNextPage);
                 }
             } catch(err) {
                 i--;

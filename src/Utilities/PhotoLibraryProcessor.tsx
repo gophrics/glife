@@ -3,12 +3,12 @@ import ImageDataModal from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
 import { ClusterModal } from '../Modals/ClusterModal';
 
-export function getPhotosFromLibrary() {
+export function getPhotosFromLibrary() : Promise<ImageDataModal[]> {
     var options = { first: 1000000000000000, assetType: "Photos"} as GetPhotosParamType;
     if(Platform.OS == 'ios') options.groupTypes = "All"
     return CameraRoll.getPhotos(options)
         .then((res) => {
-            
+
             var imageDataList: Array<ImageDataModal> = [];
             for (var image of res.edges) {
                 if (image && image.node && image.node.location &&
@@ -19,8 +19,21 @@ export function getPhotosFromLibrary() {
             }
 
             return imageDataList;
-        });
+        })
 }
+
+export function checkPhotoPermission() : Promise<boolean> {
+    var options = { first: 1, assetType: "Photos"} as GetPhotosParamType;
+    if(Platform.OS == 'ios') options.groupTypes = "All"
+    return CameraRoll.getPhotos(options)
+        .then((res) => {
+            return true
+        })
+        .catch((error) => {
+            return false
+        })
+}
+
 
 export function convertImagetoImageModal(image: any) {
     var regionData = new Region(image.node.location.latitude, image.node.location.longitude, 0, 0);

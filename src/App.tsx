@@ -99,7 +99,7 @@ export default class App extends React.Component<IProps, IState> {
         : <View />}
           {
             this.state.page == Page[Page.LOADING] ?
-              <LoadingPage setNavigator={this.setNavigator} onDone={(data) => this.setPage(Page[Page.PROFILE], data)} />
+              <LoadingPage setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
             : this.state.page == Page[Page.PROFILE] ? 
               <ProfilePage setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
             : this.state.page == Page[Page.TRIPEXPLORE] ? 

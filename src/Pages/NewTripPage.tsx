@@ -5,6 +5,7 @@ import { TripModal } from '../Modals/TripModal';
 import { Page } from '../Modals/ApplicationEnums';
 import { StepModal } from '../Modals/StepModal';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
+import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
 
 interface IProps {
     setPage: any
@@ -27,6 +28,11 @@ export class NewTripPage extends React.Component<IProps, IState> {
             showPicker: false
         }
         this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP])
+        PhotoLibraryProcessor.checkPhotoPermission()
+        .then((res) => {
+                if(!res) this.props.setPage(Page[Page.NOPERMISSIONIOS])
+            }
+        )
     }
 
     onTitleChange = (title: string) => {

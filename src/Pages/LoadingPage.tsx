@@ -98,13 +98,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
     }
 
     loadHomes = async() => {
-        if(Platform.OS == "android") await this.requestPermissionAndroid()
-        else if(Platform.OS == "ios") await PhotoLibraryProcessor.checkPhotoPermission()
-        if(!(await PhotoLibraryProcessor.checkPhotoPermission())) {
-            this.props.setPage(Page[Page.NOPERMISSIONIOS])
-            return;
-        }
-        
         var i = 0;
         for(var element of this.myData) {
             await TravelUtils.getCoordinatesFromLocation(element.name)
@@ -118,7 +111,22 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                         timestamp: (element.timestamp as number)
                     })
                     i++;
-                    if(i == this.myData.length) this.initialize();
+                    if(i == this.myData.length) {
+                        // Expanding homes to timestamp
+                        var endTimestamp = Math.ceil((new Date()).getTime()/8.64e7);
+                        this.homes.sort((a, b) => {
+                            return b.timestamp - a.timestamp;
+                        })
+
+                        for(var data of this.homes) {
+                            while(endTimestamp >= Math.floor(data.timestamp/8.64e7) && endTimestamp >= 0) {
+                                this.homesDataForClustering[endTimestamp] = data as ClusterModal;
+                                endTimestamp--;
+                            }
+                        }
+                        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
+                        this.initialize(endTimestamp);
+                    } 
                 })
         }
     }
@@ -147,21 +155,15 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
 
     // Helper methods
-    initialize  = async() => {
+    initialize  = async(endTimestamp: number) => {
 
-        // Expanding homes to timestamp
-        var endTimestamp = Math.ceil((new Date()).getTime()/8.64e7);
-        this.homes.sort((a, b) => {
-            return b.timestamp - a.timestamp;
-        })
-
-        for(var data of this.homes) {
-            while(endTimestamp >= Math.floor(data.timestamp/8.64e7) && endTimestamp >= 0) {
-                this.homesDataForClustering[endTimestamp] = data as ClusterModal;
-                endTimestamp--;
-            }
+        if(Platform.OS == "android") await this.requestPermissionAndroid()
+        else if(Platform.OS == "ios") await PhotoLibraryProcessor.checkPhotoPermission()
+        if(!(await PhotoLibraryProcessor.checkPhotoPermission())) {
+            this.props.setPage(Page[Page.NOPERMISSIONIOS])
+            return;
         }
-
+        
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
 
         // Create a No photos found warning page
@@ -170,7 +172,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(photoRollInfos, endTimestamp)
 
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], this.homesDataForClustering); 
 
         var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
         this.setState({

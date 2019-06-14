@@ -7,10 +7,13 @@ import ImageDataModal from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { ClusterProcessor } from '../Utilities/ClusterProcessor';
+import { Page } from '../Modals/ApplicationEnums';
+import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
 
 interface IProps {
     visible: boolean,
     onClose: (_step: StepModal|null) => void
+    setPage: any
 }
 
 interface IState {
@@ -40,6 +43,12 @@ export class NewStepPage extends React.Component<IProps, IState> {
             location: "",
             locationWrong: 0
         }
+
+        PhotoLibraryProcessor.checkPhotoPermission()
+        .then((res) => {
+                if(!res) this.props.setPage(Page[Page.NOPERMISSIONIOS])
+            }
+        )
     }
 
     onLocationTextChange = (location: string) => {
@@ -60,7 +69,7 @@ export class NewStepPage extends React.Component<IProps, IState> {
             this.setState({
                 imageUris: imageUris
             })
-          });
+          })
     }
 
     onCalenderClick = (index: number) => {

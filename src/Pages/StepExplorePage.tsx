@@ -260,7 +260,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 }
                 {
                     this.state.newStep ?
-                        <NewStepPage visible={this.state.newStep} onClose={this.newStepOnDone} />
+                        <NewStepPage setPage={this.props.setPage} visible={this.state.newStep} onClose={this.newStepOnDone} />
                         : <View />
                 }
             </View>

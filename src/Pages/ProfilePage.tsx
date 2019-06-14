@@ -45,7 +45,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         }
 
         this.state = {
-            bottom: 50,
+            bottom: 100,
             scrollY: new Animated.Value(0),
             coverPicURL: this.myData.coverPicURL,
             profilePicURL: this.myData.profilePicURL,

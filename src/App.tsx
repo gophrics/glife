@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {
   View,
-  SafeAreaView,
-  DatePickerIOS,
+  SafeAreaView
 } from 'react-native'
 import {Page} from './Modals/ApplicationEnums';
 import TripExplorePage from './Pages/TripExplorePage';
@@ -19,10 +18,10 @@ import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
 import { RegisterUserPage } from './Pages/RegisterUserPage';
 import { LoginUserPage } from './Pages/LoginUserPage';
-import AsyncStorage  from '@react-native-community/async-storage'
 import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
 import { SearchPage } from './Pages/SearchPage';
+import { NoPermissionIOS } from './Pages/NoPermissionIOS';
 interface IState {
   page: string,
   navigatorVisible: boolean
@@ -123,6 +122,8 @@ export default class App extends React.Component<IProps, IState> {
               <LoginUserPage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.SEARCH] ?
               <SearchPage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.NOPERMISSIONIOS] ? 
+              <NoPermissionIOS setPage={this.setPage.bind(this)}/>
             : <View />
           }
           

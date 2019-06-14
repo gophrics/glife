@@ -18,7 +18,6 @@ export function getPhotosFromLibrary() {
                 }
             }
 
-            console.log("Loaded: " + imageDataList.length)
             return imageDataList;
         });
 }

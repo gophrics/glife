@@ -32,10 +32,16 @@ export class BottomNavigator extends React.Component<IProps, IState> {
         this.props.navigatorFunc(Page[Page.SEARCH])
     }
 
+    onFeedPress = () => {
+        this.props.navigatorFunc(Page[Page.FEED])
+    }
 
     render() {
         return (
             <View style={{flexDirection: 'row', padding: 5, justifyContent:'space-between', width: deviceWidth}}>
+                <TouchableOpacity onPress={this.onFeedPress}>
+                <Icon name='search1' size={30} />
+                </TouchableOpacity>
                 <TouchableOpacity onPress={this.onSearchPress}>
                 <Icon name='search1' size={30} />
                 </TouchableOpacity>

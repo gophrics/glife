@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { View, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
-import { ProfileComponent } from '../UIComponents/ProfileComponent';
-import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
-import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
-import { TripComponent } from '../UIComponents/TripComponent';
-import { TripModal } from '../Modals/TripModal';
-import { Page } from '../Modals/ApplicationEnums';
-import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
+import { ProfileComponent } from '../../UIComponents/ProfileComponent';
+import { WorldMapColouredComponent } from '../../UIComponents/WorldMapColouredComponent';
+import { StatsAsCardComponent } from '../../UIComponents/StatsAsCardComponent';
+import { TripComponent } from '../../UIComponents/TripComponent';
+import { TripModal } from '../../Modals/TripModal';
+import { Page } from '../../Modals/ApplicationEnums';
+import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
-import { AuthProvider } from '../Utilities/AuthProvider';
+import { MapPhotoPageModal } from '../../Modals/MapPhotoPageModal';
+import { AuthProvider } from '../../Utilities/AuthProvider';
 import { GoogleSignin } from 'react-native-google-signin';
 
 interface IState {

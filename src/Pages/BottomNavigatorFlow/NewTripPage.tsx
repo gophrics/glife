@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { View, Button, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { TripModal } from '../Modals/TripModal';
-import { Page } from '../Modals/ApplicationEnums';
-import { StepModal } from '../Modals/StepModal';
-import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
-import * as PhotoLibraryProcessor from '../Utilities/PhotoLibraryProcessor';
+import { TripModal } from '../../Modals/TripModal';
+import { Page } from '../../Modals/ApplicationEnums';
+import { StepModal } from '../../Modals/StepModal';
+import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
+import * as PhotoLibraryProcessor from '../../Utilities/PhotoLibraryProcessor';
 
 interface IProps {
     setPage: any

@@ -1,15 +1,15 @@
 import * as React from 'react'
 import { View, Text } from 'react-native'
-import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
-import { Page } from '../Modals/ApplicationEnums';
-import { SettingsModal } from '../Modals/SettingsModal';
+import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
+import { Page } from '../../Modals/ApplicationEnums';
+import { SettingsModal } from '../../Modals/SettingsModal';
 
 interface IProps {
     setPage: any
 }
 
 interface IState {
-
+    
 }
 
 

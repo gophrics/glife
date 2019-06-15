@@ -6,12 +6,12 @@ import {
 import {Page} from './Modals/ApplicationEnums';
 import TripExplorePage from './Pages/TripExplorePage';
 import LoadingPage from './Pages/LoadingPage';
-import ProfilePage from './Pages/ProfilePage';
+import ProfilePage from './Pages/BottomNavigatorFlow/ProfilePage';
 import { TopNavigator } from './UIComponents/TopNavigator';
 import { OnBoardingPage } from './Pages/OnBoardingPage';
 import StepExplorePage from './Pages/StepExplorePage';
 import { SplashScreen } from './Pages/SplashScreen';
-import { NewTripPage } from './Pages/NewTripPage';
+import { NewTripPage } from './Pages/BottomNavigatorFlow/NewTripPage';
 import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
@@ -20,9 +20,10 @@ import { RegisterUserPage } from './Pages/RegisterUserPage';
 import { LoginUserPage } from './Pages/SocialFlow/LoginUserPage';
 import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
-import { SearchPage } from './Pages/SearchPage';
+import { SearchPage } from './Pages/BottomNavigatorFlow/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
 import { ConfirmUsernamePage } from './Pages/SocialFlow/ConfirmUsernamePage';
+import { FeedPage } from './Pages/BottomNavigatorFlow/FeedPage';
 interface IState {
   page: string,
   navigatorVisible: boolean
@@ -127,6 +128,8 @@ export default class App extends React.Component<IProps, IState> {
               <NoPermissionIOS setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.CONFIRMUSERNAME] ? 
               <ConfirmUsernamePage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.FEED] ? 
+              <FeedPage setPage={this.setPage.bind(this)} />
             : <View />
           }
           

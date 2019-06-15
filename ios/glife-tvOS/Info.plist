@@ -36,8 +36,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationAlwaysUsageDescription </key>
+	<string>The app needs your location information to track your travel. We don't store this data, your data is your data, my data is my data.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>The app needs your location information to track your travel. We don't store this data, your data is your data, my data is my data.</string>
+	
 	<key>NSAppTransportSecurity</key>
 	<!--See http://ste.vn/2015/06/10/configuring-app-transport-security-ios-9-osx-10-11/ -->
 	<dict>

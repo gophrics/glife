@@ -36,9 +36,11 @@ export class TopNavigator extends React.Component<IProps, IState> {
         return (
             this.props.visible ? 
             <View style={{ width: '100%', height: 60, flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
+                {/*
                 <TouchableOpacity style={{ height: 60 }} onPress={this.onSettingPress.bind(this)}>
                     <Icon style={{padding:10}} size={40} name='settings' />
                 </TouchableOpacity>
+                */}
                 <TouchableOpacity style={{ height: 60 }} onPress={this.onProfilePress.bind(this)}>
                     <Image style={{ width: 60, height: 60 }} source={require('../Assets/glife_logo_transparent.png')} />
                 </TouchableOpacity>

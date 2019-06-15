@@ -17,7 +17,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
 import { RegisterUserPage } from './Pages/RegisterUserPage';
-import { LoginUserPage } from './Pages/LoginUserPage';
+import { LoginUserPage } from './Pages/SocialFlow/LoginUserPage';
 import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
 import { SearchPage } from './Pages/SearchPage';

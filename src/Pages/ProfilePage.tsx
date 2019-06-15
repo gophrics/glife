@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
+import { View, Text, Button, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
 import { ProfileComponent } from '../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
@@ -44,11 +44,12 @@ export default class ProfilePage extends React.Component<IProps, IState> {
             this.tripRenderArray.push(<View key={trip.tripId + 'v'} style={{ height: 10 }} />)
         }
 
+        console.log(this.myData)
         this.state = {
-            bottom: 100,
+            bottom: 200,
             scrollY: new Animated.Value(0),
-            coverPicURL: this.myData.coverPicURL,
-            profilePicURL: this.myData.profilePicURL,
+            coverPicURL: this.myData.coverPicURL == undefined ? "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" : this.myData.coverPicURL,
+            profilePicURL: this.myData.profilePicURL == undefined ? "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" : this.myData.profilePicURL,
             refreshing: false
         }
     }
@@ -114,11 +115,8 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         return (
             <View style={{ height: '100%' }} >
 
-                <ScrollView style={{ flex: 1 }}
+                <ScrollView style={{ flex: 1 }} overScrollMode="always"
                     scrollEventThrottle={16}
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
-                    )}
                     contentInset={{ top: 0, bottom: this.state.bottom }}
                     refreshControl={
                         <RefreshControl
@@ -152,7 +150,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                                 }]
                             },
                         ]}
-                        source={{uri: this.state.coverPicURL}}
+                        source={{uri: this.state.coverPicURL }}
                     />
                     <TouchableOpacity style={{alignItems:'flex-end', padding: 20}} onPress={this.pickCoverPic} >
                         <Icon name='edit' size={25}/>
@@ -169,7 +167,16 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     </View>
                     <View style={{ height: 10 }} />
                     {this.tripRenderArray}
-
+                    {
+                        this.tripRenderArray.length == 0 ? 
+                            <View>
+                                <Text style={{textAlign:'center', fontSize:18, color:'orange', borderWidth: 1, margin: 5, borderColor: 'red', padding: 5}}>No trips were processed! Add more photos to your photo library and try again with correct details about your home.</Text>
+                                <TouchableOpacity  style={{width:100, marginTop: 10, backgroundColor:'white', padding: 5, borderRadius: 10, alignSelf:'center'}} onPress={(e) => { this.props.setPage(Page[Page.ONBOARDING])}} >
+                                    <Text style={{textAlign:'center'}}>Try again</Text>
+                                </TouchableOpacity>
+                            </View>
+                        : <View />
+                    }
                 </ScrollView>
             </View>
         )

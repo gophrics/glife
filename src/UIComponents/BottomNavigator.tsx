@@ -41,11 +41,14 @@ export class BottomNavigator extends React.Component<IProps, IState> {
                 <Icon name='search1' size={30} />
                 </TouchableOpacity>
                 */
-                }<TouchableOpacity onPress={this.onAddTripPress}>
-                <Icon name='plus' size={30} />
-                </TouchableOpacity>
+                }
                 <TouchableOpacity onPress={this.onProfilePress}>
                 <Icon name='profile' size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.onAddTripPress}>
+                <Icon name='plus' size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity disabled={true} style={{height: 30, width: 30}} onPress={this.onAddTripPress}>    
                 </TouchableOpacity>
             </View>
         )

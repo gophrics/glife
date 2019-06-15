@@ -208,7 +208,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         return (
             <View>
                 <View>
-                    <MapView style={{ width: '100%', height: '77%' }}
+                    <MapView style={{ width: '100%', height: '80%' }}
                         ref={ref => this.mapView = ref}
                         mapType='hybrid'
                     >
@@ -242,7 +242,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                         </Callout>
                     </MapView>
                     {
-                        <ScrollView decelerationRate={0.6} snapToOffsets={snapOffsets} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', overflow: 'hidden' }}>
+                        <ScrollView decelerationRate={0.6} snapToOffsets={snapOffsets} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: '20%', width: '100%', overflow: 'hidden' }}>
                             {this.travelCardArray}
                         </ScrollView>
                     }

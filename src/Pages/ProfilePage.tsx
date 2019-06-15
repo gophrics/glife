@@ -27,7 +27,7 @@ interface IProps {
 }
 
 
-const HEADER_MAX_HEIGHT = Dimensions.get('window').height * .6
+const HEADER_MAX_HEIGHT = Dimensions.get('window').height * .66
 const HEADER_MIN_HEIGHT = 0;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 export default class ProfilePage extends React.Component<IProps, IState> {
@@ -48,8 +48,8 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         this.state = {
             bottom: 200,
             scrollY: new Animated.Value(0),
-            coverPicURL: this.myData.coverPicURL == undefined ? "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" : this.myData.coverPicURL,
-            profilePicURL: this.myData.profilePicURL == undefined ? "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" : this.myData.profilePicURL,
+            coverPicURL: this.myData.coverPicURL == undefined || this.myData.coverPicURL == "" ? "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" : this.myData.coverPicURL,
+            profilePicURL: this.myData.profilePicURL == undefined || this.myData.profilePicURL == "" ? "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" : this.myData.profilePicURL,
             refreshing: false
         }
     }
@@ -115,8 +115,11 @@ export default class ProfilePage extends React.Component<IProps, IState> {
         return (
             <View style={{ height: '100%' }} >
 
-                <ScrollView style={{ flex: 1 }} overScrollMode="always"
+                <ScrollView style={{ flex: 1 }}
                     scrollEventThrottle={16}
+                    onScroll={Animated.event(	
+                        [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
+                    )}
                     contentInset={{ top: 0, bottom: this.state.bottom }}
                     refreshControl={
                         <RefreshControl
@@ -129,26 +132,13 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                 <Animated.View style={[styles.header, {
                     height: this.state.scrollY.interpolate({
                         inputRange: [0, HEADER_SCROLL_DISTANCE],
-                        outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-                        extrapolate: 'clamp',
+                        outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT]
                     })
                 }]}>
                     <Animated.Image
                         style={[
                             styles.backgroundImage,
-                            {
-                                opacity: this.state.scrollY.interpolate({
-                                    inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
-                                    outputRange: [1, 1, 0],
-                                    extrapolate: 'clamp',
-                                }), transform: [{
-                                    translateY: this.state.scrollY.interpolate({
-                                        inputRange: [0, HEADER_SCROLL_DISTANCE],
-                                        outputRange: [0, -50],
-                                        extrapolate: 'clamp',
-                                    })
-                                }]
-                            },
+                            
                         ]}
                         source={{uri: this.state.coverPicURL }}
                     />
@@ -169,7 +159,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     {this.tripRenderArray}
                     {
                         this.tripRenderArray.length == 0 ? 
-                            <View>
+                            <View style={{height: 200}}>
                                 <Text style={{textAlign:'center', fontSize:18, color:'orange', borderWidth: 1, margin: 5, borderColor: 'red', padding: 5}}>No trips were processed! Add more photos to your photo library and try again with correct details about your home.</Text>
                                 <TouchableOpacity  style={{width:100, marginTop: 10, backgroundColor:'white', padding: 5, borderRadius: 10, alignSelf:'center'}} onPress={(e) => { this.props.setPage(Page[Page.ONBOARDING])}} >
                                     <Text style={{textAlign:'center'}}>Try again</Text>

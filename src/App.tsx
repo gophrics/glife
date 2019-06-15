@@ -22,6 +22,7 @@ import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
 import { SearchPage } from './Pages/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
+import { ConfirmUsernamePage } from './Pages/SocialFlow/ConfirmUsernamePage';
 interface IState {
   page: string,
   navigatorVisible: boolean
@@ -124,6 +125,8 @@ export default class App extends React.Component<IProps, IState> {
               <SearchPage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.NOPERMISSIONIOS] ? 
               <NoPermissionIOS setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.CONFIRMUSERNAME] ? 
+              <ConfirmUsernamePage setPage={this.setPage.bind(this)}/>
             : <View />
           }
           

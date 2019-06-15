@@ -52,7 +52,8 @@ export class AuthProvider {
                 name: data.Name,
                 country: data.Country,
                 phone: data.Phone,
-                email: data.Email
+                email: data.Email,
+                password: data.Password
             })
         })
     }

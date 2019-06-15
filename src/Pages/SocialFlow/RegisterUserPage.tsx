@@ -1,8 +1,10 @@
 import * as React from 'react'
-import { View, TextInput, Button } from 'react-native'
+import { View, Text, TextInput, Button } from 'react-native'
 import { GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { AuthProvider, RegisterUserModal, LoginUserModal } from '../../Utilities/AuthProvider'
 import { Page } from '../../Modals/ApplicationEnums';
+import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
+import { SettingsModal } from '../../Modals/SettingsModal';
 
 interface IProps {
     setPage: any
@@ -15,6 +17,7 @@ interface IState {
     phone: string
     password: string
     isSigninInProgress: boolean
+    errorText: string
 }
 
 export class RegisterUserPage extends React.Component<IProps, IState> {
@@ -36,11 +39,11 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
         })
     }
     
-    login = () => {
+    register = () => {
         AuthProvider.LoginUser({
             Email: this.state.email,
             Password: this.state.password
-        } as LoginUserModal)
+        } as RegisterUserModal)
         .then((res) => {
             if(res) {
                 this.props.setPage(Page[Page.HOME]);
@@ -48,20 +51,31 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
         })
     }
 
+    login = () => {
+        this.props.setPage(Page[Page.LOGIN])
+    }
+    
     signUpUsingGoogle = async () => {
         try {
             this.setState({
                 isSigninInProgress: true
             })
-            AuthProvider.RegisterUserWithGoogle({
+            var res = await AuthProvider.RegisterUserWithGoogle({
                 Name: this.state.name,
                 Email: this.state.email,
                 Country: this.state.country,
                 Phone: this.state.phone
             } as RegisterUserModal)
+
+            var settings: SettingsModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.SETTING])
+            settings.profileId = res.id;
+            BlobSaveAndLoad.Instance.setBlobValue(Page[Page.SETTING], settings)
+            
+            this.props.setPage(Page[Page.CONFIRMUSERNAME])
         } catch (error) {
             this.setState({
-                isSigninInProgress: false
+                isSigninInProgress: false,
+                errorText: "Sign up failed"
             })
 
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -81,6 +95,7 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
             <View>
                 <TextInput onChangeText={this.onEmailChange} />
                 <TextInput onChangeText={this.onPasswordChange} />
+                <Button title={"Register"} onPress={this.register} />                
                 <Button title={"Login"} onPress={this.login} />
                 <GoogleSigninButton
                     style={{ width: 192, height: 48 }}
@@ -89,6 +104,7 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
                     onPress={this.signUpUsingGoogle}
                     disabled={this.state.isSigninInProgress || this.myData.loggedIn}
                 />
+                <Text>{this.state.errorText}</Text>
             </View>
         )
     }

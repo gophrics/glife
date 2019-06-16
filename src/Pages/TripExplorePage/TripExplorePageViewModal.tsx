@@ -6,17 +6,13 @@ import {
 } from 'react-native';
 import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
 import { StepComponent } from '../../UIComponents/StepComponent';
-import { TripExplorePageModal } from './TripExplorePageModal';
 import { StepModal } from '../../Modals/StepModal';
 import Region from '../../Modals/Region';
-import { NewStepPage } from '../NewStepPage';
-import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
+import { NewStepPage } from './NewStepPage';
 import { Page } from '../../Modals/ApplicationEnums';
 import { CustomButton } from '../../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
 import { PhotoPopUpModal } from '../PhotoPopUpModal';
-import { TripUtils } from '../../Utilities/TripUtils';
-import TripExplorePage from '../TripExplorePage';
 import { TripExplorePageController } from './TripExplorePageController';
 
 
@@ -27,9 +23,9 @@ interface IState {
     photoModalVisible: boolean,
     newStep: boolean,
     newStepId: number,
-    myData: TripModal,
     lastStepClicked: StepModal
     editStepDescription: boolean
+    tripAsSteps: StepModal[]
 }
 
 interface IProps {
@@ -53,20 +49,17 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
 
         this.Controller = new TripExplorePageController()
 
-        var trip = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.STEPEXPLORE]);
         this.state = {
-            myData: trip,
             markers: [],
             imageUriData: [],
             polylineArr: [],
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            lastStepClicked: trip.tripAsSteps[0],
-            editStepDescription: false
+            lastStepClicked: this.Controller.Modal.tripAsSteps[0],
+            editStepDescription: false,
+            tripAsSteps: this.Controller.Modal.tripAsSteps
         }
-
-
         this.initialize();
     }
 
@@ -76,11 +69,11 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         var markers: Region[] = []
         var imageUriData: string[] = []
         var key: number = 0;
-        var tripStartTimestamp = this.state.myData.tripAsSteps[0].startTimestamp;
+        var tripStartTimestamp = this.state.tripAsSteps[0].startTimestamp;
         var polylineArr = []
         snapOffsets = [];
 
-        for (var step of this.state.myData.tripAsSteps) {
+        for (var step of this.state.tripAsSteps) {
             this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
             this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
 
@@ -98,7 +91,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            lastStepClicked: this.state.myData.tripAsSteps[0]
+            lastStepClicked: this.state.tripAsSteps[0]
         })
     }
 
@@ -145,8 +138,8 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     }
 
     onScroll = (event: any) => {
-        if (this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))] == undefined) return;
-        this.zoomToStep(this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))])
+        if (this.state.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))] == undefined) return;
+        this.zoomToStep(this.state.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))])
     }
 
     onBackPress = () => {
@@ -165,7 +158,6 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         this.Controller.newStepDone(_step)
         
         this.setState({
-            myData: this.Controller.Modal,
             newStep: false
         })
 
@@ -178,17 +170,10 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     }
 
     onPhotoModalDismiss = () => {
-        var trip = this.state.myData
-        for (var _step of trip.tripAsSteps) {
-            if (_step.id == this.state.lastStepClicked.id) {
-                _step = this.state.lastStepClicked
-            }
-            BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
-            this.setState({
-                myData: trip,
-                editStepDescription: false
-            })
-        }
+        this.setState({
+            editStepDescription: false
+        })
+        this.Controller.onPhotoModalDismiss(this.state.lastStepClicked)  
     }
 
     onPhotoModalClose = () => {
@@ -198,12 +183,10 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     }
 
     onMapLayout = () => {
-        this.zoomToStep(this.state.myData.tripAsSteps[0])
+        this.zoomToStep(this.state.tripAsSteps[0])
     }
 
     render() {
-        if (this.state.myData == undefined ||
-            this.state.lastStepClicked == undefined) return (<View />)
         return (
             <View>
                 <View>
@@ -213,7 +196,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                         onLayout={this.onMapLayout}
                     >
                         { 
-                            this.state.myData.tripAsSteps.map((step, index) => (
+                            this.state.tripAsSteps.map((step, index) => (
                                 step.masterMarker != undefined ?
                                     <Marker
                                         key={index}

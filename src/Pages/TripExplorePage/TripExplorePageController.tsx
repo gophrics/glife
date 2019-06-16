@@ -44,4 +44,13 @@ export class TripExplorePageController {
 
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
     }
+
+    onPhotoModalDismiss = (step: StepModal) => {
+        for(var _step of this.Modal.tripAsSteps) {
+            if(_step.id == step.id) {
+                _step = step; break;
+            }
+        }
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.Modal)
+    }
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 
 interface IState {
@@ -39,7 +39,7 @@ export class ProfileComponent extends React.Component<IProps, IState> {
             <View style={styles.main}>
                 <TouchableOpacity onPress={this.onProfilePicChange}>
                     <Animated.Image style={[
-                            {width: 200, height: 200, borderRadius: 100, borderWidth: 1},
+                            {width: 200, height: 200, borderRadius: 100, borderWidth: 2},
                             {
                                 opacity: this.props.scrollY.interpolate({
                                     inputRange: [0, this.props.HEADER_SCROLL_DISTANCE / 2, this.props.HEADER_SCROLL_DISTANCE],

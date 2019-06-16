@@ -34,7 +34,7 @@ export class BlobSaveAndLoad {
     }
 
     getBlobValue = (page: string) => {
-        return this.pageDataPipe[page]
+        return this.pageDataPipe[page] == undefined ? {} : this.pageDataPipe[page]
     }
 
     setBlobValue = (page: string, data: any) => {

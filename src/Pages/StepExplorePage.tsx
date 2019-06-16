@@ -173,7 +173,11 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         trip.title = this.state.myData.title;
 
         var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
-        LoadingPage.UpdateProfileDataWithTrip(profileData, trip)
+        profileData = LoadingPage.UpdateProfileDataWithTrip(profileData, trip)
+        
+        profileData.trips.sort((a: TripModal, b: TripModal) => {
+            return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+        })
 
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
 

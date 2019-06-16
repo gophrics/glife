@@ -206,11 +206,14 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     finished: asynci
                 })
 
-                LoadingPage.UpdateProfileDataWithTrip(this.dataToSendToNextPage, _trip)
+                this.dataToSendToNextPage.countriesVisited.push.apply(this.dataToSendToNextPage.countriesVisited, _trip.countryCode)
 
                 asynci++;
 
                 if(asynci == trips.length) {
+                    let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
+                    this.dataToSendToNextPage.countriesVisited = x(this.dataToSendToNextPage.countriesVisited); // Removing duplicates
+                    this.dataToSendToNextPage.percentageWorldTravelled = Math.floor(this.dataToSendToNextPage.countriesVisited.length*100/186)
                     this.dataToSendToNextPage.trips.sort((a, b) => {
                         return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
                     })
@@ -222,16 +225,22 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
     }
 
-    static UpdateProfileDataWithTrip (profileData: MapPhotoPageModal, trip: TripModal) : void {
+    static UpdateProfileDataWithTrip (profileData: MapPhotoPageModal, trip: TripModal) : MapPhotoPageModal {
 
         profileData.countriesVisited.push.apply(profileData.countriesVisited, trip.countryCode)
         let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
         profileData.countriesVisited = x(profileData.countriesVisited); // Removing duplicates
         profileData.percentageWorldTravelled = Math.floor(profileData.countriesVisited.length*100/186)
 
+        var trips: TripModal[] = []
         for(var _trip of profileData.trips) {
-            if(_trip.tripId == trip.tripId){ _trip = trip; break; }
+            if(_trip.tripId == trip.tripId){ trips.push(trip); continue; }
+            trips.push(_trip)
         }
+
+        profileData.trips = trips
+
+        return profileData
     }
 
     static async PopulateTripModalData (steps: StepModal[], tripId: number) {

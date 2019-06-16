@@ -127,7 +127,6 @@ export class ClusterProcessor {
         
         var prevData: ClusterModal = clusterData[0];
         for(var data of clusterData) {
-            console.log(data)
             // If distance from home is more than 40 km
             if(ClusterProcessor.EarthDistance(homes[Math.floor(data.timestamp/8.64e7)], data) > 40
             // Noise filtering, if two pictures are taken 7 days apart, consider it a new trip

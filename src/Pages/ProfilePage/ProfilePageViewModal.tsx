@@ -4,13 +4,14 @@ import { ProfileComponent } from '../../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../../UIComponents/StatsAsCardComponent';
 import { TripComponent } from '../../UIComponents/TripComponent';
-import { TripModal } from '../../Modals/TripModal';
+import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { AuthProvider } from '../../Utilities/AuthProvider';
 import { GoogleSignin } from 'react-native-google-signin';
+import { ProfilePageModal } from './ProfilePageModal';
 
 interface IState {
     bottom: number,
@@ -29,10 +30,10 @@ interface IProps {
 const HEADER_MAX_HEIGHT = Dimensions.get('window').height * .66
 const HEADER_MIN_HEIGHT = 0;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
-export default class ProfilePage extends React.Component<IProps, IState> {
+export default class ProfilePageViewModal extends React.Component<IProps, IState> {
     tripRenderArray: any = []
 
-    myData: MapPhotoPageModal;
+    myData: ProfilePageModal;
     constructor(props: IProps) {
         super(props)
 
@@ -73,8 +74,8 @@ export default class ProfilePage extends React.Component<IProps, IState> {
     }
   }
 
-    onTripPress = (tripModal: TripModal) => {
-        this.props.setPage(Page[Page.STEPEXPLORE], tripModal)
+    onTripPress = (tripModal: TripExplorePageModal) => {
+        this.props.setPage(Page[Page.TRIPEXPLORE], tripModal)
     }
 
     onProfilePicChange = (imageURL: string) => {

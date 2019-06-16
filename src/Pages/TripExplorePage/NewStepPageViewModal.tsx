@@ -25,7 +25,7 @@ interface IState {
 
 const deviceWidth = Dimensions.get('window').width
 
-export class NewStepPage extends React.Component<IProps, IState> {
+export class NewStepPageViewModal extends React.Component<IProps, IState> {
     data: any
     calenderCursor: number = 0;
     from: Date = new Date(0);

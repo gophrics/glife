@@ -4,12 +4,11 @@ import {
   SafeAreaView
 } from 'react-native'
 import {Page} from './Modals/ApplicationEnums';
-import TripExplorePage from './Pages/TripExplorePage';
-import LoadingPage from './Pages/LoadingPage/LoadingPageViewModal';
+import LoadingPageViewModal from './Pages/LoadingPage/LoadingPageViewModal';
 import ProfilePage from './Pages/ProfilePage/ProfilePageViewModal';
 import { TopNavigator } from './UIComponents/TopNavigator';
 import { OnBoardingPage } from './Pages/TopNavigatorFlow/OnBoardingPage';
-import StepExplorePage from './Pages/TripExplorePage/TripExplorePageViewModal';
+import TripExplorePageViewModal from './Pages/TripExplorePage/TripExplorePageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/BottomNavigatorFlow/NewTripPage';
 import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';
@@ -101,17 +100,15 @@ export default class App extends React.Component<IProps, IState> {
         : <View />}
           {
             this.state.page == Page[Page.LOADING] ?
-              <LoadingPage setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
+              <LoadingPageViewModal setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
             : this.state.page == Page[Page.PROFILE] ? 
               <ProfilePage setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
-            : this.state.page == Page[Page.TRIPEXPLORE] ? 
-              <TripExplorePage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.PREONBOARDING] ? 
               <PreOnBoardingPage navigatorVisible={this.state.navigatorVisible} setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.ONBOARDING] ? 
               <OnBoardingPage navigatorVisible={this.state.navigatorVisible} onDone={this.setPage.bind(this)}/>
-            : this.state.page == Page[Page.STEPEXPLORE] ?
-              <StepExplorePage setPage={this.setPage.bind(this)} setNavigator={this.setNavigator}/>
+            : this.state.page == Page[Page.TRIPEXPLORE] ?
+              <TripExplorePageViewModal setPage={this.setPage.bind(this)} setNavigator={this.setNavigator}/>
             : this.state.page == Page[Page.SPLASHSCREEN] ? 
               <SplashScreen setNavigator={this.setNavigator} />
             : this.state.page == Page[Page.NEWTRIP] ? 

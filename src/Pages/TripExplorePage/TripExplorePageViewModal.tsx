@@ -8,7 +8,7 @@ import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
 import { StepComponent } from '../../UIComponents/StepComponent';
 import { StepModal } from '../../Modals/StepModal';
 import Region from '../../Modals/Region';
-import { NewStepPage } from './NewStepPage';
+import { NewStepPageViewModal } from './NewStepPageViewModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import { CustomButton } from '../../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
@@ -155,12 +155,13 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             return;
         }
 
-        this.Controller.newStepDone(_step)
+        await this.Controller.newStepDone(_step)
         
         this.setState({
             newStep: false
         })
 
+        this.Controller = new TripExplorePageController()
         this.initialize()
     }
 
@@ -244,7 +245,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                 }
                 {
                     this.state.newStep ?
-                        <NewStepPage setPage={this.props.setPage} visible={this.state.newStep} onClose={this.newStepOnDone} />
+                        <NewStepPageViewModal setPage={this.props.setPage} visible={this.state.newStep} onClose={this.newStepOnDone} />
                         : <View />
                 }
             </View>

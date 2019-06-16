@@ -177,6 +177,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(photoRollInfos, endTimestamp)
         var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
 
+        console.log(trips.length)
         if(trips.length == 0) {
             this.props.setPage(Page[Page.PROFILE])
             return;
@@ -188,6 +189,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
         var asynci = 0;
         for(var i = 0; i < trips.length; i++){
+
             try {
                 var trip = trips[i]
 
@@ -196,7 +198,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 });
                 
                 var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
-                var _trip: TripModal = await LoadingPage.PopulateTripModalData(_steps, asynci);
+                var _trip: TripModal = await LoadingPage.PopulateTripModalData(_steps, TravelUtils.GenerateTripId());
                 this.dataToSendToNextPage.trips.push(_trip);
 
 
@@ -207,11 +209,11 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 LoadingPage.UpdateProfileDataWithTrip(this.dataToSendToNextPage, _trip)
 
                 asynci++;
+
                 if(asynci == trips.length) {
                     this.dataToSendToNextPage.trips.sort((a, b) => {
                         return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
                     })
-                    for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = TravelUtils.GenerateTripId();
                     this.props.setPage(Page[Page.PROFILE], this.dataToSendToNextPage);
                 }
             } catch(err) {
@@ -220,22 +222,16 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
     }
 
-    static UpdateProfileDataWithTrip = (profileData: MapPhotoPageModal, trip: TripModal) => {
+    static UpdateProfileDataWithTrip (profileData: MapPhotoPageModal, trip: TripModal) : void {
 
         profileData.countriesVisited.push.apply(profileData.countriesVisited, trip.countryCode)
         let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
         profileData.countriesVisited = x(profileData.countriesVisited); // Removing duplicates
         profileData.percentageWorldTravelled = Math.floor(profileData.countriesVisited.length*100/186)
 
-        var trips: TripModal[] = []
         for(var _trip of profileData.trips) {
-            if(_trip.tripId == trip.tripId){ trips.push(trip); continue; }
-            trips.push(_trip)
+            if(_trip.tripId == trip.tripId){ _trip = trip; break; }
         }
-
-        profileData.trips = trips;
-
-        return profileData
     }
 
     static async PopulateTripModalData (steps: StepModal[], tripId: number) {

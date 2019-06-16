@@ -171,9 +171,9 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
         trip = await LoadingPage.PopulateTripModalData(trip.tripAsSteps.slice(1, trip.tripAsSteps.length-1), trip.tripId)
         trip.title = this.state.myData.title;
-        
+
         var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
-        profileData = LoadingPage.UpdateProfileDataWithTrip(profileData, trip)
+        LoadingPage.UpdateProfileDataWithTrip(profileData, trip)
 
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
 

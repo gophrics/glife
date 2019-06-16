@@ -97,10 +97,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         })
     }
 
-    componentDidMount() {
-        this.zoomToStep(this.state.myData.tripAsSteps[0])
-    }
-
     onNewStepPress = (step: StepModal) => {
         this.setState({
             newStep: true,
@@ -214,6 +210,10 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         })
     }
 
+    onMapLayout = () => {
+        this.zoomToStep(this.state.myData.tripAsSteps[0])
+    }
+
     render() {
         if (this.state.myData == undefined ||
             this.state.lastStepClicked == undefined) return (<View />)
@@ -223,8 +223,9 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                     <MapView style={{ width: '100%', height: '80%' }}
                         ref={ref => this.mapView = ref}
                         mapType='hybrid'
+                        onLayout={this.onMapLayout}
                     >
-                        {
+                        { 
                             this.state.myData.tripAsSteps.map((step, index) => (
                                 step.masterMarker != undefined ?
                                     <Marker
@@ -246,12 +247,13 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
                             ))
                         }
-                        <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
+                        <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} /> 
                         <Callout>
                             <TouchableOpacity onPress={this.onBackPress.bind(this)} style={{ padding: 10 }} >
                                 <Icon size={40} style={{ padding: 10 }} name='x' />
                             </TouchableOpacity>
                         </Callout>
+                        
                     </MapView>
                     {
                         <ScrollView decelerationRate={0.6} snapToOffsets={snapOffsets} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: '20%', width: '100%', overflow: 'hidden' }}>

@@ -39,7 +39,7 @@ export class StepModal {
         this.timelineData = [];
         this.markers = [];
         this.masterImageUri = "";
-        this.masterMarker = {} as Region
+        this.masterMarker = { latitude: 0, longitude: 0 } as Region
         this.distanceTravelled = 0;
         this.description = "";
         this.temperature = "";

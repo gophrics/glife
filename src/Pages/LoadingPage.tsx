@@ -148,9 +148,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                         <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={this.state.finished/this.state.total}/>
                 }
                 </View>
-                <View style={styles.spinnerContainer}>
-                    <Spinner/>
-                </View>
             </View>
         );
     }

@@ -5,11 +5,11 @@ import {
 } from 'react-native'
 import {Page} from './Modals/ApplicationEnums';
 import TripExplorePage from './Pages/TripExplorePage';
-import LoadingPage from './Pages/LoadingPage';
-import ProfilePage from './Pages/BottomNavigatorFlow/ProfilePage';
+import LoadingPage from './Pages/LoadingPage/LoadingPageViewModal';
+import ProfilePage from './Pages/ProfilePage/ProfilePageViewModal';
 import { TopNavigator } from './UIComponents/TopNavigator';
 import { OnBoardingPage } from './Pages/TopNavigatorFlow/OnBoardingPage';
-import StepExplorePage from './Pages/StepExplorePage';
+import StepExplorePage from './Pages/TripPage/TripPageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/BottomNavigatorFlow/NewTripPage';
 import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';

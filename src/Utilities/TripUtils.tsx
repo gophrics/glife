@@ -11,13 +11,17 @@ import { BlobSaveAndLoad } from './BlobSaveAndLoad';
 
 const ServerURLWithoutEndingSlash = 'http://beerwithai.com'
 
+
+
 export class TripUtils {
+    static TOTAL_TO_LOAD = 0;
+    static FINISHED_LOADING = 0;
 
     static GenerateTripId = () : number => {
         return Math.random()*10000000
     }
 
-    static GenerateHomeData = async(homeInfo: any) : Promise<number> => {
+    static GenerateHomeData = async(homeInfo: any) : Promise<void> => {
 
         var homes: Array<{latitude: number, longitude: number, timestamp: number}> = [];
         var homesDataForClustering: Array<unknown> = [];
@@ -30,7 +34,6 @@ export class TripUtils {
                 longitude: Number.parseFloat(res.lon),
                 timestamp: (element.timestamp as number)
             })
-            i++;
         }
 
         var endTimestamp = Math.ceil((new Date()).getTime()/8.64e7);
@@ -48,6 +51,14 @@ export class TripUtils {
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], { data: homesDataForClustering, endTimestamp: endTimestamp} );
     }
 
+    static GetTotalToLoad = () => {
+        return TripUtils.TOTAL_TO_LOAD
+    }
+
+    static GetFinishedLoading = () => {
+        return TripUtils.FINISHED_LOADING
+    }
+
     static GenerateTripFromPhotos = async(imageData: ImageDataModal[]) : Promise<TripModal[]> => {
         var homesDataForClustering = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP]).data
         var endTimestamp = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP]).endTimestamp
@@ -58,6 +69,8 @@ export class TripUtils {
         var tripResult: TripModal[] = [];
 
         if(trips.length == 0) throw "Not enough photos"
+
+        TripUtils.TOTAL_TO_LOAD = trips.length;
 
         var asynci = 0;
         for(var i = 0; i < trips.length; i++){
@@ -75,6 +88,8 @@ export class TripUtils {
 
                 asynci++;
 
+                TripUtils.FINISHED_LOADING = asynci
+                
                 if(asynci == trips.length) {
                     tripResult.sort((a, b) => {
                         return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();

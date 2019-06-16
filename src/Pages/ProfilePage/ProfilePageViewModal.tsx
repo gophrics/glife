@@ -9,7 +9,6 @@ import { Page } from '../../Modals/ApplicationEnums';
 import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { MapPhotoPageModal } from '../../Modals/MapPhotoPageModal';
 import { AuthProvider } from '../../Utilities/AuthProvider';
 import { GoogleSignin } from 'react-native-google-signin';
 

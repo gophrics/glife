@@ -5,18 +5,17 @@ import {
     ScrollView, View, Image, Text, TouchableOpacity
 } from 'react-native';
 import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
-import { StepComponent } from '../UIComponents/StepComponent';
-import { TripModal } from '../Modals/TripModal';
-import { StepModal } from '../Modals/StepModal';
-import Region from '../Modals/Region';
-import { NewStepPage } from './NewStepPage';
-import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
-import { Page } from '../Modals/ApplicationEnums';
-import { CustomButton } from '../UIComponents/CustomButton';
+import { StepComponent } from '../../UIComponents/StepComponent';
+import { TripModal } from '../../Modals/TripModal';
+import { StepModal } from '../../Modals/StepModal';
+import Region from '../../Modals/Region';
+import { NewStepPage } from '../NewStepPage';
+import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
+import { Page } from '../../Modals/ApplicationEnums';
+import { CustomButton } from '../../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
-import { PhotoPopUpModal } from './PhotoPopUpModal';
-import LoadingPage from './LoadingPage';
-import { TripUtils } from '../Utilities/TripUtils';
+import { PhotoPopUpModal } from '../PhotoPopUpModal';
+import { TripUtils } from '../../Utilities/TripUtils';
 
 
 interface IState {
@@ -40,7 +39,7 @@ const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
 let snapOffsets: Array<number> = []
 
-export default class StepExplorePage extends React.Component<IProps, IState> {
+export default class TripPageViewModal extends React.Component<IProps, IState> {
 
     travelCardArray: any = []
     mapView: MapView | null = null;

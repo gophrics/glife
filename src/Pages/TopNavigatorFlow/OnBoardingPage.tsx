@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Image, View, TextInput, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
-import { Page } from '../../Modals/ApplicationEnums';
+import { Page, HomeDataModal } from '../../Modals/ApplicationEnums';
 import { TripUtils } from '../../Utilities/TripUtils';
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -18,7 +18,7 @@ interface IState {
     valid: boolean
     validationInProgress: boolean
     culprits: Array<number>,
-    homes: { name: string, timestamp: number }[]
+    homes: HomeDataModal[]
 }
 
 const deviceHeight = Dimensions.get('screen').height;
@@ -196,8 +196,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     setLocation = (index: number, obj: any) => {
-        console.log(index)
-        console.log(obj)
+
         var homes = this.state.homes;
 
         homes[index].name = obj.name.trim() + ", " + obj.country.trim()

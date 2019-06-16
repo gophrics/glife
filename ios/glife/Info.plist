@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>15</string>
+	<string>20</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -48,6 +48,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>The app needs your location information to track your travel. We don't store this data, your data is your data, my data is my data.</string>
 	<key>NSLocationAlwaysUsageDescription </key>
 	<string>The app needs your location information to track your travel. We don't store this data, your data is your data, my data is my data.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -80,6 +82,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

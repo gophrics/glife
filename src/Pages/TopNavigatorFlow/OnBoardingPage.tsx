@@ -216,7 +216,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                     <Text style={{ marginTop: 20, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Tell us your home cities, for the magic to happen</Text>
                 </View>
                 <View style={{ height: '100%' }}>
-                    <ScrollView style={{ marginTop: 5, padding: 20}} contentInset={{ top: 0, bottom: 500 + this.state.homes.length*50}} >
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}  style={{ marginTop: 5, padding: 20, flexGrow: 1}} contentInset={{ bottom: 500 + this.state.homes.length*50}} >
                         {
                             this.state.homes.map((el, i) => (
                                 <View key={i + 'a'} style={{ flexDirection: 'row'}}>

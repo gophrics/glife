@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 interface IState {
@@ -18,9 +18,9 @@ export class WorldMapColouredComponent extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View style={{width: "100%", height: 400}}>
+            <View style={{width: '100%', height: 400}}>
                 <Svg
-                    width="100%"
+                    width={'100%'}
                     height={400}
                     viewBox="0 -100 1000 1000">
 

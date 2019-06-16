@@ -13,6 +13,7 @@ interface IState {
 }
 
 const deviceWidth = Dimensions.get('window').width
+const deviceHeight = Dimensions.get('window').height
 export class StepComponent extends React.Component<IProps, IState> {
 
     retryCount = 20;
@@ -35,7 +36,7 @@ export class StepComponent extends React.Component<IProps, IState> {
 
         return (
             <TouchableOpacity onPress={this.onPress.bind(this)} >
-                <ImageBackground resizeMode='cover' style={{width: deviceWidth*3/4, padding: 10, margin: 10, backgroundColor:'grey', height: 150}} source={{uri: this.props.modal.masterImageUri}}>
+                <ImageBackground resizeMode='cover' style={{width: deviceWidth*3/4, padding: 10, margin: 10, backgroundColor:'grey', height: deviceHeight*.2}} source={{uri: this.props.modal.masterImageUri}}>
                     
                         <View style={{flexDirection: 'column', alignContent:'space-between'}}>
                             

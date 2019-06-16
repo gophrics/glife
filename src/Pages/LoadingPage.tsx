@@ -10,7 +10,6 @@ import { TripModal } from '../Modals/TripModal';
 import { TravelUtils } from '../Utilities/TravelUtils';
 import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
-import { SettingsModal } from '../Modals/SettingsModal';
 import ImageDataModal from '../Modals/ImageDataModal';
 
 interface Styles {
@@ -44,13 +43,17 @@ interface IState {
     total: number
 }
 
+
+
 export default class LoadingPage extends React.Component<IProps, IState> {
 
     dataToSendToNextPage: MapPhotoPageModal = new MapPhotoPageModal([]);
-    homesDataForClustering: {[key:number]: ClusterModal} = {}
     homes: {latitude: number, longitude: number, timestamp: number}[]  = []
     myData: any
     retryCount = 20;
+
+    homesDataForClustering: {[key:number]: ClusterModal} = {}
+
     constructor(props:any) {
         super(props);
 
@@ -145,8 +148,8 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                         <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={this.state.finished/this.state.total}/>
                 }
                 </View>
-                <View style={styles.spinnerContainer}>
-                    <Spinner/>
+                <View style={styles.spinnerContainer}>	
+                    <Spinner/>	
                 </View>
             </View>
         );
@@ -174,6 +177,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(photoRollInfos, endTimestamp)
         var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
 
+        console.log(trips.length)
         if(trips.length == 0) {
             this.props.setPage(Page[Page.PROFILE])
             return;
@@ -185,6 +189,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
 
         var asynci = 0;
         for(var i = 0; i < trips.length; i++){
+
             try {
                 var trip = trips[i]
 
@@ -193,7 +198,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 });
                 
                 var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
-                var _trip: TripModal = await this.populateTripModalData(_steps, asynci);
+                var _trip: TripModal = await LoadingPage.PopulateTripModalData(_steps, TravelUtils.GenerateTripId());
                 this.dataToSendToNextPage.trips.push(_trip);
 
 
@@ -204,6 +209,7 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                 this.dataToSendToNextPage.countriesVisited.push.apply(this.dataToSendToNextPage.countriesVisited, _trip.countryCode)
 
                 asynci++;
+
                 if(asynci == trips.length) {
                     let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
                     this.dataToSendToNextPage.countriesVisited = x(this.dataToSendToNextPage.countriesVisited); // Removing duplicates
@@ -211,7 +217,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                     this.dataToSendToNextPage.trips.sort((a, b) => {
                         return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
                     })
-                    for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
                     this.props.setPage(Page[Page.PROFILE], this.dataToSendToNextPage);
                 }
             } catch(err) {
@@ -220,11 +225,31 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         }
     }
 
-    async populateTripModalData (steps: StepModal[], tripId: number) {
-        var tripResult : TripModal = new TripModal();
+    static UpdateProfileDataWithTrip (profileData: MapPhotoPageModal, trip: TripModal) : MapPhotoPageModal {
 
-        var homeStep = this.homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1]
+        profileData.countriesVisited.push.apply(profileData.countriesVisited, trip.countryCode)
+        let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
+        profileData.countriesVisited = x(profileData.countriesVisited); // Removing duplicates
+        profileData.percentageWorldTravelled = Math.floor(profileData.countriesVisited.length*100/186)
+
+        var trips: TripModal[] = []
+        for(var _trip of profileData.trips) {
+            if(_trip.tripId == trip.tripId){ trips.push(trip); continue; }
+            trips.push(_trip)
+        }
+
+        profileData.trips = trips
+
+        return profileData
+    }
+
+    static async PopulateTripModalData (steps: StepModal[], tripId: number) {
+        var tripResult : TripModal = new TripModal();
+        var homesDataForClustering = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP])
+
+        var homeStep = homesDataForClustering[Math.floor(steps[0].startTimestamp/8.64e7)-1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
+
         var _stepModal: StepModal = ClusterProcessor.convertClusterToStep([homeStep])
         _stepModal.location = "Home";
         _stepModal.id = 0;
@@ -235,23 +260,22 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         var places: string[] = []
 
         for(var step of steps) {
-            if(i > 0)
-            step.distanceTravelled = Math.floor(tripResult.tripAsSteps[i-1].distanceTravelled + 
+            step.distanceTravelled = Math.floor(tripResult.tripAsSteps[i].distanceTravelled + 
                 ClusterProcessor.EarthDistance({latitude: step.meanLatitude, longitude: step.meanLongitude} as ClusterModal,
-                {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal))
+                {latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude} as ClusterModal))
             tripResult.tripAsSteps.push(step);
             i++;
         }
 
-        var homeStep2 = this.homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1]
+        var homeStep2 = homesDataForClustering[Math.floor(steps[steps.length-1].endTimestamp/8.64e7)+1]
         homeStep2.timestamp = Math.floor(steps[steps.length-1].endTimestamp + 8.64e7)
 
         var _stepModal2: StepModal = ClusterProcessor.convertClusterToStep([homeStep2])
         _stepModal2.location = "Home";
-        _stepModal2.distanceTravelled = Math.floor(tripResult.tripAsSteps[i-1].distanceTravelled + 
+        _stepModal2.distanceTravelled = Math.floor(tripResult.tripAsSteps[i].distanceTravelled + 
             ClusterProcessor.EarthDistance({latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude} as ClusterModal,
-            {latitude: tripResult.tripAsSteps[i-1].meanLatitude, longitude: tripResult.tripAsSteps[i-1].meanLongitude} as ClusterModal))
-        _stepModal2.id = tripResult.tripAsSteps[tripResult.tripAsSteps.length - 1].id + 100
+            {latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude} as ClusterModal))
+        _stepModal2.id = 10000
 
         tripResult.tripAsSteps.push(_stepModal2)
 

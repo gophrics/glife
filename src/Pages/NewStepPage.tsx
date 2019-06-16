@@ -72,32 +72,6 @@ export class NewStepPage extends React.Component<IProps, IState> {
           })
     }
 
-    onCalenderClick = (index: number) => {
-        this.calenderCursor = index;
-        this.setState({
-            showPicker: true
-        })
-    }
-
-    onPickerConfirm = (date: string) => {
-        if (this.calenderCursor == 0) {
-            // From date
-            this.from = new Date(date)
-        } else if (this.calenderCursor == 1) {
-            // To date
-            this.to = new Date(date);
-        }
-        this.setState({
-            showPicker: false
-        })
-    }
-
-    onPickerCancel = () => {
-        this.setState({
-            showPicker: false
-        })
-    }
-
     findExactName(obj: any, name: string) {
         for (var key of obj) {
             if ((key.name + ", " + key.country).trim() == name.trim()) {
@@ -200,22 +174,23 @@ export class NewStepPage extends React.Component<IProps, IState> {
                     borderRadius: 10,
                     margin: 50,
                     padding: 50,
-                    backgroundColor:"#00000000"
+                    backgroundColor:"#00000000",
+                    alignSelf: 'center'
                 }}>
                     <View style={{top: 0, right:0}}>
                         <Button onPress={this.onCloseWithoutSubmit}  title="X"/>
                     </View>
-                <Text>Go ahead, select your images. We'll generate the step for you</Text>
+                    <Text style={{textAlign:'center'}}>Go ahead, select your images. We'll generate the step for you</Text>
                 
                     
-                    <ScrollView style={{ flex: 1, flexDirection:'column', alignContent: 'center', margin: 10}}>
-                        <View style={{ flexDirection: 'column', marginLeft: 5, marginRight: 5, width: '80%' }}>
+                    <ScrollView style={{ flex: 1, flexDirection:'column', margin: 10}}>
+                        <View style={{ flexDirection: 'column', width: '80%' }}>
                             <TextInput
                                 editable={true}
                                 onEndEditing={this.validateData}
                                 placeholder={"Location"}
                                 onChangeText={(text) => this.onLocationTextChange(text)}
-                                style={[{ fontSize: 22, padding: 3, color: 'black' }, { borderWidth: ((this.state.locationWrong != 0) ? 1 : 0), borderColor: ((this.state.locationWrong != 0) ? 'red' : 'black') }]}
+                                style={[{ fontSize: 22, padding: 3, color: 'black', alignSelf:'center', textAlign:'center' }, { borderWidth: ((this.state.locationWrong != 0) ? 1 : 0), borderColor: ((this.state.locationWrong != 0) ? 'red' : 'black') }]}
                                 textContentType={'addressCity'}
                             >{this.state.location}</TextInput>
                             {this.state.locationWrong != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.locationWrong == 1 ? "Try nearest city, the digital overlords can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bengaluru, India"} </Text> : <View />}

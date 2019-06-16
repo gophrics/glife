@@ -7,6 +7,10 @@ const ServerURLWithoutEndingSlash = 'http://beerwithai.com'
 
 export class TravelUtils {
 
+    static GenerateTripId = () : number => {
+        return Math.random()*10000000
+    }
+
     static getWeatherFromCoordinates(latitude: number, longitude: number): Promise<any> {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/travel/searchweatherbylocation', {
             method: 'POST',

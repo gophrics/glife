@@ -15,6 +15,7 @@ import { Page } from '../Modals/ApplicationEnums';
 import { CustomButton } from '../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
 import { PhotoPopUpModal } from './PhotoPopUpModal';
+import LoadingPage from './LoadingPage';
 
 
 interface IState {
@@ -96,10 +97,6 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         })
     }
 
-    componentDidMount() {
-        this.zoomToStep(this.state.myData.tripAsSteps[0])
-    }
-
     onNewStepPress = (step: StepModal) => {
         this.setState({
             newStep: true,
@@ -150,7 +147,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         this.props.setPage(Page[Page.PROFILE], null)
     }
 
-    newStepOnDone = (_step: StepModal|null) => {
+    newStepOnDone = async(_step: StepModal|null) => {
 
         if(_step == null) {
             this.setState({
@@ -161,20 +158,31 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
         //Right now, we're calcualting step based on images, and not overriding them
         _step.id = this.state.newStepId;
-        
-        var trip = this.state.myData
+
+        var trip: TripModal = this.state.myData as TripModal
         trip.tripAsSteps.push(_step);
         trip.tripAsSteps.sort((a: StepModal, b: StepModal) => {
             return a.id - b.id;
         })
 
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], trip)
+        trip = await LoadingPage.PopulateTripModalData(trip.tripAsSteps.slice(1, trip.tripAsSteps.length-1), trip.tripId)
+        trip.title = this.state.myData.title;
 
-        this.initialize()
+        var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
+        profileData = LoadingPage.UpdateProfileDataWithTrip(profileData, trip)
+        
+        profileData.trips.sort((a: TripModal, b: TripModal) => {
+            return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+        })
+
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
+
         this.setState({
             myData: trip,
             newStep: false
         })
+        this.initialize()
+        
     }
 
     // Photo Modal methods
@@ -202,17 +210,22 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         })
     }
 
+    onMapLayout = () => {
+        this.zoomToStep(this.state.myData.tripAsSteps[0])
+    }
+
     render() {
         if (this.state.myData == undefined ||
             this.state.lastStepClicked == undefined) return (<View />)
         return (
             <View>
                 <View>
-                    <MapView style={{ width: '100%', height: '77%' }}
+                    <MapView style={{ width: '100%', height: '80%' }}
                         ref={ref => this.mapView = ref}
                         mapType='hybrid'
+                        onLayout={this.onMapLayout}
                     >
-                        {
+                        { 
                             this.state.myData.tripAsSteps.map((step, index) => (
                                 step.masterMarker != undefined ?
                                     <Marker
@@ -234,15 +247,16 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
                             ))
                         }
-                        <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
+                        <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} /> 
                         <Callout>
                             <TouchableOpacity onPress={this.onBackPress.bind(this)} style={{ padding: 10 }} >
                                 <Icon size={40} style={{ padding: 10 }} name='x' />
                             </TouchableOpacity>
                         </Callout>
+                        
                     </MapView>
                     {
-                        <ScrollView decelerationRate={0.6} snapToOffsets={snapOffsets} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: 150, width: '100%', overflow: 'hidden' }}>
+                        <ScrollView decelerationRate={0.6} snapToOffsets={snapOffsets} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: '20%', width: '100%', overflow: 'hidden' }}>
                             {this.travelCardArray}
                         </ScrollView>
                     }

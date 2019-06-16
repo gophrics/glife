@@ -20,7 +20,7 @@ export class StepModal {
 
     checkAndFillData = () => {
         if(this.location == "" && (this.meanLatitude != 0 && this.meanLongitude != 0)) {
-            TravelUtils.getLocationFromCoordinates(this.meanLatitude, this.meanLongitude)
+            return TravelUtils.getLocationFromCoordinates(this.meanLatitude, this.meanLongitude)
             .then((res) => {
                 if(res.address)
                     this.location = res.address.county || res.address.state_district;
@@ -39,7 +39,7 @@ export class StepModal {
         this.timelineData = [];
         this.markers = [];
         this.masterImageUri = "";
-        this.masterMarker = {} as Region
+        this.masterMarker = { latitude: 0, longitude: 0 } as Region
         this.distanceTravelled = 0;
         this.description = "";
         this.temperature = "";

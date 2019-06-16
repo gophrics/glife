@@ -5,7 +5,7 @@ import { Page } from '../../Modals/ApplicationEnums';
 import { StepModal } from '../../Modals/StepModal';
 import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
 import * as PhotoLibraryProcessor from '../../Utilities/PhotoLibraryProcessor';
-import { TravelUtils } from '../../Utilities/TravelUtils';
+import { TripUtils } from '../../Utilities/TripUtils';
 
 interface IProps {
     setPage: any
@@ -31,7 +31,7 @@ export class NewTripPage extends React.Component<IProps, IState> {
             valid: true
         }
 
-        this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP])
+        this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP]).data
         PhotoLibraryProcessor.checkPhotoPermission()
         .then((res) => {
                 if(!res) this.props.setPage(Page[Page.NOPERMISSIONIOS])
@@ -87,7 +87,7 @@ export class NewTripPage extends React.Component<IProps, IState> {
         homeStep.id = 100000;
         trip.tripAsSteps.push(homeStep)
 
-        trip.tripId = TravelUtils.GenerateTripId()
+        trip.tripId = TripUtils.GenerateTripId()
         var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
         profileData.trips.push(trip)
         this.props.setPage(Page[Page.PROFILE], profileData)

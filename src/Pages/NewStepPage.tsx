@@ -2,8 +2,8 @@ import * as React from 'react'
 import { Text, View, ScrollView, Image, Modal, TextInput, Button, SafeAreaView, Dimensions } from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
 import { StepModal } from '../Modals/StepModal';
-import { TravelUtils } from '../Utilities/TravelUtils';
-import ImageDataModal from '../Modals/ImageDataModal';
+import { TripUtils } from '../Utilities/TripUtils';
+import { ImageDataModal } from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { ClusterProcessor } from '../Utilities/ClusterProcessor';
@@ -108,7 +108,7 @@ export class NewStepPage extends React.Component<IProps, IState> {
             return false
         }
 
-        var res = await TravelUtils.getCoordinatesFromLocation(this.state.location)
+        var res = await TripUtils.getCoordinatesFromLocation(this.state.location)
         res = this.removeDuplicates(res)
         for (var obj of res) {
             this.tempLocations.push(obj);
@@ -127,7 +127,7 @@ export class NewStepPage extends React.Component<IProps, IState> {
         var result = await this.validateData()
         if(!result) return;
 
-        var res = await TravelUtils.getCoordinatesFromLocation(this.state.location)
+        var res = await TripUtils.getCoordinatesFromLocation(this.state.location)
         res = res[0]
 
         var step = new StepModal()

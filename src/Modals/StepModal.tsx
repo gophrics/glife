@@ -1,5 +1,5 @@
 import {Region} from 'react-native-maps';
-import { TravelUtils } from '../Utilities/TravelUtils';
+import { TripUtils } from '../Utilities/TripUtils';
 
 export class StepModal {
 
@@ -20,7 +20,7 @@ export class StepModal {
 
     checkAndFillData = () => {
         if(this.location == "" && (this.meanLatitude != 0 && this.meanLongitude != 0)) {
-            return TravelUtils.getLocationFromCoordinates(this.meanLatitude, this.meanLongitude)
+            return TripUtils.getLocationFromCoordinates(this.meanLatitude, this.meanLongitude)
             .then((res) => {
                 if(res.address)
                     this.location = res.address.county || res.address.state_district;

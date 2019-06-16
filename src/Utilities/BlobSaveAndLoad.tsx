@@ -2,16 +2,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 export class BlobSaveAndLoad {
 
-    pageDataPipe: {[key:string]: any} = {}
-
-    /*
-        {
-            'pageName: 'data..',
-            ...
-        }
-    */
-
-
+    pageDataPipe: {[ key: string] : any} = {}
+    
     public static Instance = new BlobSaveAndLoad();
     
     constructor() {

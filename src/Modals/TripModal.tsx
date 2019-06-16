@@ -1,6 +1,6 @@
 import { StepModal } from "./StepModal";
 import Region from "./Region";
-import { TravelUtils } from "../Utilities/TravelUtils";
+import { TripUtils } from "../Utilities/TripUtils";
 
 export class TripModal {
     tripId: number
@@ -19,7 +19,7 @@ export class TripModal {
 
     checkAndFillData = () => {
         if(this.tripAsSteps.length >=3 && this.title == "") {
-            TravelUtils.getLocationFromCoordinates(this.location.latitude, this.location.longitude)
+            TripUtils.getLocationFromCoordinates(this.location.latitude, this.location.longitude)
             .then((res) => {
                 if(res.address) {
                     this.title = res.address.country
@@ -52,8 +52,8 @@ export class TripModal {
     }
 
     populateDates = () => {
-        this.startDate = TravelUtils.getDateFromTimestamp(this.tripAsSteps[0].startTimestamp);
-        this.endDate = TravelUtils.getDateFromTimestamp(this.tripAsSteps[this.tripAsSteps.length - 1].endTimestamp);
+        this.startDate = TripUtils.getDateFromTimestamp(this.tripAsSteps[0].startTimestamp);
+        this.endDate = TripUtils.getDateFromTimestamp(this.tripAsSteps[this.tripAsSteps.length - 1].endTimestamp);
     }
 
     populateLocation = () => {            

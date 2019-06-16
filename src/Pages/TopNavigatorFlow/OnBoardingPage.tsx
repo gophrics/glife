@@ -3,7 +3,7 @@ import { Image, View, TextInput, ScrollView, Text, TouchableOpacity, Dimensions 
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
 import { Page } from '../../Modals/ApplicationEnums';
-import { TravelUtils } from '../../Utilities/TravelUtils';
+import { TripUtils } from '../../Utilities/TripUtils';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 interface IProps {
@@ -87,7 +87,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                 culprits[count] = 1;
                 count++; continue;
             }
-            var res = await TravelUtils.getCoordinatesFromLocation(home.name)
+            var res = await TripUtils.getCoordinatesFromLocation(home.name)
             res = this.removeDuplicates(res)
             var j = 1;
             this.tempLocations.push([])

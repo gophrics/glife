@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import { TripModal } from '../Modals/TripModal';
-import { TravelUtils } from '../Utilities/TravelUtils';
+import { TripUtils } from '../Utilities/TripUtils';
 
 interface IState {
     location: string
@@ -39,7 +39,7 @@ export class TripComponent extends React.Component<IProps, IState> {
     getLocations() {
         if(this.retryCount <= 0) return;
         this.retryCount--;
-        TravelUtils.getLocationFromCoordinates(this.props.tripModal.location.latitude,
+        TripUtils.getLocationFromCoordinates(this.props.tripModal.location.latitude,
             this.props.tripModal.location.longitude)
         .then((res) => {
             if(res.address) {

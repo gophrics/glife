@@ -16,6 +16,7 @@ import { CustomButton } from '../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
 import { PhotoPopUpModal } from './PhotoPopUpModal';
 import LoadingPage from './LoadingPage';
+import { TripUtils } from '../Utilities/TripUtils';
 
 
 interface IState {
@@ -165,11 +166,11 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             return a.id - b.id;
         })
 
-        trip = await LoadingPage.PopulateTripModalData(trip.tripAsSteps.slice(1, trip.tripAsSteps.length-1), trip.tripId)
+        trip = await TripUtils.PopulateTripModalData(trip.tripAsSteps.slice(1, trip.tripAsSteps.length-1), trip.tripId)
         trip.title = this.state.myData.title;
 
         var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
-        profileData = LoadingPage.UpdateProfileDataWithTrip(profileData, trip)
+        profileData = TripUtils.UpdateProfileDataWithTrip(profileData, trip)
         
         profileData.trips.sort((a: TripModal, b: TripModal) => {
             return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();

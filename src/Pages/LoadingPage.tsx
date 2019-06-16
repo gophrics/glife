@@ -170,19 +170,24 @@ export default class LoadingPage extends React.Component<IProps, IState> {
         if(photoRollInfos.length == 0) {
             this.props.setPage(Page[Page.PROFILE])
         }
+
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(photoRollInfos, endTimestamp)
-
-
         var trips = ClusterProcessor.RunMasterClustering(clusterData, this.homesDataForClustering);
+
+        if(trips.length == 0) {
+            this.props.setPage(Page[Page.PROFILE])
+            return;
+        }
+        
         this.setState({
-            total: trips.length == 0 ? 1 : trips.length
+            total: trips.length
         })
 
         var asynci = 0;
         for(var i = 0; i < trips.length; i++){
             try {
                 var trip = trips[i]
-                console.log(asynci)
+
                 trip.sort((a: ClusterModal, b: ClusterModal) => {
                     return a.timestamp-b.timestamp
                 });
@@ -207,8 +212,6 @@ export default class LoadingPage extends React.Component<IProps, IState> {
                         return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
                     })
                     for(var i = 0; i < this.dataToSendToNextPage.trips.length; i++) this.dataToSendToNextPage.trips[i].tripId = i;
-                    this.dataToSendToNextPage.coverPicURL = "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
-                    this.dataToSendToNextPage.profilePicURL = "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
                     this.props.setPage(Page[Page.PROFILE], this.dataToSendToNextPage);
                 }
             } catch(err) {

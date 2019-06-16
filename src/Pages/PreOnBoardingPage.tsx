@@ -13,7 +13,7 @@ interface IState {
     valid: boolean
 }
 
-const deviceHeight = Dimensions.get('screen').height
+const deviceHeight = Dimensions.get('window').height
 
 export class PreOnBoardingPage extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -60,10 +60,10 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
                         style={[{ alignSelf:"center", textAlign:'center', fontSize: 22, padding: 3, color: 'white'}, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
                         textContentType={'givenName'}
                     />
+                    <TouchableOpacity style={{alignSelf: 'center', marginTop: 100, backgroundColor: 'white', borderRadius: 10, padding: 10  }} onPress={this.onNextButtonClick}>
+                        <Text style={{ fontSize: 22 }}>Next</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={{ position: 'absolute', bottom: (deviceHeight*.339 + (this.props.navigatorVisible ? deviceHeight*.05 : 0)), right: 20, alignSelf: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
-                    <Text style={{ fontSize: 22 }}>Next</Text>
-                </TouchableOpacity>
             </View>
         )
     }

@@ -15,5 +15,7 @@ package-lock.json
 ios/glife.xcodeproj/project.xcworkspace/
 ios/glife.xcodeproj/xcuserdata/
 ios/glife.xcworkspace/
+ios/assets
+ios/main.jsbundle
 .DS_Store
 ios/glife.xcworkspace/xcuserdata/nitinissacjoy.xcuserdatad/UserInterfaceState.xcuserstate

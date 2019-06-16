@@ -79,7 +79,6 @@ export default class ProfilePage extends React.Component<IProps, IState> {
     }
 
     onProfilePicChange = (imageURL: string) => {
-        console.log(imageURL)
         this.myData.profilePicURL = imageURL;
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], this.myData)
         this.setState({
@@ -116,7 +115,7 @@ export default class ProfilePage extends React.Component<IProps, IState> {
             <View style={{ height: '100%' }} >
 
                 <ScrollView style={{ flex: 1 }}
-                    scrollEventThrottle={16}
+                    scrollEventThrottle={1}
                     onScroll={Animated.event(	
                         [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
                     )}
@@ -160,12 +159,17 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                     {
                         this.tripRenderArray.length == 0 ? 
                             <View style={{height: 200}}>
-                                <Text style={{textAlign:'center', fontSize:18, color:'orange', borderWidth: 1, margin: 5, borderColor: 'red', padding: 5}}>No trips were processed! Add more photos to your photo library and try again with correct details about your home.</Text>
-                                <TouchableOpacity  style={{width:100, marginTop: 10, backgroundColor:'white', padding: 5, borderRadius: 10, alignSelf:'center'}} onPress={(e) => { this.props.setPage(Page[Page.ONBOARDING])}} >
-                                    <Text style={{textAlign:'center'}}>Try again</Text>
-                                </TouchableOpacity>
+                                <Text style={{textAlign:'center', fontSize:18, color:'orange', borderWidth: 1, margin: 5, borderColor: 'red', padding: 5}}>No trips were processed! Add more photos to your photo library and try again with correct details about your home. Or add a trip manually.</Text>
+                                <View style={{flexDirection:'row', alignSelf:'center'}}>
+                                    <TouchableOpacity  style={{width:100, marginTop: 10, marginRight: 10, backgroundColor:'white', padding: 5, borderRadius: 10, alignSelf:'center'}} onPress={(e) => { this.props.setPage(Page[Page.ONBOARDING])}} >
+                                        <Text style={{textAlign:'center'}}>Try again</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity  style={{width:100, marginTop: 10, backgroundColor:'white', padding: 5, borderRadius: 10, alignSelf:'center'}} onPress={(e) => { this.props.setPage(Page[Page.NEWTRIP])}} >
+                                        <Text style={{textAlign:'center'}}>Add Trip</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        : <View />
+                        : <View style={{height: 200}} />
                     }
                 </ScrollView>
             </View>

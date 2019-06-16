@@ -20,7 +20,7 @@ export class StepModal {
 
     checkAndFillData = () => {
         if(this.location == "" && (this.meanLatitude != 0 && this.meanLongitude != 0)) {
-            TravelUtils.getLocationFromCoordinates(this.meanLatitude, this.meanLongitude)
+            return TravelUtils.getLocationFromCoordinates(this.meanLatitude, this.meanLongitude)
             .then((res) => {
                 if(res.address)
                     this.location = res.address.county || res.address.state_district;

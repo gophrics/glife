@@ -15,6 +15,7 @@ import { Page } from '../Modals/ApplicationEnums';
 import { CustomButton } from '../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
 import { PhotoPopUpModal } from './PhotoPopUpModal';
+import LoadingPage from './LoadingPage';
 
 
 interface IState {
@@ -150,7 +151,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         this.props.setPage(Page[Page.PROFILE], null)
     }
 
-    newStepOnDone = (_step: StepModal|null) => {
+    newStepOnDone = async(_step: StepModal|null) => {
 
         if(_step == null) {
             this.setState({
@@ -161,20 +162,27 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
         //Right now, we're calcualting step based on images, and not overriding them
         _step.id = this.state.newStepId;
-        
-        var trip = this.state.myData
+
+        var trip: TripModal = this.state.myData as TripModal
         trip.tripAsSteps.push(_step);
         trip.tripAsSteps.sort((a: StepModal, b: StepModal) => {
             return a.id - b.id;
         })
 
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], trip)
+        trip = await LoadingPage.PopulateTripModalData(trip.tripAsSteps.slice(1, trip.tripAsSteps.length-1), trip.tripId)
+        trip.title = this.state.myData.title;
+        
+        var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
+        profileData = LoadingPage.UpdateProfileDataWithTrip(profileData, trip)
 
-        this.initialize()
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
+
         this.setState({
             myData: trip,
             newStep: false
         })
+        this.initialize()
+        
     }
 
     // Photo Modal methods

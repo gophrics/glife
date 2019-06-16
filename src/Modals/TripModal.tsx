@@ -71,6 +71,7 @@ export class TripModal {
     }
 
     populateTitle = (countries: Array<string>, places: Array<string>) => {
+        
         var tripName = "";
         if(countries.length == 1) {
             // Only home country, use places

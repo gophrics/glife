@@ -4,7 +4,7 @@ import { TripUtils } from "../../Utilities/TripUtils";
 import { BlobSaveAndLoad } from "../../Utilities/BlobSaveAndLoad";
 import { Page } from "../../Modals/ApplicationEnums";
 
-export class TripPageModal {
+export class TripExplorePageModal {
     tripId: number
     tripAsSteps: StepModal[]
     location : Region
@@ -33,11 +33,11 @@ export class TripPageModal {
         this.countryCode = []
         this.masterPicURL = ""
         
-        var trip: TripPageModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.TRIPEXPLORE])
+        var trip: TripExplorePageModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.TRIPEXPLORE])
         if(trip != undefined) this.CopyConstructor(trip)
     }
 
-    CopyConstructor = (trip: TripPageModal) => {
+    CopyConstructor = (trip: TripExplorePageModal) => {
         this.tripId = trip.tripId;
         this.tripAsSteps = trip.tripAsSteps;
         this.location = trip.location;

@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
 import { StepComponent } from '../../UIComponents/StepComponent';
-import { TripModal } from '../../Modals/TripModal';
+import { TripExplorePageModal } from './TripExplorePageModal';
 import { StepModal } from '../../Modals/StepModal';
 import Region from '../../Modals/Region';
 import { NewStepPage } from '../NewStepPage';
@@ -16,6 +16,8 @@ import { CustomButton } from '../../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
 import { PhotoPopUpModal } from '../PhotoPopUpModal';
 import { TripUtils } from '../../Utilities/TripUtils';
+import TripExplorePage from '../TripExplorePage';
+import { TripExplorePageController } from './TripExplorePageController';
 
 
 interface IState {
@@ -39,14 +41,17 @@ const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
 let snapOffsets: Array<number> = []
 
-export default class TripPageViewModal extends React.Component<IProps, IState> {
+export default class TripExplorePageViewModal extends React.Component<IProps, IState> {
 
     travelCardArray: any = []
     mapView: MapView | null = null;
 
+    Controller: TripExplorePageController;
     constructor(props: any) {
         super(props);
         this.props.setNavigator(false)
+
+        this.Controller = new TripExplorePageController()
 
         var trip = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.STEPEXPLORE]);
         this.state = {
@@ -97,11 +102,12 @@ export default class TripPageViewModal extends React.Component<IProps, IState> {
         })
     }
 
+    
     onNewStepPress = (step: StepModal) => {
         this.setState({
-            newStep: true,
-            newStepId: step.id + 1
+            newStep: true
         })
+        this.Controller.onNewStepPress(step)
     }
 
     zoomToStep = (step: StepModal) => {
@@ -156,33 +162,14 @@ export default class TripPageViewModal extends React.Component<IProps, IState> {
             return;
         }
 
-        //Right now, we're calcualting step based on images, and not overriding them
-        _step.id = this.state.newStepId;
-
-        var trip: TripModal = this.state.myData as TripModal
-        trip.tripAsSteps.push(_step);
-        trip.tripAsSteps.sort((a: StepModal, b: StepModal) => {
-            return a.id - b.id;
-        })
-
-        trip = await TripUtils.PopulateTripModalData(trip.tripAsSteps.slice(1, trip.tripAsSteps.length-1), trip.tripId)
-        trip.title = this.state.myData.title;
-
-        var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
-        profileData = TripUtils.UpdateProfileDataWithTrip(profileData, trip)
+        this.Controller.newStepDone(_step)
         
-        profileData.trips.sort((a: TripModal, b: TripModal) => {
-            return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
-        })
-
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
-
         this.setState({
-            myData: trip,
+            myData: this.Controller.Modal,
             newStep: false
         })
+
         this.initialize()
-        
     }
 
     // Photo Modal methods

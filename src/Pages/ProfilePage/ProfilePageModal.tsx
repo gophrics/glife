@@ -1,10 +1,10 @@
-import { TripPageModal } from '../TripPage/TripPageModal';
+import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
 import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
 import { Page } from '../../Modals/ApplicationEnums';
 import ProfilePage from './ProfilePageViewModal';
 
 export class ProfilePageModal {
-    trips: TripPageModal[];
+    trips: TripExplorePageModal[];
     countriesVisited: string[]
     percentageWorldTravelled: number
     coverPicURL: string

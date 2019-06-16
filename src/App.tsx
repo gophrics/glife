@@ -9,7 +9,7 @@ import LoadingPage from './Pages/LoadingPage/LoadingPageViewModal';
 import ProfilePage from './Pages/ProfilePage/ProfilePageViewModal';
 import { TopNavigator } from './UIComponents/TopNavigator';
 import { OnBoardingPage } from './Pages/TopNavigatorFlow/OnBoardingPage';
-import StepExplorePage from './Pages/TripPage/TripPageViewModal';
+import StepExplorePage from './Pages/TripExplorePage/TripExplorePageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/BottomNavigatorFlow/NewTripPage';
 import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';

@@ -93,6 +93,7 @@ export default class SocialPage extends React.Component<IProps, IState> {
 
         this.chatWs = new WebSocket('ws://localhost:8080/api/v1/chat/getandpost');
         this.chatWs.onopen = () => {
+            console.log("WS OPENED");
             this.chatWs.send(JSON.stringify({timestamp: "2018/02/11 00:00:00", chatroomId: "Chat_India"}))
         }
 
@@ -100,6 +101,7 @@ export default class SocialPage extends React.Component<IProps, IState> {
             var data: Message = JSON.parse(e.data)
             var msgs: Array<Message> = this.state.messages;
             msgs.push(data)
+            console.log(msgs);
             this.setState({
                 messages: msgs
             })

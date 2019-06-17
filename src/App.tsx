@@ -15,14 +15,15 @@ import { BlobSaveAndLoad } from './Engine/BlobSaveAndLoad';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
-import { RegisterUserPage } from './Pages/SocialFlow/RegisterUserPage';
-import { LoginUserPage } from './Pages/SocialFlow/LoginUserPage';
+import { RegisterUserPage } from './Pages/SocialPage/RegisterUserPage';
+import { LoginUserPage } from './Pages/SocialPage/LoginUserPage';
 import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
 import { SearchPage } from './Pages/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
 import { ConfirmUsernamePage } from './Pages/SocialFlow/ConfirmUsernamePage';
 import { FeedPage } from './Pages/FeedPage';
+
 interface IState {
   page: string,
   navigatorVisible: boolean

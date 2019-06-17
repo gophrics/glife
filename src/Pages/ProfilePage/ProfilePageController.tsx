@@ -22,6 +22,15 @@ export class ProfilePageController {
         this.Modal.coverPicURL = coverPicURL
     }
 
+    getName = () : string => {
+        return this.Modal.name;
+    }
+
+    setName = (name: string) => {
+        this.Modal.name = name;
+        this.Modal.Save()
+    }
+    
     getTrips = () => {
         return this.Modal.trips
     }

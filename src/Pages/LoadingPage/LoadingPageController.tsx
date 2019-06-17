@@ -5,6 +5,7 @@ import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor'
 import { TripUtils } from '../../Engine/TripUtils';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 import { TripExplorePageController } from "../TripExplorePage/TripExplorePageController";
+import { HomeDataModal } from "../../Modals/ApplicationEnums";
 
 export class LoadingPageController {
 
@@ -24,6 +25,31 @@ export class LoadingPageController {
 
     GetFinishedLoading = (): number => {
       return TripUtils.GetFinishedLoading()
+    }
+
+    GetAllHomesData = () : Array<HomeDataModal> => {
+      return this.Modal.homeData;
+    }
+
+    SetAllHomeData = (homeData: Array<HomeDataModal>) => {
+      this.Modal.homeData = homeData;
+      this.Modal.Save()
+    }
+
+    GetHomeData = (index: number) => {
+      return this.Modal.homeData[index]
+    }
+
+    SetHomeData = (index: number, home: HomeDataModal) => {
+      this.Modal.homeData[index] = home;
+      this.Modal.Save()
+    }
+
+    AddEmptyHome = () => {
+      this.Modal.homeData.push({
+        name: "",
+        timestamp: 0
+      } as HomeDataModal)
     }
 
     RequestPermissionAndroid = async() : Promise<boolean> => {

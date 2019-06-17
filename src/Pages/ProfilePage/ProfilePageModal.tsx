@@ -1,9 +1,9 @@
 import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
 import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
 import { Page } from '../../Modals/ApplicationEnums';
-import ProfilePage from './ProfilePageViewModal';
 
 export class ProfilePageModal {
+
     trips: TripExplorePageModal[];
     countriesVisited: string[]
     percentageWorldTravelled: number
@@ -37,5 +37,9 @@ export class ProfilePageModal {
         this.profilePicURL = profileData.profilePicURL;
         this.profileId = profileData.profileId;
         this.name = profileData.name;
+    }
+
+    Save = () => {
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], this)
     }
 }

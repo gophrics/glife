@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, PermissionsAndroid, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
 import Spinner from '../../UIComponents/Spinner';
-import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
 import { Page } from '../../Modals/ApplicationEnums';
 import { LoadingPageController } from './LoadingPageController';
 

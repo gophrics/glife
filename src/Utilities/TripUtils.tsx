@@ -48,7 +48,9 @@ export class TripUtils {
             }
         }
 
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.NEWTRIP], { data: homesDataForClustering, endTimestamp: endTimestamp} );
+        BlobSaveAndLoad.Instance.homeData = homesDataForClustering;
+        BlobSaveAndLoad.Instance.endTimestamp = endTimestamp;
+        BlobSaveAndLoad.Instance.saveEngineData()
     }
 
     static GetTotalToLoad = () => {
@@ -60,8 +62,8 @@ export class TripUtils {
     }
 
     static GenerateTripFromPhotos = async(imageData: ImageDataModal[]) : Promise<TripModal[]> => {
-        var homesDataForClustering = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP]).data
-        var endTimestamp = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP]).endTimestamp
+        var homesDataForClustering = BlobSaveAndLoad.Instance.homeData
+        var endTimestamp = BlobSaveAndLoad.Instance.endTimestamp
 
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
         var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);

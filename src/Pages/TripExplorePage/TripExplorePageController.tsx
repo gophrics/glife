@@ -53,4 +53,16 @@ export class TripExplorePageController {
         }
         BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.Modal)
     }
+
+    getFirstStep = () => {
+        if(this.Modal.tripAsSteps.length == 0) 
+            throw "No steps found"
+        return this.Modal.tripAsSteps[0]
+    }
+
+    getSteps = () => {
+        if(this.Modal.tripAsSteps == undefined || this.Modal.tripAsSteps == null) 
+            throw "No steps found"
+        return this.Modal.tripAsSteps
+    }
 }

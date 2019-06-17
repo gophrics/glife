@@ -10,6 +10,10 @@ export class LoadingPageController {
     Modal: LoadingPageModal;
     ProfileData: ProfilePageModal = new ProfilePageModal();
 
+    constructor() {
+      this.Modal = new LoadingPageModal()
+    }
+    
     GetTotalToLoad = () => {
       return TripUtils.GetTotalToLoad()
     }
@@ -66,14 +70,11 @@ export class LoadingPageController {
 
         try {
             this.ProfileData.trips = await TripUtils.GenerateTripFromPhotos(photoRollInfos)
+            this.ProfileData.Save()
         } catch (error) {
             return true;
         }
         return true
-    }
-
-    constructor() {
-        this.Modal = new LoadingPageModal()
     }
 
 }

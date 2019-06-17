@@ -7,22 +7,22 @@ import {Page} from './Modals/ApplicationEnums';
 import LoadingPageViewModal from './Pages/LoadingPage/LoadingPageViewModal';
 import ProfilePage from './Pages/ProfilePage/ProfilePageViewModal';
 import { TopNavigator } from './UIComponents/TopNavigator';
-import { OnBoardingPage } from './Pages/TopNavigatorFlow/OnBoardingPage';
+import { OnBoardingPage } from './Pages/OnBoardingPage';
 import TripExplorePageViewModal from './Pages/TripExplorePage/TripExplorePageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
-import { NewTripPage } from './Pages/BottomNavigatorFlow/NewTripPage';
+import { NewTripPage } from './Pages/NewTripPage/NewTripPageViewModal';
 import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';
 import LinearGradient from 'react-native-linear-gradient';
-import { SettingsPage } from './Pages/TopNavigatorFlow/SettingsPage';
+import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
 import { RegisterUserPage } from './Pages/SocialFlow/RegisterUserPage';
 import { LoginUserPage } from './Pages/SocialFlow/LoginUserPage';
 import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
-import { SearchPage } from './Pages/BottomNavigatorFlow/SearchPage';
+import { SearchPage } from './Pages/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
 import { ConfirmUsernamePage } from './Pages/SocialFlow/ConfirmUsernamePage';
-import { FeedPage } from './Pages/BottomNavigatorFlow/FeedPage';
+import { FeedPage } from './Pages/FeedPage';
 interface IState {
   page: string,
   navigatorVisible: boolean

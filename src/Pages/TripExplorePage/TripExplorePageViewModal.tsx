@@ -56,9 +56,9 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            lastStepClicked: this.Controller.Modal.tripAsSteps[0],
+            lastStepClicked: this.Controller.getFirstStep(),
             editStepDescription: false,
-            tripAsSteps: this.Controller.Modal.tripAsSteps
+            tripAsSteps: this.Controller.getSteps()
         }
         this.initialize();
     }

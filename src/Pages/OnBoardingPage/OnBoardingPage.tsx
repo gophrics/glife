@@ -73,7 +73,6 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                 showPicker: false,
                 dates: this.Controller.dates
             })
-            this.Controller.incrementCursor();
         }
     }
 

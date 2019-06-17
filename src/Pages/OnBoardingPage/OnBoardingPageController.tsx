@@ -22,14 +22,6 @@ export class OnBoardingPageController {
         this.ProfilePageController = new ProfilePageController();
     }
 
-    incrementCursor = () => {
-        this.cursor++;
-    }
-
-    decrementCursor = () => {
-        this.cursor--;
-    }
-
     GetAllHomesData = () => {
         return this.LoadingPageController.GetAllHomesData()
     }
@@ -141,6 +133,7 @@ export class OnBoardingPageController {
 
         for (var i = 0; i < culprits.length; i++) culprits.push(1)
 
+        this.tempLocations = []
         for (var home of this.LoadingPageController.GetAllHomesData()) {
             if(home.name == "") {
                 culprits[count] = 1;

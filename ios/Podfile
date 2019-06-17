@@ -1,4 +1,4 @@
-target 'glife'
+target 'Glimpse'
 
 platform :ios, 9.0
 

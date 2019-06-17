@@ -220,7 +220,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                             this.state.homes.map((el, i) => (
                                 <View key={i + 'a'} style={{ flexDirection: 'row'}}>
                                     <TouchableOpacity onPress={() => this.onCalenderClick(i)}>
-                                        <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../../Assets/icons8-calendar-52.png')} />
+                                        <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../Assets/icons8-calendar-52.png')} />
                                     </TouchableOpacity>
                                     <View style={{ flexDirection: 'column', width:'90%', alignSelf:'center'}}>
                                         <TextInput

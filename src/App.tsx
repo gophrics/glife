@@ -123,10 +123,6 @@ export default class App extends React.Component<IProps, IState> {
               <SearchPage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.NOPERMISSIONIOS] ? 
               <NoPermissionIOS setPage={this.setPage.bind(this)}/>
-            : this.state.page == Page[Page.CONFIRMUSERNAME] ? 
-              <ConfirmUsernamePage setPage={this.setPage.bind(this)}/>
-            : this.state.page == Page[Page.FEED] ? 
-              <FeedPage setPage={this.setPage.bind(this)} />
             : <View />
           }
           

@@ -22,7 +22,7 @@ export class SplashScreen extends React.Component<IProps, IState> {
     render() {
         return (
             <View style={{height: '100%', width: '100%', justifyContent: 'center', alignContent: 'center'}}>
-                <Image style={{alignSelf:'center', height:deviceWidth*.5, width: deviceWidth*.5}} source={require('../Assets/glife_logo_transparent.png')} />
+                <Image style={{alignSelf:'center', height:deviceWidth*.5, width: deviceWidth*.5}} source={require('../Assets/Glimpse_logo_transparent.png')} />
             </View>
         )
     }

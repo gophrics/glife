@@ -44,7 +44,7 @@ export class TopNavigator extends React.Component<IProps, IState> {
                 <TouchableOpacity style={{ height: 60, width: 60 }} disabled={true} onPress={this.onSettingPress.bind(this)}>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ height: 60 }} onPress={this.onProfilePress.bind(this)}>
-                    <Image style={{ width: 60, height: 60 }} source={require('../Assets/glife_logo_transparent.png')} />
+                    <Image style={{ width: 60, height: 60 }} source={require('../Assets/Glimpse_logo_transparent.png')} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ height: 60 }} onPress={this.onNewTripPress.bind(this)}>
                     <Icon style={{padding:10}} size={40} name='sync' />

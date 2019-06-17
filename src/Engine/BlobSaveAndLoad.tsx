@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 export class BlobSaveAndLoad {
 
-    pageDataPipe: {[ key: string] : any} = {}
+    private pageDataPipe: {[ key: string] : any} = {}
     homeData: any = {}
     endTimestamp: number = 0
 
@@ -46,7 +46,7 @@ export class BlobSaveAndLoad {
     }
 
     getBlobValue = (page: string) => {
-        return this.pageDataPipe[page] == undefined ? {} : this.pageDataPipe[page]
+        return this.pageDataPipe[page]
     }
 
     setBlobValue = (page: string, data: any) => {

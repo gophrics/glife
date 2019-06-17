@@ -21,6 +21,10 @@ export class TripExplorePageController {
         this.ProfilePageController = new ProfilePageController()
     }
 
+    Save = () => {
+        this.Modal.Save()
+    }
+
     onNewStepPress = (step: StepModal) => {
         this.NewStepId = step.id + 1;
     }
@@ -42,14 +46,7 @@ export class TripExplorePageController {
         trip = await this.PopulateTripExplorePageModalData(trip.tripAsSteps.slice(1, trip.tripAsSteps.length-1), trip.tripId)
         trip.title = this.Modal.title;
 
-        var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
-        profileData = this.ProfilePageController.UpdateProfileDataWithTrip(profileData, trip)
-        
-        profileData.trips.sort((a: TripExplorePageModal, b: TripExplorePageModal) => {
-            return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
-        })
-
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
+        this.ProfilePageController.UpdateProfileDataWithTrip(trip)
     }
     
     GenerateTripFromPhotos = async(imageData: ImageDataModal[]) : Promise<TripExplorePageModal[]> => {
@@ -65,7 +62,7 @@ export class TripExplorePageController {
   
         TripUtils.TOTAL_TO_LOAD = trips.length;
   
-        var asynci = 0;
+        let asynci = 0;
         for(var i = 0; i < trips.length; i++){
   
             try {
@@ -75,6 +72,7 @@ export class TripExplorePageController {
                     return a.timestamp-b.timestamp
                 });
                 
+                console.log(asynci)
                 var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
                 var _trip: TripExplorePageModal = await this.PopulateTripExplorePageModalData(_steps, TripUtils.GenerateTripId());
                 tripResult.push(_trip)

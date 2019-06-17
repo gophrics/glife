@@ -8,7 +8,7 @@ const ServerURLWithoutEndingSlash = 'http://beerwithai.com'
 
 
 export class TripUtils {
-    static TOTAL_TO_LOAD = 0;
+    static TOTAL_TO_LOAD = 100;
     static FINISHED_LOADING = 0;
 
     static GenerateTripId = () : number => {

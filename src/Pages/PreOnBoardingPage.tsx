@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import { BlobSaveAndLoad } from '../Engine/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
+import { ProfilePageController } from './ProfilePage/ProfilePageController';
 
 
 interface IProps {
@@ -16,27 +17,28 @@ interface IState {
 const deviceHeight = Dimensions.get('window').height
 
 export class PreOnBoardingPage extends React.Component<IProps, IState> {
+
+    ProfilePageController: ProfilePageController;
+
     constructor(props: IProps) {
         super(props)
         this.state = {
             valid: true
         }
+
+        this.ProfilePageController = new ProfilePageController()
     }
 
     validate = () => {
         this.setState({
-            valid: BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]] != undefined && 
-            BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name != undefined &&
-            (BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name as string).trim().length > 0
+            valid: (this.ProfilePageController.Modal.name as string).trim().length > 0
         })
-        return BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]] != undefined && 
-            BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name != undefined
+        return (this.ProfilePageController.Modal.name as string).trim().length > 0
     }
 
     onNameTextChange = (text: string) => {
-        if(!BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]])
-            BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]] = {}
-        BlobSaveAndLoad.Instance.pageDataPipe[Page[Page.PROFILE]].name = text
+        this.ProfilePageController.Modal.name = text;
+        this.ProfilePageController.Modal.Save()
         this.validate()
     }
 

@@ -24,12 +24,11 @@ export class ProfilePageModal {
         this.name = ""
 
         var profileData: ProfilePageModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
-        
         if(profileData == undefined) return
         this.CopyConstructor(profileData)
     }
 
-    CopyConstructor(profileData: ProfilePageModal) {
+    CopyConstructor = (profileData: ProfilePageModal) => {
         this.trips = profileData.trips;
         this.countriesVisited = profileData.countriesVisited;
         this.percentageWorldTravelled = profileData.percentageWorldTravelled;

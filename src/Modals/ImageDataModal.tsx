@@ -1,5 +1,4 @@
 import Region from './Region';
-import { GetPhotosReturnType } from 'react-native';
 
 export class ImageDataModal {
     location: Region;

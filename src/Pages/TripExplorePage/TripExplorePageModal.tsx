@@ -34,7 +34,12 @@ export class TripExplorePageModal {
         this.masterPicURL = ""
         
         var trip: TripExplorePageModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.TRIPEXPLORE])
-        if(trip != undefined) this.CopyConstructor(trip)
+        if(trip != undefined)
+            this.CopyConstructor(trip)
+    }
+
+    Save = () => {
+        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.TRIPEXPLORE], this)
     }
 
     CopyConstructor = (trip: TripExplorePageModal) => {

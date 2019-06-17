@@ -18,11 +18,11 @@ export class LoadingPageController {
       this.ProfilePageController = new ProfilePageController()
     }
     
-    GetTotalToLoad = () => {
+    GetTotalToLoad = (): number => {
       return TripUtils.GetTotalToLoad()
     }
 
-    GetFinishedLoading = () => {
+    GetFinishedLoading = (): number => {
       return TripUtils.GetFinishedLoading()
     }
 
@@ -71,10 +71,11 @@ export class LoadingPageController {
         }
 
         await TripUtils.GenerateHomeData(this.Modal.homeData)
-
+        
         try {
-            this.ProfilePageController.setTrips(await this.TripExplorePageController.GenerateTripFromPhotos(photoRollInfos))
+            this.ProfilePageController.ClearAndUpdateProfileDataWithAllTrips(await this.TripExplorePageController.GenerateTripFromPhotos(photoRollInfos))
         } catch (error) {
+            console.log(error)
             return true;
         }
         return true

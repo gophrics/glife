@@ -3,6 +3,7 @@ import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, PermissionsAndro
 import Spinner from '../../UIComponents/Spinner';
 import { Page } from '../../Modals/ApplicationEnums';
 import { LoadingPageController } from './LoadingPageController';
+import { TripUtils } from '../../Engine/TripUtils';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -39,7 +40,7 @@ interface IState {
 
 export default class LoadingPageViewModal extends React.Component<IProps, IState> {
 
-    Controller: LoadingPageController = new LoadingPageController()
+    Controller: LoadingPageController;
 
     constructor(props:any) {
         super(props);
@@ -51,19 +52,21 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
             total: 100
         }
 
-        if(this.Controller.Initialize()) {
-            this.props.setPage(Page[Page.PROFILE])
-        } else {
-            this.props.setPage(Page[Page.NOPERMISSIONIOS])
-        }
-
-        // Need to show live loading somehow
+        this.Controller = new LoadingPageController()
+        this.Controller.Initialize()
+        .then((res) => {
+            if(res)
+                this.props.setPage(Page[Page.PROFILE])
+            else
+                this.props.setPage(Page[Page.NOPERMISSIONIOS])
+        })
+        this.getLoadingDetails()
     }
 
     getLoadingDetails = () => {
         this.setState({
-            total: this.Controller.GetTotalToLoad(),
-            finished: this.Controller.GetFinishedLoading()  
+            total: TripUtils.TOTAL_TO_LOAD,
+            finished: TripUtils.FINISHED_LOADING
         })
         setTimeout(this.getLoadingDetails, 1000)
     }

@@ -12,7 +12,7 @@
 		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
-		00E356F31AD99517003FC87E /* glifeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* glifeTests.m */; };
+		00E356F31AD99517003FC87E /* GlimpseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GlimpseTests.m */; };
 		045BEB09D1B5406E88B8233A /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4385E417B924CB182827490 /* FontAwesome5_Brands.ttf */; };
 		056CC3A5C8ED441A8AE49EF5 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F668CA1A85846D2ACE0F1F4 /* AntDesign.ttf */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -37,7 +37,7 @@
 		2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E941DF850E9000B6D8A /* libRCTText-tvOS.a */; };
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
-		2DCD954D1E0B4F2C00145EB5 /* glifeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* glifeTests.m */; };
+		2DCD954D1E0B4F2C00145EB5 /* GlimpseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GlimpseTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		3123CD7800054ED09349FA51 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B1AF7953CFD247918330340E /* FontAwesome5_Regular.ttf */; };
 		35D6111F01B44DB9AAADF1AF /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46EA43F876B341C1B71E09A6 /* Feather.ttf */; };
@@ -45,7 +45,7 @@
 		6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6391C19ECC604B43B0673441 /* libAirMaps.a */; };
 		726E1938225BA39D003EA830 /* EmptySwiftFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726E1937225BA39D003EA830 /* EmptySwiftFile.swift */; };
 		726E193F225BA5A5003EA830 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 726E193E225BA569003EA830 /* libRCTCameraRoll.a */; };
-		7270EF9222A275B2000F2EED /* glife_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7270EF6C22A275B2000F2EED /* glife_logo.png */; };
+		7270EF9222A275B2000F2EED /* Glimpse_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7270EF6C22A275B2000F2EED /* Glimpse_logo.png */; };
 		7A60C3DCD774477EB77A7250 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8DE15B82C2784E1DBD11E12C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 125595E7CE4C4AF0AC055891 /* MaterialIcons.ttf */; };
@@ -60,7 +60,7 @@
 		ED1265BB629E4676B9821340 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
-		FA75F22A91EBBD769026535C /* libPods-glife.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EF5C94BFC3AE55DD4A4832 /* libPods-glife.a */; };
+		FA75F22A91EBBD769026535C /* libPods-Glimpse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EF5C94BFC3AE55DD4A4832 /* libPods-Glimpse.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,7 +104,7 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = glife;
+			remoteInfo = Glimpse;
 		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -132,7 +132,7 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "glife-tvOS";
+			remoteInfo = "Glimpse-tvOS";
 		};
 		2D16E6711FA4F8DC00B85C8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -374,25 +374,25 @@
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
 		00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
 		00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* glifeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = glifeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* GlimpseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlimpseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* glifeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = glifeTests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* GlimpseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GlimpseTests.m; sourceTree = "<group>"; };
 		0894224ECE404DC89DB784F8 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		125595E7CE4C4AF0AC055891 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* glife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = glife.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = glife/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = glife/AppDelegate.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Glimpse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glimpse.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Glimpse/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Glimpse/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = glife/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = glife/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = glife/main.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Glimpse/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Glimpse/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Glimpse/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1E005F27CA1F44DB93C33083 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		255C9A792F1D4D04827E3498 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* glife-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "glife-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* glife-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "glife-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E47B1E0B4A5D006451C7 /* Glimpse-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Glimpse-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* Glimpse-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Glimpse-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		45C395D3F7F040E5ABE81FB2 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		46EA43F876B341C1B71E09A6 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -400,23 +400,23 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6391C19ECC604B43B0673441 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		6BCC3E4A076742F399538C1F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
-		726E1936225BA39C003EA830 /* glife-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "glife-Bridging-Header.h"; sourceTree = "<group>"; };
+		726E1936225BA39C003EA830 /* Glimpse-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Glimpse-Bridging-Header.h"; sourceTree = "<group>"; };
 		726E1937225BA39D003EA830 /* EmptySwiftFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySwiftFile.swift; sourceTree = "<group>"; };
 		726E1939225BA569003EA830 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
-		7270EF6C22A275B2000F2EED /* glife_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = glife_logo.png; path = ../src/Assets/glife_logo.png; sourceTree = "<group>"; };
+		7270EF6C22A275B2000F2EED /* Glimpse_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Glimpse_logo.png; path = ../src/Assets/Glimpse_logo.png; sourceTree = "<group>"; };
 		72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		821AA665FFB34FFA86DA8EC7 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		87A8DC9F702F4D5A83EAC2C3 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		9304D1866BEE48408662EA6C /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		97EF5C94BFC3AE55DD4A4832 /* libPods-glife.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-glife.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		97EF5C94BFC3AE55DD4A4832 /* libPods-Glimpse.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Glimpse.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F668CA1A85846D2ACE0F1F4 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
-		A5B62B349C8CECB547D33BF5 /* Pods-glife.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-glife.debug.xcconfig"; path = "Target Support Files/Pods-glife/Pods-glife.debug.xcconfig"; sourceTree = "<group>"; };
+		A5B62B349C8CECB547D33BF5 /* Pods-Glimpse.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Glimpse.debug.xcconfig"; path = "Target Support Files/Pods-Glimpse/Pods-Glimpse.debug.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B1AF7953CFD247918330340E /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		B4385E417B924CB182827490 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		D32B6744307D519F744AB861 /* Pods-glife.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-glife.release.xcconfig"; path = "Target Support Files/Pods-glife/Pods-glife.release.xcconfig"; sourceTree = "<group>"; };
+		D32B6744307D519F744AB861 /* Pods-Glimpse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Glimpse.release.xcconfig"; path = "Target Support Files/Pods-Glimpse/Pods-Glimpse.release.xcconfig"; sourceTree = "<group>"; };
 		DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -452,7 +452,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				ED1265BB629E4676B9821340 /* (null) in Frameworks */,
 				6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */,
-				FA75F22A91EBBD769026535C /* libPods-glife.a in Frameworks */,
+				FA75F22A91EBBD769026535C /* libPods-Glimpse.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,13 +525,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		00E356EF1AD99517003FC87E /* glifeTests */ = {
+		00E356EF1AD99517003FC87E /* GlimpseTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* glifeTests.m */,
+				00E356F21AD99517003FC87E /* GlimpseTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = glifeTests;
+			path = GlimpseTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -562,7 +562,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* glife */ = {
+		13B07FAE1A68108700A75B9A /* Glimpse */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -570,14 +570,14 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				7270EF6C22A275B2000F2EED /* glife_logo.png */,
+				7270EF6C22A275B2000F2EED /* Glimpse_logo.png */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				726E1937225BA39D003EA830 /* EmptySwiftFile.swift */,
-				726E1936225BA39C003EA830 /* glife-Bridging-Header.h */,
+				726E1936225BA39C003EA830 /* Glimpse-Bridging-Header.h */,
 			);
-			name = glife;
+			name = Glimpse;
 			sourceTree = "<group>";
 		};
 		146834001AC3E56700842450 /* Products */ = {
@@ -609,7 +609,7 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				97EF5C94BFC3AE55DD4A4832 /* libPods-glife.a */,
+				97EF5C94BFC3AE55DD4A4832 /* libPods-Glimpse.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -617,8 +617,8 @@
 		2EE32A42CEC4014E56C6120E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A5B62B349C8CECB547D33BF5 /* Pods-glife.debug.xcconfig */,
-				D32B6744307D519F744AB861 /* Pods-glife.release.xcconfig */,
+				A5B62B349C8CECB547D33BF5 /* Pods-Glimpse.debug.xcconfig */,
+				D32B6744307D519F744AB861 /* Pods-Glimpse.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -698,9 +698,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* glife */,
+				13B07FAE1A68108700A75B9A /* Glimpse */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* glifeTests */,
+				00E356EF1AD99517003FC87E /* GlimpseTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				72D19AE1225B8EA20090D512 /* Recovered References */,
@@ -715,10 +715,10 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* glife.app */,
-				00E356EE1AD99517003FC87E /* glifeTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* glife-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* glife-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Glimpse.app */,
+				00E356EE1AD99517003FC87E /* GlimpseTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* Glimpse-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* Glimpse-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -757,9 +757,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* glifeTests */ = {
+		00E356ED1AD99517003FC87E /* GlimpseTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "glifeTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "GlimpseTests" */;
 			buildPhases = (
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
@@ -770,14 +770,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = glifeTests;
-			productName = glifeTests;
-			productReference = 00E356EE1AD99517003FC87E /* glifeTests.xctest */;
+			name = GlimpseTests;
+			productName = GlimpseTests;
+			productReference = 00E356EE1AD99517003FC87E /* GlimpseTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* glife */ = {
+		13B07F861A680F5B00A75B9A /* Glimpse */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "glife" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Glimpse" */;
 			buildPhases = (
 				0D37698D27D7CDB0E9D1DEA0 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -792,14 +792,14 @@
 				7251551D227F4F9B001C6224 /* PBXTargetDependency */,
 				722A6C9B225F94E7002ED977 /* PBXTargetDependency */,
 			);
-			name = glife;
+			name = Glimpse;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* glife.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Glimpse.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* glife-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* Glimpse-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "glife-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Glimpse-tvOS" */;
 			buildPhases = (
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -810,14 +810,14 @@
 			);
 			dependencies = (
 			);
-			name = "glife-tvOS";
-			productName = "glife-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* glife-tvOS.app */;
+			name = "Glimpse-tvOS";
+			productName = "Glimpse-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* Glimpse-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* glife-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* Glimpse-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "glife-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Glimpse-tvOSTests" */;
 			buildPhases = (
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
@@ -828,9 +828,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "glife-tvOSTests";
-			productName = "glife-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* glife-tvOSTests.xctest */;
+			name = "Glimpse-tvOSTests";
+			productName = "Glimpse-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* Glimpse-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -865,7 +865,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "glife" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Glimpse" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -937,10 +937,10 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* glife */,
-				00E356ED1AD99517003FC87E /* glifeTests */,
-				2D02E47A1E0B4A5D006451C7 /* glife-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* glife-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* Glimpse */,
+				00E356ED1AD99517003FC87E /* GlimpseTests */,
+				2D02E47A1E0B4A5D006451C7 /* Glimpse-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* Glimpse-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1243,7 +1243,7 @@
 				045BEB09D1B5406E88B8233A /* FontAwesome5_Brands.ttf in Resources */,
 				3123CD7800054ED09349FA51 /* FontAwesome5_Regular.ttf in Resources */,
 				D6081B5448AB4AA281152B9D /* FontAwesome5_Solid.ttf in Resources */,
-				7270EF9222A275B2000F2EED /* glife_logo.png in Resources */,
+				7270EF9222A275B2000F2EED /* Glimpse_logo.png in Resources */,
 				9B177FAC63B04660B1832E50 /* Foundation.ttf in Resources */,
 				C231C1972F794512BA524291 /* Ionicons.ttf in Resources */,
 				AB60B00BDFC146F7B9033A70 /* MaterialCommunityIcons.ttf in Resources */,
@@ -1301,7 +1301,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-glife-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Glimpse-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
@@ -1328,7 +1328,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-glife/Pods-glife-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Glimpse/Pods-Glimpse-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
@@ -1371,7 +1371,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-glife/Pods-glife-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Glimpse/Pods-Glimpse-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1381,7 +1381,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* glifeTests.m in Sources */,
+				00E356F31AD99517003FC87E /* GlimpseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1408,7 +1408,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* glifeTests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* GlimpseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1417,12 +1417,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* glife */;
+			target = 13B07F861A680F5B00A75B9A /* Glimpse */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* glife-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* Glimpse-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 		722A6C9B225F94E7002ED977 /* PBXTargetDependency */ = {
@@ -1444,7 +1444,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = glife;
+			path = Glimpse;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1465,7 +1465,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-service/ios",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
-				INFOPLIST_FILE = glifeTests/Info.plist;
+				INFOPLIST_FILE = GlimpseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -1475,7 +1475,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/glife.app/glife";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Glimpse.app/Glimpse";
 			};
 			name = Debug;
 		};
@@ -1491,7 +1491,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-service/ios",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
-				INFOPLIST_FILE = glifeTests/Info.plist;
+				INFOPLIST_FILE = GlimpseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -1501,13 +1501,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/glife.app/glife";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Glimpse.app/Glimpse";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A5B62B349C8CECB547D33BF5 /* Pods-glife.debug.xcconfig */;
+			baseConfigurationReference = A5B62B349C8CECB547D33BF5 /* Pods-Glimpse.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
@@ -1521,7 +1521,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-service/ios",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
-				INFOPLIST_FILE = glife/Info.plist;
+				INFOPLIST_FILE = Glimpse/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1529,9 +1529,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.beerwithai.glimpse;
-				PRODUCT_NAME = glife;
+				PRODUCT_NAME = Glimpse;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "glife-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Glimpse-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1541,7 +1541,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D32B6744307D519F744AB861 /* Pods-glife.release.xcconfig */;
+			baseConfigurationReference = D32B6744307D519F744AB861 /* Pods-Glimpse.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
@@ -1554,7 +1554,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-service/ios",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
-				INFOPLIST_FILE = glife/Info.plist;
+				INFOPLIST_FILE = Glimpse/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1562,9 +1562,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.beerwithai.glimpse;
-				PRODUCT_NAME = glife;
+				PRODUCT_NAME = Glimpse;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "glife-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Glimpse-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1589,14 +1589,14 @@
 					"$(SRCROOT)/../node_modules/react-native-background-service/ios",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
-				INFOPLIST_FILE = "glife-tvOS/Info.plist";
+				INFOPLIST_FILE = "Glimpse-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.glife-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Glimpse-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1622,14 +1622,14 @@
 					"$(SRCROOT)/../node_modules/react-native-background-service/ios",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
-				INFOPLIST_FILE = "glife-tvOS/Info.plist";
+				INFOPLIST_FILE = "Glimpse-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.glife-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Glimpse-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1654,17 +1654,17 @@
 					"$(SRCROOT)/../node_modules/react-native-background-service/ios",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
-				INFOPLIST_FILE = "glife-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Glimpse-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.glife-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Glimpse-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/glife-tvOS.app/glife-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Glimpse-tvOS.app/Glimpse-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
@@ -1686,17 +1686,17 @@
 					"$(SRCROOT)/../node_modules/react-native-background-service/ios",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
-				INFOPLIST_FILE = "glife-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Glimpse-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.glife-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Glimpse-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/glife-tvOS.app/glife-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Glimpse-tvOS.app/Glimpse-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -1803,7 +1803,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "glifeTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "GlimpseTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -1812,7 +1812,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "glife" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Glimpse" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1821,7 +1821,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "glife-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Glimpse-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -1830,7 +1830,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "glife-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Glimpse-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -1839,7 +1839,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "glife" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Glimpse" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

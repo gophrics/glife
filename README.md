@@ -1,4 +1,4 @@
-# glife
+# Glimpse
 Track everything in your life. Can't manage without data peeps ;)
 
 ![alt text](https://raw.githubusercontent.com/issacnitin/glife/master/TechUXDiagrams/glife_3.png)

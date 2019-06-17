@@ -1,7 +1,7 @@
 import { StepModal } from "../../Modals/StepModal";
 import Region from "../../Modals/Region";
-import { TripUtils } from "../../Utilities/TripUtils";
-import { BlobSaveAndLoad } from "../../Utilities/BlobSaveAndLoad";
+import { TripUtils } from "../../Engine/TripUtils";
+import { BlobSaveAndLoad } from "../../Engine/BlobSaveAndLoad";
 import { Page } from "../../Modals/ApplicationEnums";
 
 export class TripExplorePageModal {

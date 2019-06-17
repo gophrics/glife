@@ -1,10 +1,10 @@
 import { NewTripPageModal } from "./NewTripPageModal";
-import * as PhotoLibraryProcessor from '../../Utilities/PhotoLibraryProcessor';
+import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor';
 import { StepModal } from '../../Modals/StepModal'
-import { BlobSaveAndLoad } from "../../Utilities/BlobSaveAndLoad";
-import { TripUtils } from '../../Utilities/TripUtils';
-import { Page } from '../../Modals/ApplicationEnums';
+import { BlobSaveAndLoad } from "../../Engine/BlobSaveAndLoad";
+import { TripUtils } from '../../Engine/TripUtils';
 import { ProfilePageModal } from "../ProfilePage/ProfilePageModal";
+import { TripExplorePageModal } from "../TripExplorePage/TripExplorePageModal";
 
 export class NewTripPageController {
 
@@ -64,4 +64,5 @@ export class NewTripPageController {
         
         return true
     }
+
 }

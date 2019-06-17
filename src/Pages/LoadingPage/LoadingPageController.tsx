@@ -1,17 +1,21 @@
 import { LoadingPageModal } from "./LoadingPageModal";
-import { ProfilePageModal } from "../ProfilePage/ProfilePageModal";
 import { ImageDataModal } from "../../Modals/ImageDataModal";
 import { PermissionsAndroid, Platform } from 'react-native';
-import * as PhotoLibraryProcessor from '../../Utilities/PhotoLibraryProcessor';
-import { TripUtils } from '../../Utilities/TripUtils';
+import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor'
+import { TripUtils } from '../../Engine/TripUtils';
+import { ProfilePageController } from "../ProfilePage/ProfilePageController";
+import { TripExplorePageController } from "../TripExplorePage/TripExplorePageController";
 
 export class LoadingPageController {
 
     Modal: LoadingPageModal;
-    ProfileData: ProfilePageModal = new ProfilePageModal();
+    ProfilePageController: ProfilePageController;
+    TripExplorePageController: TripExplorePageController;
 
     constructor() {
       this.Modal = new LoadingPageModal()
+      this.TripExplorePageController = new TripExplorePageController()
+      this.ProfilePageController = new ProfilePageController()
     }
     
     GetTotalToLoad = () => {
@@ -66,15 +70,13 @@ export class LoadingPageController {
             return true
         }
 
-        await TripUtils.GenerateHomeData(this.Modal)
+        await TripUtils.GenerateHomeData(this.Modal.homeData)
 
         try {
-            this.ProfileData.trips = await TripUtils.GenerateTripFromPhotos(photoRollInfos)
-            this.ProfileData.Save()
+            this.ProfilePageController.setTrips(await this.TripExplorePageController.GenerateTripFromPhotos(photoRollInfos))
         } catch (error) {
             return true;
         }
         return true
     }
-
 }

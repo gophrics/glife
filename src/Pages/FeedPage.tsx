@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, TextInput, TouchableOpacity,  } from 'react-native'
-import { ProfileUtils } from '../Utilities/ProfileUtils';
-import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
+import { ProfileUtils } from '../Engine/ProfileUtils';
+import { BlobSaveAndLoad } from '../Engine/BlobSaveAndLoad';
 import { Page } from '../Modals/ApplicationEnums';
 import { SettingsModal } from '../Modals/SettingsModal';
 

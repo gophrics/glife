@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Modal, SafeAreaView, TouchableHighlight, Text, ScrollView, Image, TextInput, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { StepModal } from '../Modals/StepModal';
+import { StepModal } from '../../Modals/StepModal';
 
 
 interface IProps {
@@ -18,7 +18,7 @@ interface IState {
 
 const deviceWidth = Dimensions.get('window').width;
 
-export class PhotoPopUpModal extends React.Component<IProps, IState> {
+export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props)

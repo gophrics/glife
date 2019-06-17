@@ -1,5 +1,5 @@
 import {Region} from 'react-native-maps';
-import { TripUtils } from '../Utilities/TripUtils';
+import { TripUtils } from '../Engine/TripUtils';
 
 export class StepModal {
 

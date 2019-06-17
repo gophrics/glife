@@ -11,7 +11,7 @@ import { OnBoardingPage } from './Pages/OnBoardingPage';
 import TripExplorePageViewModal from './Pages/TripExplorePage/TripExplorePageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/NewTripPage/NewTripPageViewModal';
-import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';
+import { BlobSaveAndLoad } from './Engine/BlobSaveAndLoad';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';

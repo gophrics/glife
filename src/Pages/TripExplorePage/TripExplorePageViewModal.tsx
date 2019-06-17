@@ -12,7 +12,7 @@ import { NewStepPageViewModal } from './NewStepPageViewModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import { CustomButton } from '../../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
-import { PhotoPopUpModal } from '../PhotoPopUpModal';
+import { PhotoPopUpViewModal } from './PhotoPopUpViewModal';
 import { TripExplorePageController } from './TripExplorePageController';
 
 
@@ -234,7 +234,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                 </View>
                 {
                     this.state.photoModalVisible ?
-                        <PhotoPopUpModal
+                        <PhotoPopUpViewModal
                             photoModalVisible={this.state.photoModalVisible}
                             lastStepClicked={this.state.lastStepClicked}
                             onDescriptionChange={this.onPhotoModalDescriptionChange}

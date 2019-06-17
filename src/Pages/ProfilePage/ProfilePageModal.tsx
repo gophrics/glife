@@ -1,5 +1,5 @@
 import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
-import { BlobSaveAndLoad } from '../../Utilities/BlobSaveAndLoad';
+import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
 import { Page } from '../../Modals/ApplicationEnums';
 
 export class ProfilePageModal {

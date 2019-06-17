@@ -2,9 +2,9 @@ import * as React from 'react';
 import { View, Button, Text } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { Page } from '../Modals/ApplicationEnums';
-import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
+import { BlobSaveAndLoad } from '../Engine/BlobSaveAndLoad';
 import { SettingsModal } from '../Modals/SettingsModal';
-import { AuthProvider, RegisterUserModal } from '../Utilities/AuthProvider';
+import { AuthProvider, RegisterUserModal } from '../Engine/AuthProvider';
 import AsyncStorage from '@react-native-community/async-storage';
 
 interface IProps {

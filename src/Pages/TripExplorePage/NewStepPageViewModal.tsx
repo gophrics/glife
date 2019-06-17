@@ -2,13 +2,13 @@ import * as React from 'react'
 import { Text, View, ScrollView, Image, Modal, TextInput, Button, SafeAreaView, Dimensions } from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
 import { StepModal } from '../../Modals/StepModal';
-import { TripUtils } from '../../Utilities/TripUtils';
+import { TripUtils } from '../../Engine/TripUtils';
 import { ImageDataModal } from '../../Modals/ImageDataModal';
 import Region from '../../Modals/Region';
 import { ClusterModal } from '../../Modals/ClusterModal';
-import { ClusterProcessor } from '../../Utilities/ClusterProcessor';
+import { ClusterProcessor } from '../../Engine/ClusterProcessor';
 import { Page } from '../../Modals/ApplicationEnums';
-import * as PhotoLibraryProcessor from '../../Utilities/PhotoLibraryProcessor';
+import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor';
 
 interface IProps {
     visible: boolean,

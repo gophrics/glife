@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, TextInput, Button } from 'react-native'
 import { GoogleSigninButton, statusCodes } from 'react-native-google-signin';
-import { AuthProvider, RegisterUserModal, LoginUserModal } from '../../Utilities/AuthProvider'
+import { AuthProvider, RegisterUserModal, LoginUserModal } from '../../Engine/AuthProvider'
 import { Page } from '../../Modals/ApplicationEnums';
 
 interface IProps{ 

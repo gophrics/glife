@@ -15,9 +15,16 @@ export enum Page {
     LOGIN = 12,
     PREONBOARDING = 13,
     SEARCH = 14,
-    NOPERMISSIONIOS = 15
+    NOPERMISSIONIOS = 15,
+    CONFIRMUSERNAME = 16,
+    FEED = 17
 }
 
 export const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];
 
 export const SliderItems = [{ value: 0, label: 'Stats' }, { value: 1, label: 'Social' }, { value: 2, label: 'Travel' }];
+
+export interface HomeDataModal {
+    name: string,
+    timestamp: number
+}

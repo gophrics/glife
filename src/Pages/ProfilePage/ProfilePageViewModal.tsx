@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { View, Text, Button, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
-import { ProfileComponent } from '../UIComponents/ProfileComponent';
-import { WorldMapColouredComponent } from '../UIComponents/WorldMapColouredComponent';
-import { StatsAsCardComponent } from '../UIComponents/StatsAsCardComponent';
-import { TripComponent } from '../UIComponents/TripComponent';
-import { TripModal } from '../Modals/TripModal';
-import { Page } from '../Modals/ApplicationEnums';
-import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
-import ImagePicker from 'react-native-image-crop-picker';
+import { View, Text, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
+import { ProfileComponent } from '../../UIComponents/ProfileComponent';
+import { WorldMapColouredComponent } from '../../UIComponents/WorldMapColouredComponent';
+import { StatsAsCardComponent } from '../../UIComponents/StatsAsCardComponent';
+import { TripComponent } from '../../UIComponents/TripComponent';
+import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
+import { Page } from '../../Modals/ApplicationEnums';
+import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { MapPhotoPageModal } from '../Modals/MapPhotoPageModal';
-import { AuthProvider } from '../Utilities/AuthProvider';
+import { AuthProvider } from '../../Engine/AuthProvider';
 import { GoogleSignin } from 'react-native-google-signin';
+import { ProfilePageModal } from './ProfilePageModal';
+import { ProfilePageController } from './ProfilePageController';
 
 interface IState {
     bottom: number,
@@ -30,60 +30,41 @@ interface IProps {
 const HEADER_MAX_HEIGHT = Dimensions.get('window').height * .66
 const HEADER_MIN_HEIGHT = 0;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
-export default class ProfilePage extends React.Component<IProps, IState> {
+
+export default class ProfilePageViewModal extends React.Component<IProps, IState> {
     tripRenderArray: any = []
 
-    myData: MapPhotoPageModal;
+    Controller: ProfilePageController;
     constructor(props: IProps) {
         super(props)
 
         this.props.setNavigator(true)
-        this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
-        for (var trip of this.myData.trips) {
+        this.Controller = new ProfilePageController()
+
+        var trips = this.Controller.getTrips()
+        for (var trip of trips) {
             this.tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress} />)
             this.tripRenderArray.push(<View key={trip.tripId + 'v'} style={{ height: 10 }} />)
         }
 
-        console.log(this.myData)
         this.state = {
             bottom: 200,
             scrollY: new Animated.Value(0),
-            coverPicURL: this.myData.coverPicURL == undefined || this.myData.coverPicURL == "" ? "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" : this.myData.coverPicURL,
-            profilePicURL: this.myData.profilePicURL == undefined || this.myData.profilePicURL == "" ? "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" : this.myData.profilePicURL,
+            coverPicURL: this.Controller.getCoverPicURL() == undefined || this.Controller.getCoverPicURL() == "" ? "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" : this.Controller.getCoverPicURL(),
+            profilePicURL: this.Controller.getProfilePicURL() == undefined || this.Controller.getCoverPicURL() == "" ? "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" : this.Controller.getProfilePicURL(),
             refreshing: false
         }
     }
 
-
-
-  signInGoogleSilently = async () => {
-    try {
-    const userInfo = await GoogleSignin.signIn();
-    AuthProvider.LoginUserWithGoogle(userInfo.user.email, userInfo.idToken)
-    .then((res) => {
-      if(res) {
-        var data = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.SETTING]) || {}
-        data.loginProvider = 'GOOGLE'
-        data.loggedIn = true
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.SETTING], data)
-      }
-    })
-    } catch(error) {
-      // User not registered
-      console.log(error)
-    }
-  }
-
-    onTripPress = (tripModal: TripModal) => {
-        this.props.setPage(Page[Page.STEPEXPLORE], tripModal)
+    onTripPress = (tripModal: TripExplorePageModal) => {
+        this.props.setPage(Page[Page.TRIPEXPLORE], tripModal)
     }
 
     onProfilePicChange = (imageURL: string) => {
-        this.myData.profilePicURL = imageURL;
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], this.myData)
         this.setState({
             profilePicURL: imageURL
         })
+        this.Controller.onProfilePicChange(imageURL)
     }
 
     newTripButtonPress = () => {
@@ -91,14 +72,13 @@ export default class ProfilePage extends React.Component<IProps, IState> {
     }
 
     pickCoverPic = () => {
-        ImagePicker.openPicker({
-          }).then((image: any) => {
-            this.myData.coverPicURL = image.path;
-            BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], this.myData)
+        this.Controller.onCoverPicChangePress()
+        .then((res: any) => {
+            this.Controller.onCoverPicChange(res.path)
             this.setState({
-                coverPicURL: image.path
+                coverPicURL: res.path
             })
-          });
+        })
     }
 
     componentDidMount = () => {
@@ -148,11 +128,11 @@ export default class ProfilePage extends React.Component<IProps, IState> {
                         <ProfileComponent scrollY={this.state.scrollY} HEADER_SCROLL_DISTANCE={HEADER_SCROLL_DISTANCE} profilePic={this.state.profilePicURL} onProfilePicChange={this.onProfilePicChange} />
                     </View>
                 </Animated.View>
-                    <WorldMapColouredComponent visitedCountryList={this.myData.countriesVisited} />
+                    <WorldMapColouredComponent visitedCountryList={this.Controller.getCountriesVisitedArray()} />
                     <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 10 }}>
-                        <StatsAsCardComponent text={"You travelled " + this.myData.percentageWorldTravelled + "% of the world"} />
+                        <StatsAsCardComponent text={"You travelled " + this.Controller.getPercentageWorldTravelled() + "% of the world"} />
                         <View style={{ width: 10 }} />
-                        <StatsAsCardComponent text={"You've collected " + this.myData.countriesVisited.length + " flags"} />
+                        <StatsAsCardComponent text={"You've collected " + this.Controller.getNumberOfCountriesVisited() + " flags"} />
                     </View>
                     <View style={{ height: 10 }} />
                     {this.tripRenderArray}

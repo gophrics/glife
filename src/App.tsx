@@ -4,24 +4,25 @@ import {
   SafeAreaView
 } from 'react-native'
 import {Page} from './Modals/ApplicationEnums';
-import TripExplorePage from './Pages/TripExplorePage';
-import LoadingPage from './Pages/LoadingPage';
-import ProfilePage from './Pages/ProfilePage';
+import LoadingPageViewModal from './Pages/LoadingPage/LoadingPageViewModal';
+import ProfilePage from './Pages/ProfilePage/ProfilePageViewModal';
 import { TopNavigator } from './UIComponents/TopNavigator';
 import { OnBoardingPage } from './Pages/OnBoardingPage';
-import StepExplorePage from './Pages/StepExplorePage';
+import TripExplorePageViewModal from './Pages/TripExplorePage/TripExplorePageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
-import { NewTripPage } from './Pages/NewTripPage';
-import { BlobSaveAndLoad } from './Utilities/BlobSaveAndLoad';
+import { NewTripPage } from './Pages/NewTripPage/NewTripPageViewModal';
+import { BlobSaveAndLoad } from './Engine/BlobSaveAndLoad';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
-import { RegisterUserPage } from './Pages/RegisterUserPage';
-import { LoginUserPage } from './Pages/LoginUserPage';
+import { RegisterUserPage } from './Pages/SocialFlow/RegisterUserPage';
+import { LoginUserPage } from './Pages/SocialFlow/LoginUserPage';
 import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
 import { SearchPage } from './Pages/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
+import { ConfirmUsernamePage } from './Pages/SocialFlow/ConfirmUsernamePage';
+import { FeedPage } from './Pages/FeedPage';
 interface IState {
   page: string,
   navigatorVisible: boolean
@@ -99,17 +100,15 @@ export default class App extends React.Component<IProps, IState> {
         : <View />}
           {
             this.state.page == Page[Page.LOADING] ?
-              <LoadingPage setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
+              <LoadingPageViewModal setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
             : this.state.page == Page[Page.PROFILE] ? 
               <ProfilePage setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
-            : this.state.page == Page[Page.TRIPEXPLORE] ? 
-              <TripExplorePage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.PREONBOARDING] ? 
               <PreOnBoardingPage navigatorVisible={this.state.navigatorVisible} setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.ONBOARDING] ? 
               <OnBoardingPage navigatorVisible={this.state.navigatorVisible} onDone={this.setPage.bind(this)}/>
-            : this.state.page == Page[Page.STEPEXPLORE] ?
-              <StepExplorePage setPage={this.setPage.bind(this)} setNavigator={this.setNavigator}/>
+            : this.state.page == Page[Page.TRIPEXPLORE] ?
+              <TripExplorePageViewModal setPage={this.setPage.bind(this)} setNavigator={this.setNavigator}/>
             : this.state.page == Page[Page.SPLASHSCREEN] ? 
               <SplashScreen setNavigator={this.setNavigator} />
             : this.state.page == Page[Page.NEWTRIP] ? 
@@ -124,6 +123,10 @@ export default class App extends React.Component<IProps, IState> {
               <SearchPage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.NOPERMISSIONIOS] ? 
               <NoPermissionIOS setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.CONFIRMUSERNAME] ? 
+              <ConfirmUsernamePage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.FEED] ? 
+              <FeedPage setPage={this.setPage.bind(this)} />
             : <View />
           }
           

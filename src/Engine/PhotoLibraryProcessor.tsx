@@ -1,5 +1,5 @@
 import { CameraRoll, GetPhotosParamType, Platform } from 'react-native';
-import ImageDataModal from '../Modals/ImageDataModal';
+import { ImageDataModal } from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
 import { ClusterModal } from '../Modals/ClusterModal';
 

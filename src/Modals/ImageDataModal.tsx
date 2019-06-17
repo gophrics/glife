@@ -1,7 +1,7 @@
 import Region from './Region';
 import { GetPhotosReturnType } from 'react-native';
 
-export default class ImageDataModal {
+export class ImageDataModal {
     location: Region;
     image: string;
     timestamp: number;

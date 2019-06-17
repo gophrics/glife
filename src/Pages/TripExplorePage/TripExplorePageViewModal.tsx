@@ -5,17 +5,15 @@ import {
     ScrollView, View, Image, Text, TouchableOpacity
 } from 'react-native';
 import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
-import { StepComponent } from '../UIComponents/StepComponent';
-import { TripModal } from '../Modals/TripModal';
-import { StepModal } from '../Modals/StepModal';
-import Region from '../Modals/Region';
-import { NewStepPage } from './NewStepPage';
-import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
-import { Page } from '../Modals/ApplicationEnums';
-import { CustomButton } from '../UIComponents/CustomButton';
+import { StepComponent } from '../../UIComponents/StepComponent';
+import { StepModal } from '../../Modals/StepModal';
+import Region from '../../Modals/Region';
+import { NewStepPageViewModal } from './NewStepPageViewModal';
+import { Page } from '../../Modals/ApplicationEnums';
+import { CustomButton } from '../../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
-import { PhotoPopUpModal } from './PhotoPopUpModal';
-import LoadingPage from './LoadingPage';
+import { PhotoPopUpViewModal } from './PhotoPopUpViewModal';
+import { TripExplorePageController } from './TripExplorePageController';
 
 
 interface IState {
@@ -25,9 +23,9 @@ interface IState {
     photoModalVisible: boolean,
     newStep: boolean,
     newStepId: number,
-    myData: TripModal,
     lastStepClicked: StepModal
     editStepDescription: boolean
+    tripAsSteps: StepModal[]
 }
 
 interface IProps {
@@ -39,29 +37,29 @@ const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
 let snapOffsets: Array<number> = []
 
-export default class StepExplorePage extends React.Component<IProps, IState> {
+export default class TripExplorePageViewModal extends React.Component<IProps, IState> {
 
     travelCardArray: any = []
     mapView: MapView | null = null;
 
+    Controller: TripExplorePageController;
     constructor(props: any) {
         super(props);
         this.props.setNavigator(false)
 
-        var trip = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.STEPEXPLORE]);
+        this.Controller = new TripExplorePageController()
+
         this.state = {
-            myData: trip,
             markers: [],
             imageUriData: [],
             polylineArr: [],
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            lastStepClicked: trip.tripAsSteps[0],
-            editStepDescription: false
+            lastStepClicked: this.Controller.getFirstStep(),
+            editStepDescription: false,
+            tripAsSteps: this.Controller.getSteps()
         }
-
-
         this.initialize();
     }
 
@@ -71,11 +69,11 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         var markers: Region[] = []
         var imageUriData: string[] = []
         var key: number = 0;
-        var tripStartTimestamp = this.state.myData.tripAsSteps[0].startTimestamp;
+        var tripStartTimestamp = this.state.tripAsSteps[0].startTimestamp;
         var polylineArr = []
         snapOffsets = [];
 
-        for (var step of this.state.myData.tripAsSteps) {
+        for (var step of this.state.tripAsSteps) {
             this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
             this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
 
@@ -93,19 +91,16 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            lastStepClicked: this.state.myData.tripAsSteps[0]
+            lastStepClicked: this.state.tripAsSteps[0]
         })
     }
 
-    componentDidMount() {
-        this.zoomToStep(this.state.myData.tripAsSteps[0])
-    }
-
+    
     onNewStepPress = (step: StepModal) => {
         this.setState({
-            newStep: true,
-            newStepId: step.id + 1
+            newStep: true
         })
+        this.Controller.onNewStepPress(step)
     }
 
     zoomToStep = (step: StepModal) => {
@@ -143,8 +138,8 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     }
 
     onScroll = (event: any) => {
-        if (this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))] == undefined) return;
-        this.zoomToStep(this.state.myData.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))])
+        if (this.state.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))] == undefined) return;
+        this.zoomToStep(this.state.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))])
     }
 
     onBackPress = () => {
@@ -160,33 +155,14 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
             return;
         }
 
-        //Right now, we're calcualting step based on images, and not overriding them
-        _step.id = this.state.newStepId;
-
-        var trip: TripModal = this.state.myData as TripModal
-        trip.tripAsSteps.push(_step);
-        trip.tripAsSteps.sort((a: StepModal, b: StepModal) => {
-            return a.id - b.id;
-        })
-
-        trip = await LoadingPage.PopulateTripModalData(trip.tripAsSteps.slice(1, trip.tripAsSteps.length-1), trip.tripId)
-        trip.title = this.state.myData.title;
-
-        var profileData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
-        profileData = LoadingPage.UpdateProfileDataWithTrip(profileData, trip)
+        await this.Controller.newStepDone(_step)
         
-        profileData.trips.sort((a: TripModal, b: TripModal) => {
-            return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
-        })
-
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], profileData)
-
         this.setState({
-            myData: trip,
             newStep: false
         })
+
+        this.Controller = new TripExplorePageController()
         this.initialize()
-        
     }
 
     // Photo Modal methods
@@ -195,17 +171,10 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
     }
 
     onPhotoModalDismiss = () => {
-        var trip = this.state.myData
-        for (var _step of trip.tripAsSteps) {
-            if (_step.id == this.state.lastStepClicked.id) {
-                _step = this.state.lastStepClicked
-            }
-            BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.state.myData)
-            this.setState({
-                myData: trip,
-                editStepDescription: false
-            })
-        }
+        this.setState({
+            editStepDescription: false
+        })
+        this.Controller.onPhotoModalDismiss(this.state.lastStepClicked)  
     }
 
     onPhotoModalClose = () => {
@@ -214,18 +183,21 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
         })
     }
 
+    onMapLayout = () => {
+        this.zoomToStep(this.state.tripAsSteps[0])
+    }
+
     render() {
-        if (this.state.myData == undefined ||
-            this.state.lastStepClicked == undefined) return (<View />)
         return (
             <View>
                 <View>
                     <MapView style={{ width: '100%', height: '80%' }}
                         ref={ref => this.mapView = ref}
                         mapType='hybrid'
+                        onLayout={this.onMapLayout}
                     >
-                        {
-                            this.state.myData.tripAsSteps.map((step, index) => (
+                        { 
+                            this.state.tripAsSteps.map((step, index) => (
                                 step.masterMarker != undefined ?
                                     <Marker
                                         key={index}
@@ -246,12 +218,13 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
 
                             ))
                         }
-                        <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} />
+                        <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} /> 
                         <Callout>
                             <TouchableOpacity onPress={this.onBackPress.bind(this)} style={{ padding: 10 }} >
                                 <Icon size={40} style={{ padding: 10 }} name='x' />
                             </TouchableOpacity>
                         </Callout>
+                        
                     </MapView>
                     {
                         <ScrollView decelerationRate={0.6} snapToOffsets={snapOffsets} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: '20%', width: '100%', overflow: 'hidden' }}>
@@ -261,7 +234,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 </View>
                 {
                     this.state.photoModalVisible ?
-                        <PhotoPopUpModal
+                        <PhotoPopUpViewModal
                             photoModalVisible={this.state.photoModalVisible}
                             lastStepClicked={this.state.lastStepClicked}
                             onDescriptionChange={this.onPhotoModalDescriptionChange}
@@ -272,7 +245,7 @@ export default class StepExplorePage extends React.Component<IProps, IState> {
                 }
                 {
                     this.state.newStep ?
-                        <NewStepPage setPage={this.props.setPage} visible={this.state.newStep} onClose={this.newStepOnDone} />
+                        <NewStepPageViewModal setPage={this.props.setPage} visible={this.state.newStep} onClose={this.newStepOnDone} />
                         : <View />
                 }
             </View>

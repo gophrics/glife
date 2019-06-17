@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Image, View, TextInput, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { BlobSaveAndLoad } from '../Utilities/BlobSaveAndLoad';
-import { Page } from '../Modals/ApplicationEnums';
-import { TravelUtils } from '../Utilities/TravelUtils';
+import { BlobSaveAndLoad } from '../Engine/BlobSaveAndLoad';
+import { Page, HomeDataModal } from '../Modals/ApplicationEnums';
+import { TripUtils } from '../Engine/TripUtils';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 interface IProps {
@@ -18,7 +18,7 @@ interface IState {
     valid: boolean
     validationInProgress: boolean
     culprits: Array<number>,
-    homes: { name: string, timestamp: number }[]
+    homes: HomeDataModal[]
 }
 
 const deviceHeight = Dimensions.get('screen').height;
@@ -87,7 +87,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                 culprits[count] = 1;
                 count++; continue;
             }
-            var res = await TravelUtils.getCoordinatesFromLocation(home.name)
+            var res = await TripUtils.getCoordinatesFromLocation(home.name)
             res = this.removeDuplicates(res)
             var j = 1;
             this.tempLocations.push([])
@@ -196,8 +196,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
     }
 
     setLocation = (index: number, obj: any) => {
-        console.log(index)
-        console.log(obj)
+
         var homes = this.state.homes;
 
         homes[index].name = obj.name.trim() + ", " + obj.country.trim()
@@ -216,12 +215,12 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                     <Text style={{ marginTop: 20, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Tell us your home cities, for the magic to happen</Text>
                 </View>
                 <View style={{ height: '100%' }}>
-                    <ScrollView style={{ marginTop: 5, padding: 20}} contentInset={{ top: 0, bottom: 500 + this.state.homes.length*50}} >
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}  style={{ marginTop: 5, padding: 20, flexGrow: 1}} contentInset={{ bottom: 500 + this.state.homes.length*50}} >
                         {
                             this.state.homes.map((el, i) => (
                                 <View key={i + 'a'} style={{ flexDirection: 'row'}}>
                                     <TouchableOpacity onPress={() => this.onCalenderClick(i)}>
-                                        <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../Assets/icons8-calendar-52.png')} />
+                                        <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../../Assets/icons8-calendar-52.png')} />
                                     </TouchableOpacity>
                                     <View style={{ flexDirection: 'column', width:'90%', alignSelf:'center'}}>
                                         <TextInput

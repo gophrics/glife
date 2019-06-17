@@ -1,17 +1,16 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
-import { TripModal } from '../Modals/TripModal';
-import { TravelUtils } from '../Utilities/TravelUtils';
+import { TripExplorePageModal } from '../Pages/TripExplorePage/TripExplorePageModal';
+import { TripUtils } from '../Engine/TripUtils';
 
 interface IState {
     location: string
 }
 
 interface IProps {
-    tripModal: TripModal
-    onPress: (tripModal: TripModal) => void
+    tripModal: TripExplorePageModal
+    onPress: (tripModal: TripExplorePageModal) => void
 }
-
 
 const deviceHeight = Dimensions.get('window').height
 export class TripComponent extends React.Component<IProps, IState> {
@@ -39,7 +38,7 @@ export class TripComponent extends React.Component<IProps, IState> {
     getLocations() {
         if(this.retryCount <= 0) return;
         this.retryCount--;
-        TravelUtils.getLocationFromCoordinates(this.props.tripModal.location.latitude,
+        TripUtils.getLocationFromCoordinates(this.props.tripModal.location.latitude,
             this.props.tripModal.location.longitude)
         .then((res) => {
             if(res.address) {

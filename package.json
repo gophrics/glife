@@ -9,7 +9,7 @@
     "android": "node node_modules/react-native/local-cli/cli.js run-android"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.4.2",
+    "@react-native-community/async-storage": "^1.5.0",
     "@types/react-native-datepicker": "^1.7.0",
     "@types/react-native-google-signin": "^1.0.2",
     "@types/react-native-sqlite-storage": "^3.3.1",
@@ -19,7 +19,7 @@
     "install": "^0.12.2",
     "npm": "^6.9.0",
     "react": "^16.8.3",
-    "react-native": "0.59.8",
+    "react-native": "^0.59.9",
     "react-native-datepicker": "^1.7.2",
     "react-native-google-signin": "^2.0.0",
     "react-native-image-crop-picker": "^0.24.1",
@@ -36,8 +36,8 @@
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/runtime": "^7.4.4",
-    "@types/react": "^16.8.16",
-    "@types/react-native": "^0.57.51",
+    "@types/react": "^16.8.20",
+    "@types/react-native": "^0.57.63",
     "awesome-typescript-loader": "^5.2.1",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
@@ -49,7 +49,7 @@
     "tslint-eslint-rules": "^4.1.1",
     "tslint-react": "^3.6.0",
     "tslint-react-recommended": "^1.0.15",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.2"
   },
   "jest": {
     "preset": "react-native"

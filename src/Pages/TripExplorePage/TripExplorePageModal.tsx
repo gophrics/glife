@@ -1,8 +1,10 @@
-import { StepModal } from "./StepModal";
-import Region from "./Region";
-import { TravelUtils } from "../Utilities/TravelUtils";
+import { StepModal } from "../../Modals/StepModal";
+import Region from "../../Modals/Region";
+import { TripUtils } from "../../Engine/TripUtils";
+import { BlobSaveAndLoad } from "../../Engine/BlobSaveAndLoad";
+import { Page } from "../../Modals/ApplicationEnums";
 
-export class TripModal {
+export class TripExplorePageModal {
     tripId: number
     tripAsSteps: StepModal[]
     location : Region
@@ -15,18 +17,39 @@ export class TripModal {
     startDate: string
     endDate: string
     masterPicURL: string
-    
 
-    checkAndFillData = () => {
-        if(this.tripAsSteps.length >=3 && this.title == "") {
-            TravelUtils.getLocationFromCoordinates(this.location.latitude, this.location.longitude)
-            .then((res) => {
-                if(res.address) {
-                    this.title = res.address.country
-                    this.countryCode = res.address.country_code
-                }
-            })
-        }
+    
+    constructor() {
+        this.tripId = 0;
+        this.tripAsSteps = [];
+        this.location = {} as Region
+        this.temperature = ""
+        this.daysOfTravel = 0
+        this.distanceTravelled = 0
+        this.activities = []
+        this.startDate = ""
+        this.endDate = ""
+        this.title = ""
+        this.countryCode = []
+        this.masterPicURL = ""
+        
+        var trip: TripExplorePageModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.TRIPEXPLORE])
+        if(trip != undefined) this.CopyConstructor(trip)
+    }
+
+    CopyConstructor = (trip: TripExplorePageModal) => {
+        this.tripId = trip.tripId;
+        this.tripAsSteps = trip.tripAsSteps;
+        this.location = trip.location;
+        this.temperature = trip.temperature;
+        this.daysOfTravel = trip.daysOfTravel;
+        this.distanceTravelled = trip.distanceTravelled;
+        this.activities = trip.activities;
+        this.startDate = trip.startDate;
+        this.endDate = trip.endDate;
+        this.title = trip.title;
+        this.countryCode = trip.countryCode;
+        this.masterPicURL = trip.masterPicURL
     }
 
     populateAll = () => {
@@ -52,8 +75,8 @@ export class TripModal {
     }
 
     populateDates = () => {
-        this.startDate = TravelUtils.getDateFromTimestamp(this.tripAsSteps[0].startTimestamp);
-        this.endDate = TravelUtils.getDateFromTimestamp(this.tripAsSteps[this.tripAsSteps.length - 1].endTimestamp);
+        this.startDate = TripUtils.getDateFromTimestamp(this.tripAsSteps[0].startTimestamp);
+        this.endDate = TripUtils.getDateFromTimestamp(this.tripAsSteps[this.tripAsSteps.length - 1].endTimestamp);
     }
 
     populateLocation = () => {            
@@ -96,20 +119,4 @@ export class TripModal {
         this.title = tripName
     }
 
-    constructor() {
-        this.tripId = 0;
-        this.tripAsSteps = [];
-        this.location = {} as Region
-        this.temperature = ""
-        this.daysOfTravel = 0
-        this.distanceTravelled = 0
-        this.activities = []
-        this.startDate = ""
-        this.endDate = ""
-        this.title = ""
-        this.countryCode = []
-        this.masterPicURL = ""
-
-        //setInterval(this.checkAndFillData, Math.floor(Math.random()*1000))
-    }
 }

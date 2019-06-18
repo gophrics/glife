@@ -8,7 +8,6 @@ export class OnBoardingPageController {
     tempLocations: any[][];
     cursor: number;
     culprits: Array<number>;
-    dates: Array<string>;
     LoadingPageController: LoadingPageController;
     ProfilePageController: ProfilePageController;
 
@@ -17,9 +16,10 @@ export class OnBoardingPageController {
         this.tempLocations = [];
         this.cursor = 0;
         this.culprits = [];
-        this.dates = [];
         this.LoadingPageController = new LoadingPageController();
         this.ProfilePageController = new ProfilePageController();
+        if(this.LoadingPageController.GetAllHomesData().length == 0)
+            this.LoadingPageController.AddEmptyHome()
     }
 
     GetAllHomesData = () => {
@@ -28,10 +28,6 @@ export class OnBoardingPageController {
 
     GetHomeData = (index: number) => {
         return this.LoadingPageController.GetHomeData(index)
-    }
-
-    GetAllDates = () => {
-        return this.dates
     }
 
     GetName = () : string => {
@@ -65,8 +61,6 @@ export class OnBoardingPageController {
         if (this.LoadingPageController.GetAllHomesData().length <= this.cursor + 1) 
             this.LoadingPageController.AddEmptyHome()
 
-        this.dates[this.cursor] = dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
-
         var home = this.LoadingPageController.GetHomeData(this.cursor)
         home.timestamp = dateObject.getTime();
         
@@ -85,21 +79,19 @@ export class OnBoardingPageController {
 
     onDeleteHome = (index: number) => {
         var homes = []
-        var dates = []
         for (var i = 0; i < this.LoadingPageController.GetAllHomesData().length; i++) {
             if (i != index) {
+
                 if (i == index - 1) {
-                    homes.push(
-                    {   name: this.LoadingPageController.GetHomeData(i).name, 
-                        timestamp: this.LoadingPageController.GetHomeData(i).timestamp == 0 ? NaN : this.LoadingPageController.GetHomeData(i).timestamp 
+                    homes.push({
+                        name: this.LoadingPageController.GetHomeData(i).name,
+                        timestamp: this.LoadingPageController.GetHomeData(index).timestamp
                     })
-                    dates.push(this.dates[index])
-                } else {
+                } else 
                     homes.push(this.LoadingPageController.GetHomeData(i))
-                    dates.push(this.dates[i])
-                }
             }
         }
+        this.LoadingPageController.SetAllHomeData(homes)
     }
 
 

@@ -11,7 +11,9 @@ export class NewTripPageModal {
         this.data = new TripExplorePageModal()
         this.endTimestamp = 0
 
-        this.CopyConstructor(BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP]))
+        var data = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.NEWTRIP])
+        if(data != undefined)
+            this.CopyConstructor(data)
     }
 
     CopyConstructor = (modal: NewTripPageModal) => {

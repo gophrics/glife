@@ -5,7 +5,15 @@ export class LoadingPageModal {
     homeData: Array<HomeDataModal>;
 
     constructor() {
-        this.homeData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
+        this.homeData = []
+        
+        var data = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
+        if(data != undefined)
+            this.CopyConstructor(data) 
+    }
+
+    CopyConstructor = (modal: LoadingPageModal) => {
+        this.homeData = modal.homeData
     }
 
     Save() {

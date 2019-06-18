@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-community/async-storage'
-
+import { ClusterModal } from '../Modals/ClusterModal';
+ 
 export class BlobSaveAndLoad {
 
     private pageDataPipe: {[ key: string] : any} = {}
-    homeData: any = {}
+    homeData: {[key:number]: ClusterModal} = {}
     endTimestamp: number = 0
 
     public static Instance = new BlobSaveAndLoad();

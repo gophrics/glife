@@ -50,6 +50,7 @@ export class LoadingPageController {
         name: "",
         timestamp: 0
       } as HomeDataModal)
+      this.Modal.Save()
     }
 
     RequestPermissionAndroid = async() : Promise<boolean> => {
@@ -99,9 +100,10 @@ export class LoadingPageController {
         await TripUtils.GenerateHomeData(this.Modal.homeData)
         
         try {
-            this.ProfilePageController.ClearAndUpdateProfileDataWithAllTrips(await this.TripExplorePageController.GenerateTripFromPhotos(photoRollInfos))
+            var trips = await this.TripExplorePageController.GenerateTripFromPhotos(photoRollInfos)
+            this.ProfilePageController.ClearAndUpdateProfileDataWithAllTrips(trips)
         } catch (error) {
-            console.log(error)
+            console.error(error)
             return true;
         }
         return true

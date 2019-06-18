@@ -4,7 +4,6 @@ import { StepModal } from '../../Modals/StepModal'
 import { BlobSaveAndLoad } from "../../Engine/BlobSaveAndLoad";
 import { TripUtils } from '../../Engine/TripUtils';
 import { ProfilePageModal } from "../ProfilePage/ProfilePageModal";
-import { TripExplorePageModal } from "../TripExplorePage/TripExplorePageModal";
 
 export class NewTripPageController {
 

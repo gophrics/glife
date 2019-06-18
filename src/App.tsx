@@ -7,7 +7,7 @@ import {Page} from './Modals/ApplicationEnums';
 import LoadingPageViewModal from './Pages/LoadingPage/LoadingPageViewModal';
 import ProfilePage from './Pages/ProfilePage/ProfilePageViewModal';
 import { TopNavigator } from './UIComponents/TopNavigator';
-import { OnBoardingPage } from './Pages/OnBoardingPage';
+import { OnBoardingPageViewModal } from './Pages/OnBoardingPage/OnBoardingPageViewModal';
 import TripExplorePageViewModal from './Pages/TripExplorePage/TripExplorePageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/NewTripPage/NewTripPageViewModal';
@@ -23,6 +23,7 @@ import { SearchPage } from './Pages/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
 import { ConfirmUsernamePage } from './Pages/SocialFlow/ConfirmUsernamePage';
 import { FeedPage } from './Pages/FeedPage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface IState {
   page: string,
@@ -43,7 +44,7 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    // AsyncStorage.clear()
+    //AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
@@ -107,7 +108,7 @@ export default class App extends React.Component<IProps, IState> {
             : this.state.page == Page[Page.PREONBOARDING] ? 
               <PreOnBoardingPage navigatorVisible={this.state.navigatorVisible} setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.ONBOARDING] ? 
-              <OnBoardingPage navigatorVisible={this.state.navigatorVisible} onDone={this.setPage.bind(this)}/>
+              <OnBoardingPageViewModal navigatorVisible={this.state.navigatorVisible} onDone={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.TRIPEXPLORE] ?
               <TripExplorePageViewModal setPage={this.setPage.bind(this)} setNavigator={this.setNavigator}/>
             : this.state.page == Page[Page.SPLASHSCREEN] ? 

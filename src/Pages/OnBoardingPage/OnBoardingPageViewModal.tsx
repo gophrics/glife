@@ -1,18 +1,17 @@
 import * as React from 'react'
 import { Image, View, TextInput, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { HomeDataModal } from '../../Modals/ApplicationEnums';
+import { HomeDataModal, Page } from '../../Modals/ApplicationEnums';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { OnBoardingPageController } from './OnBoardingPageController';
 
 interface IProps {
     navigatorVisible: boolean
-    onDone: (page: string, data: any) => void
+    onDone: (page: string) => void
 }
 
 interface IState {
     showPicker: boolean,
-    dates: Array<string>
     validationInProgress: boolean
     culprits: Array<number>,
     homes: Array<HomeDataModal>
@@ -20,22 +19,23 @@ interface IState {
 
 const deviceHeight = Dimensions.get('screen').height;
 
-export class OnBoardingPage extends React.Component<IProps, IState> {
+export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
 
     cachedDate: Date = new Date();
     Controller: OnBoardingPageController;
 
     constructor(props: IProps) {
         super(props)
-        this.state = {
-            showPicker: false,
-            dates: ["Long long ago.."],
-            validationInProgress: false,
-            culprits: [0],
-            homes: [{ name: "", timestamp: 0 }]
-        }
         
         this.Controller = new OnBoardingPageController()
+        this.state = {
+            showPicker: false,
+            validationInProgress: false,
+            culprits: [0],
+            homes: this.Controller.GetAllHomesData()
+        }
+
+        this.validateData()
     }
 
     getTempLocations = () => {
@@ -71,7 +71,6 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             this.Controller.onCalenderConfirm(dateObject)
             this.setState({
                 showPicker: false,
-                dates: this.Controller.dates
             })
         }
     }
@@ -95,6 +94,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
             .then((res) => {
                 if (res) {
                     this.Controller.SetAllHomeData(this.state.homes)
+                    this.props.onDone(Page[Page.LOADING])
                 }
             })
     }
@@ -104,7 +104,6 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
 
         this.setState({
             homes: this.Controller.GetAllHomesData(),
-            dates: this.Controller.GetAllDates()
         })
     }
 
@@ -129,7 +128,7 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                 <View style={{ height: '100%' }}>
                     <ScrollView contentContainerStyle={{ flexGrow: 1 }}  style={{ marginTop: 5, padding: 20, flexGrow: 1}} contentInset={{ bottom: 500 + this.state.homes.length*50}} >
                         {
-                            this.state.homes.map((el, i) => (
+                            this.state.homes.map((home, i) => (
                                 <View key={i + 'a'} style={{ flexDirection: 'row'}}>
                                     <TouchableOpacity onPress={() => this.onCalenderClick(i)}>
                                         <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../../Assets/icons8-calendar-52.png')} />
@@ -142,14 +141,14 @@ export class OnBoardingPage extends React.Component<IProps, IState> {
                                             onChangeText={(text) => this.onLocationTextChange(i, text)}
                                             style={[{ fontSize: 22, padding: 3, color: 'white', textAlign: 'center' }, { borderWidth: ((this.state.culprits[i] != 0) ? 1 : 0), borderColor: ((this.state.culprits[i] != 0) ? 'red' : 'white') }]}
                                             textContentType={'addressCity'}
-                                        >{el.name}</TextInput>
+                                        >{home.name}</TextInput>
                                         {this.state.culprits[i] != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overlords can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India"} </Text> : <View />}
                                         {this.state.culprits[i] == 2 ? <Text style={{ color: 'lightgrey', padding: 3 }}>Places found: </Text> : <View />}
                                         {this.state.culprits[i] == 2 && this.getTempLocations()[i] != undefined? 
                                             this.getTempLocations()[i].map((el, index) => (
                                                 <Text style={{ color: 'lightgrey'}} onPress={(e: any) => this.setLocation(i, el)}>{"\n " + (index+1) + ". " + el.name.trim() + ", " + el.country.trim() + "\n"}</Text>
                                             )) : <View />}
-                                        <Text style={{ color: 'white', fontSize: 20, marginBottom: 20, textAlign:'center'  }}>{el.timestamp == 0 ? "Long long ago" : this.Controller.GetDateAsString(el.timestamp)} - {i == 0 ? "Current" : this.Controller.GetHomeData(i-1)}</Text>
+                                        <Text style={{ color: 'white', fontSize: 20, marginBottom: 20, textAlign:'center'  }}>{home.timestamp == 0 ? "Long long ago" : this.Controller.GetDateAsString(home.timestamp)} - {i == 0 ? "Current" : this.Controller.GetDateAsString(this.Controller.GetHomeData(i-1).timestamp)}</Text>
                                     </View>
                                     {i != 0 ?
                                     <TouchableOpacity onPress={() => this.onDeleteHome(i)}>

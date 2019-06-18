@@ -56,8 +56,10 @@ export class ProfilePageController {
     }
 
     ClearAndUpdateProfileDataWithAllTrips = (trips: TripExplorePageModal[]) => {
+
         for(var trip of trips)
             this.Modal.countriesVisited.push.apply(this.Modal.countriesVisited, trip.countryCode)
+
         let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
         this.Modal.countriesVisited = x(this.Modal.countriesVisited); // Removing duplicates
         this.Modal.percentageWorldTravelled = Math.floor(this.Modal.countriesVisited.length*100/186)
@@ -67,7 +69,6 @@ export class ProfilePageController {
         })
         
         this.Modal.Save()
-        return this.Modal
     }
 
     UpdateProfileDataWithTrip (trip: TripExplorePageModal) : ProfilePageModal {
@@ -78,7 +79,7 @@ export class ProfilePageController {
         this.Modal.percentageWorldTravelled = Math.floor(this.Modal.countriesVisited.length*100/186)
 
         for(var _trip of this.Modal.trips) {
-            if(_trip.tripId == trip.tripId){ _trip = trip; continue; }
+            if(_trip.tripId == trip.tripId){ _trip.CopyConstructor(trip); continue; }
         }
 
         this.Modal.trips.sort((a: TripExplorePageModal, b: TripExplorePageModal) => {

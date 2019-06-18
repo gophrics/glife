@@ -1,6 +1,5 @@
 import { ClusterModal } from "../Modals/ClusterModal";
 import { StepModal } from "../Modals/StepModal";
-import { DBSCAN } from "./DBSCAN";
 import Region from "../Modals/Region";
 
 export class ClusterProcessor {
@@ -90,6 +89,7 @@ export class ClusterProcessor {
         }
 
         if(trip.length > 0) trips.push(trip)
+        console.log(trips)
         return trips;
     }
 

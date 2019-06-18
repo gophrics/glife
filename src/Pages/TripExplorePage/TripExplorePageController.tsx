@@ -16,13 +16,13 @@ export class TripExplorePageController {
     ProfilePageController: ProfilePageController
 
     constructor() {
-        this.Modal = new TripExplorePageModal()
         this.NewStepId = 2;
         this.ProfilePageController = new ProfilePageController()
-    }
-
-    Save = () => {
-        this.Modal.Save()
+        this.Modal = new TripExplorePageModal()
+        var trips = this.ProfilePageController.getTrips()
+        for(var trip of trips) {
+            if(trip.tripId == TripUtils.LAST_TRIP_PRESS) { this.Modal.CopyConstructor(trip); break; }
+        }
     }
 
     onNewStepPress = (step: StepModal) => {

@@ -10,7 +10,8 @@ const ServerURLWithoutEndingSlash = 'http://beerwithai.com'
 export class TripUtils {
     static TOTAL_TO_LOAD = 100;
     static FINISHED_LOADING = 0;
-
+    static LAST_TRIP_PRESS = 0;
+    
     static GenerateTripId = () : number => {
         return Math.random()*10000000
     }

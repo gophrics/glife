@@ -8,6 +8,7 @@ export class ProfilePageController {
     
     constructor() {
         this.Modal = new ProfilePageModal()
+        console.log(this.Modal)
     }
     
     onProfilePicChange = (profilePicURL: string) => {
@@ -78,13 +79,22 @@ export class ProfilePageController {
         this.Modal.countriesVisited = x(this.Modal.countriesVisited); // Removing duplicates
         this.Modal.percentageWorldTravelled = Math.floor(this.Modal.countriesVisited.length*100/186)
 
+        var newTrip: boolean = true;
         for(var _trip of this.Modal.trips) {
-            if(_trip.tripId == trip.tripId){ _trip.CopyConstructor(trip); continue; }
+            if(_trip.tripId == trip.tripId){ 
+                _trip.CopyConstructor(trip); newTrip = false; break; 
+            }
         }
 
+        if(newTrip) {
+            this.Modal.trips.push(trip)
+        }
+        
         this.Modal.trips.sort((a: TripExplorePageModal, b: TripExplorePageModal) => {
             return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
         })
+
+        console.log(this.Modal)
         
         this.Modal.Save()
 

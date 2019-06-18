@@ -6,12 +6,9 @@ import { StatsAsCardComponent } from '../../UIComponents/StatsAsCardComponent';
 import { TripComponent } from '../../UIComponents/TripComponent';
 import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
 import { Page } from '../../Modals/ApplicationEnums';
-import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { AuthProvider } from '../../Engine/AuthProvider';
-import { GoogleSignin } from 'react-native-google-signin';
-import { ProfilePageModal } from './ProfilePageModal';
 import { ProfilePageController } from './ProfilePageController';
+import { TripUtils } from '../../Engine/TripUtils';
 
 interface IState {
     bottom: number,
@@ -57,7 +54,8 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
     }
 
     onTripPress = (tripModal: TripExplorePageModal) => {
-        this.props.setPage(Page[Page.TRIPEXPLORE], tripModal)
+        TripUtils.LAST_TRIP_PRESS = tripModal.tripId
+        this.props.setPage(Page[Page.TRIPEXPLORE])
     }
 
     onProfilePicChange = (imageURL: string) => {

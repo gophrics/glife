@@ -3,13 +3,16 @@ import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor';
 import { StepModal } from '../../Modals/StepModal'
 import { BlobSaveAndLoad } from "../../Engine/BlobSaveAndLoad";
 import { TripUtils } from '../../Engine/TripUtils';
-import { ProfilePageModal } from "../ProfilePage/ProfilePageModal";
+import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 
 export class NewTripPageController {
 
     Modal: NewTripPageModal
+    ProfilePageController: ProfilePageController;
+
     constructor() {
         this.Modal = new NewTripPageModal()
+        this.ProfilePageController = new ProfilePageController()
     }
 
     setTripTitle = (title: string) => {
@@ -57,9 +60,7 @@ export class NewTripPageController {
 
         this.Modal.data.tripId = TripUtils.GenerateTripId()
 
-        var profileData: ProfilePageModal = new ProfilePageModal() 
-        profileData.trips.push(this.Modal.data)
-        profileData.Save()
+        this.ProfilePageController.UpdateProfileDataWithTrip(this.Modal.data)
         
         return true
     }

@@ -75,7 +75,6 @@ export default class App extends React.Component<IProps, IState> {
   }
 
   sliderChange(item: string) {
-    console.log("Slider changed!! " + item);
     this.setState({
       page: item
     })

@@ -92,7 +92,7 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
         return (
             <View style={{ height: '100%' }} >
 
-                <ScrollView contentContainerStyle={{ paddingBottom: 20}} style={{ flex: 1 }}
+                <ScrollView contentContainerStyle={{ paddingBottom: 200}} style={{ flex: 1 }}
                     scrollEventThrottle={1}
                     onScroll={Animated.event(	
                         [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]

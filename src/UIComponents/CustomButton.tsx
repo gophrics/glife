@@ -21,7 +21,6 @@ export class CustomButton extends React.Component<IProps, IState> {
     }
 
     onPress = (e: any) => {
-        console.log(this.props.step.id)
         this.props.onPress(this.props.step);
     }
 

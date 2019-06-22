@@ -92,12 +92,12 @@ export class LoadingPageController {
         
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
 
+        await TripUtils.GenerateHomeData(this.Modal.homeData)
+        
         // Create a No photos found warning page
         if(photoRollInfos.length == 0) {
             return true
         }
-
-        await TripUtils.GenerateHomeData(this.Modal.homeData)
         
         try {
             var trips = await this.TripExplorePageController.GenerateTripFromPhotos(photoRollInfos)

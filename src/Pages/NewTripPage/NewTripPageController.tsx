@@ -31,6 +31,7 @@ export class NewTripPageController {
     }
 
     processNewTrip = () : boolean => {
+
         if(!this.validateInputs()) return false
 
         var today: Date = new Date()

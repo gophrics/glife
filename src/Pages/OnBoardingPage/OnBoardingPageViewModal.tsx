@@ -128,7 +128,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                     <Text style={{ marginTop: 20, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Tell us your home cities, for the magic to happen</Text>
                 </View>
                 <View style={{ flex: 1, height: '100%' }}>
-                    <ScrollView contentContainerStyle={{ paddingBottom: 20}}  style={{ flex: 1, marginTop: 5, padding: 20, flexGrow: 1}} contentInset={{ bottom: 500 + this.state.homes.length*50}} >
+                    <ScrollView contentContainerStyle={{ paddingBottom: 200}}  style={{ flex: 1, marginTop: 5, padding: 20, flexGrow: 1}} contentInset={{ bottom: 500 + this.state.homes.length*50}} >
                         {
                             this.state.homes.map((home, i) => (
                                 <View key={i + 'a'} style={{ flexDirection: 'row', alignSelf:'center'}}>

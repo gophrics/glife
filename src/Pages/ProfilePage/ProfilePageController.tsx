@@ -92,8 +92,6 @@ export class ProfilePageController {
         this.Modal.trips.sort((a: TripExplorePageModal, b: TripExplorePageModal) => {
             return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
         })
-
-        console.log(this.Modal)
         
         this.Modal.Save()
 

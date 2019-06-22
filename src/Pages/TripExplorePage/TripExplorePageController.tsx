@@ -72,7 +72,6 @@ export class TripExplorePageController {
                     return a.timestamp - b.timestamp
                 });
 
-                console.log(asynci)
                 var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
                 var _trip: TripExplorePageModal = await this.PopulateTripExplorePageModalData(_steps, TripUtils.GenerateTripId());
                 tripResult.push(_trip)

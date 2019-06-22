@@ -60,6 +60,9 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             editStepDescription: false,
             tripAsSteps: this.Controller.getSteps()
         }
+    }
+
+    componentDidMount = () => {
         this.initialize();
     }
 
@@ -74,7 +77,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         snapOffsets = [];
 
         for (var step of this.state.tripAsSteps) {
-            this.travelCardArray.push(<StepComponent key={key} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
+            this.travelCardArray.push(<StepComponent key={key + 's'} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
             this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
 
             snapOffsets.push(snapOffsets.length == 0 ? deviceWidth * 3 / 4 + 20 + 20 : snapOffsets[key - 1] + deviceWidth * 3 / 4 + 20 + 20)
@@ -95,7 +98,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         })
     }
 
-    
+
     onNewStepPress = (step: StepModal) => {
         this.setState({
             newStep: true
@@ -146,9 +149,9 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         this.props.setPage(Page[Page.PROFILE], null)
     }
 
-    newStepOnDone = async(_step: StepModal|null) => {
+    newStepOnDone = async (_step: StepModal | null) => {
 
-        if(_step == null) {
+        if (_step == null) {
             this.setState({
                 newStep: false
             })
@@ -156,7 +159,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         }
 
         await this.Controller.newStepDone(_step)
-        
+
         this.setState({
             newStep: false
         })
@@ -174,7 +177,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         this.setState({
             editStepDescription: false
         })
-        this.Controller.onPhotoModalDismiss(this.state.lastStepClicked)  
+        this.Controller.onPhotoModalDismiss(this.state.lastStepClicked)
     }
 
     onPhotoModalClose = () => {
@@ -196,36 +199,38 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                         mapType='hybrid'
                         onLayout={this.onMapLayout}
                     >
-                        { 
+                        {
+
                             this.state.tripAsSteps.map((step, index) => (
                                 step.masterMarker != undefined ?
                                     <Marker
-                                        key={index}
+                                        key={index + 'marker'}
                                         coordinate={step.masterMarker}
                                         style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox}
                                         onPress={(e) => this.onMarkerPress(e, step)}
                                     >
                                         {step.masterImageUri != "" ?
-                                            <View style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
+                                            <View key={index + 'markerview'} style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
                                                 <Image
+                                                    key={index + 'markerimage'}
                                                     style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
 
                                                 {this.state.lastStepClicked.id == step.id ? <Text style={{ color: 'white', fontStyle: 'italic' }}>{this.state.lastStepClicked.description}</Text> : <View />}
                                             </View>
-                                            : <View />}
+                                            : <View key={index + 'markerviewdot'} />}
                                     </Marker>
-                                    : <View />
+                                    : <View
+                                        key={index + 'markerdot'} />
 
                             ))
+
                         }
-                        <Polyline coordinates={this.state.polylineArr} lineCap='butt' lineJoin='bevel' strokeWidth={2} geodesic={true} /> 
-                        <Callout>
-                            <TouchableOpacity onPress={this.onBackPress.bind(this)} style={{ padding: 10 }} >
-                                <Icon size={40} style={{ padding: 10 }} name='x' />
-                            </TouchableOpacity>
-                        </Callout>
-                        
                     </MapView>
+                    <Callout>
+                        <TouchableOpacity onPress={this.onBackPress.bind(this)} style={{ padding: 10 }} >
+                            <Icon size={40} style={{ padding: 10 }} name='x' />
+                        </TouchableOpacity>
+                    </Callout>
                     {
                         <ScrollView decelerationRate={0.6} snapToOffsets={snapOffsets} scrollEventThrottle={16} onScroll={this.onScroll} horizontal={true} style={{ bottom: 0, left: 0, right: 0, height: '20%', width: '100%', overflow: 'hidden' }}>
                             {this.travelCardArray}

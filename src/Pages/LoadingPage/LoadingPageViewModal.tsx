@@ -80,13 +80,16 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
                 <View style={{width: "60%", alignSelf: 'center'}}>
                 {
                     Platform.OS == 'ios' ? 
-                        <ProgressViewIOS progressViewStyle={'bar'} progress={this.state.finished/this.state.total}/>
-                    : 
-                        <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={this.state.finished/this.state.total}/>
+                        <View>
+                            <ProgressViewIOS progressViewStyle={'bar'} progress={this.state.finished/this.state.total}/>
+            
+                            <View style={styles.spinnerContainer}>	
+                                <Spinner/>	
+                            </View>
+                        </View>
+                        : 
+                        <ProgressBarAndroid indeterminate={false} progress={this.state.finished/this.state.total}/>
                 }
-                </View>
-                <View style={styles.spinnerContainer}>	
-                    <Spinner/>	
                 </View>
             </View>
         );

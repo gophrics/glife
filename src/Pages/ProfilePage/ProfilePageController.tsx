@@ -8,7 +8,6 @@ export class ProfilePageController {
     
     constructor() {
         this.Modal = new ProfilePageModal()
-        console.log(this.Modal)
     }
     
     onProfilePicChange = (profilePicURL: string) => {

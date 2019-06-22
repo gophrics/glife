@@ -16,10 +16,27 @@ export class TripUtils {
         return Math.random()*10000000
     }
 
+    static ExtendHomeDataToDate = () => {
+        var today: Date = new Date()
+        var endTimestamp = BlobSaveAndLoad.Instance.endTimestamp
+        
+        var homesDataForClustering = BlobSaveAndLoad.Instance.homeData;
+        var dataToExtend = homesDataForClustering[endTimestamp]
+
+        while(endTimestamp <= today.getTime()/8.64e7) {
+            homesDataForClustering[endTimestamp] = dataToExtend;
+            endTimestamp++
+        }
+
+        BlobSaveAndLoad.Instance.endTimestamp = endTimestamp;
+        BlobSaveAndLoad.Instance.homeData = homesDataForClustering;
+        BlobSaveAndLoad.Instance.saveEngineData()
+    }
+
     static GenerateHomeData = async(homeInfo: Array<HomeDataModal>) : Promise<void> => {
 
         var homes: Array<{latitude: number, longitude: number, timestamp: number}> = [];
-        var homesDataForClustering: Array<unknown> = [];
+        var homesDataForClustering: {[key:number]: ClusterModal} = [];
 
         for(var element of homeInfo) {
             var res = await TripUtils.getCoordinatesFromLocation(element.name)
@@ -31,19 +48,21 @@ export class TripUtils {
             })
         }
 
-        var endTimestamp = Math.ceil((new Date()).getTime()/8.64e7);
+        var startTimestamp = Math.ceil((new Date()).getTime()/8.64e7);
+        var endTimestamp = startTimestamp;
         homes.sort((a, b) => {
             return b.timestamp - a.timestamp;
         })
 
         for(var data of homes) {
-            while(endTimestamp >= Math.floor(data.timestamp/8.64e7) && endTimestamp >= 0) {
-                homesDataForClustering[endTimestamp] = data as ClusterModal;
-                endTimestamp--;
+            while(startTimestamp >= Math.floor(data.timestamp/8.64e7) && startTimestamp >= 0) {
+                homesDataForClustering[startTimestamp] = data as ClusterModal;
+                startTimestamp--;
             }
         }
 
         BlobSaveAndLoad.Instance.homeData = homesDataForClustering;
+        BlobSaveAndLoad.Instance.startTimestamp = startTimestamp;
         BlobSaveAndLoad.Instance.endTimestamp = endTimestamp;
         BlobSaveAndLoad.Instance.saveEngineData()
     }

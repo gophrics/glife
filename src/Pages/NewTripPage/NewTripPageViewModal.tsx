@@ -67,7 +67,7 @@ export class NewTripPage extends React.Component<IProps, IState> {
             <View>
                 <Text style={{ marginTop: 20, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Enter the trip name. Add the steps later.</Text>
                 <View style={{justifyContent:'center', height: '60%', padding: 20}}>
-                    <TextInput placeholder="Enter trip name" style={{fontSize: 20, color:'white', padding: 5, alignSelf:'center', borderWidth: !this.state.valid ? 1 : 0, borderColor: 'red', borderRadius: 5}} onChangeText={(text) => this.onTitleChange(text)} />
+                    <TextInput placeholder="Enter trip name" style={{ textAlign:'center', fontSize: 20, color:'white', padding: 5, alignSelf:'center', borderWidth: !this.state.valid ? 1 : 0, borderColor: 'red', borderRadius: 5}} onChangeText={(text) => this.onTitleChange(text)} />
                 </View>
 
                 <View style={{justifyContent:'center', width:'20%', alignSelf:'center', alignContent:'center', backgroundColor:'white', margin:10, borderRadius: 5, padding: 10}}>

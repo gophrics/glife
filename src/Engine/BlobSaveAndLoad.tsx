@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import { ClusterModal } from '../Modals/ClusterModal';
+import { TripUtils } from './TripUtils';
  
 export class BlobSaveAndLoad {
 
     private pageDataPipe: {[ key: string] : any} = {}
     homeData: {[key:number]: ClusterModal} = {}
+    startTimestamp: number = 0
     endTimestamp: number = 0
 
     public static Instance = new BlobSaveAndLoad();
@@ -21,6 +23,7 @@ export class BlobSaveAndLoad {
     saveEngineData = () => {
         AsyncStorage.setItem('EngineData', JSON.stringify({
             homeData: this.homeData,
+            startTimestamp: this.startTimestamp,
             endTimestamp: this.endTimestamp
         }))
     }
@@ -41,8 +44,10 @@ export class BlobSaveAndLoad {
             if(data != null) {
                 var EngineData = JSON.parse(data)
                 this.homeData = EngineData.homeData
+                this.startTimestamp = EngineData.startTimestamp
                 this.endTimestamp = EngineData.endTimestamp
             }
+            TripUtils.ExtendHomeDataToDate()
         })
     }
 

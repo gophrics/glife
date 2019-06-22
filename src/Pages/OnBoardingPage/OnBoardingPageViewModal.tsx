@@ -34,7 +34,9 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
             culprits: [0],
             homes: this.Controller.GetAllHomesData()
         }
+    }
 
+    componentDidMount = () => {
         this.validateData()
     }
 
@@ -120,20 +122,20 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
     render() {
 
         return (
-            <View>
+            <View style={{flex: 1}}>
                 <View>
                     <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Hi {this.Controller.GetName()}</Text>
                     <Text style={{ marginTop: 20, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Tell us your home cities, for the magic to happen</Text>
                 </View>
-                <View style={{ height: '100%' }}>
-                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}  style={{ marginTop: 5, padding: 20, flexGrow: 1}} contentInset={{ bottom: 500 + this.state.homes.length*50}} >
+                <View style={{ flex: 1, height: '100%' }}>
+                    <ScrollView contentContainerStyle={{ paddingBottom: 500}}  style={{ flex: 1, marginTop: 5, padding: 20, flexGrow: 1}} contentInset={{ bottom: 500 + this.state.homes.length*50}} >
                         {
                             this.state.homes.map((home, i) => (
-                                <View key={i + 'a'} style={{ flexDirection: 'row'}}>
+                                <View key={i + 'a'} style={{ flexDirection: 'row', alignSelf:'center'}}>
                                     <TouchableOpacity onPress={() => this.onCalenderClick(i)}>
                                         <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../../Assets/icons8-calendar-52.png')} />
                                     </TouchableOpacity>
-                                    <View style={{ flexDirection: 'column', width:'90%', alignSelf:'center'}}>
+                                    <View style={{ flexDirection: 'column', alignSelf:'center'}}>
                                         <TextInput
                                             editable={true}
                                             onEndEditing={this.validateData}
@@ -160,17 +162,19 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                         }
                         <Text style={{alignSelf:'center'}}>To add previous home cities, select the calender date when you started living in the above city</Text>
                         
-                        <TouchableOpacity style={{ alignSelf: 'center', marginTop: 100, backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
+                        <TouchableOpacity style={{ alignSelf: 'center', marginTop: 10, backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
                             <Text style={{ fontSize: 22 }}>Next</Text>
                         </TouchableOpacity>
                     </ScrollView>
                 </View>
-                <DateTimePicker
-                    date={this.cachedDate}
-                    isVisible={this.state.showPicker}
-                    onConfirm={this.onCalenderConfirm.bind(this)}
-                    onCancel={this.onCalenderCancel.bind(this)}
-                />
+                <View>
+                    <DateTimePicker
+                        date={this.cachedDate}
+                        isVisible={this.state.showPicker}
+                        onConfirm={this.onCalenderConfirm.bind(this)}
+                        onCancel={this.onCalenderCancel.bind(this)}
+                    />
+                </View>
             </View>
         )
     }

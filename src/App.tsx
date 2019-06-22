@@ -21,9 +21,6 @@ import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
 import { SearchPage } from './Pages/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
-import { ConfirmUsernamePage } from './Pages/SocialFlow/ConfirmUsernamePage';
-import { FeedPage } from './Pages/FeedPage';
-import AsyncStorage from '@react-native-community/async-storage';
 
 interface IState {
   page: string,

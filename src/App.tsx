@@ -17,10 +17,13 @@ import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
 import { RegisterUserPage } from './Pages/SocialPage/RegisterUserPage';
 import { LoginUserPage } from './Pages/SocialPage/LoginUserPage';
-import { PreOnBoardingPage } from './Pages/PreOnBoardingPage';
+import { PreOnBoardingPage } from './Pages/OnBoardingPage/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
 import { SearchPage } from './Pages/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
+import { AskForLocationChangeDatePage } from './Pages/OnBoardingPage/AskForLocationChangeDatePage';
+import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
+import AsyncStorage from '@react-native-community/async-storage'
 
 interface IState {
   page: string,
@@ -41,7 +44,7 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    //AsyncStorage.clear()
+    AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {
@@ -97,14 +100,18 @@ export default class App extends React.Component<IProps, IState> {
           </View>
         : <View />}
           {
-            this.state.page == Page[Page.LOADING] ?
+            this.state.page == Page[Page.ASKFORDATE] ? 
+              <AskForLocationChangeDatePage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.ASKFORLOCATION] ? 
+              <AskForLocationPage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.LOADING] ?
               <LoadingPageViewModal setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
             : this.state.page == Page[Page.PROFILE] ? 
               <ProfilePage setNavigator={this.setNavigator} setPage={this.setPage.bind(this)} />
             : this.state.page == Page[Page.PREONBOARDING] ? 
               <PreOnBoardingPage navigatorVisible={this.state.navigatorVisible} setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.ONBOARDING] ? 
-              <OnBoardingPageViewModal navigatorVisible={this.state.navigatorVisible} onDone={this.setPage.bind(this)}/>
+              <OnBoardingPageViewModal navigatorVisible={this.state.navigatorVisible} setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.TRIPEXPLORE] ?
               <TripExplorePageViewModal setPage={this.setPage.bind(this)} setNavigator={this.setNavigator}/>
             : this.state.page == Page[Page.SPLASHSCREEN] ? 

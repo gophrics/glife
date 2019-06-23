@@ -17,7 +17,9 @@ export enum Page {
     SEARCH = 14,
     NOPERMISSIONIOS = 15,
     CONFIRMUSERNAME = 16,
-    FEED = 17
+    FEED = 17,
+    ASKFORDATE = 18,
+    ASKFORLOCATION = 20
 }
 
 export const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",];

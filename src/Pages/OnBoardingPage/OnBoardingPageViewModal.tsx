@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Image, View, TextInput, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native'
+import { Image, Button, View, TextInput, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { HomeDataModal, Page } from '../../Modals/ApplicationEnums';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -7,7 +7,7 @@ import { OnBoardingPageController } from './OnBoardingPageController';
 
 interface IProps {
     navigatorVisible: boolean
-    onDone: (page: string) => void
+    setPage: (page: string) => void
 }
 
 interface IState {
@@ -16,8 +16,6 @@ interface IState {
     culprits: Array<number>,
     homes: Array<HomeDataModal>
 }
-
-const deviceHeight = Dimensions.get('screen').height;
 
 export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
 
@@ -70,7 +68,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         this.cachedDate = dateObject;
         
         if(await this.validateData()) { 
-            this.Controller.onCalenderConfirm(dateObject)
+            this.Controller.onCalenderConfirm(this.Controller.cursor, dateObject)
             this.setState({
                 showPicker: false,
             })
@@ -96,7 +94,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
             .then((res) => {
                 if (res) {
                     this.Controller.SetAllHomeData(this.state.homes)
-                    this.props.onDone(Page[Page.LOADING])
+                    this.props.setPage(Page[Page.LOADING])
                 }
             })
     }
@@ -110,13 +108,17 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
     }
 
     setLocation = (index: number, obj: any) => {
-        this.Controller.SetHomeName(index, obj.name.trim() + ", " + obj.country.trim())
-        
+        this.onLocationTextChange(index, obj.name.trim() + ", " + obj.country.trim())
         this.setState({
             homes: this.Controller.GetAllHomesData()
         })
 
         this.validateData()
+    }
+
+    onNewHome = () => {            
+        this.Controller.onNewHomeClick()
+        this.props.setPage(Page[Page.ASKFORDATE])
     }
 
     render() {
@@ -160,7 +162,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                                 </View>
                             ))
                         }
-                        <Text style={{alignSelf:'center'}}>To add previous home cities, select the calender date when you started living in the above city</Text>
+                        <Button title={"Add New"} onPress={this.onNewHome} />
                         
                         <TouchableOpacity style={{ alignSelf: 'center', marginTop: 10, backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
                             <Text style={{ fontSize: 22 }}>Next</Text>

@@ -31,20 +31,20 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
     }
 
     validate = () => {
-        this.setState({
-            valid: (this.ProfilePageController.getName()).trim().length > 0
-        })
-        return (this.ProfilePageController.getName()).trim().length > 0
+        return this.state.name != ""
     }
 
     onNameTextChange = (text: string) => {
+        this.setState({
+            name: text
+        })
         this.validate()
     }
 
     onNextButtonClick = () => {
-        if(this.validate()) {
+        if(this.state.name != "") {
             this.ProfilePageController.setName(this.state.name)
-            this.props.setPage(Page[Page.ONBOARDING])
+            this.props.setPage(Page[Page.ASKFORLOCATION])
         }
     }
 
@@ -60,7 +60,7 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
                     <TextInput
                         placeholder={"Enter name"}
                         onChangeText={(text) => this.onNameTextChange(text)}
-                        style={[{ alignSelf:"center", textAlign:'center', fontSize: 22, padding: 3, color: 'white'}, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
+                        style={[{ alignSelf:"center", textAlign:'center', fontSize: 22, padding: 3, color: 'white'}, { borderWidth: this.validate() ? 0 : 1, borderColor: this.validate() ? "" : "darkred" }]}
                         textContentType={'givenName'}
                     />
                     <TouchableOpacity style={{alignSelf: 'center', marginTop: 100, backgroundColor: 'white', borderRadius: 10, padding: 10  }} onPress={this.onNextButtonClick}>

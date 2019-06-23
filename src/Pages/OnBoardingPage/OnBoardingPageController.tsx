@@ -57,24 +57,23 @@ export class OnBoardingPageController {
         return dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
     }
 
-    onCalenderConfirm = (dateObject: Date) => {
-        if (this.LoadingPageController.GetAllHomesData().length <= this.cursor + 1) 
-            this.LoadingPageController.AddEmptyHome()
-
-        var home = this.LoadingPageController.GetHomeData(this.cursor)
+    onCalenderConfirm = (pos: number, dateObject: Date) => {
+        var home = this.LoadingPageController.GetHomeData(pos)
         home.timestamp = dateObject.getTime();
-        
-        this.LoadingPageController.SetHomeData(this.cursor, home)
-        this.culprits.push(0)
+        this.LoadingPageController.SetHomeData(pos, home)
     }
 
-    onLocationChangeText = (index: number, text: string) => {
-        if (this.LoadingPageController.GetAllHomesData().length <= this.cursor)
-            this.LoadingPageController.AddEmptyHome()
-        
-        var home = this.LoadingPageController.GetHomeData(index)
+    onLocationChangeText = (pos: number, text: string) => {
+        console.log(pos)
+        var home = this.LoadingPageController.GetHomeData(pos)
         home.name = text
-        this.LoadingPageController.SetHomeData(index, home)
+        this.LoadingPageController.SetHomeData(pos, home)
+    }
+
+    onNewHomeClick = () => {
+        this.LoadingPageController.AddEmptyHome()
+        this.cursor = this.GetAllHomesData().length + 1;
+        this.culprits.push(0)
     }
 
     onDeleteHome = (index: number) => {

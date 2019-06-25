@@ -15,8 +15,8 @@ import { BlobSaveAndLoad } from './Engine/BlobSaveAndLoad';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
-import { RegisterUserPage } from './Pages/RegisterAndLoginPage.tsx/RegisterUserPage';
-import { LoginUserPage } from './Pages/RegisterAndLoginPage.tsx/LoginUserPage';
+import { RegisterUserPage } from './Pages/RegisterAndLoginPage/RegisterUserPage';
+import { LoginUserPage } from './Pages/RegisterAndLoginPage/LoginUserPage';
 import { PreOnBoardingPage } from './Pages/OnBoardingPage/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
 import { SearchPage } from './Pages/SearchPage/SearchPage';
@@ -45,7 +45,7 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    AsyncStorage.clear()
+    // AsyncStorage.clear()
     
     BlobSaveAndLoad.Instance.loadBlob()
     .then((res) => {

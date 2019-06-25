@@ -11,16 +11,22 @@ interface IProps {
 interface IState {
     email: string,
     password: string
-    registering: boolean
+    loginInProcess: boolean
 }
 
-export class RegisterUserPage extends React.Component<IProps, IState> {
+export class LoginUserPage extends React.Component<IProps, IState> {
 
     Controller: RegisterAndLoginController;
 
     constructor(props: IProps) {
         super(props)
         this.Controller = new RegisterAndLoginController()
+
+        this.state = {
+            email: "",
+            password: "",
+            loginInProcess: false
+        }
     }
 
     onEmailChange = (email: string) => {
@@ -37,20 +43,20 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
     
     login = async() => {
         this.setState({
-            registering: true
+            loginInProcess: true
         })
         var registered: boolean = await this.Controller.Login(this.state.email, this.state.password)
         if(registered)
             this.props.setPage(Page[Page.SEARCH])
         else
             this.setState({
-                registering: false
+                loginInProcess: false
             })
     }
 
     loginUsingGoogle = async() => {
         this.setState({
-            registering: true
+            loginInProcess: true
         })
 
         await GoogleSignin.hasPlayServices();
@@ -61,7 +67,7 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
             this.props.setPage(Page[Page.SEARCH])
         else
             this.setState({
-                registering: false
+                loginInProcess: false
             })
     }
 
@@ -76,7 +82,7 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
                     size={GoogleSigninButton.Size.Wide}
                     color={GoogleSigninButton.Color.Dark}
                     onPress={this.loginUsingGoogle}
-                    disabled={this.state.registering}
+                    disabled={this.state.loginInProcess}
                 />
             </View>
         )

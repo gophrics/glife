@@ -22,6 +22,12 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.Controller = new RegisterAndLoginController()
+        this.state = {
+            email: "",
+            password: "",
+            phone: "",
+            registering: false
+        }
     }
 
     onEmailChange = (email: string) => {

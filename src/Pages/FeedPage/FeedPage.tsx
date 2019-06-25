@@ -18,7 +18,7 @@ export class FeedPage extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
-            username: ProfileUtils.GenerateUsername()
+            username: ProfileUtils.GetRandomUsername()
         }
     }
 

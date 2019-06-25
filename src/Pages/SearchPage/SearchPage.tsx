@@ -26,7 +26,7 @@ export class SearchPage extends React.Component<IProps, IState> {
 
         this.Controller = new SearchPageController();
         if(this.Controller.getAuthToken() == "")
-        this.props.setPage(Page[Page.REGISTER])
+            this.props.setPage(Page[Page.REGISTER])
     }
 
     updateSearch = (search: string) => {

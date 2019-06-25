@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, TextInput, TouchableOpacity,  } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity,  } from 'react-native'
 import { ProfileUtils } from '../../Engine/ProfileUtils';
 import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
 import { Page } from '../../Modals/ApplicationEnums';
@@ -18,8 +18,15 @@ export class ConfirmUsernamePage extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
-            username: ProfileUtils.GenerateUsername()
+            username: ""
         }
+    }
+
+    generateRandomUsername = async() => {
+        var username = await ProfileUtils.GetRandomUsername()
+        this.setState({
+            username: username
+        })
     }
 
     onUsernameChange = (text: string) => {
@@ -42,7 +49,7 @@ export class ConfirmUsernamePage extends React.Component<IProps, IState> {
         return (
             <View>
                 <TextInput placeholder={"Enter username"} onChangeText={this.onUsernameChange}/>
-                <TouchableOpacity onPress={this.confirmUsername}/>
+                <TouchableOpacity onPress={this.confirmUsername}><Text>Done</Text></TouchableOpacity>
             </View>
         )
     }

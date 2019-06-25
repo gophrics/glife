@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Text, TextInput, Button } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { Page } from '../../Modals/ApplicationEnums';
 import { RegisterAndLoginController } from './RegisterAndLoginController';
@@ -13,6 +13,7 @@ interface IState {
     phone: string,
     password: string
     registering: boolean
+    error: string
 }
 
 export class RegisterUserPage extends React.Component<IProps, IState> {
@@ -26,7 +27,8 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
             email: "",
             password: "",
             phone: "",
-            registering: false
+            registering: false,
+            error: ""
         }
     }
 
@@ -55,10 +57,12 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
         var registered: boolean = await this.Controller.Register(this.state.email, this.state.password, this.state.phone)
         if(registered)
             this.props.setPage(Page[Page.CONFIRMUSERNAME])
-        else
+        else {
             this.setState({
-                registering: false
+                registering: false,
+                error: this.Controller.error
             })
+        }
     }
 
     registerUsingGoogle = async() => {
@@ -68,10 +72,12 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
         var registered: boolean = await this.Controller.RegisterUsingGoogle()
         if(registered)
             this.props.setPage(Page[Page.CONFIRMUSERNAME])
-        else
+        else {
             this.setState({
-                registering: false
+                registering: false,
+                error: this.Controller.error
             })
+        }
     }
 
     login = () => {
@@ -80,12 +86,16 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View>
-                <TextInput placeholder={"Enter Email"} onChangeText={this.onEmailChange} />
-                <TextInput placeholder={"Enter Phone"} onChangeText={this.onPhoneChange} />
-                <TextInput placeholder={"Enter Password"} onChangeText={this.onPasswordChange} />
-                <Button title={"Register"} onPress={this.register} />                
-                <Button title={"Login"} onPress={this.login} />
+            <View style={{alignContent:'center', justifyContent: "center"}}>
+                <TextInput  style={{fontSize: 22, padding: 5}}  placeholder={"Enter Email"} onChangeText={this.onEmailChange} />
+                <TextInput  style={{fontSize: 22, padding: 5}}  placeholder={"Enter Phone"} onChangeText={this.onPhoneChange} />
+                <TextInput  style={{fontSize: 22, padding: 5}}  placeholder={"Enter Password"} onChangeText={this.onPasswordChange} />
+                <TouchableOpacity style={{backgroundColor:'white', padding: 5, borderRadius: 5}} onPress={this.register} >
+                    <Text style={{color:'black'}}>Register</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{backgroundColor:'white', padding: 5, borderRadius: 5}} onPress={this.login} >
+                    <Text style={{color:'black'}}>Login</Text>
+                </TouchableOpacity>
                 <GoogleSigninButton
                     style={{ width: 192, height: 48 }}
                     size={GoogleSigninButton.Size.Wide}
@@ -93,6 +103,7 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
                     onPress={this.registerUsingGoogle}
                     disabled={this.state.registering}
                 />
+                <Text style={{fontSize: 18, color:'red'}}>{this.state.error}</Text>
             </View>
         )
     }

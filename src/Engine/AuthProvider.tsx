@@ -22,9 +22,9 @@ interface LoginModal {
 export class AuthProvider {
 
     static Token: string = "";
+    static loginInfo: LoginUserModal = { Email: "", Password: ""}
 
     static RegisterUserWithGoogle = async(): Promise<any> => {
-
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
         console.log(userInfo)
@@ -39,13 +39,14 @@ export class AuthProvider {
                 token: idToken
             })
         })
+        .then((res) => {return res.json()})
         .then((res: unknown) => {
             AuthProvider.Token = (res as LoginModal).Token
             return res
         })
         .catch((err) => {
             console.error(err)
-            return err
+            throw err
         })
     }
 
@@ -57,10 +58,15 @@ export class AuthProvider {
                 email: data.Email,
                 password: data.Password
             })
-        })
+        })        
+        .then((res) => {return res.json()})
         .then((res: unknown) => {
             AuthProvider.Token = (res as LoginModal).Token
             return res
+        })
+        .catch((err) => {
+            console.error(err)
+            throw err
         })
     }
 
@@ -71,10 +77,15 @@ export class AuthProvider {
                 email: data.Email,
                 password: data.Password  
             })
-        })
+        })        
+        .then((res) => {return res.json()})
         .then((res: unknown) => {
             AuthProvider.Token = (res as LoginModal).Token
             return res
+        })
+        .catch((err) => {
+            console.error(err)
+            throw err
         })
     }
 
@@ -86,9 +97,14 @@ export class AuthProvider {
                 token: idToken
             })
         })
+        .then((res) => {return res.json()})
         .then((res: unknown) => {
             AuthProvider.Token = (res as LoginModal).Token
             return res
+        })
+        .catch((err) => {
+            console.error(err)
+            throw err
         })
     }
 }

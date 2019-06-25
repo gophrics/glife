@@ -28,7 +28,7 @@ export class ProfileUtils {
         })
         .catch((err) => {
             console.error(err)
-            return err
+            throw err
         })
     }
 
@@ -42,7 +42,7 @@ export class ProfileUtils {
         })
         .catch((err) => {
             console.error(err)
-            return false
+            throw err
         })
     }
 
@@ -59,7 +59,7 @@ export class ProfileUtils {
         })
         .catch((err) => {
             console.error(err)
-            return err
+            throw err
         })
     }
 }

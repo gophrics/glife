@@ -3,8 +3,10 @@ import { ProfileUtils } from '../../Engine/ProfileUtils';
 
 export class RegisterAndLoginController {
 
+    error: string
+
     constructor() {
-        
+        this.error = ""
     }
 
     GetRandomUsername = async(): Promise<string> => {
@@ -16,40 +18,54 @@ export class RegisterAndLoginController {
         return ProfileUtils.ValidateUsername(username)
     }
 
-    Login = (email: string, password: string): Promise<boolean> => {
-        return AuthProvider.LoginUser({
-            Email: email,
-            Password: password
-        } as LoginUserModal)
-        .then((res) => {
+    Login = async(email: string, password: string): Promise<boolean> => {
+        try {
+            var res = await AuthProvider.LoginUser({
+                Email: email,
+                Password: password
+            } as LoginUserModal)
             if(res) return true
             return false
-        })
+        } catch(err) {
+            this.error = err
+            return false
+        }
     }
 
-    Register = (email: string, phone: string, password: string): Promise<boolean> => {
-        return AuthProvider.RegisterUser({
-            Email: email,
-            Phone: phone,
-            Password: password
-        } as RegisterUserModal)
-        .then((res) => {
-            if(res) {
-                return true
-            }
+    Register = async(email: string, phone: string, password: string): Promise<boolean> => {
+        try {
+            var res = await AuthProvider.RegisterUser({
+                Email: email,
+                Phone: phone,
+                Password: password
+            } as RegisterUserModal)
+            if(res) return true
             return false
-        })
+        } catch(err) {
+            this.error = err
+            return false
+        }
     }
 
     LoginUsingGoogle = async(email: string, idToken: string) : Promise<boolean> => {
-        var res = await AuthProvider.LoginUserWithGoogle(email, idToken)
-        if(res) return true
-        return false
+        try {
+            var res = await AuthProvider.LoginUserWithGoogle(email, idToken)
+            if(res) return true
+            return false
+        } catch(err) {
+            this.error = err;
+            return false
+        }
     }
 
     RegisterUsingGoogle = async () : Promise<boolean> => {
-        var res = await AuthProvider.RegisterUserWithGoogle()
-        if(res) return true
-        return false
+        try {
+            var res = await AuthProvider.RegisterUserWithGoogle()
+            if(res) return true
+            return false
+        } catch(err) {
+            this.error = err;
+            return false
+        }
     }
 }

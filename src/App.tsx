@@ -23,8 +23,9 @@ import { SearchPage } from './Pages/SearchPage/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
 import { AskForLocationChangeDatePage } from './Pages/OnBoardingPage/AskForLocationChangeDatePage';
 import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
-import AsyncStorage from '@react-native-community/async-storage'
 import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
+import { RegisterAndLoginController } from './Pages/RegisterAndLoginPage/RegisterAndLoginController';
+import { AuthProvider } from './Engine/AuthProvider';
 
 interface IState {
   page: string,
@@ -64,6 +65,17 @@ export default class App extends React.Component<IProps, IState> {
       accountName: '', // [Android] specifies an account name on the device that should be used
     })
 
+    this.tryLogin()
+  }
+
+  tryLogin = async() => {    
+    var LoginController = new RegisterAndLoginController();
+    var tryLoginUsingPassword = await LoginController.Login(AuthProvider.loginInfo.Email, AuthProvider.loginInfo.Password)
+    if(!tryLoginUsingPassword) {
+      var user = await GoogleSignin.signInSilently()
+      var res = await LoginController.LoginUsingGoogle(user.user.email, user.idToken || "")
+      console.log("Logged in: " + res)
+    }
   }
 
   setPage(page: string, data: any = null) {

@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import { ClusterModal } from '../Modals/ClusterModal';
 import { TripUtils } from './TripUtils';
+import { AuthProvider } from './AuthProvider';
  
 export class BlobSaveAndLoad {
 
@@ -24,7 +25,8 @@ export class BlobSaveAndLoad {
         AsyncStorage.setItem('EngineData', JSON.stringify({
             homeData: this.homeData,
             startTimestamp: this.startTimestamp,
-            endTimestamp: this.endTimestamp
+            endTimestamp: this.endTimestamp,
+            loginInfo: AuthProvider.loginInfo
         }))
     }
 
@@ -46,6 +48,7 @@ export class BlobSaveAndLoad {
                 this.homeData = EngineData.homeData
                 this.startTimestamp = EngineData.startTimestamp
                 this.endTimestamp = EngineData.endTimestamp
+                AuthProvider.loginInfo = EngineData.loginInfo
             }
             TripUtils.ExtendHomeDataToDate()
         })

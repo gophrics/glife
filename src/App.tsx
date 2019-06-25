@@ -15,15 +15,16 @@ import { BlobSaveAndLoad } from './Engine/BlobSaveAndLoad';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
-import { RegisterUserPage } from './Pages/SocialPage/RegisterUserPage';
-import { LoginUserPage } from './Pages/SocialPage/LoginUserPage';
+import { RegisterUserPage } from './Pages/RegisterAndLoginPage.tsx/RegisterUserPage';
+import { LoginUserPage } from './Pages/RegisterAndLoginPage.tsx/LoginUserPage';
 import { PreOnBoardingPage } from './Pages/OnBoardingPage/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
-import { SearchPage } from './Pages/SearchPage';
+import { SearchPage } from './Pages/SearchPage/SearchPage';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
 import { AskForLocationChangeDatePage } from './Pages/OnBoardingPage/AskForLocationChangeDatePage';
 import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
 import AsyncStorage from '@react-native-community/async-storage'
+import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 
 interface IState {
   page: string,
@@ -128,6 +129,8 @@ export default class App extends React.Component<IProps, IState> {
               <SearchPage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.NOPERMISSIONIOS] ? 
               <NoPermissionIOS setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.CONFIRMUSERNAME] ? 
+              <ConfirmUsernamePage setPage={this.setPage.bind(this)}/>
             : <View />
           }
           

@@ -21,6 +21,7 @@
     "react": "^16.8.3",
     "react-native": "^0.59.9",
     "react-native-datepicker": "^1.7.2",
+    "react-native-elements": "^1.1.0",
     "react-native-google-signin": "^2.0.0",
     "react-native-image-crop-picker": "^0.24.1",
     "react-native-image-picker": "^0.28.1",

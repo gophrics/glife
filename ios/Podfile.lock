@@ -22,20 +22,20 @@ PODS:
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
   - GTMSessionFetcher/Core (1.2.2)
   - QBImagePickerController (3.4.0)
-  - React (0.59.8):
-    - React/Core (= 0.59.8)
+  - React (0.59.9):
+    - React/Core (= 0.59.9)
   - react-native-image-picker (0.28.1):
     - React
   - react-native-sqlite-storage (3.3.10):
     - React
-  - React/Core (0.59.8):
-    - yoga (= 0.59.8.React)
-  - React/RCTImage (0.59.8):
+  - React/Core (0.59.9):
+    - yoga (= 0.59.9.React)
+  - React/RCTImage (0.59.9):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.59.8):
+  - React/RCTNetwork (0.59.9):
     - React/Core
-  - RNCAsyncStorage (1.4.2):
+  - RNCAsyncStorage (1.5.0):
     - React
   - RNGoogleSignin (2.0.0):
     - GoogleSignIn (~> 4.4.0)
@@ -49,7 +49,7 @@ PODS:
   - RNVectorIcons (6.4.2):
     - React
   - RSKImageCropper (2.2.1)
-  - yoga (0.59.8.React)
+  - yoga (0.59.9.React)
 
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -114,16 +114,16 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
+  React: a86b92f00edbe1873a63e4a212c29b7a7ad5224f
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   react-native-sqlite-storage: e2514e75e65458cc2c6590d181bd1947ec6f4e3f
-  RNCAsyncStorage: 285698b8a4f219573174d99e863a78b93f389272
+  RNCAsyncStorage: 63407ea82f1b5ac8fc53a0b8c569b08e0516a9e0
   RNGoogleSignin: d030c6c6591db24c3cee649f64c7babf0a1699a0
   RNImageCropPicker: 6134b66a3d5bc13e2895a97c630a4254006902b4
   RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
   RNVectorIcons: 6607bd3a30291d0edb56f9bbe7ae411ee2b928b0
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
-  yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
+  yoga: 03ff42a6f223fb88deeaed60249020d80c3091ee
 
 PODFILE CHECKSUM: 44e8771f3406b25c9f936462485dccc2c8ec09c1
 

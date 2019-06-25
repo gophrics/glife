@@ -5,6 +5,11 @@ export interface ValidateUsernameModal {
     Result: boolean
 }
 
+
+interface RandomUsernameModal {
+    Username: string
+}
+
 export class ProfileUtils {
     constructor() {
 
@@ -14,8 +19,8 @@ export class ProfileUtils {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/generate_username', {
             method: 'GET'
         })
-        .then((res) => {
-            return res
+        .then((res: unknown) => {
+            return (res as RandomUsernameModal).Username
         })
         .catch((err) => {
             return err

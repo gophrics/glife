@@ -1,7 +1,7 @@
 import { AuthProvider } from "./AuthProvider";
 
 
-const ServerURLWithoutEndingSlash = 'http://192.168.0.109'
+const ServerURLWithoutEndingSlash = 'http://192.168.0.109:8083'
 
 export class SocialUtils {
     static Search = (text: string): Promise<any> => {

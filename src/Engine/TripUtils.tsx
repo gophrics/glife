@@ -3,7 +3,7 @@ import { months, Page, HomeDataModal } from '../Modals/ApplicationEnums';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { BlobSaveAndLoad } from './BlobSaveAndLoad';
 
-const ServerURLWithoutEndingSlash = 'http://beerwithai.com'
+const ServerURLWithoutEndingSlash = 'http://192.168.0.109:8082'
 
 
 

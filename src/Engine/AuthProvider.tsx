@@ -13,7 +13,7 @@ export interface LoginUserModal {
     Password: string
 }
 
-const ServerURLWithoutEndingSlash = 'http://192.168.0.109'
+const ServerURLWithoutEndingSlash = 'http://192.168.0.109:8080'
 
 interface LoginModal {
     Token: string
@@ -21,12 +21,13 @@ interface LoginModal {
 
 export class AuthProvider {
 
-    static Token: string;
+    static Token: string = "";
 
     static RegisterUserWithGoogle = async(): Promise<any> => {
 
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
+        console.log(userInfo)
         // If email entered is different from the google email, we use the google email for signup
         return AuthProvider._RegisterUserWithGoogle(userInfo.idToken)
     }
@@ -41,6 +42,10 @@ export class AuthProvider {
         .then((res: unknown) => {
             AuthProvider.Token = (res as LoginModal).Token
             return res
+        })
+        .catch((err) => {
+            console.error(err)
+            return err
         })
     }
 

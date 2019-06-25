@@ -20,6 +20,8 @@ export class ConfirmUsernamePage extends React.Component<IProps, IState> {
         this.state = {
             username: ""
         }
+
+        this.generateRandomUsername()
     }
 
     generateRandomUsername = async() => {
@@ -35,9 +37,11 @@ export class ConfirmUsernamePage extends React.Component<IProps, IState> {
         })
     } 
 
-    confirmUsername = () => {
-        ProfileUtils.SetUsername((BlobSaveAndLoad.Instance.getBlobValue(Page[Page.SETTING]) as SettingsModal).profileId,
-            this.state.username)
+    confirmUsername = async () => {
+
+        var result = await ProfileUtils.ValidateUsername(this.state.username)
+        if(!result) return
+        ProfileUtils.SetUsername(this.state.username)
         .then((res) => {
             if(res) {
                 this.props.setPage(Page[Page.SEARCH])
@@ -48,7 +52,9 @@ export class ConfirmUsernamePage extends React.Component<IProps, IState> {
     render() {
         return (
             <View>
-                <TextInput placeholder={"Enter username"} onChangeText={this.onUsernameChange}/>
+                <TextInput placeholder={"Enter username"} onChangeText={this.onUsernameChange}>
+                    {this.state.username}
+                </TextInput>
                 <TouchableOpacity onPress={this.confirmUsername}><Text>Done</Text></TouchableOpacity>
             </View>
         )

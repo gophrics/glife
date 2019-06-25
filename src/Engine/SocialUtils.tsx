@@ -11,7 +11,7 @@ export class SocialUtils {
                 "Authorization": "Bearer " + AuthProvider.Token
             }
         }).then((res) => {
-            return res
+            return res.json()
         })
     }
 }

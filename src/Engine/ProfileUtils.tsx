@@ -1,6 +1,6 @@
 import { AuthProvider } from "./AuthProvider";
 
-const ServerURLWithoutEndingSlash = 'http://192.168.0.109:8080'
+const ServerURLWithoutEndingSlash = 'http://192.168.0.111:8080'
 
 
 export interface ValidateUsernameModal {

@@ -13,7 +13,7 @@ export interface LoginUserModal {
     Password: string
 }
 
-const ServerURLWithoutEndingSlash = 'http://192.168.0.109:8080'
+const ServerURLWithoutEndingSlash = 'http://192.168.0.111:8080'
 
 interface LoginModal {
     Token: string
@@ -80,11 +80,12 @@ export class AuthProvider {
         })        
         .then((res) => {return res.json()})
         .then((res: unknown) => {
+            console.log(res)
             AuthProvider.Token = (res as LoginModal).Token
             return res
         })
         .catch((err) => {
-            console.error(err)
+            console.warn(err)
             throw err
         })
     }
@@ -99,11 +100,12 @@ export class AuthProvider {
         })
         .then((res) => {return res.json()})
         .then((res: unknown) => {
+            console.log(res)
             AuthProvider.Token = (res as LoginModal).Token
             return res
         })
         .catch((err) => {
-            console.error(err)
+            console.warn(err)
             throw err
         })
     }

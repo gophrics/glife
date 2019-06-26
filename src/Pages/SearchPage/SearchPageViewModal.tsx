@@ -13,7 +13,7 @@ interface IState {
 }
 
 
-export class SearchPage extends React.Component<IProps, IState> {
+export class SearchPageViewModal extends React.Component<IProps, IState> {
 
     Controller: SearchPageController;
 
@@ -30,7 +30,14 @@ export class SearchPage extends React.Component<IProps, IState> {
     }
 
     updateSearch = (search: string) => {
-        this.Controller.searchString(search)
+        this.setState({
+            search: search
+        })
+    }
+
+    search = async() => {
+        var result = await this.Controller.Search(this.state.search)
+        console.log(result)
     }
 
     render() {
@@ -40,6 +47,7 @@ export class SearchPage extends React.Component<IProps, IState> {
                     placeholder="Type Here..."
                     onChangeText={this.updateSearch}
                     value={this.state.search}
+                    onEndEditing={this.search}
                 />
                 <View>
 

@@ -1,5 +1,5 @@
-import { SocialUtils } from "../../Engine/SocialUtils";
 import { AuthProvider } from "../../Engine/AuthProvider";
+import { TripUtils } from "../../Engine/TripUtils";
 
 export class SearchPageController {
 
@@ -7,9 +7,10 @@ export class SearchPageController {
 
     }
 
-    searchString = async(text: string) => {
-        var result = await SocialUtils.Search(text)
+    Search = async(text: string) => {
+        var result = await TripUtils.Search(text)
         // Complete the function
+        return result
     }
 
     getAuthToken = () : string => {

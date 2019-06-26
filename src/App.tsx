@@ -19,7 +19,7 @@ import { RegisterUserPage } from './Pages/RegisterAndLoginPage/RegisterUserPage'
 import { LoginUserPage } from './Pages/RegisterAndLoginPage/LoginUserPage';
 import { PreOnBoardingPage } from './Pages/OnBoardingPage/PreOnBoardingPage';
 import { BottomNavigator } from './UIComponents/BottomNavigator';
-import { SearchPage } from './Pages/SearchPage/SearchPage';
+import { SearchPageViewModal } from './Pages/SearchPage/SearchPageViewModal';
 import { NoPermissionIOS } from './Pages/NoPermissionIOS';
 import { AskForLocationChangeDatePage } from './Pages/OnBoardingPage/AskForLocationChangeDatePage';
 import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
@@ -65,7 +65,9 @@ export default class App extends React.Component<IProps, IState> {
       accountName: '', // [Android] specifies an account name on the device that should be used
     })
 
-    this.tryLogin()
+    setTimeout(() => {
+      this.tryLogin()
+    }, 10000)
   }
 
   tryLogin = async() => {    
@@ -138,7 +140,7 @@ export default class App extends React.Component<IProps, IState> {
             : this.state.page == Page[Page.LOGIN] ? 
               <LoginUserPage setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.SEARCH] ?
-              <SearchPage setPage={this.setPage.bind(this)}/>
+              <SearchPageViewModal setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.NOPERMISSIONIOS] ? 
               <NoPermissionIOS setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.CONFIRMUSERNAME] ? 

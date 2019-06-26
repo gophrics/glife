@@ -2,6 +2,7 @@
 import { months, Page, HomeDataModal } from '../Modals/ApplicationEnums';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { BlobSaveAndLoad } from './BlobSaveAndLoad';
+import { AuthProvider } from './AuthProvider';
 
 const ServerURLWithoutEndingSlash = 'http://192.168.0.111:8082'
 
@@ -87,6 +88,27 @@ export class TripUtils {
             return res.json()
         }).then((res) => {
             return res
+        })
+    }
+
+    static Search(text: string): Promise<any> {
+        return fetch(ServerURLWithoutEndingSlash + '/api/v1/travel/search/' + text,
+        {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + AuthProvider.Token
+            }
+        })
+        .then((res) => {
+            return res.json()
+        })
+        .then((res) => {
+            console.log("Search Travel " + JSON.stringify(res))
+            return res;
+        })
+        .catch((err) => {
+            console.warn(err);
+            throw err
         })
     }
 

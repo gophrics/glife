@@ -16,7 +16,6 @@ export class SearchPageController {
             var t: TripExplorePageModal = new TripExplorePageModal()
             t.CopyConstructor(trip)
             t.populateAll()
-            t.title = trip.tripName;
             returnresult.push(t)
         }
         return returnresult

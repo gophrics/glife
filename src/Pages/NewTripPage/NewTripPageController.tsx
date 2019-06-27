@@ -16,7 +16,7 @@ export class NewTripPageController {
     }
 
     setTripTitle = (title: string) => {
-        this.Modal.data.title = title
+        this.Modal.data.tripName = title
     }
 
     checkPermissionToAccessPhotoLibrary = () : Promise<boolean> => {
@@ -24,7 +24,7 @@ export class NewTripPageController {
     }
 
     validateInputs = () : boolean => {
-        if(this.Modal.data.title == "") {
+        if(this.Modal.data.tripName == "") {
             return false
         }
         return true

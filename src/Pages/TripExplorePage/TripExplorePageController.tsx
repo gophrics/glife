@@ -24,7 +24,7 @@ export class TripExplorePageController {
     }
 
     onNewStepPress = (step: StepModal) => {
-        this.NewStepId = step.id + 1;
+        this.NewStepId = step.stepId + 1;
     }
 
     newStepDone = async (_step: StepModal | null) => {
@@ -33,16 +33,16 @@ export class TripExplorePageController {
         }
 
         //Right now, we're calcualting step based on images, and not overriding them
-        _step.id = this.NewStepId;
+        _step.stepId = this.NewStepId;
 
         var trip: TripExplorePageModal = this.Modal as TripExplorePageModal
         trip.steps.push(_step);
         trip.steps.sort((a: StepModal, b: StepModal) => {
-            return a.id - b.id;
+            return a.stepId - b.stepId;
         })
 
         trip = await this.PopulateTripExplorePageModalData(trip.steps.slice(1, trip.steps.length - 1), trip.tripId)
-        trip.title = this.Modal.title;
+        trip.tripName = this.Modal.tripName;
 
         this.ProfilePageController.UpdateProfileDataWithTrip(trip)
     }
@@ -100,7 +100,7 @@ export class TripExplorePageController {
 
         var _stepModal: StepModal = ClusterProcessor.convertClusterToStep([homeStep])
         _stepModal.location = "Home";
-        _stepModal.id = 0;
+        _stepModal.stepId = 0;
         tripResult.steps.push(_stepModal)
 
         var i = 0;
@@ -123,7 +123,7 @@ export class TripExplorePageController {
         _stepModal2.distanceTravelled = Math.floor(tripResult.steps[i].distanceTravelled +
             ClusterProcessor.EarthDistance({ latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude } as ClusterModal,
                 { latitude: tripResult.steps[i].meanLatitude, longitude: tripResult.steps[i].meanLongitude } as ClusterModal))
-        _stepModal2.id = 10000
+        _stepModal2.stepId = 10000
 
         tripResult.steps.push(_stepModal2)
 
@@ -163,7 +163,7 @@ export class TripExplorePageController {
 
     onPhotoModalDismiss = (step: StepModal) => {
         for (var _step of this.Modal.steps) {
-            if (_step.id == step.id) {
+            if (_step.stepId == step.stepId) {
                 _step = step; break;
             }
         }

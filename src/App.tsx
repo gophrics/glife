@@ -40,6 +40,8 @@ interface IProps {
 
 export default class App extends React.Component<IProps, IState> {
 
+  loggedIn: boolean;
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -57,6 +59,8 @@ export default class App extends React.Component<IProps, IState> {
       })
     })
 
+    this.loggedIn = false;
+
     GoogleSignin.configure({
       scopes: ['profile', 'email'], // what API you want to access on behalf of the user, default is email and profile
       iosClientId: '249369235819-uc0l7d7imtlsebj80s93ucb1mvj6vo8v.apps.googleusercontent.com', // only for iOS
@@ -66,24 +70,34 @@ export default class App extends React.Component<IProps, IState> {
       forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login
       accountName: '', // [Android] specifies an account name on the device that should be used
     })
+    
+    this.tryLogin()
+    this.updateBackground()
+  }
 
+  updateBackground = () => {
     setTimeout(() => {
-      this.tryLogin()
-    }, 10000)
-
-    setTimeout(() => {
+      console.log(this.loggedIn)
+      if(this.loggedIn)
       TripUtils.UpdateTripBackground()
     }, 10000)
   }
-
+  
   tryLogin = async() => {    
     var LoginController = new RegisterAndLoginController();
     var tryLoginUsingPassword = await LoginController.Login(AuthProvider.loginInfo.Email, AuthProvider.loginInfo.Password)
     if(!tryLoginUsingPassword) {
       var user = await GoogleSignin.signInSilently()
       var res = await LoginController.LoginUsingGoogle(user.user.email, user.idToken || "")
+      this.loggedIn = true
       console.log("Logged in: " + res)
+    } else {
+      this.loggedIn = true;
     }
+    setTimeout(() => {      
+      if(!this.loggedIn)
+        this.tryLogin()
+    }, 10000)
   }
 
   setPage(page: string, data: any = null) {

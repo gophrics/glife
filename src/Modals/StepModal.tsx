@@ -3,7 +3,7 @@ import { TripUtils } from '../Engine/TripUtils';
 
 export class StepModal {
 
-    id: number
+    stepId: number
     meanLatitude: number
     meanLongitude: number
     location: string
@@ -29,7 +29,7 @@ export class StepModal {
     }
 
     constructor() {
-        this.id = 0;
+        this.stepId = 0;
         this.meanLatitude = 0;
         this.meanLongitude = 0;
         this.location = "";

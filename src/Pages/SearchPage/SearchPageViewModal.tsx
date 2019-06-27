@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Text } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { SearchPageController } from './SearchPageController';
 import { SearchBar } from 'react-native-elements';
 import { Page } from '../../Modals/ApplicationEnums';
@@ -60,13 +60,13 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
                     value={this.state.search}
                     onEndEditing={this.search}
                 />
-                <View>
+                <ScrollView>
                     {
                         this.state.searchResults.map((el, index) => (
                             <TripComponent tripModal={el} onPress={this.onTripPress}/>
                         ))
                     }
-                </View>
+                </ScrollView>
             </View>
         )
     }

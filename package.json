@@ -32,7 +32,8 @@
     "react-native-svg": "^9.4.0",
     "react-native-swiper": "^1.5.14",
     "react-native-threads": "0.0.16",
-    "react-native-vector-icons": "^6.4.2"
+    "react-native-vector-icons": "^6.4.2",
+    "ts-md5": "^1.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

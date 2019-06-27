@@ -6,7 +6,7 @@ import { AuthProvider } from './AuthProvider';
 import * as Constants from "./Constants"
 import { TripExplorePageModal } from '../Pages/TripExplorePage/TripExplorePageModal';
 import { ProfilePageModal } from '../Pages/ProfilePage/ProfilePageModal';
-import { md5 } from './MD5';
+import {Md5} from 'ts-md5/dist/md5';
 
 const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8082"
 
@@ -16,7 +16,7 @@ export class TripUtils {
     static LAST_TRIP_PRESS = 0;
     
     static GenerateTripId = () : number => {
-        return Math.random()*10000000
+        return Math.floor(Math.random()*10000000)
     }
 
     static ExtendHomeDataToDate = () => {
@@ -151,9 +151,7 @@ export class TripUtils {
             headers: {
                 "Authorization": "Bearer " + AuthProvider.Token
             },
-            body: JSON.stringify({
-                "trip": trip
-            })
+            body: JSON.stringify(trip)
         })
         .then((res) => {
             return res.json()
@@ -166,7 +164,7 @@ export class TripUtils {
     static GetTripCheckSumServer(trip: TripExplorePageModal): Promise<any> {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/travel/gettriphash',
         {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Authorization": "Bearer " + AuthProvider.Token
             },
@@ -193,9 +191,9 @@ export class TripUtils {
 
         for(var trip of trips) {
             var serverHash = await TripUtils.GetTripCheckSumServer(trip)
-            var clientHash = md5(trip)
-            if(serverHash != clientHash) {
-                console.log("Server hash: " + serverHash)
+            var clientHash = Md5.hashStr(trip)
+            if(serverHash.Hash != clientHash) {
+                console.log("Server hash: " + JSON.stringify(serverHash))
                 console.log("Client hash: " + clientHash)
                 console.log("Server client hash mismatch, uploading")
                 console.log(trip)

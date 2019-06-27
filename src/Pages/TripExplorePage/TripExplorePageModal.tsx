@@ -6,7 +6,7 @@ export class TripExplorePageModal {
     tripId: number
     steps: StepModal[]
     location : Region
-    title: string
+    tripName: string
     countryCode: string[]
     temperature : string
     daysOfTravel: number
@@ -15,7 +15,7 @@ export class TripExplorePageModal {
     startDate: string
     endDate: string
     masterPicURL: string
-
+    public: boolean
     
     constructor() {
         this.tripId = 0;
@@ -27,9 +27,10 @@ export class TripExplorePageModal {
         this.activities = []
         this.startDate = ""
         this.endDate = ""
-        this.title = ""
+        this.tripName = ""
         this.countryCode = []
         this.masterPicURL = ""
+        this.public = false
     }
 
     CopyConstructor = (trip: any) => {
@@ -42,7 +43,7 @@ export class TripExplorePageModal {
         this.activities = trip.activities;
         this.startDate = trip.startDate;
         this.endDate = trip.endDate;
-        this.title = trip.title;
+        this.tripName = trip.tripName || trip.title;
         this.countryCode = trip.countryCode;
         this.masterPicURL = trip.masterPicURL
     }
@@ -111,7 +112,7 @@ export class TripExplorePageModal {
                 i++;
             } 
         }
-        this.title = tripName
+        this.tripName = tripName
     }
 
 }

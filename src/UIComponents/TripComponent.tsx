@@ -61,7 +61,7 @@ export class TripComponent extends React.Component<IProps, IState> {
                 <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15}}>
                     <View style={{flexDirection: 'column', width:'40%', justifyContent:'space-between'}}>
                         <View>
-                        <Text style={{color: 'white', fontSize: 18}}>{this.props.tripModal.title}</Text>
+                        <Text style={{color: 'white', fontSize: 18}}>{this.props.tripModal.tripName}</Text>
                         <Text style={{color: 'white', fontSize: 12}}>{this.props.tripModal.startDate + "\n"}{this.props.tripModal.endDate ? "" : "On-going"}</Text>
                         </View>
                         {

@@ -1,5 +1,6 @@
 import { AuthProvider } from "../../Engine/AuthProvider";
 import { TripUtils } from "../../Engine/TripUtils";
+import { TripExplorePageModal } from "../TripExplorePage/TripExplorePageModal";
 
 export class SearchPageController {
 
@@ -9,8 +10,16 @@ export class SearchPageController {
 
     Search = async(text: string) => {
         var result = await TripUtils.Search(text)
-        // Complete the function
-        return result
+        var returnresult: Array<TripExplorePageModal> = []
+
+        for(var trip of result) {
+            var t: TripExplorePageModal = new TripExplorePageModal()
+            t.CopyConstructor(trip)
+            t.populateAll()
+            t.title = trip.tripName;
+            returnresult.push(t)
+        }
+        return returnresult
     }
 
     getAuthToken = () : string => {

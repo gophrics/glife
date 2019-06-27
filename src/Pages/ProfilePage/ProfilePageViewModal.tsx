@@ -54,8 +54,7 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
     }
 
     onTripPress = (tripModal: TripExplorePageModal) => {
-        TripUtils.LAST_TRIP_PRESS = tripModal.tripId
-        this.props.setPage(Page[Page.TRIPEXPLORE])
+        this.props.setPage(Page[Page.TRIPEXPLORE], tripModal)
     }
 
     onProfilePicChange = (imageURL: string) => {

@@ -1,0 +1,1 @@
+export var Bus : {[key:string]: any} = {}

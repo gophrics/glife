@@ -25,7 +25,7 @@ interface IState {
     newStepId: number,
     lastStepClicked: StepModal
     editStepDescription: boolean
-    tripAsSteps: StepModal[]
+    steps: StepModal[]
 }
 
 interface IProps {
@@ -58,7 +58,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             newStepId: -1,
             lastStepClicked: this.Controller.getFirstStep(),
             editStepDescription: false,
-            tripAsSteps: this.Controller.getSteps()
+            steps: this.Controller.getSteps()
         }
     }
 
@@ -72,11 +72,11 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         var markers: Region[] = []
         var imageUriData: string[] = []
         var key: number = 0;
-        var tripStartTimestamp = this.state.tripAsSteps[0].startTimestamp;
+        var tripStartTimestamp = this.state.steps[0].startTimestamp;
         var polylineArr = []
         snapOffsets = [];
 
-        for (var step of this.state.tripAsSteps) {
+        for (var step of this.state.steps) {
             this.travelCardArray.push(<StepComponent key={key + 's'} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
             this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
 
@@ -94,7 +94,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            lastStepClicked: this.state.tripAsSteps[0]
+            lastStepClicked: this.state.steps[0]
         })
     }
 
@@ -141,8 +141,8 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     }
 
     onScroll = (event: any) => {
-        if (this.state.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))] == undefined) return;
-        this.zoomToStep(this.state.tripAsSteps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))])
+        if (this.state.steps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))] == undefined) return;
+        this.zoomToStep(this.state.steps[Math.floor(event.nativeEvent.contentOffset.x / (deviceWidth * 3 / 4 + 20 + 20))])
     }
 
     onBackPress = () => {
@@ -187,7 +187,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     }
 
     onMapLayout = () => {
-        this.zoomToStep(this.state.tripAsSteps[0])
+        this.zoomToStep(this.state.steps[0])
     }
 
     render() {
@@ -201,7 +201,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                     >
                         {
 
-                            this.state.tripAsSteps.map((step, index) => (
+                            this.state.steps.map((step, index) => (
                                 step.masterMarker != undefined ?
                                     <Marker
                                         key={index + 'marker'}

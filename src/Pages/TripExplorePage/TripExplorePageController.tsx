@@ -8,6 +8,7 @@ import { ClusterProcessor } from '../../Engine/ClusterProcessor'
 import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
 import { Page } from '../../Modals/ApplicationEnums';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
+import * as PublisherSubscriber from "../../Engine/PublisherSubscriber";
 
 export class TripExplorePageController {
 
@@ -19,10 +20,7 @@ export class TripExplorePageController {
         this.NewStepId = 2;
         this.ProfilePageController = new ProfilePageController()
         this.Modal = new TripExplorePageModal()
-        var trips = this.ProfilePageController.getTrips()
-        for(var trip of trips) {
-            if(trip.tripId == TripUtils.LAST_TRIP_PRESS) { this.Modal.CopyConstructor(trip); break; }
-        }
+        this.Modal.CopyConstructor(PublisherSubscriber.Bus[Page[Page.TRIPEXPLORE]] as TripExplorePageModal || {})
     }
 
     onNewStepPress = (step: StepModal) => {
@@ -38,12 +36,12 @@ export class TripExplorePageController {
         _step.id = this.NewStepId;
 
         var trip: TripExplorePageModal = this.Modal as TripExplorePageModal
-        trip.tripAsSteps.push(_step);
-        trip.tripAsSteps.sort((a: StepModal, b: StepModal) => {
+        trip.steps.push(_step);
+        trip.steps.sort((a: StepModal, b: StepModal) => {
             return a.id - b.id;
         })
 
-        trip = await this.PopulateTripExplorePageModalData(trip.tripAsSteps.slice(1, trip.tripAsSteps.length - 1), trip.tripId)
+        trip = await this.PopulateTripExplorePageModalData(trip.steps.slice(1, trip.steps.length - 1), trip.tripId)
         trip.title = this.Modal.title;
 
         this.ProfilePageController.UpdateProfileDataWithTrip(trip)
@@ -103,17 +101,17 @@ export class TripExplorePageController {
         var _stepModal: StepModal = ClusterProcessor.convertClusterToStep([homeStep])
         _stepModal.location = "Home";
         _stepModal.id = 0;
-        tripResult.tripAsSteps.push(_stepModal)
+        tripResult.steps.push(_stepModal)
 
         var i = 0;
         var countries: string[] = []
         var places: string[] = []
 
         for (var step of steps) {
-            step.distanceTravelled = Math.floor(tripResult.tripAsSteps[i].distanceTravelled +
+            step.distanceTravelled = Math.floor(tripResult.steps[i].distanceTravelled +
                 ClusterProcessor.EarthDistance({ latitude: step.meanLatitude, longitude: step.meanLongitude } as ClusterModal,
-                    { latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude } as ClusterModal))
-            tripResult.tripAsSteps.push(step);
+                    { latitude: tripResult.steps[i].meanLatitude, longitude: tripResult.steps[i].meanLongitude } as ClusterModal))
+            tripResult.steps.push(step);
             i++;
         }
 
@@ -122,12 +120,12 @@ export class TripExplorePageController {
 
         var _stepModal2: StepModal = ClusterProcessor.convertClusterToStep([homeStep2])
         _stepModal2.location = "Home";
-        _stepModal2.distanceTravelled = Math.floor(tripResult.tripAsSteps[i].distanceTravelled +
+        _stepModal2.distanceTravelled = Math.floor(tripResult.steps[i].distanceTravelled +
             ClusterProcessor.EarthDistance({ latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude } as ClusterModal,
-                { latitude: tripResult.tripAsSteps[i].meanLatitude, longitude: tripResult.tripAsSteps[i].meanLongitude } as ClusterModal))
+                { latitude: tripResult.steps[i].meanLatitude, longitude: tripResult.steps[i].meanLongitude } as ClusterModal))
         _stepModal2.id = 10000
 
-        tripResult.tripAsSteps.push(_stepModal2)
+        tripResult.steps.push(_stepModal2)
 
         // Load locations
         for (var step of steps) {
@@ -164,7 +162,7 @@ export class TripExplorePageController {
     }
 
     onPhotoModalDismiss = (step: StepModal) => {
-        for (var _step of this.Modal.tripAsSteps) {
+        for (var _step of this.Modal.steps) {
             if (_step.id == step.id) {
                 _step = step; break;
             }
@@ -173,14 +171,14 @@ export class TripExplorePageController {
     }
 
     getFirstStep = () => {
-        if (this.Modal.tripAsSteps.length == 0)
+        if (this.Modal.steps.length == 0)
             throw "No steps found"
-        return this.Modal.tripAsSteps[0]
+        return this.Modal.steps[0]
     }
 
     getSteps = () => {
-        if (this.Modal.tripAsSteps == undefined || this.Modal.tripAsSteps == null)
+        if (this.Modal.steps == undefined || this.Modal.steps == null)
             throw "No steps found"
-        return this.Modal.tripAsSteps
+        return this.Modal.steps
     }
 }

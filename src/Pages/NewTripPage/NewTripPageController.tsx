@@ -48,7 +48,7 @@ export class NewTripPageController {
         homeStep.location = "Home"
         homeStep.id = 1;
 
-        this.Modal.data.tripAsSteps.push(homeStep)
+        this.Modal.data.steps.push(homeStep)
 
         homeStep = new StepModal()
         homeStep.startTimestamp = today.getTime() + 1;
@@ -57,7 +57,7 @@ export class NewTripPageController {
         homeStep.meanLongitude = BlobSaveAndLoad.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude        
         homeStep.location = "Home"
         homeStep.id = 100000;
-        this.Modal.data.tripAsSteps.push(homeStep)
+        this.Modal.data.steps.push(homeStep)
 
         this.Modal.data.tripId = TripUtils.GenerateTripId()
 

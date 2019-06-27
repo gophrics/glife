@@ -3,10 +3,12 @@ import { months, Page, HomeDataModal } from '../Modals/ApplicationEnums';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { BlobSaveAndLoad } from './BlobSaveAndLoad';
 import { AuthProvider } from './AuthProvider';
+import * as Constants from "./Constants"
+import { TripExplorePageModal } from '../Pages/TripExplorePage/TripExplorePageModal';
+import { ProfilePageModal } from '../Pages/ProfilePage/ProfilePageModal';
+import { md5 } from './MD5';
 
-const ServerURLWithoutEndingSlash = 'http://192.168.0.111:8082'
-
-
+const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8082"
 
 export class TripUtils {
     static TOTAL_TO_LOAD = 100;
@@ -142,9 +144,69 @@ export class TripUtils {
         })
     }   
 
+    static SaveTrip(trip: TripExplorePageModal): Promise<any> {
+        return fetch(ServerURLWithoutEndingSlash + '/api/v1/travel/savetrip', 
+        {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + AuthProvider.Token
+            },
+            body: JSON.stringify({
+                "trip": trip
+            })
+        })
+        .then((res) => {
+            return res.json()
+        })
+        .then((res) => {
+            return res
+        })
+    }
+
+    static GetTripCheckSumServer(trip: TripExplorePageModal): Promise<any> {
+        return fetch(ServerURLWithoutEndingSlash + '/api/v1/travel/gettriphash',
+        {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + AuthProvider.Token
+            },
+            body: JSON.stringify({
+                "tripId": trip.tripId
+            })
+        })
+        .then((res) => {
+            return res.json()
+        })
+        .then((res) => {
+            console.log(res)
+            return res
+        })
+        .catch((err) => {
+            console.warn(err)
+            throw err
+        })
+    }
+
+    static UpdateTripBackground = async() => {
+        var profilePageModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE]) || {}
+        var trips = profilePageModal.trips
+
+        for(var trip of trips) {
+            var serverHash = await TripUtils.GetTripCheckSumServer(trip)
+            var clientHash = md5(trip)
+            if(serverHash != clientHash) {
+                console.log("Server hash: " + serverHash)
+                console.log("Client hash: " + clientHash)
+                console.log("Server client hash mismatch, uploading")
+                console.log(trip)
+                TripUtils.SaveTrip(trip)
+            }
+        }
+
+    }
+
     static getDateFromTimestamp(timestamp: number): string {
         var date = new Date(timestamp)
         return date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()
     }
-
 }

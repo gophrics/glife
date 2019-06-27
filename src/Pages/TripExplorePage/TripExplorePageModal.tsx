@@ -4,7 +4,7 @@ import { TripUtils } from "../../Engine/TripUtils";
 
 export class TripExplorePageModal {
     tripId: number
-    tripAsSteps: StepModal[]
+    steps: StepModal[]
     location : Region
     title: string
     countryCode: string[]
@@ -19,7 +19,7 @@ export class TripExplorePageModal {
     
     constructor() {
         this.tripId = 0;
-        this.tripAsSteps = [];
+        this.steps = [];
         this.location = {} as Region
         this.temperature = ""
         this.daysOfTravel = 0
@@ -32,9 +32,9 @@ export class TripExplorePageModal {
         this.masterPicURL = ""
     }
 
-    CopyConstructor = (trip: TripExplorePageModal) => {
+    CopyConstructor = (trip: any) => {
         this.tripId = trip.tripId;
-        this.tripAsSteps = trip.tripAsSteps;
+        this.steps = trip.steps || trip.tripAsSteps;
         this.location = trip.location;
         this.temperature = trip.temperature;
         this.daysOfTravel = trip.daysOfTravel;
@@ -57,35 +57,35 @@ export class TripExplorePageModal {
     }
 
     populateMasterPic = () => {
-        this.masterPicURL = this.tripAsSteps[this.tripAsSteps.length-2].masterImageUri;
+        this.masterPicURL = this.steps[this.steps.length-2].masterImageUri;
     }
 
     populateDaysOfTravel = () => {
-        this.daysOfTravel =  Math.abs(Math.floor(this.tripAsSteps[this.tripAsSteps.length-1].endTimestamp/8.64e7) - Math.floor(this.tripAsSteps[0].startTimestamp/8.64e7))
+        this.daysOfTravel =  Math.abs(Math.floor(this.steps[this.steps.length-1].endTimestamp/8.64e7) - Math.floor(this.steps[0].startTimestamp/8.64e7))
         this.daysOfTravel = this.daysOfTravel == 0 ? 1 : this.daysOfTravel;
     }
 
     populateDistanceTravelled = () => {
-        this.distanceTravelled = this.tripAsSteps[this.tripAsSteps.length-1].distanceTravelled;
+        this.distanceTravelled = this.steps[this.steps.length-1].distanceTravelled;
     }
 
     populateDates = () => {
-        this.startDate = TripUtils.getDateFromTimestamp(this.tripAsSteps[0].startTimestamp);
-        this.endDate = TripUtils.getDateFromTimestamp(this.tripAsSteps[this.tripAsSteps.length - 1].endTimestamp);
+        this.startDate = TripUtils.getDateFromTimestamp(this.steps[0].startTimestamp);
+        this.endDate = TripUtils.getDateFromTimestamp(this.steps[this.steps.length - 1].endTimestamp);
     }
 
     populateLocation = () => {            
         // TODO: Fix this, country visited is not first step, first step is home
         this.location = {
-            latitude: this.tripAsSteps[1].meanLatitude,
-            longitude: this.tripAsSteps[1].meanLongitude,
+            latitude: this.steps[1].meanLatitude,
+            longitude: this.steps[1].meanLongitude,
             latitudeDelta: 0,
             longitudeDelta: 0
         } as Region
     }
 
     populateTemperature = () => {
-        this.temperature = this.tripAsSteps[1].temperature;
+        this.temperature = this.steps[1].temperature;
     }
 
     populateTitle = (countries: Array<string>, places: Array<string>) => {

@@ -1,6 +1,7 @@
 import { AuthProvider } from "./AuthProvider";
+import * as Constants from "./Constants"
 
-const ServerURLWithoutEndingSlash = 'http://192.168.0.111:8080'
+const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8080"
 
 
 export interface ValidateUsernameModal {

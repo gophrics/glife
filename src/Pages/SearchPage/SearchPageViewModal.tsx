@@ -3,13 +3,16 @@ import { View, Text } from 'react-native'
 import { SearchPageController } from './SearchPageController';
 import { SearchBar } from 'react-native-elements';
 import { Page } from '../../Modals/ApplicationEnums';
+import { TripExplorePageModal } from "../TripExplorePage/TripExplorePageModal";
+import { TripComponent } from '../../UIComponents/TripComponent';
 
 interface IProps {
     setPage: any
 }
 
 interface IState {
-    search: string
+    search: string,
+    searchResults: Array<TripExplorePageModal>
 }
 
 
@@ -21,7 +24,8 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
         super(props)
 
         this.state = {
-            search: ""
+            search: "",
+            searchResults: []
         }
 
         this.Controller = new SearchPageController();
@@ -38,6 +42,13 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
     search = async() => {
         var result = await this.Controller.Search(this.state.search)
         console.log(result)
+        this.setState({
+            searchResults: result
+        })
+    }
+
+    onTripPress = (tripModal: TripExplorePageModal) => {
+        this.props.setPage(Page[Page.TRIPEXPLORE], tripModal)
     }
 
     render() {
@@ -50,7 +61,11 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
                     onEndEditing={this.search}
                 />
                 <View>
-
+                    {
+                        this.state.searchResults.map((el, index) => (
+                            <TripComponent tripModal={el} onPress={this.onTripPress}/>
+                        ))
+                    }
                 </View>
             </View>
         )

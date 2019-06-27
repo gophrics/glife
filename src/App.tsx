@@ -26,6 +26,8 @@ import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
 import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 import { RegisterAndLoginController } from './Pages/RegisterAndLoginPage/RegisterAndLoginController';
 import { AuthProvider } from './Engine/AuthProvider';
+import * as PublisherSubscriber from './Engine/PublisherSubscriber';
+import { TripUtils } from './Engine/TripUtils';
 
 interface IState {
   page: string,
@@ -68,6 +70,10 @@ export default class App extends React.Component<IProps, IState> {
     setTimeout(() => {
       this.tryLogin()
     }, 10000)
+
+    setTimeout(() => {
+      TripUtils.UpdateTripBackground()
+    }, 10000)
   }
 
   tryLogin = async() => {    
@@ -82,11 +88,7 @@ export default class App extends React.Component<IProps, IState> {
 
   setPage(page: string, data: any = null) {
     if(data != null) 
-      BlobSaveAndLoad.Instance.setBlobValue(page, data);
-    BlobSaveAndLoad.Instance.saveBlob();
-    // AsyncStorage.setItem('lastPage', page);
-    // console.log()
-    // AsyncStorage.setItem('lastPageDataPipe', JSON.stringify(this.state.pageDataPipe));
+      PublisherSubscriber.Bus[page] = data
     this.setState({
       page: page
     });

@@ -28,7 +28,7 @@ export class ProfileUtils {
             return (res as RandomUsernameModal).Username
         })
         .catch((err) => {
-            console.error(err)
+            console.warn(err)
             throw err
         })
     }
@@ -42,7 +42,7 @@ export class ProfileUtils {
             return (res as ValidateUsernameModal).Result
         })
         .catch((err) => {
-            console.error(err)
+            console.warn(err)
             throw err
         })
     }
@@ -59,7 +59,7 @@ export class ProfileUtils {
             return res
         })
         .catch((err) => {
-            console.error(err)
+            console.warn(err)
             throw err
         })
     }

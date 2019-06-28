@@ -70,6 +70,7 @@ export class LoginUserPage extends React.Component<IProps, IState> {
         if(registered)
             this.props.setPage(Page[Page.SEARCH])
         else {
+            console.log(this.Controller.error)
             this.setState({
                 loginInProcess: false,
                 error: this.Controller.error

@@ -27,7 +27,7 @@ export class RegisterAndLoginController {
             if(res) return true
             return false
         } catch(err) {
-            this.error = err
+            this.error = err.toString()
             return false
         }
     }
@@ -42,7 +42,7 @@ export class RegisterAndLoginController {
             if(res) return true
             return false
         } catch(err) {
-            this.error = err
+            this.error = err.toString()
             return false
         }
     }
@@ -53,7 +53,7 @@ export class RegisterAndLoginController {
             if(res) return true
             return false
         } catch(err) {
-            this.error = err;
+            this.error = err.toString();
             return false
         }
     }

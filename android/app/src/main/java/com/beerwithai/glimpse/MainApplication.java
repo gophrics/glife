@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.beerwithai.BuildConfig;
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new SQLitePluginPackage(),   // register SQLite Plugin here
             new MainReactPackage(),
+            new RNFSPackage(),
             new RNGoogleSigninPackage(),
             new LinearGradientPackage(),
             new PickerPackage(),

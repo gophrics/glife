@@ -37,6 +37,8 @@ PODS:
     - React/Core
   - RNCAsyncStorage (1.5.0):
     - React
+  - RNFS (2.13.3):
+    - React
   - RNGoogleSignin (2.0.0):
     - GoogleSignIn (~> 4.4.0)
     - React
@@ -61,6 +63,7 @@ DEPENDENCIES:
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - React/RCTImage (from `../node_modules/react-native`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGoogleSignin (from `../node_modules/react-native-google-signin`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -93,6 +96,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-sqlite-storage"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGoogleSignin:
     :path: "../node_modules/react-native-google-signin"
   RNImageCropPicker:
@@ -118,6 +123,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   react-native-sqlite-storage: e2514e75e65458cc2c6590d181bd1947ec6f4e3f
   RNCAsyncStorage: 63407ea82f1b5ac8fc53a0b8c569b08e0516a9e0
+  RNFS: c9bbde46b0d59619f8e7b735991c60e0f73d22c1
   RNGoogleSignin: d030c6c6591db24c3cee649f64c7babf0a1699a0
   RNImageCropPicker: 6134b66a3d5bc13e2895a97c630a4254006902b4
   RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
@@ -125,6 +131,6 @@ SPEC CHECKSUMS:
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: 03ff42a6f223fb88deeaed60249020d80c3091ee
 
-PODFILE CHECKSUM: 44e8771f3406b25c9f936462485dccc2c8ec09c1
+PODFILE CHECKSUM: 91e7c83163c8d09fa7c760a8aec8a5ca28b48180
 
 COCOAPODS: 1.7.1

@@ -91,10 +91,10 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
                 <TextInput  style={{fontSize: 22, padding: 5}}  placeholder={"Enter Phone"} onChangeText={this.onPhoneChange} />
                 <TextInput  style={{fontSize: 22, padding: 5}}  placeholder={"Enter Password"} onChangeText={this.onPasswordChange} />
                 <TouchableOpacity style={{backgroundColor:'white', padding: 5, borderRadius: 5}} onPress={this.register} >
-                    <Text style={{color:'black'}}>Register</Text>
+                    <Text style={{fontSize: 18, color:'black'}}>Register</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{backgroundColor:'white', padding: 5, borderRadius: 5}} onPress={this.login} >
-                    <Text style={{color:'black'}}>Login</Text>
+                <TouchableOpacity style={{backgroundColor:'yellow', padding: 5, borderRadius: 5}} onPress={this.login} >
+                    <Text style={{fontSize: 16, color:'black'}}>Login</Text>
                 </TouchableOpacity>
                 <GoogleSigninButton
                     style={{ width: 192, height: 48 }}

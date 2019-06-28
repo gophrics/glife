@@ -103,7 +103,7 @@ export class LoadingPageController {
             var trips = await this.TripExplorePageController.GenerateTripFromPhotos(photoRollInfos)
             this.ProfilePageController.ClearAndUpdateProfileDataWithAllTrips(trips)
         } catch (error) {
-            console.error(error)
+            console.warn(error)
             return true;
         }
         return true

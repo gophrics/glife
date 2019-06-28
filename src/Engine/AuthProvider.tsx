@@ -45,7 +45,7 @@ export class AuthProvider {
             return res
         })
         .catch((err) => {
-            console.error(err)
+            console.warn(err)
             throw err
         })
     }
@@ -65,7 +65,7 @@ export class AuthProvider {
             return res
         })
         .catch((err) => {
-            console.error(err)
+            console.warn(err)
             throw err
         })
     }
@@ -98,7 +98,13 @@ export class AuthProvider {
                 token: idToken
             })
         })
-        .then((res) => {return res.json()})
+        .then((res) => {
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
+        })
         .then((res: unknown) => {
             console.log(res)
             AuthProvider.Token = (res as LoginModal).Token

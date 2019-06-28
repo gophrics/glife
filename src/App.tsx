@@ -92,7 +92,7 @@ export default class App extends React.Component<IProps, IState> {
       this.loggedIn = true
       console.log("Logged in: " + res)
     } else {
-      this.loggedIn = true;
+      this.loggedIn = false;
     }
     setTimeout(() => {      
       if(!this.loggedIn)

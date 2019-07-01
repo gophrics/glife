@@ -27,7 +27,14 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
         }
     }
 
-    render() {
+    async render() {
+
+        var imageBase64 = []
+        
+        for(var image of this.props.lastStepClicked.imageBase64) {
+            imageBase64.push(await image)
+        }
+
         return (<Modal
             animationType='fade'
             visible={this.props.photoModalVisible}
@@ -57,7 +64,7 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
                                 stickyHeaderIndices={[0]}
                             >
                                 {
-                                    this.props.lastStepClicked.imageBase64.map((image, index) => (
+                                    imageBase64.map((image, index) => (
                                         image != "" ?
                                             <View style={{ width: deviceWidth - 60, height: deviceWidth - 60, alignContent: 'center', backgroundColor: 'black' }} key={index}>
                                                 <Image

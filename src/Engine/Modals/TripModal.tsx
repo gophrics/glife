@@ -1,7 +1,6 @@
 import { StepModal } from "./StepModal";
 import Region from "./Region";
 import { TripUtils } from "../Utils/TripUtils";
-import * as Engine from "../Engine";
 
 export class TripModal {
     tripId: number
@@ -16,9 +15,13 @@ export class TripModal {
     startDate: string
     endDate: string
     masterPicURL: string
-    masterPicBase64: string
+    _masterPicBase64: string
     public: boolean
     
+    get masterPicBase64() {
+        return TripUtils.PopulateImageBase64(this.masterPicURL)
+    }
+
     constructor() {
         this.tripId = 0;
         this.steps = [];
@@ -32,9 +35,9 @@ export class TripModal {
         this.tripName = ""
         this.countryCode = []
         this.masterPicURL = ""
-        this.masterPicBase64 = ""
+        this._masterPicBase64 = ""
         this.public = false
-        Engine.Instance.PubSub.FunctionEveryTenSeconds.push(this.backgroundProcess)
+        //Engine.Instance.PubSub.FunctionEveryTenSeconds.push(this.backgroundProcess)
     }
 
     CopyConstructor = (trip: any) => {
@@ -50,12 +53,12 @@ export class TripModal {
         this.tripName = trip.tripName || trip.title;
         this.countryCode = trip.countryCode;
         this.masterPicURL = trip.masterPicURL
-        this.masterPicBase64 = trip.masterPicBase64
+        this._masterPicBase64 = trip.masterPicBase64
     }
 
     backgroundProcess = async() => {
-        if(this.masterPicURL != "" && this.masterPicBase64 == "") {
-            this.masterPicBase64 = await TripUtils.PopulateImageBase64(this.masterPicURL)
+        if(this.masterPicURL != "" && this._masterPicBase64 == "") {
+            this._masterPicBase64 = await TripUtils.PopulateImageBase64(this.masterPicURL)
         }
     }
 

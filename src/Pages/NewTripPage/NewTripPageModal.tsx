@@ -1,10 +1,10 @@
-import { TripExplorePageModal } from "../TripExplorePage/TripExplorePageModal";
+import { TripModal } from "../../Engine/Modals/TripModal";
 
 export class NewTripPageModal {
 
-    data: TripExplorePageModal
+    data: TripModal
 
     constructor() {
-        this.data = new TripExplorePageModal(false)
+        this.data = new TripModal()
     }
 }

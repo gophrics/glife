@@ -32,11 +32,11 @@ export class StepComponent extends React.Component<IProps, IState> {
         this.props.onPress(this.props.modal)
     }
     
-    render() {
+    async render() {
 
         return (
             <TouchableOpacity onPress={this.onPress.bind(this)} >
-                <ImageBackground resizeMode='cover' style={{width: deviceWidth*3/4, padding: 10, margin: 10, backgroundColor:'grey', height: deviceHeight*.2}} source={{uri: `data:image/gif;base64,${this.props.modal.masterImageBase64}`}}>
+                <ImageBackground resizeMode='cover' style={{width: deviceWidth*3/4, padding: 10, margin: 10, backgroundColor:'grey', height: deviceHeight*.2}} source={{uri: `data:image/gif;base64,${await this.props.modal.masterImageBase64}`}}>
                     
                         <View style={{flexDirection: 'column', alignContent:'space-between'}}>
                             

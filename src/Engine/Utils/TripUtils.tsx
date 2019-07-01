@@ -3,7 +3,7 @@ import { months, Page, HomeDataModal } from '../../Modals/ApplicationEnums';
 import { ClusterModal } from '../Modals/ClusterModal';
 import { AuthProvider } from '../Providers/AuthProvider';
 import * as Constants from "../Constants"
-import { TripExplorePageModal } from '../../Pages/TripExplorePage/TripExplorePageModal';
+import { TripModal } from '../Modals/TripModal';
 import {Md5} from 'ts-md5/dist/md5';
 import ImageResizer from 'react-native-image-resizer';
 import * as RNFS from 'react-native-fs';
@@ -37,7 +37,7 @@ export class TripUtils {
         Engine.Instance.BlobProvider.saveEngineData()
     }
 
-    static GenerateHomeData = async(homeInfo: Array<HomeDataModal>) : Promise<void> => {
+    static GenerateHomeData = async(homeInfo: Array<HomeDataModal>) : Promise<any> => {
 
         var homes: Array<{latitude: number, longitude: number, timestamp: number}> = [];
         var homesDataForClustering: {[key:number]: ClusterModal} = [];
@@ -65,10 +65,11 @@ export class TripUtils {
             }
         }
 
-        Engine.Instance.BlobProvider.homeData = homesDataForClustering;
-        Engine.Instance.BlobProvider.startTimestamp = startTimestamp;
-        Engine.Instance.BlobProvider.endTimestamp = endTimestamp;
-        Engine.Instance.BlobProvider.saveEngineData()
+        return {
+            "homeData": homesDataForClustering,
+            "startTimestamp": startTimestamp,
+            "endTimestamp": endTimestamp
+        }
     }
 
     static GetTotalToLoad = () => {
@@ -145,7 +146,7 @@ export class TripUtils {
         })
     }   
 
-    static SaveTrip(trip: TripExplorePageModal): Promise<any> {
+    static SaveTrip(trip: TripModal): Promise<any> {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/travel/savetrip', 
         {
             method: "POST",
@@ -162,7 +163,7 @@ export class TripUtils {
         })
     }
 
-    static GetTripCheckSumServer(trip: TripExplorePageModal): Promise<any> {
+    static GetTripCheckSumServer(trip: TripModal): Promise<any> {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/travel/gettriphash',
         {
             method: "POST",
@@ -208,8 +209,8 @@ export class TripUtils {
         try {
             var res = await ImageResizer.createResizedImage(
                 imageuri,
-                1000,
-                1000,
+                300,
+                300,
                 'JPEG',
                 25,
                 0,

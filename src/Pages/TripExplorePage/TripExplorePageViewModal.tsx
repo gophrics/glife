@@ -201,7 +201,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                     >
                         {
 
-                            this.state.steps.map((step, index) => (
+                            this.state.steps.map(async (step, index) => (
                                 step.masterMarker != undefined ?
                                     <Marker
                                         key={index + 'marker'}
@@ -213,7 +213,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                                             <View key={index + 'markerview'} style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} >
                                                 <Image
                                                     key={index + 'markerimage'}
-                                                    style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} source={{ uri: `data:image/gif;base64,${step.masterImageBase64}` }}></Image>
+                                                    style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} source={{ uri: `data:image/gif;base64,${await step.masterImageBase64}` }}></Image>
 
                                                 {this.state.lastStepClicked.stepId == step.stepId ? <Text style={{ color: 'white', fontStyle: 'italic' }}>{this.state.lastStepClicked.description}</Text> : <View />}
                                             </View>

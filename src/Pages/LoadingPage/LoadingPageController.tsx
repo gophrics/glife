@@ -1,5 +1,4 @@
 import { LoadingPageModal } from "./LoadingPageModal";
-import { ImageDataModal } from "../../Engine/Modals/ImageDataModal";
 import { PermissionsAndroid, Platform } from 'react-native';
 import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor'
 import { TripUtils } from '../../Engine/Utils/TripUtils';
@@ -81,34 +80,14 @@ export class LoadingPageController {
           }
     }
 
-    
-    Initialize  = async() : Promise<boolean> => {
-        if(Platform.OS == "android") await this.RequestPermissionAndroid()
+    Initialize = async() => {
+      if(Platform.OS == "android") await this.RequestPermissionAndroid()
         else if(Platform.OS == "ios") await PhotoLibraryProcessor.checkPhotoPermission()
         
         if(!(await PhotoLibraryProcessor.checkPhotoPermission())) {
             return false;
         }
         
-        Engine.Instance.PubSub.PauseUpdate = true;
-        var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
-
-        await TripUtils.GenerateHomeData(this.Modal.homeData)
-        
-        // Create a No photos found warning page
-        if(photoRollInfos.length == 0) {
-            return true
-        }
-        
-        try {
-            var trips = await this.TripExplorePageController.GenerateTripFromPhotos(photoRollInfos)
-            this.ProfilePageController.ClearAndUpdateProfileDataWithAllTrips(trips)
-        } catch (error) {
-            console.warn(error)
-            Engine.Instance.PubSub.PauseUpdate = false;
-            return true;
-        }
-        Engine.Instance.PubSub.PauseUpdate = false;
-        return true
+        return Engine.Instance.Initialize()
     }
 }

@@ -4,7 +4,7 @@ import { ProfileComponent } from '../../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../../UIComponents/StatsAsCardComponent';
 import { TripComponent } from '../../UIComponents/TripComponent';
-import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
+import { TripModal } from '../../Engine/Modals/TripModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { ProfilePageController } from './ProfilePageController';
@@ -54,16 +54,16 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
         var trips = this.Controller.getTrips()
         var tripRenderArray: Array<JSX.Element> = []
         for (var trip of trips) {
-            // tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress} />)
-            // tripRenderArray.push(<View key={trip.tripId + 'v'} style={{ height: 10 }} />)
+            tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress} />)
+            tripRenderArray.push(<View key={trip.tripId + 'v'} style={{ height: 10 }} />)
         }
         this.setState({
             tripRenderArray: tripRenderArray
         })
-        setTimeout(this.getTrips, 10000)
+        setTimeout(this.getTrips, 100)
     }
 
-    onTripPress = (tripModal: TripExplorePageModal) => {
+    onTripPress = (tripModal: TripModal) => {
         this.props.setPage(Page[Page.TRIPEXPLORE], tripModal)
     }
 

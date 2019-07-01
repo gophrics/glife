@@ -35,6 +35,8 @@ export class ProfileModal {
     }
 
     Save = () => {
+        console.log("Save called")
+        console.log(this)
         Engine.Instance.BlobProvider.setBlobValue(Page[Page.PROFILE], this)
     }
 }

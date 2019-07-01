@@ -1,6 +1,5 @@
 import {Region} from 'react-native-maps';
 import { TripUtils } from '../Utils/TripUtils';
-import * as Engine from '../Engine';
 
 export class StepModal {
 
@@ -12,25 +11,37 @@ export class StepModal {
     endTimestamp: number
     timelineData: string[]
     imageUris: string[]
-    imageBase64: string[]
+    _imageBase64: string[]
     markers: Region[]
     masterImageUri: string
-    masterImageBase64: string
+    _masterImageBase64: string
     masterMarker: Region
     distanceTravelled: number
     description: string
     temperature: string
     backgroundProcessingComplete: boolean;
 
+    get masterImageBase64() {
+        return TripUtils.PopulateImageBase64(this.masterImageUri)
+    }
+
+    get imageBase64() {
+        var retVal = []
+        for(var imageUri of this.imageUris) {
+            retVal.push(TripUtils.PopulateImageBase64(imageUri))
+        }
+        return retVal
+    }
+
     backgroundProcess = async() => {
-        if(this.masterImageUri != "" && this.masterImageBase64 == "") {
-            this.masterImageBase64 = await TripUtils.PopulateImageBase64(this.masterImageUri)
+        if(this.masterImageUri != "" && this._masterImageBase64 == "") {
+            this._masterImageBase64 = await TripUtils.PopulateImageBase64(this.masterImageUri)
             this.backgroundProcessingComplete = false;
         }
         var i = 0;
         for(var imageUri of this.imageUris) {
-            if(i >= this.imageBase64.length) {
-                this.imageBase64.push(await TripUtils.PopulateImageBase64(imageUri))
+            if(i >= this._imageBase64.length) {
+                this._imageBase64.push(await TripUtils.PopulateImageBase64(imageUri))
                 this.backgroundProcessingComplete = false;
             }
             i++;
@@ -46,7 +57,7 @@ export class StepModal {
         this.startTimestamp = 0;
         this.endTimestamp = 0;
         this.imageUris = []
-        this.imageBase64 = [];
+        this._imageBase64 = [];
         this.timelineData = [];
         this.markers = [];
         this.masterImageUri = "";
@@ -54,8 +65,8 @@ export class StepModal {
         this.distanceTravelled = 0;
         this.description = "";
         this.temperature = "";
-        this.masterImageBase64 = "";
+        this._masterImageBase64 = "";
         this.backgroundProcessingComplete = true;
-        Engine.Instance.PubSub.FunctionEveryTenSeconds.push(this.backgroundProcess)
+        //Engine.Instance.PubSub.FunctionEveryTenSeconds.push(this.backgroundProcess)
     }
 }

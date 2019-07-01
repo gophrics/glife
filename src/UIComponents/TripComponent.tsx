@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
-import { TripExplorePageModal } from '../Pages/TripExplorePage/TripExplorePageModal';
+import { TripModal } from '../Engine/Modals/TripModal';
 import { TripUtils } from '../Engine/Utils/TripUtils';
 
 interface IState {
@@ -8,8 +8,8 @@ interface IState {
 }
 
 interface IProps {
-    tripModal: TripExplorePageModal
-    onPress: (tripModal: TripExplorePageModal) => void
+    tripModal: TripModal
+    onPress: (tripModal: TripModal) => void
 }
 
 const deviceHeight = Dimensions.get('window').height

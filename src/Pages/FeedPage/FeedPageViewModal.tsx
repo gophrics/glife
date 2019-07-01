@@ -2,14 +2,14 @@ import * as React from 'react'
 import { ScrollView } from 'react-native'
 import { TripComponent } from '../../UIComponents/TripComponent';
 import { FeedPageController } from './FeedPageController';
-import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
+import { TripModal } from '../../Engine/Modals/TripModal';
 
 interface IProps {
     setPage: any
 }
 
 interface IState {
-    trips: Array<TripExplorePageModal>
+    trips: Array<TripModal>
 }
 
 export class FeedPageViewModal extends React.Component<IProps, IState> {

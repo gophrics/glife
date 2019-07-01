@@ -9,6 +9,8 @@ import { TripModal } from './Modals/TripModal';
 import { TripUtils } from './Utils/TripUtils';
 import { ClusterModal } from './Modals/ClusterModal';
 import { StepModal } from './Modals/StepModal';
+import ImageResizer from 'react-native-image-resizer';
+import * as RNFS from 'react-native-fs';
 
 export class Engine {
     PubSub: PublisherSubscriber;
@@ -25,8 +27,32 @@ export class Engine {
         var data = this.TryLoadingProfile()
         this.Modal = new ProfileModal()
         this.Modal.CopyConstructor(data)
+        console.log("Engine consturctor called")
     }
 
+    PopulateImageBase64 = async(imageuri: string) => {
+        console.log(imageuri)
+        try {
+            var res = await ImageResizer.createResizedImage(
+                imageuri,
+                1000,
+                1000,
+                'JPEG',
+                25,
+                0,
+                "",
+            )
+            var base64encodeddata = await RNFS.readFile(res.uri, 'base64')    
+            return base64encodeddata
+        } catch (err) {
+            return ""
+        }
+    }
+
+    setName = (name: string) => {
+        this.Modal.name = name;
+        this.BlobProvider.setBlobValue(Page[Page.PROFILE], this.Modal)
+    }
 
     TryLoadingProfile = () => {
         var data = this.BlobProvider.getBlobValue(Page[Page.PROFILE])
@@ -124,8 +150,6 @@ export class Engine {
         this.Modal.trips.sort((a: TripModal, b: TripModal) => {
             return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
         })
-        
-        this.Modal.Save()
     }
 
 
@@ -220,8 +244,6 @@ export class Engine {
         this.Modal.trips.sort((a: TripModal, b: TripModal) => {
             return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
         })
-        
-        this.Modal.Save()
 
         return this.Modal
     }

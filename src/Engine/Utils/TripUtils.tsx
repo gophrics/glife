@@ -5,8 +5,6 @@ import { AuthProvider } from '../Providers/AuthProvider';
 import * as Constants from "../Constants"
 import { TripModal } from '../Modals/TripModal';
 import {Md5} from 'ts-md5/dist/md5';
-import ImageResizer from 'react-native-image-resizer';
-import * as RNFS from 'react-native-fs';
 import * as Engine from '../Engine';
 
 const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8082"
@@ -188,7 +186,7 @@ export class TripUtils {
     }
 
     static UpdateTripBackground = async() => {
-        var profilePageModal = Engine.Instance.Data;
+        var profilePageModal = Engine.Instance.Modal;
         var trips = profilePageModal.trips
 
         for(var trip of trips) {
@@ -203,24 +201,6 @@ export class TripUtils {
             }
         }
 
-    }
-
-    static PopulateImageBase64 = async(imageuri: string) => {
-        try {
-            var res = await ImageResizer.createResizedImage(
-                imageuri,
-                300,
-                300,
-                'JPEG',
-                25,
-                0,
-                "",
-            )
-            var base64encodeddata = await RNFS.readFile(res.uri, 'base64')    
-            return base64encodeddata
-        } catch (err) {
-            return ""
-        }
     }
 
     static getDateFromTimestamp(timestamp: number): string {

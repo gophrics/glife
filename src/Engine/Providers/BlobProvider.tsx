@@ -13,6 +13,7 @@ export class BlobProvider {
     constructor() {
         this.loadBlob()
         this.loadEngineData()
+        console.log("BlobProvider constructor called")
     }
 
     saveBlob = () => {

@@ -1,5 +1,5 @@
 import {Region} from 'react-native-maps';
-import { TripUtils } from '../Utils/TripUtils';
+import * as Engine from '../Engine'
 
 export class StepModal {
 
@@ -22,26 +22,26 @@ export class StepModal {
     backgroundProcessingComplete: boolean;
 
     get masterImageBase64() {
-        return TripUtils.PopulateImageBase64(this.masterImageUri)
+        return Engine.Instance.PopulateImageBase64(this.masterImageUri)
     }
 
     get imageBase64() {
         var retVal = []
         for(var imageUri of this.imageUris) {
-            retVal.push(TripUtils.PopulateImageBase64(imageUri))
+            retVal.push(Engine.Instance.PopulateImageBase64(imageUri))
         }
         return retVal
     }
 
     backgroundProcess = async() => {
         if(this.masterImageUri != "" && this._masterImageBase64 == "") {
-            this._masterImageBase64 = await TripUtils.PopulateImageBase64(this.masterImageUri)
+            this._masterImageBase64 = await Engine.Instance.PopulateImageBase64(this.masterImageUri)
             this.backgroundProcessingComplete = false;
         }
         var i = 0;
         for(var imageUri of this.imageUris) {
             if(i >= this._imageBase64.length) {
-                this._imageBase64.push(await TripUtils.PopulateImageBase64(imageUri))
+                this._imageBase64.push(await Engine.Instance.PopulateImageBase64(imageUri))
                 this.backgroundProcessingComplete = false;
             }
             i++;

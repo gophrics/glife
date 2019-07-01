@@ -1,6 +1,7 @@
 import { StepModal } from "./StepModal";
 import Region from "./Region";
 import { TripUtils } from "../Utils/TripUtils";
+import * as Engine from '../Engine';
 
 export class TripModal {
     tripId: number
@@ -19,7 +20,7 @@ export class TripModal {
     public: boolean
     
     get masterPicBase64() {
-        return TripUtils.PopulateImageBase64(this.masterPicURL)
+        return Engine.Instance.PopulateImageBase64(this.masterPicURL)
     }
 
     constructor() {
@@ -58,7 +59,7 @@ export class TripModal {
 
     backgroundProcess = async() => {
         if(this.masterPicURL != "" && this._masterPicBase64 == "") {
-            this._masterPicBase64 = await TripUtils.PopulateImageBase64(this.masterPicURL)
+            this._masterPicBase64 = await Engine.Instance.PopulateImageBase64(this.masterPicURL)
         }
     }
 

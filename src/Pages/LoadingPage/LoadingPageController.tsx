@@ -33,7 +33,6 @@ export class LoadingPageController {
 
     SetAllHomeData = (homeData: Array<HomeDataModal>) => {
       this.Modal.homeData = homeData;
-      this.Modal.Save()
     }
 
     GetHomeData = (index: number) => {
@@ -42,7 +41,6 @@ export class LoadingPageController {
 
     SetHomeData = (index: number, home: HomeDataModal) => {
       this.Modal.homeData[index] = home;
-      this.Modal.Save()
     }
 
     AddEmptyHome = () => {
@@ -50,7 +48,6 @@ export class LoadingPageController {
         name: "",
         timestamp: 0
       } as HomeDataModal)
-      this.Modal.Save()
     }
 
     RequestPermissionAndroid = async() : Promise<boolean> => {

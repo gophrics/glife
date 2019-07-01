@@ -43,7 +43,7 @@ interface IState {
 export default class LoadingPageViewModal extends React.Component<IProps, IState> {
 
     Controller: LoadingPageController;
-
+    done: boolean = false;
     constructor(props:any) {
         super(props);
 
@@ -69,21 +69,26 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
     }
 
     updateImage = () => {
+        if(this.done) return
         this.setState({
             image: Engine.Instance.PubSub.ImageBus
         })
-        console.log(this.state.image)
         setTimeout(() => {
             this.updateImage()
         }, 1000);
     }
 
     getLoadingDetails = () => {
+        if(this.done) return
         this.setState({
             total: TripUtils.TOTAL_TO_LOAD,
             finished: TripUtils.FINISHED_LOADING
         })
         setTimeout(this.getLoadingDetails, 1000)
+    }
+
+    componentWillUnmount = () => {
+        this.done = true;
     }
 
     render() {

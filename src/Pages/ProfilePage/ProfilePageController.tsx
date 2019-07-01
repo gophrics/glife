@@ -28,8 +28,7 @@ export class ProfilePageController {
     }
 
     setName = (name: string) => {
-        this.Modal.name = name;
-        this.Modal.Save()
+        Engine.Instance.setName(name)
     }
     
     getTrips = () => {

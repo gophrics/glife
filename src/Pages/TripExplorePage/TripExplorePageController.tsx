@@ -1,9 +1,9 @@
 import { TripExplorePageModal } from "./TripExplorePageModal";
-import { ImageDataModal } from "../../Modals/ImageDataModal";
+import { ImageDataModal } from "../../Engine/Modals/ImageDataModal";
 import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor'
-import { StepModal } from '../../Modals/StepModal';
+import { StepModal } from '../../Engine/Modals/StepModal';
 import { TripUtils } from '../../Engine/TripUtils';
-import { ClusterModal } from '../../Modals/ClusterModal'
+import { ClusterModal } from '../../Engine/Modals/ClusterModal'
 import { ClusterProcessor } from '../../Engine/ClusterProcessor'
 import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
 import { Page } from '../../Modals/ApplicationEnums';
@@ -101,7 +101,7 @@ export class TripExplorePageController {
         var homeStep = homesDataForClustering[Math.floor(steps[0].startTimestamp / 8.64e7) - 1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
 
-        var _stepModal: StepModal = await ClusterProcessor.convertClusterToStep([homeStep])
+        var _stepModal: StepModal = ClusterProcessor.convertClusterToStep([homeStep])
         _stepModal.location = "Home";
         _stepModal.stepId = 0;
         tripResult.steps.push(_stepModal)
@@ -121,7 +121,7 @@ export class TripExplorePageController {
         var homeStep2 = homesDataForClustering[Math.floor(steps[steps.length - 1].endTimestamp / 8.64e7) + 1]
         homeStep2.timestamp = Math.floor(steps[steps.length - 1].endTimestamp + 8.64e7)
 
-        var _stepModal2: StepModal = await ClusterProcessor.convertClusterToStep([homeStep2])
+        var _stepModal2: StepModal = ClusterProcessor.convertClusterToStep([homeStep2])
         _stepModal2.location = "Home";
         _stepModal2.distanceTravelled = Math.floor(tripResult.steps[i].distanceTravelled +
             ClusterProcessor.EarthDistance({ latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude } as ClusterModal,
@@ -157,7 +157,6 @@ export class TripExplorePageController {
             }
         }
         
-        tripResult.masterPicBase64 = await TripUtils.PopulateImageBase64(tripResult.masterPicURL)
         tripResult.tripId = tripId;
         tripResult.populateAll();
         tripResult.populateTitle(countries, places);

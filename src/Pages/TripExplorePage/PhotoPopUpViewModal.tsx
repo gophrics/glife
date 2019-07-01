@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Modal, SafeAreaView, TouchableHighlight, Text, ScrollView, Image, TextInput, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { StepModal } from '../../Modals/StepModal';
+import { StepModal } from '../../Engine/Modals/StepModal';
 
 
 interface IProps {

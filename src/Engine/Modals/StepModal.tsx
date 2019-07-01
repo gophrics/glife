@@ -1,5 +1,6 @@
 import {Region} from 'react-native-maps';
 import { TripUtils } from '../Engine/TripUtils';
+import * as PubSub from '../Engine/PublisherSubscriber';
 
 export class StepModal {
 
@@ -19,12 +20,22 @@ export class StepModal {
     distanceTravelled: number
     description: string
     temperature: string
+    backgroundProcessingComplete: boolean;
 
-    populateImages = async() => {
-        for(var image of this.imageUris) {
-            this.imageBase64.push(await TripUtils.PopulateImageBase64(image))
+    backgroundProcess = async() => {
+        if(this.masterImageUri != "" && this.masterImageBase64 == "") {
+            this.masterImageBase64 = await TripUtils.PopulateImageBase64(this.masterImageUri)
+            this.backgroundProcessingComplete = false;
         }
-        this.masterImageBase64 = await TripUtils.PopulateImageBase64(this.masterImageUri)
+        var i = 0;
+        for(var imageUri of this.imageUris) {
+            if(i >= this.imageBase64.length) {
+                this.imageBase64.push(await TripUtils.PopulateImageBase64(imageUri))
+                this.backgroundProcessingComplete = false;
+            }
+            i++;
+        }
+        this.backgroundProcessingComplete = true;
     }
 
     constructor() {
@@ -44,7 +55,7 @@ export class StepModal {
         this.description = "";
         this.temperature = "";
         this.masterImageBase64 = "";
-
-        //setInterval(this.checkAndFillData, Math.floor(Math.random()*1000));
+        this.backgroundProcessingComplete = true;
+        PubSub.Instance.FunctionEveryTenSeconds.push(this.backgroundProcess)
     }
 }

@@ -1,9 +1,9 @@
-import { StepModal } from "../../Engine/Modals/StepModal";
-import Region from "../../Engine/Modals/Region";
+import { StepModal } from "./StepModal";
+import Region from "./Region";
 import { TripUtils } from "../../Engine/TripUtils";
 import * as PubSub from '../../Engine/PublisherSubscriber';
 
-export class TripExplorePageModal {
+export class TripModal {
     tripId: number
     steps: StepModal[]
     location : Region

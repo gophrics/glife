@@ -1,7 +1,7 @@
 import { CameraRoll, GetPhotosParamType, Platform, ImageStore, ImageEditor, ImageCropData } from 'react-native';
-import { ImageDataModal } from '../Modals/ImageDataModal';
-import Region from '../Modals/Region';
-import { ClusterModal } from '../Modals/ClusterModal';
+import { ImageDataModal } from './Modals/ImageDataModal';
+import Region from './Modals/Region';
+import { ClusterModal } from './Modals/ClusterModal';
 
 export async function getPhotosFromLibrary() : Promise<ImageDataModal[]> {
     var options = { first: 1000000000000000, assetType: "Photos"} as GetPhotosParamType;

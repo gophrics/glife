@@ -1,6 +1,6 @@
 
 import { months, Page, HomeDataModal } from '../Modals/ApplicationEnums';
-import { ClusterModal } from '../Modals/ClusterModal';
+import { ClusterModal } from './Modals/ClusterModal';
 import { BlobSaveAndLoad } from './BlobSaveAndLoad';
 import { AuthProvider } from './AuthProvider';
 import * as Constants from "./Constants"
@@ -8,7 +8,7 @@ import { TripExplorePageModal } from '../Pages/TripExplorePage/TripExplorePageMo
 import {Md5} from 'ts-md5/dist/md5';
 import ImageResizer from 'react-native-image-resizer';
 import * as RNFS from 'react-native-fs';
-import * as PublisherSubscriber from '../Engine/PublisherSubscriber';
+
 
 const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8082"
 
@@ -199,7 +199,6 @@ export class TripUtils {
                 console.log("Client hash: " + clientHash)
                 console.log("Server client hash mismatch, uploading")
                 console.log(trip)
-                await TripUtils.PopulateImageBase64(trip)
                 TripUtils.SaveTrip(trip)
             }
         }
@@ -217,8 +216,7 @@ export class TripUtils {
                 0,
                 "",
             )
-            var base64encodeddata = await RNFS.readFile(res.uri, 'base64')        
-            PublisherSubscriber.InfoBus.ImageBus = base64encodeddata
+            var base64encodeddata = await RNFS.readFile(res.uri, 'base64')    
             return base64encodeddata
         } catch (err) {
             return ""

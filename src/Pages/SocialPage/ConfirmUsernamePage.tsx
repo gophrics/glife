@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { View, Text, TextInput, TouchableOpacity,  } from 'react-native'
 import { ProfileUtils } from '../../Engine/ProfileUtils';
-import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
 import { Page } from '../../Modals/ApplicationEnums';
-import { SettingsModal } from '../../Modals/SettingsModal';
 
 interface IProps {
     setPage: any

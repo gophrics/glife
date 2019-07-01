@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Text, Button, Dimensions, ImageBackground } from "react-native";
-import { StepModal } from '../Modals/StepModal';
+import { StepModal } from '../Engine/Modals/StepModal';
 
 interface IProps {
     modal: StepModal

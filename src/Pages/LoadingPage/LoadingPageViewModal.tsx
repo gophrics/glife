@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, Image, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
-import * as PublisherSubscriber from '../../Engine/PublisherSubscriber'
+import * as PubSub from '../../Engine/PublisherSubscriber'
 import { Page } from '../../Modals/ApplicationEnums';
 import { LoadingPageController } from './LoadingPageController';
 import { TripUtils } from '../../Engine/TripUtils';
@@ -69,7 +69,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
 
     updateImage = () => {
         this.setState({
-            image: PublisherSubscriber.InfoBus.ImageBus
+            image: PubSub.Instance.ImageBus
         })
         setTimeout(() => {
             this.updateImage()
@@ -90,7 +90,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
             <View style={{width: '100%', justifyContent:'center', flex: 1}}>
                 <Text style={styles.infoText}>Going through your photo library</Text>
                 <View style={{width: "60%", justifyContent:'center', alignSelf: 'center'}}>
-                    <Image style={{width: 100, height: 100}} resizeMode='cover' source={{ uri: `data:image/gif;base64,${this.state.image}` }}/>
+                    <Image style={{width: 100, height: 100}} resizeMode='cover' source={{ uri: this.state.image }}/>
                 </View>
                 <Text style={{fontSize: 16, textAlign:'center', padding: 20, color:"white"}}>Make sure you don't close the app, and phone doesn't get locked</Text>
                 <View style={{width: "60%", alignSelf: 'center'}}>

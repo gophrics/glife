@@ -1,11 +1,12 @@
 import { LoadingPageModal } from "./LoadingPageModal";
-import { ImageDataModal } from "../../Modals/ImageDataModal";
+import { ImageDataModal } from "../../Engine/Modals/ImageDataModal";
 import { PermissionsAndroid, Platform } from 'react-native';
 import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor'
 import { TripUtils } from '../../Engine/TripUtils';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 import { TripExplorePageController } from "../TripExplorePage/TripExplorePageController";
 import { HomeDataModal } from "../../Modals/ApplicationEnums";
+import * as PubSub from '../../Engine/PublisherSubscriber';
 
 export class LoadingPageController {
 
@@ -82,7 +83,6 @@ export class LoadingPageController {
 
     
     Initialize  = async() : Promise<boolean> => {
-
         if(Platform.OS == "android") await this.RequestPermissionAndroid()
         else if(Platform.OS == "ios") await PhotoLibraryProcessor.checkPhotoPermission()
         
@@ -90,6 +90,7 @@ export class LoadingPageController {
             return false;
         }
         
+        PubSub.Instance.PauseUpdate = true;
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
 
         await TripUtils.GenerateHomeData(this.Modal.homeData)
@@ -104,8 +105,10 @@ export class LoadingPageController {
             this.ProfilePageController.ClearAndUpdateProfileDataWithAllTrips(trips)
         } catch (error) {
             console.warn(error)
+            PubSub.Instance.PauseUpdate = false;
             return true;
         }
+        PubSub.Instance.PauseUpdate = false;
         return true
     }
 }

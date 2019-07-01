@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native';
-import { StepModal } from '../Modals/StepModal';
+import { StepModal } from '../Engine/Modals/StepModal';
 import Icon from 'react-native-vector-icons/AntDesign'
 
 interface IProps {

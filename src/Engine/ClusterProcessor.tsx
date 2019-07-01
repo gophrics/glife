@@ -1,6 +1,7 @@
-import { ClusterModal } from "../Modals/ClusterModal";
-import { StepModal } from "../Modals/StepModal";
-import Region from "../Modals/Region";
+import { ClusterModal } from "./Modals/ClusterModal";
+import { StepModal } from "./Modals/StepModal";
+import Region from "./Modals/Region";
+import * as PubSub from '../Engine/PublisherSubscriber';
 
 export class ClusterProcessor {
 
@@ -38,7 +39,7 @@ export class ClusterProcessor {
         }
 
         for(var cluster of _stepCluster) {
-            var _step = await ClusterProcessor.convertClusterToStep(cluster)
+            var _step = ClusterProcessor.convertClusterToStep(cluster)
             if(_step.stepId != -1) stepResult.push(_step)
         }
 
@@ -116,7 +117,7 @@ export class ClusterProcessor {
         return d;
     }
 
-    static convertClusterToStep = async (cluster: ClusterModal[]) : Promise<StepModal> => {
+    static convertClusterToStep = (cluster: ClusterModal[]) : StepModal => {
         if(cluster.length == 0){
             var _step = new StepModal();
             _step.stepId = -1;
@@ -149,8 +150,9 @@ export class ClusterProcessor {
         _step.masterImageUri = imageUris[0];
         _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
 
-        console.log(_step.meanLatitude)
-        await _step.populateImages()
+        console.log(imageUris)
+        PubSub.Instance.ImageBus = _step.masterImageUri;
+
         return _step;
     }
 

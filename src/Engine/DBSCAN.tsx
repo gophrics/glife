@@ -1,4 +1,4 @@
-import { ClusterModal } from "../Modals/ClusterModal";
+import { ClusterModal } from "./Modals/ClusterModal";
 
 /**
  * DBSCAN - Density based clustering

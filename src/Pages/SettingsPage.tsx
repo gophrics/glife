@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View, Button, Text } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
-import { Page } from '../Modals/ApplicationEnums';
+import { Page } from '../Engine/Modals/ApplicationEnums';
 import { BlobSaveAndLoad } from '../Engine/BlobSaveAndLoad';
-import { SettingsModal } from '../Modals/SettingsModal';
+import { SettingsModal } from '../Engine/Modals/SettingsModal';
 import { AuthProvider, RegisterUserModal } from '../Engine/AuthProvider';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -36,12 +36,7 @@ export class SettingsPage extends React.Component<IProps, IState> {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.props.setPage(Page[Page.SETTING], this.myData)
-      AuthProvider._RegisterUserWithGoogle({
-        Name: userInfo.user.name,
-        Email: userInfo.user.email,
-        Phone: "-1",
-        Country: "",
-      } as RegisterUserModal, userInfo.idToken)
+      AuthProvider._RegisterUserWithGoogle(userInfo.idToken)
         .then((res) => {
           if (res) {
             this.myData.loginProvider = 'GOOGLE'

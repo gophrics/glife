@@ -1,6 +1,6 @@
 import { NewTripPageModal } from "./NewTripPageModal";
 import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor';
-import { StepModal } from '../../Modals/StepModal'
+import { StepModal } from '../../Engine/Modals/StepModal'
 import { BlobSaveAndLoad } from "../../Engine/BlobSaveAndLoad";
 import { TripUtils } from '../../Engine/TripUtils';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
@@ -46,7 +46,7 @@ export class NewTripPageController {
         homeStep.meanLatitude = BlobSaveAndLoad.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
         homeStep.meanLongitude = BlobSaveAndLoad.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
         homeStep.location = "Home"
-        homeStep.id = 1;
+        homeStep.stepId = 1;
 
         this.Modal.data.steps.push(homeStep)
 
@@ -56,7 +56,7 @@ export class NewTripPageController {
         homeStep.meanLatitude = BlobSaveAndLoad.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
         homeStep.meanLongitude = BlobSaveAndLoad.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude        
         homeStep.location = "Home"
-        homeStep.id = 100000;
+        homeStep.stepId = 100000;
         this.Modal.data.steps.push(homeStep)
 
         this.Modal.data.tripId = TripUtils.GenerateTripId()

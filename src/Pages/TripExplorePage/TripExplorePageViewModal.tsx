@@ -6,10 +6,10 @@ import {
 } from 'react-native';
 import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
 import { StepComponent } from '../../UIComponents/StepComponent';
-import { StepModal } from '../../Modals/StepModal';
-import Region from '../../Modals/Region';
+import { StepModal } from '../../Engine/Modals/StepModal';
+import Region from '../../Engine/Modals/Region';
 import { NewStepPageViewModal } from './NewStepPageViewModal';
-import { Page } from '../../Modals/ApplicationEnums';
+import { Page } from '../../Engine/Modals/ApplicationEnums';
 import { CustomButton } from '../../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
 import { PhotoPopUpViewModal } from './PhotoPopUpViewModal';

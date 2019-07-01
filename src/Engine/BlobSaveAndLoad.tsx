@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import { ClusterModal } from './Modals/ClusterModal';
-import { TripUtils } from './TripUtils';
+import { TripUtils } from './Utils/TripUtils';
 import { AuthProvider } from './AuthProvider';
  
 export class BlobSaveAndLoad {

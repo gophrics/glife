@@ -1,6 +1,6 @@
 import { StepModal } from "./StepModal";
 import Region from "./Region";
-import { TripUtils } from "../../Engine/TripUtils";
+import { TripUtils } from "../Utils/TripUtils";
 import * as PubSub from '../../Engine/PublisherSubscriber';
 
 export class TripModal {

@@ -3,7 +3,7 @@ import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, Image, ProgressV
 import * as PubSub from '../../Engine/PublisherSubscriber'
 import { Page } from '../../Modals/ApplicationEnums';
 import { LoadingPageController } from './LoadingPageController';
-import { TripUtils } from '../../Engine/TripUtils';
+import { TripUtils } from '../../Engine/Utils/TripUtils';
 
 interface Styles {
     spinnerContainer: ViewStyle,

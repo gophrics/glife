@@ -1,8 +1,8 @@
 import { LoadingPageModal } from "./LoadingPageModal";
 import { ImageDataModal } from "../../Engine/Modals/ImageDataModal";
 import { PermissionsAndroid, Platform } from 'react-native';
-import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor'
-import { TripUtils } from '../../Engine/TripUtils';
+import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor'
+import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 import { TripExplorePageController } from "../TripExplorePage/TripExplorePageController";
 import { HomeDataModal } from "../../Modals/ApplicationEnums";

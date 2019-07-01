@@ -27,7 +27,7 @@ import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 import { RegisterAndLoginController } from './Pages/RegisterAndLoginPage/RegisterAndLoginController';
 import { AuthProvider } from './Engine/AuthProvider';
 import * as PublisherSubscriber from './Engine/PublisherSubscriber';
-import { TripUtils } from './Engine/TripUtils';
+import { TripUtils } from './Engine/Utils/TripUtils';
 
 interface IState {
   page: string,

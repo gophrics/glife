@@ -1,5 +1,5 @@
 import { AuthProvider } from "../../Engine/AuthProvider";
-import { TripUtils } from "../../Engine/TripUtils";
+import { TripUtils } from "../../Engine/Utils/TripUtils";
 import { TripExplorePageModal } from "../TripExplorePage/TripExplorePageModal";
 
 export class SearchPageController {

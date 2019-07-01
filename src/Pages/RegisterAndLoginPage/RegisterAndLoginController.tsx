@@ -1,5 +1,5 @@
 import { AuthProvider, RegisterUserModal, LoginUserModal } from '../../Engine/AuthProvider'
-import { ProfileUtils } from '../../Engine/ProfileUtils';
+import { ProfileUtils } from '../../Engine/Utils/ProfileUtils';
 
 export class RegisterAndLoginController {
 

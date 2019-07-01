@@ -9,7 +9,7 @@ import { StepComponent } from '../../UIComponents/StepComponent';
 import { StepModal } from '../../Engine/Modals/StepModal';
 import Region from '../../Engine/Modals/Region';
 import { NewStepPageViewModal } from './NewStepPageViewModal';
-import { Page } from '../../Engine/Modals/ApplicationEnums';
+import { Page } from '../../Modals/ApplicationEnums';
 import { CustomButton } from '../../UIComponents/CustomButton';
 import Icon from 'react-native-vector-icons/Octicons';
 import { PhotoPopUpViewModal } from './PhotoPopUpViewModal';

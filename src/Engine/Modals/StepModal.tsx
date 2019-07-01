@@ -1,6 +1,6 @@
 import {Region} from 'react-native-maps';
-import { TripUtils } from '../Engine/TripUtils';
-import * as PubSub from '../Engine/PublisherSubscriber';
+import { TripUtils } from '../Utils/TripUtils';
+import * as PubSub from '../PublisherSubscriber';
 
 export class StepModal {
 

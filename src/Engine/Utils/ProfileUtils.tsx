@@ -1,5 +1,5 @@
-import { AuthProvider } from "./AuthProvider";
-import * as Constants from "./Constants"
+import { AuthProvider } from "../AuthProvider";
+import * as Constants from "../Constants"
 
 const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8080"
 

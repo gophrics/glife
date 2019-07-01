@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import { TripExplorePageModal } from '../Pages/TripExplorePage/TripExplorePageModal';
-import { TripUtils } from '../Engine/TripUtils';
+import { TripUtils } from '../Engine/Utils/TripUtils';
 
 interface IState {
     location: string

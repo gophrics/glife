@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Button, Text } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
-import { Page } from '../Engine/Modals/ApplicationEnums';
+import { Page } from '../Modals/ApplicationEnums';
 import { BlobSaveAndLoad } from '../Engine/BlobSaveAndLoad';
 import { SettingsModal } from '../Engine/Modals/SettingsModal';
 import { AuthProvider, RegisterUserModal } from '../Engine/AuthProvider';

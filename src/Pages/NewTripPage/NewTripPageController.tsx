@@ -1,8 +1,8 @@
 import { NewTripPageModal } from "./NewTripPageModal";
-import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor';
+import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor';
 import { StepModal } from '../../Engine/Modals/StepModal'
 import { BlobSaveAndLoad } from "../../Engine/BlobSaveAndLoad";
-import { TripUtils } from '../../Engine/TripUtils';
+import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 
 export class NewTripPageController {

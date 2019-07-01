@@ -1,7 +1,7 @@
 import { HomeDataModal } from "../../Modals/ApplicationEnums";
 import { LoadingPageController } from "../LoadingPage/LoadingPageController";
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
-import { TripUtils } from '../../Engine/TripUtils';
+import { TripUtils } from '../../Engine/Utils/TripUtils';
 
 export class OnBoardingPageController {
 

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { View, Text, TextInput, TouchableOpacity,  } from 'react-native'
-import { ProfileUtils } from '../../Engine/ProfileUtils';
+import { ProfileUtils } from '../../Engine/Utils/ProfileUtils';
 import { Page } from '../../Modals/ApplicationEnums';
 
 interface IProps {

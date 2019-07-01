@@ -1,4 +1,4 @@
-import { SocialUtils } from "../../Engine/SocialUtils";
+import { SocialUtils } from "../../Engine/Utils/SocialUtils";
 import { TripExplorePageModal } from "../TripExplorePage/TripExplorePageModal";
 
 export class FeedPageController {

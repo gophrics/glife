@@ -3,7 +3,7 @@ import { View, Text, Button, TouchableOpacity } from 'react-native';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { OnBoardingPageController } from './OnBoardingPageController';
 import { Page } from '../../Modals/ApplicationEnums';
-import { TripUtils } from '../../Engine/TripUtils';
+import { TripUtils } from '../../Engine/Utils/TripUtils';
 
 interface IProps {
     setPage: any

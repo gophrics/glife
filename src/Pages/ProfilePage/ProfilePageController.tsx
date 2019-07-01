@@ -1,7 +1,7 @@
 import { ProfilePageModal } from "./ProfilePageModal";
 import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
 import ImagePicker from 'react-native-image-crop-picker';
-import { TripUtils } from "../../Engine/TripUtils";
+import { TripUtils } from "../../Engine/Utils/TripUtils";
 
 export class ProfilePageController {
 

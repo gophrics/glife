@@ -1,8 +1,8 @@
 import { TripExplorePageModal } from "./TripExplorePageModal";
 import { ImageDataModal } from "../../Engine/Modals/ImageDataModal";
-import * as PhotoLibraryProcessor from '../../Engine/PhotoLibraryProcessor'
+import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor'
 import { StepModal } from '../../Engine/Modals/StepModal';
-import { TripUtils } from '../../Engine/TripUtils';
+import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ClusterModal } from '../../Engine/Modals/ClusterModal'
 import { ClusterProcessor } from '../../Engine/ClusterProcessor'
 import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';

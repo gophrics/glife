@@ -5,7 +5,7 @@ export class PublisherSubscriber {
     PauseUpdate: boolean = false;
 
     constructor() {
-        setTimeout(this.CallFunctions, 1000)
+        this.CallFunctions()
     }
 
     CallFunctions = () => {
@@ -14,6 +14,6 @@ export class PublisherSubscriber {
                 f()
             }
         }
-        setTimeout(this.CallFunctions, 1000)
+        setTimeout(this.CallFunctions, 10000)
     }
 }

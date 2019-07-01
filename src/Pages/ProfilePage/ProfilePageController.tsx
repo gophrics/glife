@@ -9,6 +9,7 @@ export class ProfilePageController {
     
     constructor() {
         this.Modal = Engine.Instance.Data
+        console.log(this.Modal)
     }
     
     onProfilePicChange = (profilePicURL: string) => {

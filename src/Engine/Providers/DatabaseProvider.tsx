@@ -12,6 +12,7 @@ class DatabaseProvider {
             tx.executeSql("CREATE TABLE IF NOT EXISTS ");
         });
     }
+    
     public getLastState() {
         this.databaseConnection.then((tx) => {
             tx.executeSql("C")

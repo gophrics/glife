@@ -83,7 +83,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
             total: TripUtils.TOTAL_TO_LOAD,
             finished: TripUtils.FINISHED_LOADING
         })
-        setTimeout(this.getLoadingDetails, 10)
+        setTimeout(this.getLoadingDetails, 1000)
     }
 
     render() {

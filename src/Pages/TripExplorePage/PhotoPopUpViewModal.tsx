@@ -57,12 +57,12 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
                                 stickyHeaderIndices={[0]}
                             >
                                 {
-                                    this.props.lastStepClicked.imageUris.map((imageUri, index) => (
-                                        imageUri != "" ?
+                                    this.props.lastStepClicked.imageBase64.map((image, index) => (
+                                        image != "" ?
                                             <View style={{ width: deviceWidth - 60, height: deviceWidth - 60, alignContent: 'center', backgroundColor: 'black' }} key={index}>
                                                 <Image
                                                     resizeMode='contain'
-                                                    style={{ width: deviceWidth - 60, height: deviceWidth - 60 }} source={{ uri: imageUri }}
+                                                    style={{ width: deviceWidth - 60, height: deviceWidth - 60 }} source={{ uri: `data:image/gif;base64,${image}` }}
                                                 />
                                             </View>
                                             : <View />

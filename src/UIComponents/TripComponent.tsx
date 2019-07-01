@@ -57,7 +57,7 @@ export class TripComponent extends React.Component<IProps, IState> {
     render() {
         return (
             <TouchableOpacity onPress={(e) => this.props.onPress(this.props.tripModal)} >
-            <ImageBackground resizeMode='cover' source={{uri: this.props.tripModal.masterPicURL}} style={this.style.main}>
+            <ImageBackground resizeMode='cover' source={{uri: `data:image/gif;base64,${this.props.tripModal.masterPicBase64}`}} style={this.style.main}>
                 <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15}}>
                     <View style={{flexDirection: 'column', width:'40%', justifyContent:'space-between'}}>
                         <View>

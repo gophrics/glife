@@ -64,14 +64,16 @@ export class TripExplorePageController {
         for (var i = 0; i < trips.length; i++) {
 
             try {
+                console.log(asynci)
                 var trip = trips[i]
 
                 trip.sort((a: ClusterModal, b: ClusterModal) => {
                     return a.timestamp - b.timestamp
                 });
 
-                var _steps: StepModal[] = ClusterProcessor.RunStepClustering(trip);
+                var _steps: StepModal[] = await ClusterProcessor.RunStepClustering(trip);
                 var _trip: TripExplorePageModal = await this.PopulateTripExplorePageModalData(_steps, TripUtils.GenerateTripId());
+
                 tripResult.push(_trip)
 
                 asynci++;
@@ -84,6 +86,7 @@ export class TripExplorePageController {
                     })
                 }
             } catch (err) {
+                console.log(err)
                 i--;
             }
         }
@@ -98,7 +101,7 @@ export class TripExplorePageController {
         var homeStep = homesDataForClustering[Math.floor(steps[0].startTimestamp / 8.64e7) - 1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
 
-        var _stepModal: StepModal = ClusterProcessor.convertClusterToStep([homeStep])
+        var _stepModal: StepModal = await ClusterProcessor.convertClusterToStep([homeStep])
         _stepModal.location = "Home";
         _stepModal.stepId = 0;
         tripResult.steps.push(_stepModal)
@@ -118,7 +121,7 @@ export class TripExplorePageController {
         var homeStep2 = homesDataForClustering[Math.floor(steps[steps.length - 1].endTimestamp / 8.64e7) + 1]
         homeStep2.timestamp = Math.floor(steps[steps.length - 1].endTimestamp + 8.64e7)
 
-        var _stepModal2: StepModal = ClusterProcessor.convertClusterToStep([homeStep2])
+        var _stepModal2: StepModal = await ClusterProcessor.convertClusterToStep([homeStep2])
         _stepModal2.location = "Home";
         _stepModal2.distanceTravelled = Math.floor(tripResult.steps[i].distanceTravelled +
             ClusterProcessor.EarthDistance({ latitude: _stepModal.meanLatitude, longitude: _stepModal.meanLongitude } as ClusterModal,
@@ -153,7 +156,8 @@ export class TripExplorePageController {
                 step.temperature = Math.floor(Number.parseFloat(result.main.temp) - 273.15) + "ºC"
             }
         }
-
+        
+        tripResult.masterPicBase64 = await TripUtils.PopulateImageBase64(tripResult.masterPicURL)
         tripResult.tripId = tripId;
         tripResult.populateAll();
         tripResult.populateTitle(countries, places);

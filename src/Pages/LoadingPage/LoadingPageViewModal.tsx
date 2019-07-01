@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, PermissionsAndroid, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
-import Spinner from '../../UIComponents/Spinner';
+import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, Image, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
+import * as PublisherSubscriber from '../../Engine/PublisherSubscriber'
 import { Page } from '../../Modals/ApplicationEnums';
 import { LoadingPageController } from './LoadingPageController';
 import { TripUtils } from '../../Engine/TripUtils';
@@ -33,7 +33,8 @@ interface IProps {
 
 interface IState {
     finished: number,
-    total: number
+    total: number,
+    image: string
 }
 
 
@@ -49,7 +50,8 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
 
         this.state = {
             finished: 0,
-            total: 100
+            total: 100,
+            image: ""
         }
 
         this.Controller = new LoadingPageController()
@@ -61,6 +63,17 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
                 this.props.setPage(Page[Page.NOPERMISSIONIOS])
         })
         this.getLoadingDetails()
+
+        this.updateImage()
+    }
+
+    updateImage = () => {
+        this.setState({
+            image: PublisherSubscriber.InfoBus.ImageBus
+        })
+        setTimeout(() => {
+            this.updateImage()
+        }, 1000);
     }
 
     getLoadingDetails = () => {
@@ -68,7 +81,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
             total: TripUtils.TOTAL_TO_LOAD,
             finished: TripUtils.FINISHED_LOADING
         })
-        setTimeout(this.getLoadingDetails, 1000)
+        setTimeout(this.getLoadingDetails, 10)
     }
 
     render() {
@@ -76,6 +89,9 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
         return (
             <View style={{width: '100%', justifyContent:'center', flex: 1}}>
                 <Text style={styles.infoText}>Going through your photo library</Text>
+                <View style={{width: "60%", justifyContent:'center', alignSelf: 'center'}}>
+                    <Image style={{width: 100, height: 100}} resizeMode='cover' source={{ uri: `data:image/gif;base64,${this.state.image}` }}/>
+                </View>
                 <Text style={{fontSize: 16, textAlign:'center', padding: 20, color:"white"}}>Make sure you don't close the app, and phone doesn't get locked</Text>
                 <View style={{width: "60%", alignSelf: 'center'}}>
                 {

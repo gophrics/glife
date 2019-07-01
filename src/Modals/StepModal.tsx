@@ -11,21 +11,20 @@ export class StepModal {
     endTimestamp: number
     timelineData: string[]
     imageUris: string[]
+    imageBase64: string[]
     markers: Region[]
     masterImageUri: string
+    masterImageBase64: string
     masterMarker: Region
     distanceTravelled: number
     description: string
     temperature: string
 
-    checkAndFillData = () => {
-        if(this.location == "" && (this.meanLatitude != 0 && this.meanLongitude != 0)) {
-            return TripUtils.getLocationFromCoordinates(this.meanLatitude, this.meanLongitude)
-            .then((res) => {
-                if(res.address)
-                    this.location = res.address.county || res.address.state_district;
-            })
+    populateImages = async() => {
+        for(var image of this.imageUris) {
+            this.imageBase64.push(await TripUtils.PopulateImageBase64(image))
         }
+        this.masterImageBase64 = await TripUtils.PopulateImageBase64(this.masterImageUri)
     }
 
     constructor() {
@@ -36,6 +35,7 @@ export class StepModal {
         this.startTimestamp = 0;
         this.endTimestamp = 0;
         this.imageUris = []
+        this.imageBase64 = [];
         this.timelineData = [];
         this.markers = [];
         this.masterImageUri = "";
@@ -43,6 +43,7 @@ export class StepModal {
         this.distanceTravelled = 0;
         this.description = "";
         this.temperature = "";
+        this.masterImageBase64 = "";
 
         //setInterval(this.checkAndFillData, Math.floor(Math.random()*1000));
     }

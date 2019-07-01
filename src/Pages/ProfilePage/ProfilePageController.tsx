@@ -1,6 +1,7 @@
 import { ProfilePageModal } from "./ProfilePageModal";
 import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
 import ImagePicker from 'react-native-image-crop-picker';
+import { TripUtils } from "../../Engine/TripUtils";
 
 export class ProfilePageController {
 
@@ -56,7 +57,6 @@ export class ProfilePageController {
     }
 
     ClearAndUpdateProfileDataWithAllTrips = (trips: TripExplorePageModal[]) => {
-
         for(var trip of trips)
             this.Modal.countriesVisited.push.apply(this.Modal.countriesVisited, trip.countryCode)
 
@@ -72,7 +72,6 @@ export class ProfilePageController {
     }
 
     UpdateProfileDataWithTrip (trip: TripExplorePageModal) : ProfilePageModal {
-
         this.Modal.countriesVisited.push.apply(this.Modal.countriesVisited, trip.countryCode)
         let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
         this.Modal.countriesVisited = x(this.Modal.countriesVisited); // Removing duplicates

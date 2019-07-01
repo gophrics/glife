@@ -15,6 +15,7 @@ export class TripExplorePageModal {
     startDate: string
     endDate: string
     masterPicURL: string
+    masterPicBase64: string
     public: boolean
     
     constructor() {
@@ -30,6 +31,7 @@ export class TripExplorePageModal {
         this.tripName = ""
         this.countryCode = []
         this.masterPicURL = ""
+        this.masterPicBase64 = ""
         this.public = false
     }
 
@@ -46,6 +48,7 @@ export class TripExplorePageModal {
         this.tripName = trip.tripName || trip.title;
         this.countryCode = trip.countryCode;
         this.masterPicURL = trip.masterPicURL
+        this.masterPicBase64 = trip.masterPicBase64
     }
 
     populateAll = () => {
@@ -59,6 +62,7 @@ export class TripExplorePageModal {
 
     populateMasterPic = () => {
         this.masterPicURL = this.steps[this.steps.length-2].masterImageUri;
+        this.masterPicBase64 = this.steps[this.steps.length-2].masterImageBase64;
     }
 
     populateDaysOfTravel = () => {

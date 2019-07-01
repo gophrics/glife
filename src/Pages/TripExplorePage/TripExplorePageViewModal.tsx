@@ -206,16 +206,16 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                                     <Marker
                                         key={index + 'marker'}
                                         coordinate={step.masterMarker}
-                                        style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox}
+                                        style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox}
                                         onPress={(e) => this.onMarkerPress(e, step)}
                                     >
                                         {step.masterImageUri != "" ?
-                                            <View key={index + 'markerview'} style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} >
+                                            <View key={index + 'markerview'} style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} >
                                                 <Image
                                                     key={index + 'markerimage'}
-                                                    style={this.state.lastStepClicked.id == step.id ? styles.largeImageBox : styles.imageBox} source={{ uri: step.masterImageUri }}></Image>
+                                                    style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} source={{ uri: `data:image/gif;base64,${step.masterImageBase64}` }}></Image>
 
-                                                {this.state.lastStepClicked.id == step.id ? <Text style={{ color: 'white', fontStyle: 'italic' }}>{this.state.lastStepClicked.description}</Text> : <View />}
+                                                {this.state.lastStepClicked.stepId == step.stepId ? <Text style={{ color: 'white', fontStyle: 'italic' }}>{this.state.lastStepClicked.description}</Text> : <View />}
                                             </View>
                                             : <View key={index + 'markerviewdot'} />}
                                     </Marker>

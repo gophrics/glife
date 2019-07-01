@@ -5,7 +5,7 @@ import Region from "../Modals/Region";
 export class ClusterProcessor {
 
     
-    static RunStepClustering = (trip: ClusterModal[]) : StepModal[] => {
+    static RunStepClustering = async(trip: ClusterModal[]) : Promise<StepModal[]> => {
         
         if(trip.length == 0) throw "Recieved empty tripcluster";
 
@@ -38,8 +38,8 @@ export class ClusterProcessor {
         }
 
         for(var cluster of _stepCluster) {
-            var _step = ClusterProcessor.convertClusterToStep(cluster)
-            if(_step.id != -1) stepResult.push(_step)
+            var _step = await ClusterProcessor.convertClusterToStep(cluster)
+            if(_step.stepId != -1) stepResult.push(_step)
         }
 
         stepResult.sort((a, b) => {
@@ -50,7 +50,7 @@ export class ClusterProcessor {
         var previousStep: StepModal = new StepModal();
         var distanceTravelled = 0
         for(var step of stepResult) {
-            step.id = i
+            step.stepId = i
             if(i > 100)
             distanceTravelled += Math.floor(ClusterProcessor.EarthDistance({ latitude: step.meanLatitude, longitude: step.meanLongitude } as ClusterModal,
                 { latitude: previousStep.meanLatitude, longitude: previousStep.meanLongitude } as ClusterModal))
@@ -116,10 +116,10 @@ export class ClusterProcessor {
         return d;
     }
 
-    static convertClusterToStep = (cluster: ClusterModal[]) : StepModal => {
+    static convertClusterToStep = async (cluster: ClusterModal[]) : Promise<StepModal> => {
         if(cluster.length == 0){
             var _step = new StepModal();
-            _step.id = -1;
+            _step.stepId = -1;
             return _step;   
         }
 
@@ -149,6 +149,8 @@ export class ClusterProcessor {
         _step.masterImageUri = imageUris[0];
         _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
 
+        console.log(_step.meanLatitude)
+        await _step.populateImages()
         return _step;
     }
 

@@ -1,7 +1,5 @@
-export var Bus : {[key:string]: any} = {}
-export var ImageBus: string = ""
-
-export class InfoBus {
+export class PublisherSubscriber {
+    Bus: any
     ImageBus: string = "";
     FunctionEveryTenSeconds = Array<() => void>();
     PauseUpdate: boolean = false;
@@ -22,5 +20,3 @@ export class InfoBus {
         setTimeout(this.CallFunctions, 1000)
     }
 }
-
-export var Instance = new InfoBus()

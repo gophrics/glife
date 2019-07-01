@@ -8,7 +8,7 @@ import { ClusterProcessor } from '../../Engine/Utils/ClusterProcessor'
 import { BlobProvider } from '../../Engine/Providers/BlobProvider';
 import { Page } from '../../Modals/ApplicationEnums';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
-import * as PublisherSubscriber from "../../Engine/PublisherSubscriber";
+import * as Engine from "../../Engine/Engine";
 
 export class TripExplorePageController {
 
@@ -20,7 +20,7 @@ export class TripExplorePageController {
         this.NewStepId = 2;
         this.ProfilePageController = new ProfilePageController()
         this.Modal = new TripExplorePageModal()
-        this.Modal.CopyConstructor(PublisherSubscriber.Bus[Page[Page.TRIPEXPLORE]] as TripExplorePageModal || {})
+        this.Modal.CopyConstructor(Engine.Instance.PubSub.Bus[Page[Page.TRIPEXPLORE]] as TripExplorePageModal || {})
     }
 
     onNewStepPress = (step: StepModal) => {

@@ -1,7 +1,7 @@
 import { StepModal } from "../../Engine/Modals/StepModal";
 import Region from "../../Engine/Modals/Region";
 import { TripUtils } from "../../Engine/Utils/TripUtils";
-import * as PubSub from '../../Engine/PublisherSubscriber';
+import * as Engine from "../../Engine/Engine";
 
 export class TripExplorePageModal {
     tripId: number
@@ -34,7 +34,7 @@ export class TripExplorePageModal {
         this.masterPicURL = ""
         this.masterPicBase64 = ""
         this.public = false
-        PubSub.Instance.FunctionEveryTenSeconds.push(this.backgroundProcess)
+        Engine.Instance.PubSub.FunctionEveryTenSeconds.push(this.backgroundProcess)
     }
 
     CopyConstructor = (trip: any) => {

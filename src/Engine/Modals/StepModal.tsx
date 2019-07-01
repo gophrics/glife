@@ -1,6 +1,6 @@
 import {Region} from 'react-native-maps';
 import { TripUtils } from '../Utils/TripUtils';
-import * as PubSub from '../PublisherSubscriber';
+import * as Engine from '../Engine';
 
 export class StepModal {
 
@@ -56,6 +56,6 @@ export class StepModal {
         this.temperature = "";
         this.masterImageBase64 = "";
         this.backgroundProcessingComplete = true;
-        PubSub.Instance.FunctionEveryTenSeconds.push(this.backgroundProcess)
+        Engine.Instance.PubSub.FunctionEveryTenSeconds.push(this.backgroundProcess)
     }
 }

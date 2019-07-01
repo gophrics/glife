@@ -4,6 +4,7 @@ import * as PubSub from '../../Engine/PublisherSubscriber'
 import { Page } from '../../Modals/ApplicationEnums';
 import { LoadingPageController } from './LoadingPageController';
 import { TripUtils } from '../../Engine/Utils/TripUtils';
+import * as Engine from '../../Engine/Engine';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -69,7 +70,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
 
     updateImage = () => {
         this.setState({
-            image: PubSub.Instance.ImageBus
+            image: Engine.Instance.PubSub.ImageBus
         })
         setTimeout(() => {
             this.updateImage()

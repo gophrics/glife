@@ -6,7 +6,7 @@ import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 import { TripExplorePageController } from "../TripExplorePage/TripExplorePageController";
 import { HomeDataModal } from "../../Modals/ApplicationEnums";
-import * as PubSub from '../../Engine/PublisherSubscriber';
+import * as Engine from "../../Engine/Engine";
 
 export class LoadingPageController {
 
@@ -90,7 +90,7 @@ export class LoadingPageController {
             return false;
         }
         
-        PubSub.Instance.PauseUpdate = true;
+        Engine.Instance.PubSub.PauseUpdate = true;
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
 
         await TripUtils.GenerateHomeData(this.Modal.homeData)
@@ -105,10 +105,10 @@ export class LoadingPageController {
             this.ProfilePageController.ClearAndUpdateProfileDataWithAllTrips(trips)
         } catch (error) {
             console.warn(error)
-            PubSub.Instance.PauseUpdate = false;
+            Engine.Instance.PubSub.PauseUpdate = false;
             return true;
         }
-        PubSub.Instance.PauseUpdate = false;
+        Engine.Instance.PubSub.PauseUpdate = false;
         return true
     }
 }

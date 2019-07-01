@@ -26,8 +26,8 @@ import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
 import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 import { RegisterAndLoginController } from './Pages/RegisterAndLoginPage/RegisterAndLoginController';
 import { AuthProvider } from './Engine/Providers/AuthProvider';
-import * as PublisherSubscriber from './Engine/PublisherSubscriber';
 import { TripUtils } from './Engine/Utils/TripUtils';
+import * as Engine from './Engine/Engine';
 
 interface IState {
   page: string,
@@ -102,7 +102,7 @@ export default class App extends React.Component<IProps, IState> {
 
   setPage(page: string, data: any = null) {
     if(data != null) 
-      PublisherSubscriber.Bus[page] = data
+      Engine.Instance.PubSub.Bus[page] = data
     this.setState({
       page: page
     });

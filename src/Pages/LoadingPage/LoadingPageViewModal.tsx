@@ -72,6 +72,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
         this.setState({
             image: Engine.Instance.PubSub.ImageBus
         })
+        console.log(this.state.image)
         setTimeout(() => {
             this.updateImage()
         }, 1000);

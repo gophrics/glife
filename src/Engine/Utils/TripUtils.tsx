@@ -8,7 +8,7 @@ import { TripExplorePageModal } from '../../Pages/TripExplorePage/TripExplorePag
 import {Md5} from 'ts-md5/dist/md5';
 import ImageResizer from 'react-native-image-resizer';
 import * as RNFS from 'react-native-fs';
-
+import * as Engine from '../Engine';
 
 const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8082"
 
@@ -188,7 +188,7 @@ export class TripUtils {
     }
 
     static UpdateTripBackground = async() => {
-        var profilePageModal = BlobProvider.Instance.getBlobValue(Page[Page.PROFILE]) || {}
+        var profilePageModal = Engine.Instance.Data;
         var trips = profilePageModal.trips
 
         for(var trip of trips) {

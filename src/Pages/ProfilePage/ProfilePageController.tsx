@@ -1,14 +1,14 @@
-import { ProfilePageModal } from "./ProfilePageModal";
+import { ProfileModal } from "../../Engine/Modals/ProfileModal";
 import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
 import ImagePicker from 'react-native-image-crop-picker';
-import { TripUtils } from "../../Engine/Utils/TripUtils";
+import * as Engine from '../../Engine/Engine'
 
 export class ProfilePageController {
 
-    Modal: ProfilePageModal
+    Modal: ProfileModal
     
     constructor() {
-        this.Modal = new ProfilePageModal()
+        this.Modal = Engine.Instance.Data
     }
     
     onProfilePicChange = (profilePicURL: string) => {
@@ -71,7 +71,7 @@ export class ProfilePageController {
         this.Modal.Save()
     }
 
-    UpdateProfileDataWithTrip (trip: TripExplorePageModal) : ProfilePageModal {
+    UpdateProfileDataWithTrip (trip: TripExplorePageModal) : ProfileModal {
         this.Modal.countriesVisited.push.apply(this.Modal.countriesVisited, trip.countryCode)
         let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
         this.Modal.countriesVisited = x(this.Modal.countriesVisited); // Removing duplicates

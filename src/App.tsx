@@ -72,15 +72,6 @@ export default class App extends React.Component<IProps, IState> {
     })
     
     this.tryLogin()
-    this.updateBackground()
-  }
-
-  updateBackground = () => {
-    setTimeout(() => {
-      console.log(this.loggedIn)
-      if(this.loggedIn)
-      TripUtils.UpdateTripBackground()
-    }, 10000)
   }
   
   tryLogin = async() => {    

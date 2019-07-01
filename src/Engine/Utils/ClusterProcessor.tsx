@@ -1,7 +1,7 @@
 import { ClusterModal } from "../Modals/ClusterModal";
 import { StepModal } from "../Modals/StepModal";
 import Region from "../Modals/Region";
-import * as PubSub from '../PublisherSubscriber';
+import * as Engine from '../Engine';
 
 export class ClusterProcessor {
 
@@ -150,8 +150,7 @@ export class ClusterProcessor {
         _step.masterImageUri = imageUris[0];
         _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
 
-        console.log(imageUris)
-        PubSub.Instance.ImageBus = _step.masterImageUri;
+        Engine.Instance.PubSub.ImageBus = imageUris[0];
 
         return _step;
     }

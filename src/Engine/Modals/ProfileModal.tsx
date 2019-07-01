@@ -1,10 +1,10 @@
-import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
-import { BlobProvider } from '../../Engine/Providers/BlobProvider';
+import { TripModal } from '../Modals/TripModal';
+import { BlobProvider } from '../Providers/BlobProvider';
 import { Page } from '../../Modals/ApplicationEnums';
 
-export class ProfilePageModal {
+export class ProfileModal {
 
-    trips: TripExplorePageModal[];
+    trips: TripModal[];
     countriesVisited: string[]
     percentageWorldTravelled: number
     coverPicURL: string
@@ -22,13 +22,9 @@ export class ProfilePageModal {
         this.profilePicURL = ""
         this.profileId = ""
         this.name = ""
-
-        var profileData: ProfilePageModal = BlobProvider.Instance.getBlobValue(Page[Page.PROFILE])
-        if(profileData == undefined) return
-        this.CopyConstructor(profileData)
     }
 
-    CopyConstructor = (profileData: ProfilePageModal) => {
+    CopyConstructor = (profileData: ProfileModal) => {
         this.trips = profileData.trips;
         this.countriesVisited = profileData.countriesVisited;
         this.percentageWorldTravelled = profileData.percentageWorldTravelled;

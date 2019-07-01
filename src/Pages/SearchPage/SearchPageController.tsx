@@ -1,4 +1,4 @@
-import { AuthProvider } from "../../Engine/AuthProvider";
+import { AuthProvider } from "../../Engine/Providers/AuthProvider";
 import { TripUtils } from "../../Engine/Utils/TripUtils";
 import { TripExplorePageModal } from "../TripExplorePage/TripExplorePageModal";
 

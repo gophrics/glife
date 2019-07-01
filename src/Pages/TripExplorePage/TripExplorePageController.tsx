@@ -4,8 +4,8 @@ import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor
 import { StepModal } from '../../Engine/Modals/StepModal';
 import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ClusterModal } from '../../Engine/Modals/ClusterModal'
-import { ClusterProcessor } from '../../Engine/ClusterProcessor'
-import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
+import { ClusterProcessor } from '../../Engine/Utils/ClusterProcessor'
+import { BlobProvider } from '../../Engine/Providers/BlobProvider';
 import { Page } from '../../Modals/ApplicationEnums';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 import * as PublisherSubscriber from "../../Engine/PublisherSubscriber";
@@ -48,8 +48,8 @@ export class TripExplorePageController {
     }
 
     GenerateTripFromPhotos = async (imageData: ImageDataModal[]): Promise<TripExplorePageModal[]> => {
-        var homesDataForClustering = BlobSaveAndLoad.Instance.homeData
-        var endTimestamp = BlobSaveAndLoad.Instance.endTimestamp
+        var homesDataForClustering = BlobProvider.Instance.homeData
+        var endTimestamp = BlobProvider.Instance.endTimestamp
 
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
         var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
@@ -96,7 +96,7 @@ export class TripExplorePageController {
 
     async PopulateTripExplorePageModalData(steps: StepModal[], tripId: number) {
         var tripResult: TripExplorePageModal = new TripExplorePageModal();
-        var homesDataForClustering = BlobSaveAndLoad.Instance.homeData
+        var homesDataForClustering = BlobProvider.Instance.homeData
 
         var homeStep = homesDataForClustering[Math.floor(steps[0].startTimestamp / 8.64e7) - 1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
@@ -170,7 +170,7 @@ export class TripExplorePageController {
                 _step = step; break;
             }
         }
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.Modal)
+        BlobProvider.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.Modal)
     }
 
     getFirstStep = () => {

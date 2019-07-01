@@ -1,16 +1,16 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import { ClusterModal } from './Modals/ClusterModal';
-import { TripUtils } from './Utils/TripUtils';
+import { ClusterModal } from '../Modals/ClusterModal';
+import { TripUtils } from '../Utils/TripUtils';
 import { AuthProvider } from './AuthProvider';
  
-export class BlobSaveAndLoad {
+export class BlobProvider {
 
     private pageDataPipe: {[ key: string] : any} = {}
     homeData: {[key:number]: ClusterModal} = {}
     startTimestamp: number = 0
     endTimestamp: number = 0
 
-    public static Instance = new BlobSaveAndLoad();
+    public static Instance = new BlobProvider();
     
     constructor() {
         this.loadBlob()

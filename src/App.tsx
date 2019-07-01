@@ -11,7 +11,7 @@ import { OnBoardingPageViewModal } from './Pages/OnBoardingPage/OnBoardingPageVi
 import TripExplorePageViewModal from './Pages/TripExplorePage/TripExplorePageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/NewTripPage/NewTripPageViewModal';
-import { BlobSaveAndLoad } from './Engine/BlobSaveAndLoad';
+import { BlobProvider } from './Engine/Providers/BlobProvider';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
@@ -25,7 +25,7 @@ import { AskForLocationChangeDatePage } from './Pages/OnBoardingPage/AskForLocat
 import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
 import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 import { RegisterAndLoginController } from './Pages/RegisterAndLoginPage/RegisterAndLoginController';
-import { AuthProvider } from './Engine/AuthProvider';
+import { AuthProvider } from './Engine/Providers/AuthProvider';
 import * as PublisherSubscriber from './Engine/PublisherSubscriber';
 import { TripUtils } from './Engine/Utils/TripUtils';
 
@@ -52,7 +52,7 @@ export default class App extends React.Component<IProps, IState> {
     // Uncomment for development
     // AsyncStorage.clear()
     
-    BlobSaveAndLoad.Instance.loadBlob()
+    BlobProvider.Instance.loadBlob()
     .then((res) => {
       this.setState({
         page: res == null || res[Page[Page.PROFILE]] == undefined || res[Page[Page.PROFILE]].countriesVisited == undefined ? Page[Page.PREONBOARDING] : Page[Page.PROFILE]

@@ -6,7 +6,7 @@ import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ImageDataModal } from '../../Engine/Modals/ImageDataModal';
 import Region from '../../Engine/Modals/Region';
 import { ClusterModal } from '../../Engine/Modals/ClusterModal';
-import { ClusterProcessor } from '../../Engine/ClusterProcessor';
+import { ClusterProcessor } from '../../Engine/Utils/ClusterProcessor';
 import { Page } from '../../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor';
 

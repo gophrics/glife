@@ -1,4 +1,4 @@
-import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad'
+import { BlobProvider } from '../../Engine/Providers/BlobProvider'
 import { Page, HomeDataModal } from '../../Modals/ApplicationEnums';
 
 export class LoadingPageModal {
@@ -7,7 +7,7 @@ export class LoadingPageModal {
     constructor() {
         this.homeData = []
         
-        var data = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.LOADING])
+        var data = BlobProvider.Instance.getBlobValue(Page[Page.LOADING])
         if(data != undefined)
             this.CopyConstructor(data) 
     }
@@ -17,6 +17,6 @@ export class LoadingPageModal {
     }
 
     Save() {
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.LOADING], this)
+        BlobProvider.Instance.setBlobValue(Page[Page.LOADING], this)
     }
 }

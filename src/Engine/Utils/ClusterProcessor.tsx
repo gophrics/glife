@@ -1,7 +1,7 @@
-import { ClusterModal } from "./Modals/ClusterModal";
-import { StepModal } from "./Modals/StepModal";
-import Region from "./Modals/Region";
-import * as PubSub from '../Engine/PublisherSubscriber';
+import { ClusterModal } from "../Modals/ClusterModal";
+import { StepModal } from "../Modals/StepModal";
+import Region from "../Modals/Region";
+import * as PubSub from '../PublisherSubscriber';
 
 export class ClusterProcessor {
 

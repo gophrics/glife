@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
-import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
+import { BlobProvider } from '../../Engine/Providers/BlobProvider';
 import { Page } from '../../Modals/ApplicationEnums';
 import { ProfilePageController } from '../ProfilePage/ProfilePageController';
 

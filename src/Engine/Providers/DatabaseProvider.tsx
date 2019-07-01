@@ -1,6 +1,6 @@
 import SQLite from 'react-native-sqlite-storage';
 
-class DatabaseConnector {
+class DatabaseProvider {
     private databaseConnection: Promise<SQLite.SQLiteDatabase>;
 
     constructor(dbName: string, dbLocation: SQLite.Location) {
@@ -19,4 +19,4 @@ class DatabaseConnector {
     }
 }
 
-export const Instance: DatabaseConnector = new DatabaseConnector('glife_db', 'default');
+export const Instance: DatabaseProvider = new DatabaseProvider('glife_db', 'default');

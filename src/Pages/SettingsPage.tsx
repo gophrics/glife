@@ -2,9 +2,9 @@ import * as React from 'react';
 import { View, Button, Text } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { Page } from '../Modals/ApplicationEnums';
-import { BlobSaveAndLoad } from '../Engine/BlobSaveAndLoad';
+import { BlobProvider } from '../Engine/Providers/BlobProvider';
 import { SettingsModal } from '../Engine/Modals/SettingsModal';
-import { AuthProvider, RegisterUserModal } from '../Engine/AuthProvider';
+import { AuthProvider, RegisterUserModal } from '../Engine/Providers/AuthProvider';
 import AsyncStorage from '@react-native-community/async-storage';
 
 interface IProps {
@@ -21,7 +21,7 @@ export class SettingsPage extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props)
-    this.myData = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.SETTING])
+    this.myData = BlobProvider.Instance.getBlobValue(Page[Page.SETTING])
     if (this.myData == null) this.myData = new SettingsModal();
     this.state = {
       isSigninInProgress: false

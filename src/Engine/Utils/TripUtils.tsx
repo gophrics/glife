@@ -1,8 +1,8 @@
 
 import { months, Page, HomeDataModal } from '../../Modals/ApplicationEnums';
 import { ClusterModal } from '../Modals/ClusterModal';
-import { BlobSaveAndLoad } from '../BlobSaveAndLoad';
-import { AuthProvider } from '../AuthProvider';
+import { BlobProvider } from '../Providers/BlobProvider';
+import { AuthProvider } from '../Providers/AuthProvider';
 import * as Constants from "../Constants"
 import { TripExplorePageModal } from '../../Pages/TripExplorePage/TripExplorePageModal';
 import {Md5} from 'ts-md5/dist/md5';
@@ -23,9 +23,9 @@ export class TripUtils {
 
     static ExtendHomeDataToDate = () => {
         var today: Date = new Date()
-        var endTimestamp = BlobSaveAndLoad.Instance.endTimestamp
+        var endTimestamp = BlobProvider.Instance.endTimestamp
         
-        var homesDataForClustering = BlobSaveAndLoad.Instance.homeData;
+        var homesDataForClustering = BlobProvider.Instance.homeData;
         var dataToExtend = homesDataForClustering[endTimestamp]
 
         while(endTimestamp <= today.getTime()/8.64e7) {
@@ -33,9 +33,9 @@ export class TripUtils {
             endTimestamp++
         }
 
-        BlobSaveAndLoad.Instance.endTimestamp = endTimestamp;
-        BlobSaveAndLoad.Instance.homeData = homesDataForClustering;
-        BlobSaveAndLoad.Instance.saveEngineData()
+        BlobProvider.Instance.endTimestamp = endTimestamp;
+        BlobProvider.Instance.homeData = homesDataForClustering;
+        BlobProvider.Instance.saveEngineData()
     }
 
     static GenerateHomeData = async(homeInfo: Array<HomeDataModal>) : Promise<void> => {
@@ -66,10 +66,10 @@ export class TripUtils {
             }
         }
 
-        BlobSaveAndLoad.Instance.homeData = homesDataForClustering;
-        BlobSaveAndLoad.Instance.startTimestamp = startTimestamp;
-        BlobSaveAndLoad.Instance.endTimestamp = endTimestamp;
-        BlobSaveAndLoad.Instance.saveEngineData()
+        BlobProvider.Instance.homeData = homesDataForClustering;
+        BlobProvider.Instance.startTimestamp = startTimestamp;
+        BlobProvider.Instance.endTimestamp = endTimestamp;
+        BlobProvider.Instance.saveEngineData()
     }
 
     static GetTotalToLoad = () => {
@@ -188,7 +188,7 @@ export class TripUtils {
     }
 
     static UpdateTripBackground = async() => {
-        var profilePageModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE]) || {}
+        var profilePageModal = BlobProvider.Instance.getBlobValue(Page[Page.PROFILE]) || {}
         var trips = profilePageModal.trips
 
         for(var trip of trips) {

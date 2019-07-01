@@ -1,5 +1,5 @@
 import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
-import { BlobSaveAndLoad } from '../../Engine/BlobSaveAndLoad';
+import { BlobProvider } from '../../Engine/Providers/BlobProvider';
 import { Page } from '../../Modals/ApplicationEnums';
 
 export class ProfilePageModal {
@@ -23,7 +23,7 @@ export class ProfilePageModal {
         this.profileId = ""
         this.name = ""
 
-        var profileData: ProfilePageModal = BlobSaveAndLoad.Instance.getBlobValue(Page[Page.PROFILE])
+        var profileData: ProfilePageModal = BlobProvider.Instance.getBlobValue(Page[Page.PROFILE])
         if(profileData == undefined) return
         this.CopyConstructor(profileData)
     }
@@ -39,6 +39,6 @@ export class ProfilePageModal {
     }
 
     Save = () => {
-        BlobSaveAndLoad.Instance.setBlobValue(Page[Page.PROFILE], this)
+        BlobProvider.Instance.setBlobValue(Page[Page.PROFILE], this)
     }
 }

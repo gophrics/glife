@@ -48,8 +48,8 @@ export class TripExplorePageController {
     }
 
     GenerateTripFromPhotos = async (imageData: ImageDataModal[]): Promise<TripExplorePageModal[]> => {
-        var homesDataForClustering = BlobProvider.Instance.homeData
-        var endTimestamp = BlobProvider.Instance.endTimestamp
+        var homesDataForClustering = Engine.Instance.BlobProvider.homeData
+        var endTimestamp = Engine.Instance.BlobProvider.endTimestamp
 
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
         var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
@@ -96,7 +96,7 @@ export class TripExplorePageController {
 
     async PopulateTripExplorePageModalData(steps: StepModal[], tripId: number) {
         var tripResult: TripExplorePageModal = new TripExplorePageModal();
-        var homesDataForClustering = BlobProvider.Instance.homeData
+        var homesDataForClustering = Engine.Instance.BlobProvider.homeData
 
         var homeStep = homesDataForClustering[Math.floor(steps[0].startTimestamp / 8.64e7) - 1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)
@@ -170,7 +170,7 @@ export class TripExplorePageController {
                 _step = step; break;
             }
         }
-        BlobProvider.Instance.setBlobValue(Page[Page.STEPEXPLORE], this.Modal)
+        Engine.Instance.BlobProvider.setBlobValue(Page[Page.STEPEXPLORE], this.Modal)
     }
 
     getFirstStep = () => {

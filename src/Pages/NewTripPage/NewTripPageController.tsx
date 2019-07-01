@@ -1,7 +1,7 @@
 import { NewTripPageModal } from "./NewTripPageModal";
 import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor';
 import { StepModal } from '../../Engine/Modals/StepModal'
-import { BlobProvider } from "../../Engine/Providers/BlobProvider";
+import * as Engine from '../../Engine/Engine'
 import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 
@@ -43,8 +43,8 @@ export class NewTripPageController {
         var homeStep: StepModal = new StepModal();
         homeStep.startTimestamp = today.getTime()
         homeStep.endTimestamp = today.getTime() + 1 ; //milliseconds
-        homeStep.meanLatitude = BlobProvider.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
-        homeStep.meanLongitude = BlobProvider.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
+        homeStep.meanLatitude = Engine.Instance.BlobProvider.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
+        homeStep.meanLongitude = Engine.Instance.BlobProvider.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
         homeStep.location = "Home"
         homeStep.stepId = 1;
 
@@ -53,8 +53,8 @@ export class NewTripPageController {
         homeStep = new StepModal()
         homeStep.startTimestamp = today.getTime() + 1;
         homeStep.endTimestamp = today.getTime() + 1;
-        homeStep.meanLatitude = BlobProvider.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
-        homeStep.meanLongitude = BlobProvider.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude        
+        homeStep.meanLatitude = Engine.Instance.BlobProvider.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
+        homeStep.meanLongitude = Engine.Instance.BlobProvider.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude        
         homeStep.location = "Home"
         homeStep.stepId = 100000;
         this.Modal.data.steps.push(homeStep)

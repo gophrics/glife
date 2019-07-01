@@ -1,5 +1,5 @@
 import { TripModal } from '../Modals/TripModal';
-import { BlobProvider } from '../Providers/BlobProvider';
+import * as Engine from '../../Engine/Engine'
 import { Page } from '../../Modals/ApplicationEnums';
 
 export class ProfileModal {
@@ -35,6 +35,6 @@ export class ProfileModal {
     }
 
     Save = () => {
-        BlobProvider.Instance.setBlobValue(Page[Page.PROFILE], this)
+        Engine.Instance.BlobProvider.setBlobValue(Page[Page.PROFILE], this)
     }
 }

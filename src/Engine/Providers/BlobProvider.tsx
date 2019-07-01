@@ -9,8 +9,6 @@ export class BlobProvider {
     homeData: {[key:number]: ClusterModal} = {}
     startTimestamp: number = 0
     endTimestamp: number = 0
-
-    public static Instance = new BlobProvider();
     
     constructor() {
         this.loadBlob()

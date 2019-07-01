@@ -26,7 +26,6 @@ import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
 import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 import { RegisterAndLoginController } from './Pages/RegisterAndLoginPage/RegisterAndLoginController';
 import { AuthProvider } from './Engine/Providers/AuthProvider';
-import { TripUtils } from './Engine/Utils/TripUtils';
 import * as Engine from './Engine/Engine';
 
 interface IState {
@@ -52,7 +51,7 @@ export default class App extends React.Component<IProps, IState> {
     // Uncomment for development
     // AsyncStorage.clear()
     
-    BlobProvider.Instance.loadBlob()
+    Engine.Instance.BlobProvider.loadBlob()
     .then((res) => {
       this.setState({
         page: res == null || res[Page[Page.PROFILE]] == undefined || res[Page[Page.PROFILE]].countriesVisited == undefined ? Page[Page.PREONBOARDING] : Page[Page.PROFILE]

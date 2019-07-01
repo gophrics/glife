@@ -1,5 +1,5 @@
-import { BlobProvider } from '../../Engine/Providers/BlobProvider'
 import { Page, HomeDataModal } from '../../Modals/ApplicationEnums';
+import * as Engine from '../../Engine/Engine'
 
 export class LoadingPageModal {
     homeData: Array<HomeDataModal>;
@@ -7,7 +7,7 @@ export class LoadingPageModal {
     constructor() {
         this.homeData = []
         
-        var data = BlobProvider.Instance.getBlobValue(Page[Page.LOADING])
+        var data = Engine.Instance.BlobProvider.getBlobValue(Page[Page.LOADING])
         if(data != undefined)
             this.CopyConstructor(data) 
     }
@@ -17,6 +17,6 @@ export class LoadingPageModal {
     }
 
     Save() {
-        BlobProvider.Instance.setBlobValue(Page[Page.LOADING], this)
+        Engine.Instance.BlobProvider.setBlobValue(Page[Page.LOADING], this)
     }
 }

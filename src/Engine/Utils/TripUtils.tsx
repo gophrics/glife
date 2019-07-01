@@ -1,7 +1,6 @@
 
 import { months, Page, HomeDataModal } from '../../Modals/ApplicationEnums';
 import { ClusterModal } from '../Modals/ClusterModal';
-import { BlobProvider } from '../Providers/BlobProvider';
 import { AuthProvider } from '../Providers/AuthProvider';
 import * as Constants from "../Constants"
 import { TripExplorePageModal } from '../../Pages/TripExplorePage/TripExplorePageModal';
@@ -23,9 +22,9 @@ export class TripUtils {
 
     static ExtendHomeDataToDate = () => {
         var today: Date = new Date()
-        var endTimestamp = BlobProvider.Instance.endTimestamp
+        var endTimestamp = Engine.Instance.BlobProvider.endTimestamp
         
-        var homesDataForClustering = BlobProvider.Instance.homeData;
+        var homesDataForClustering = Engine.Instance.BlobProvider.homeData;
         var dataToExtend = homesDataForClustering[endTimestamp]
 
         while(endTimestamp <= today.getTime()/8.64e7) {
@@ -33,9 +32,9 @@ export class TripUtils {
             endTimestamp++
         }
 
-        BlobProvider.Instance.endTimestamp = endTimestamp;
-        BlobProvider.Instance.homeData = homesDataForClustering;
-        BlobProvider.Instance.saveEngineData()
+        Engine.Instance.BlobProvider.endTimestamp = endTimestamp;
+        Engine.Instance.BlobProvider.homeData = homesDataForClustering;
+        Engine.Instance.BlobProvider.saveEngineData()
     }
 
     static GenerateHomeData = async(homeInfo: Array<HomeDataModal>) : Promise<void> => {
@@ -66,10 +65,10 @@ export class TripUtils {
             }
         }
 
-        BlobProvider.Instance.homeData = homesDataForClustering;
-        BlobProvider.Instance.startTimestamp = startTimestamp;
-        BlobProvider.Instance.endTimestamp = endTimestamp;
-        BlobProvider.Instance.saveEngineData()
+        Engine.Instance.BlobProvider.homeData = homesDataForClustering;
+        Engine.Instance.BlobProvider.startTimestamp = startTimestamp;
+        Engine.Instance.BlobProvider.endTimestamp = endTimestamp;
+        Engine.Instance.BlobProvider.saveEngineData()
     }
 
     static GetTotalToLoad = () => {
@@ -193,7 +192,7 @@ export class TripUtils {
 
         for(var trip of trips) {
             var serverHash = await TripUtils.GetTripCheckSumServer(trip)
-            var clientHash = Md5.hashStr(trip)
+            var clientHash = Md5.hashStr(trip.toString())
             if(serverHash.Hash != clientHash) {
                 console.log("Server hash: " + JSON.stringify(serverHash))
                 console.log("Client hash: " + clientHash)

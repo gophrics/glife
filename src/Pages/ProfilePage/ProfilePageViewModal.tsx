@@ -8,6 +8,7 @@ import { TripExplorePageModal } from '../TripExplorePage/TripExplorePageModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { ProfilePageController } from './ProfilePageController';
+import { JSXElement } from '@babel/types';
 
 interface IState {
     bottom: number,
@@ -15,6 +16,7 @@ interface IState {
     coverPicURL: string
     profilePicURL: string
     refreshing: boolean
+    tripRenderArray: Array<JSX.Element>
 }
 
 interface IProps {
@@ -28,7 +30,6 @@ const HEADER_MIN_HEIGHT = 0;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 export default class ProfilePageViewModal extends React.Component<IProps, IState> {
-    tripRenderArray: any = []
 
     Controller: ProfilePageController;
     constructor(props: IProps) {
@@ -37,19 +38,29 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
         this.props.setNavigator(true)
         this.Controller = new ProfilePageController()
 
-        var trips = this.Controller.getTrips()
-        for (var trip of trips) {
-            this.tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress} />)
-            this.tripRenderArray.push(<View key={trip.tripId + 'v'} style={{ height: 10 }} />)
-        }
-
+        this.getTrips()
+        
         this.state = {
             bottom: 200,
             scrollY: new Animated.Value(0),
             coverPicURL: this.Controller.getCoverPicURL() == undefined || this.Controller.getCoverPicURL() == "" ? "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" : this.Controller.getCoverPicURL(),
             profilePicURL: this.Controller.getProfilePicURL() == undefined || this.Controller.getCoverPicURL() == "" ? "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" : this.Controller.getProfilePicURL(),
-            refreshing: false
+            refreshing: false,
+            tripRenderArray: []
         }
+    }
+
+    getTrips = () => {
+        var trips = this.Controller.getTrips()
+        var tripRenderArray: Array<JSX.Element> = []
+        for (var trip of trips) {
+            tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress} />)
+            tripRenderArray.push(<View key={trip.tripId + 'v'} style={{ height: 10 }} />)
+        }
+        this.setState({
+            tripRenderArray: tripRenderArray
+        })
+        setTimeout(this.getTrips, 1000)
     }
 
     onTripPress = (tripModal: TripExplorePageModal) => {
@@ -131,9 +142,9 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
                         <StatsAsCardComponent text={"You've collected " + this.Controller.getNumberOfCountriesVisited() + " flags"} />
                     </View>
                     <View style={{ height: 10 }} />
-                    {this.tripRenderArray}
+                    {this.state.tripRenderArray}
                     {
-                        this.tripRenderArray.length == 0 ? 
+                        this.state.tripRenderArray.length == 0 ? 
                             <View style={{height: 200}}>
                                 <Text style={{textAlign:'center', fontSize:18, color:'orange', borderWidth: 1, margin: 5, borderColor: 'red', padding: 5}}>No trips were processed! Add more photos to your photo library and try again with correct details about your home. Or add a trip manually.</Text>
                                 <View style={{flexDirection:'row', alignSelf:'center'}}>

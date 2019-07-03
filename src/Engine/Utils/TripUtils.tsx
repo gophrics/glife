@@ -4,7 +4,6 @@ import { ClusterModal } from '../Modals/ClusterModal';
 import { AuthProvider } from '../Providers/AuthProvider';
 import * as Constants from "../Constants"
 import { TripModal } from '../Modals/TripModal';
-import {Md5} from 'ts-md5/dist/md5';
 import * as Engine from '../Engine';
 
 const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8082"
@@ -190,15 +189,7 @@ export class TripUtils {
         var trips = profilePageModal.trips
 
         for(var trip of trips) {
-            var serverHash = await TripUtils.GetTripCheckSumServer(trip)
-            var clientHash = Md5.hashStr(trip.toString())
-            if(serverHash.Hash != clientHash) {
-                console.log("Server hash: " + JSON.stringify(serverHash))
-                console.log("Client hash: " + clientHash)
-                console.log("Server client hash mismatch, uploading")
-                console.log(trip)
-                TripUtils.SaveTrip(trip)
-            }
+            
         }
 
     }

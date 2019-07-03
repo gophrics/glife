@@ -9,13 +9,14 @@ import { TripModal } from './Modals/TripModal';
 import { TripUtils } from './Utils/TripUtils';
 import { ClusterModal } from './Modals/ClusterModal';
 import { StepModal } from './Modals/StepModal';
-import ImageResizer from 'react-native-image-resizer';
-import * as RNFS from 'react-native-fs';
+import { BackgroundSyncProvider } from './Providers/BackgroundSyncProvider';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export class Engine {
     PubSub: PublisherSubscriber;
     BlobProvider: BlobProvider;
     Modal: ProfileModal
+    BackgroundProcess: BackgroundSyncProvider;
     homeData: any = "";
     startTimestamp: any = 0;
     endTimestamp: any = 0;
@@ -23,30 +24,14 @@ export class Engine {
     constructor () {
         this.PubSub = new PublisherSubscriber()
         this.BlobProvider = new BlobProvider()
-
         var data = this.TryLoadingProfile()
         this.Modal = new ProfileModal()
         this.Modal.CopyConstructor(data)
-        console.log("Engine consturctor called")
+        this.BackgroundProcess = new BackgroundSyncProvider()
     }
 
-    PopulateImageBase64 = async(imageuri: string) => {
-        console.log(imageuri)
-        try {
-            var res = await ImageResizer.createResizedImage(
-                imageuri,
-                1000,
-                1000,
-                'JPEG',
-                25,
-                0,
-                "",
-            )
-            var base64encodeddata = await RNFS.readFile(res.uri, 'base64')    
-            return base64encodeddata
-        } catch (err) {
-            return ""
-        }
+    Save = () => {
+        this.BlobProvider.setBlobValue(Page[Page.PROFILE], this.Modal)
     }
 
     setName = (name: string) => {
@@ -85,8 +70,10 @@ export class Engine {
         } catch (error) {
             console.warn(error)
             this.PubSub.PauseUpdate = false;
+            this.Save()
             return true;
         }
+        this.Save()
         this.PubSub.PauseUpdate = false;
         return true
     }

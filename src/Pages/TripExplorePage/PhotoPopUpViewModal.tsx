@@ -29,11 +29,16 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
 
     async render() {
 
-        var imageBase64 = []
-        
-        for(var image of this.props.lastStepClicked.imageBase64) {
-            imageBase64.push(await image)
+        var imageArray = []
+        var imageArrayPromiseResolve = await this.props.lastStepClicked.imageBase64 || []
+        for(var image of imageArrayPromiseResolve) {
+            imageArray.push(`data:image/gif;base64,${image}`)
         }
+
+        if(imageArray.length < this.props.lastStepClicked.imageUris.length) {
+            for(var i = imageArray.length; i < this.props.lastStepClicked.imageUris.length; i++)
+                imageArray.push(this.props.lastStepClicked.imageUris[i])
+        } 
 
         return (<Modal
             animationType='fade'
@@ -64,12 +69,12 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
                                 stickyHeaderIndices={[0]}
                             >
                                 {
-                                    imageBase64.map((image, index) => (
+                                    imageArray.map((image, index) => (
                                         image != "" ?
                                             <View style={{ width: deviceWidth - 60, height: deviceWidth - 60, alignContent: 'center', backgroundColor: 'black' }} key={index}>
                                                 <Image
                                                     resizeMode='contain'
-                                                    style={{ width: deviceWidth - 60, height: deviceWidth - 60 }} source={{ uri: `data:image/gif;base64,${image}` }}
+                                                    style={{ width: deviceWidth - 60, height: deviceWidth - 60 }} source={{ uri: image }}
                                                 />
                                             </View>
                                             : <View />

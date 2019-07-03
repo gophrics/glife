@@ -1,8 +1,9 @@
 import {Region} from 'react-native-maps';
 import * as Engine from '../Engine'
+import AsyncStorage from "@react-native-community/async-storage";
+import * as PhotoLibraryProcessor from '../Utils/PhotoLibraryProcessor';
 
 export class StepModal {
-
     stepId: number
     meanLatitude: number
     meanLongitude: number
@@ -21,33 +22,24 @@ export class StepModal {
     temperature: string
     backgroundProcessingComplete: boolean;
 
-    get masterImageBase64() {
-        return Engine.Instance.PopulateImageBase64(this.masterImageUri)
+    get masterImageBase64(){
+        return AsyncStorage.getItem(this.masterImageUri)
     }
 
     get imageBase64() {
-        var retVal = []
-        for(var imageUri of this.imageUris) {
-            retVal.push(Engine.Instance.PopulateImageBase64(imageUri))
-        }
-        return retVal
+        return AsyncStorage.getItem(this.imageUris.toString())
     }
 
-    backgroundProcess = async() => {
-        if(this.masterImageUri != "" && this._masterImageBase64 == "") {
-            this._masterImageBase64 = await Engine.Instance.PopulateImageBase64(this.masterImageUri)
-            this.backgroundProcessingComplete = false;
-        }
-        var i = 0;
-        for(var imageUri of this.imageUris) {
-            if(i >= this._imageBase64.length) {
-                this._imageBase64.push(await Engine.Instance.PopulateImageBase64(imageUri))
-                this.backgroundProcessingComplete = false;
+    async GenerateBase64Images() {
+        for(var image of this.imageUris) {
+            var alreadyGenerated = await AsyncStorage.getItem(image)
+            if(alreadyGenerated == null) {
+                var data = await PhotoLibraryProcessor.GetImageBase64(image)
+                await AsyncStorage.setItem(image, data)
             }
-            i++;
         }
-        this.backgroundProcessingComplete = true;
     }
+
 
     constructor() {
         this.stepId = 0;
@@ -67,6 +59,5 @@ export class StepModal {
         this.temperature = "";
         this._masterImageBase64 = "";
         this.backgroundProcessingComplete = true;
-        //Engine.Instance.PubSub.FunctionEveryTenSeconds.push(this.backgroundProcess)
     }
 }

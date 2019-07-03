@@ -2,6 +2,8 @@ import { CameraRoll, GetPhotosParamType, Platform, ImageStore, ImageEditor, Imag
 import { ImageDataModal } from '../Modals/ImageDataModal';
 import Region from '../Modals/Region';
 import { ClusterModal } from '../Modals/ClusterModal';
+import ImageResizer from 'react-native-image-resizer';
+import * as RNFS from 'react-native-fs';
 
 export async function getPhotosFromLibrary() : Promise<ImageDataModal[]> {
     var options = { first: 1000000000000000, assetType: "Photos"} as GetPhotosParamType;
@@ -106,4 +108,19 @@ export function triangulatePhotoLocationInfo(regionInfos: Array<Region>): Region
     );
 
     return triangulatedLocation;
+}
+
+export async function GetImageBase64(imageuri: string) {
+    console.log(imageuri)
+    var res = await ImageResizer.createResizedImage(
+        imageuri,
+        1000,
+        1000,
+        'JPEG',
+        25,
+        0,
+        "",
+    )
+    var base64encodeddata = await RNFS.readFile(res.uri, 'base64')    
+    return base64encodeddata
 }

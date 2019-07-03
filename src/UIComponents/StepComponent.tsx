@@ -33,10 +33,13 @@ export class StepComponent extends React.Component<IProps, IState> {
     }
     
     async render() {
+        var masterPic = await this.props.modal.masterImageBase64
+        if(masterPic == "") masterPic = this.props.modal.masterImageUri
+        else masterPic = `data:image/gif;base64,${masterPic}`
 
         return (
             <TouchableOpacity onPress={this.onPress.bind(this)} >
-                <ImageBackground resizeMode='cover' style={{width: deviceWidth*3/4, padding: 10, margin: 10, backgroundColor:'grey', height: deviceHeight*.2}} source={{uri: `data:image/gif;base64,${await this.props.modal.masterImageBase64}`}}>
+                <ImageBackground resizeMode='cover' style={{width: deviceWidth*3/4, padding: 10, margin: 10, backgroundColor:'grey', height: deviceHeight*.2}} source={{uri: masterPic}}>
                     
                         <View style={{flexDirection: 'column', alignContent:'space-between'}}>
                             

@@ -1,7 +1,9 @@
 import { StepModal } from "./StepModal";
 import Region from "./Region";
 import { TripUtils } from "../Utils/TripUtils";
-import * as Engine from '../Engine';
+import AsyncStorage from "@react-native-community/async-storage";
+import * as PhotoLibraryProcessor from '../Utils/PhotoLibraryProcessor';
+
 
 export class TripModal {
     tripId: number
@@ -18,9 +20,21 @@ export class TripModal {
     masterPicURL: string
     _masterPicBase64: string
     public: boolean
-    
+    syncComplete: boolean
+
     get masterPicBase64() {
-        return Engine.Instance.PopulateImageBase64(this.masterPicURL)
+        return AsyncStorage.getItem(this.masterPicURL)
+    }
+
+    async GenerateBase64Images() {
+        var alreadyGenerated = await AsyncStorage.getItem(this.masterPicURL);
+        if(alreadyGenerated == null) {
+            var data = await PhotoLibraryProcessor.GetImageBase64(this.masterPicURL)
+            await AsyncStorage.setItem(this.masterPicURL, data)
+        }
+        for(var step of this.steps) {
+            await step.GenerateBase64Images()
+        }
     }
 
     constructor() {
@@ -38,7 +52,7 @@ export class TripModal {
         this.masterPicURL = ""
         this._masterPicBase64 = ""
         this.public = false
-        //Engine.Instance.PubSub.FunctionEveryTenSeconds.push(this.backgroundProcess)
+        this.syncComplete = false
     }
 
     CopyConstructor = (trip: any) => {
@@ -54,13 +68,7 @@ export class TripModal {
         this.tripName = trip.tripName || trip.title;
         this.countryCode = trip.countryCode;
         this.masterPicURL = trip.masterPicURL
-        this._masterPicBase64 = trip.masterPicBase64
-    }
-
-    backgroundProcess = async() => {
-        if(this.masterPicURL != "" && this._masterPicBase64 == "") {
-            this._masterPicBase64 = await Engine.Instance.PopulateImageBase64(this.masterPicURL)
-        }
+        this._masterPicBase64 = trip._masterPicBase64
     }
 
     populateAll = () => {

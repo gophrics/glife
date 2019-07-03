@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import { TripModal } from '../Engine/Modals/TripModal';
 import { TripUtils } from '../Engine/Utils/TripUtils';
+import { Icon } from 'react-native-vector-icons/Icon';
 
 interface IState {
     location: string
@@ -54,11 +55,20 @@ export class TripComponent extends React.Component<IProps, IState> {
 
     //'#98FB98', '#228B22']
     //'#ccac00', '#ffe766'
-    render() {
+    async render() {
+        var masterPic = await this.props.tripModal.masterPicBase64
+        if(masterPic == "") masterPic = this.props.tripModal.masterPicURL
+        else masterPic = `data:image/gif;base64,${masterPic}`
+
         return (
             <TouchableOpacity onPress={(e) => this.props.onPress(this.props.tripModal)} >
-            <ImageBackground resizeMode='cover' source={{uri: `data:image/gif;base64,${this.props.tripModal.masterPicBase64}`}} style={this.style.main}>
+            <ImageBackground resizeMode='cover' source={{uri: masterPic}} style={this.style.main}>
                 <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15}}>
+                    {
+                        !this.props.tripModal.syncComplete ? 
+                            <Icon name='sync' size={25} />
+                        : <View />
+                    }
                     <View style={{flexDirection: 'column', width:'40%', justifyContent:'space-between'}}>
                         <View>
                         <Text style={{color: 'white', fontSize: 18}}>{this.props.tripModal.tripName}</Text>

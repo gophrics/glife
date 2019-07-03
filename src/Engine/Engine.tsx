@@ -13,7 +13,6 @@ import { BackgroundSyncProvider } from './Providers/BackgroundSyncProvider';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export class Engine {
-    PubSub: PublisherSubscriber;
     BlobProvider: BlobProvider;
     Modal: ProfileModal
     BackgroundProcess: BackgroundSyncProvider;
@@ -22,7 +21,6 @@ export class Engine {
     endTimestamp: any = 0;
 
     constructor () {
-        this.PubSub = new PublisherSubscriber()
         this.BlobProvider = new BlobProvider()
         var data = this.TryLoadingProfile()
         this.Modal = new ProfileModal()
@@ -51,7 +49,7 @@ export class Engine {
 
     Initialize  = async() : Promise<boolean> => {
         
-        this.PubSub.PauseUpdate = true;
+        PublisherSubscriber.PauseUpdate = true;
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
 
         var data = await TripUtils.GenerateHomeData(this.homeData)
@@ -69,12 +67,12 @@ export class Engine {
             this.ClearAndUpdateProfileDataWithAllTrips(trips)
         } catch (error) {
             console.warn(error)
-            this.PubSub.PauseUpdate = false;
+            PublisherSubscriber.PauseUpdate = false;
             this.Save()
             return true;
         }
         this.Save()
-        this.PubSub.PauseUpdate = false;
+        PublisherSubscriber.PauseUpdate = false;
         return true
     }
 

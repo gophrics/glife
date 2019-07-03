@@ -1,19 +1,10 @@
 export class PublisherSubscriber {
-    Bus: any = {};
-    ImageBus: string = "";
-    FunctionEveryTenSeconds = Array<() => void>();
-    PauseUpdate: boolean = false;
+    static Bus: any = {};
+    static ImageBus: string = "";
+    static FunctionEveryTenSeconds = Array<() => void>();
+    static PauseUpdate: boolean = false;
 
     constructor() {
-        this.CallFunctions()
-    }
-
-    CallFunctions = () => {
-        if(!this.PauseUpdate) {
-            for(var f of this.FunctionEveryTenSeconds) {
-                f()
-            }
-        }
-        setTimeout(this.CallFunctions, 10000)
+        
     }
 }

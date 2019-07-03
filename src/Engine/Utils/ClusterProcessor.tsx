@@ -150,7 +150,7 @@ export class ClusterProcessor {
         _step.masterImageUri = imageUris[0];
         _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
 
-        Engine.Instance.PubSub.ImageBus = imageUris[0];
+        PublisherSubscriber.ImageBus = imageUris[0];
 
         return _step;
     }

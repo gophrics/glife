@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import { TripModal } from '../Engine/Modals/TripModal';
 import { TripUtils } from '../Engine/Utils/TripUtils';
-import { Icon } from 'react-native-vector-icons/Icon';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 interface IState {
     location: string

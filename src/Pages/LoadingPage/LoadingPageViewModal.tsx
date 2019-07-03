@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, Image, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
-import * as PubSub from '../../Engine/PublisherSubscriber'
+import { PublisherSubscriber } from '../../Engine/PublisherSubscriber'
 import { Page } from '../../Modals/ApplicationEnums';
 import { LoadingPageController } from './LoadingPageController';
 import { TripUtils } from '../../Engine/Utils/TripUtils';
@@ -71,7 +71,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
     updateImage = () => {
         if(this.done) return
         this.setState({
-            image: Engine.Instance.PubSub.ImageBus
+            image: PublisherSubscriber.ImageBus
         })
         setTimeout(() => {
             this.updateImage()

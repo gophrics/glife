@@ -3,6 +3,7 @@ import { StepModal } from '../../Engine/Modals/StepModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 import * as Engine from "../../Engine/Engine";
+import { PublisherSubscriber } from '../../Engine/PublisherSubscriber'
 
 export class TripExplorePageController {
 
@@ -14,7 +15,7 @@ export class TripExplorePageController {
         this.NewStepId = 2;
         this.ProfilePageController = new ProfilePageController()
         this.Modal = new TripModal()
-        this.Modal.CopyConstructor(Engine.Instance.PubSub.Bus[Page[Page.TRIPEXPLORE]] as TripModal || {})
+        this.Modal.CopyConstructor(PublisherSubscriber.Bus[Page[Page.TRIPEXPLORE]] as TripModal || {})
     }
 
     onNewStepPress = (step: StepModal) => {

@@ -27,6 +27,7 @@ import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 import { RegisterAndLoginController } from './Pages/RegisterAndLoginPage/RegisterAndLoginController';
 import { AuthProvider } from './Engine/Providers/AuthProvider';
 import * as Engine from './Engine/Engine';
+import { PublisherSubscriber } from './Engine/PublisherSubscriber';
 
 interface IState {
   page: string,
@@ -92,7 +93,7 @@ export default class App extends React.Component<IProps, IState> {
 
   setPage(page: string, data: any = null) {
     if(data != null) 
-      Engine.Instance.PubSub.Bus[page] = data
+      PublisherSubscriber.Bus[page] = data
     this.setState({
       page: page
     });

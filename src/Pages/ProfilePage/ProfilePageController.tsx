@@ -8,7 +8,15 @@ export class ProfilePageController {
     
     constructor() {
         this.Modal = Engine.Instance.Modal
-        console.log(this.Modal)
+        this.loadModal()
+    }
+
+    loadModal = () => {
+        if(Engine.Instance.engineLoaded) {
+            this.Modal = Engine.Instance.Modal;
+        } else {
+            setTimeout(this.loadModal, 1000)
+        }
     }
     
     onProfilePicChange = (profilePicURL: string) => {

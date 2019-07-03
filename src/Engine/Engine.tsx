@@ -19,12 +19,12 @@ export class Engine {
     homeData: any = "";
     startTimestamp: any = 0;
     endTimestamp: any = 0;
-
+    engineLoaded: boolean = false;
+    
     constructor () {
         this.BlobProvider = new BlobProvider()
-        var data = this.TryLoadingProfile()
         this.Modal = new ProfileModal()
-        this.Modal.CopyConstructor(data)
+        this.TryLoadingProfile()
         this.BackgroundProcess = new BackgroundSyncProvider()
     }
 
@@ -38,12 +38,13 @@ export class Engine {
     }
 
     TryLoadingProfile = () => {
-        var data = this.BlobProvider.getBlobValue(Page[Page.PROFILE])
-        console.log(data)
-        if(data == undefined) {
-            data = new ProfileModal()
+        if(this.BlobProvider.blobLoaded) {
+            var data = this.BlobProvider.getBlobValue(Page[Page.PROFILE])
+            this.Modal = data
+            this.engineLoaded = true
+        } else {
+            setTimeout(this.TryLoadingProfile, 1000)
         }
-        return data
     }
 
     SetHomeData = (homeData: Array<HomeDataModal>) => {

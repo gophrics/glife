@@ -9,7 +9,8 @@ export class BlobProvider {
     homeData: {[key:number]: ClusterModal} = {}
     startTimestamp: number = 0
     endTimestamp: number = 0
-    
+    blobLoaded: boolean = false;
+
     constructor() {
         this.loadBlob()
         this.loadEngineData()
@@ -31,6 +32,7 @@ export class BlobProvider {
 
     loadBlob = () => {
         return AsyncStorage.getItem('allData').then((data) => {
+            this.blobLoaded = true;
             if(data != null) {
                 this.pageDataPipe = JSON.parse(data)
                 return this.pageDataPipe;

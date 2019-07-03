@@ -27,19 +27,19 @@ export class StepModal {
     }
 
     get imageBase64() {
-        return AsyncStorage.getItem(this.imageUris.toString())
+        var promiseArray = [];
+        for(var image of this.imageUris) {
+            promiseArray.push(AsyncStorage.getItem(image))
+        }
+        return promiseArray
     }
 
     async GenerateBase64Images() {
-        var imageData = []
-        var key = ""
         for(var image of this.imageUris) {
             var alreadyGenerated = await AsyncStorage.getItem(image)
             if(alreadyGenerated == null) {
                 var data = await PhotoLibraryProcessor.GetImageBase64(image)
-                imageData.push(data)
-                key.concat(image)
-                await AsyncStorage.setItem(key, JSON.stringify(imageData))
+                await AsyncStorage.setItem(image, JSON.stringify(data))
             }
         }
     }

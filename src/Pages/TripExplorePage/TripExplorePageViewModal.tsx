@@ -26,6 +26,8 @@ interface IState {
     lastStepClicked: StepModal
     editStepDescription: boolean
     steps: StepModal[]
+    masterPic: string
+    stepMarkerImages: Array<string>
 }
 
 interface IProps {
@@ -58,8 +60,11 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             newStepId: -1,
             lastStepClicked: this.Controller.getFirstStep(),
             editStepDescription: false,
-            steps: this.Controller.getSteps()
+            steps: this.Controller.getSteps(),
+            masterPic: "",
+            stepMarkerImages: []
         }
+        this.populateStepMarkerImages()
     }
 
     componentDidMount = () => {
@@ -190,6 +195,20 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         this.zoomToStep(this.state.steps[0])
     }
 
+    populateStepMarkerImages = async() => {
+        var imageArray = []
+        for(var step of this.state.steps) {
+            var image = await step.masterImageBase64
+            if(image == null)
+                imageArray.push(step.masterImageUri)
+            else 
+                imageArray.push(`data:image/gif;base64,${image}`)
+        }
+        this.setState({
+            stepMarkerImages: imageArray
+        })
+    }
+
     render() {
         return (
             <View>
@@ -201,28 +220,30 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                     >
                         {
 
-                            this.state.steps.map(async (step, index) => (
-                                step.masterMarker != undefined ?
-                                    <Marker
-                                        key={index + 'marker'}
-                                        coordinate={step.masterMarker}
-                                        style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox}
-                                        onPress={(e) => this.onMarkerPress(e, step)}
-                                    >
-                                        {step.masterImageUri != "" ?
-                                            <View key={index + 'markerview'} style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} >
-                                                <Image
-                                                    key={index + 'markerimage'}
-                                                    style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} source={{ uri: `data:image/gif;base64,${await step.masterImageBase64}` }}></Image>
+                            this.state.steps.map((step, index) => {
+                                return (
+                                    step.masterMarker != undefined && this.state.stepMarkerImages.length >= index ?
+                                        <Marker
+                                            key={index + 'marker'}
+                                            coordinate={step.masterMarker}
+                                            style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox}
+                                            onPress={(e) => this.onMarkerPress(e, step)}
+                                        >
+                                            {step.masterImageUri != "" ?
+                                                <View key={index + 'markerview'} style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} >
+                                                    <Image
+                                                        key={index + 'markerimage'}
+                                                        style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} source={{ uri: this.state.stepMarkerImages[index] }}></Image>
 
-                                                {this.state.lastStepClicked.stepId == step.stepId ? <Text style={{ color: 'white', fontStyle: 'italic' }}>{this.state.lastStepClicked.description}</Text> : <View />}
-                                            </View>
-                                            : <View key={index + 'markerviewdot'} />}
-                                    </Marker>
-                                    : <View
-                                        key={index + 'markerdot'} />
+                                                    {this.state.lastStepClicked.stepId == step.stepId ? <Text style={{ color: 'white', fontStyle: 'italic' }}>{this.state.lastStepClicked.description}</Text> : <View />}
+                                                </View>
+                                                : <View key={index + 'markerviewdot'} />}
+                                        </Marker>
+                                        : <View
+                                            key={index + 'markerdot'} />
+                                )
 
-                            ))
+                            })
 
                         }
                     </MapView>

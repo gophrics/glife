@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 interface IState {
     location: string
+    masterPic: string
 }
 
 interface IProps {
@@ -30,10 +31,12 @@ export class TripComponent extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
-            location: "Loading...."
+            location: "Loading....",
+            masterPic: ""
         }
 
         this.getLocations();
+        this.populateMasterImage();
     }
 
     getLocations() {
@@ -53,16 +56,22 @@ export class TripComponent extends React.Component<IProps, IState> {
         })
     }
 
+    populateMasterImage = async() => {
+
+        var masterPic = await this.props.tripModal.masterPicBase64
+        if(masterPic == null) masterPic = this.props.tripModal.masterPicURL
+        else masterPic = `data:image/gif;base64,${masterPic}`
+        this.setState({
+            masterPic: masterPic
+        })
+    }
+
     //'#98FB98', '#228B22']
     //'#ccac00', '#ffe766'
-    async render() {
-        var masterPic = await this.props.tripModal.masterPicBase64
-        if(masterPic == "") masterPic = this.props.tripModal.masterPicURL
-        else masterPic = `data:image/gif;base64,${masterPic}`
-
+    render() {
         return (
             <TouchableOpacity onPress={(e) => this.props.onPress(this.props.tripModal)} >
-            <ImageBackground resizeMode='cover' source={{uri: masterPic}} style={this.style.main}>
+            <ImageBackground resizeMode='cover' source={{uri: this.state.masterPic}} style={this.style.main}>
                 <View style={{width: "100%", padding: 10, flexDirection: 'row', flexGrow: 1, borderRadius: 15}}>
                     {
                         !this.props.tripModal.syncComplete ? 

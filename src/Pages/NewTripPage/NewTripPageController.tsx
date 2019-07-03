@@ -43,8 +43,8 @@ export class NewTripPageController {
         var homeStep: StepModal = new StepModal();
         homeStep.startTimestamp = today.getTime()
         homeStep.endTimestamp = today.getTime() + 1 ; //milliseconds
-        homeStep.meanLatitude = Engine.Instance.BlobProvider.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
-        homeStep.meanLongitude = Engine.Instance.BlobProvider.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
+        homeStep.meanLatitude = Engine.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
+        homeStep.meanLongitude = Engine.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
         homeStep.location = "Home"
         homeStep.stepId = 1;
 
@@ -53,8 +53,8 @@ export class NewTripPageController {
         homeStep = new StepModal()
         homeStep.startTimestamp = today.getTime() + 1;
         homeStep.endTimestamp = today.getTime() + 1;
-        homeStep.meanLatitude = Engine.Instance.BlobProvider.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
-        homeStep.meanLongitude = Engine.Instance.BlobProvider.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude        
+        homeStep.meanLatitude = Engine.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
+        homeStep.meanLongitude = Engine.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude        
         homeStep.location = "Home"
         homeStep.stepId = 100000;
         this.Modal.data.steps.push(homeStep)

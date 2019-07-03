@@ -2,7 +2,7 @@ import { PublisherSubscriber } from './PublisherSubscriber'
 import { ProfileModal } from './Modals/ProfileModal';
 import { ImageDataModal } from './Modals/ImageDataModal'
 import { BlobProvider } from './Providers/BlobProvider';
-import { Page } from '../Modals/ApplicationEnums';
+import { Page, HomeDataModal } from '../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from './Utils/PhotoLibraryProcessor';
 import { ClusterProcessor } from './Utils/ClusterProcessor';
 import { TripModal } from './Modals/TripModal';
@@ -46,6 +46,9 @@ export class Engine {
         return data
     }
 
+    SetHomeData = (homeData: Array<HomeDataModal>) => {
+        this.homeData = homeData
+    }
 
     Initialize  = async() : Promise<boolean> => {
         
@@ -78,8 +81,8 @@ export class Engine {
 
 
     GenerateTripFromPhotos = async (imageData: ImageDataModal[]): Promise<TripModal[]> => {
-        var homesDataForClustering = this.BlobProvider.homeData
-        var endTimestamp = this.BlobProvider.endTimestamp
+        var homesDataForClustering = this.homeData
+        var endTimestamp = this.endTimestamp
 
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
         var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
@@ -140,7 +143,7 @@ export class Engine {
 
     async PopulateTripModalData(steps: StepModal[], tripId: number) {
         var tripResult: TripModal = new TripModal();
-        var homesDataForClustering = this.BlobProvider.homeData
+        var homesDataForClustering = this.homeData
 
         var homeStep = homesDataForClustering[Math.floor(steps[0].startTimestamp / 8.64e7) - 1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)

@@ -70,6 +70,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
 
     updateImage = () => {
         if(this.done) return
+        console.log(PublisherSubscriber.ImageBus)
         this.setState({
             image: PublisherSubscriber.ImageBus
         })

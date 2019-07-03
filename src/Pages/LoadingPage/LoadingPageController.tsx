@@ -33,6 +33,7 @@ export class LoadingPageController {
 
     SetAllHomeData = (homeData: Array<HomeDataModal>) => {
       this.Modal.homeData = homeData;
+      this.Modal.Save()
     }
 
     GetHomeData = (index: number) => {
@@ -85,6 +86,8 @@ export class LoadingPageController {
             return false;
         }
         
+        console.log(this.GetAllHomesData())
+        Engine.Instance.SetHomeData(this.GetAllHomesData())
         return Engine.Instance.Initialize()
     }
 }

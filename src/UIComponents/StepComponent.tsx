@@ -10,6 +10,8 @@ interface IProps {
 }
 
 interface IState {
+    temperature: number,
+    masterPic: string
 }
 
 const deviceWidth = Dimensions.get('window').width
@@ -20,8 +22,11 @@ export class StepComponent extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
-            temperature: 0
+            temperature: 0,
+            masterPic: ""
         }
+
+        this.populateMasterPic()
     }
 
     shareStep = () => {
@@ -32,14 +37,22 @@ export class StepComponent extends React.Component<IProps, IState> {
         this.props.onPress(this.props.modal)
     }
     
-    async render() {
+    populateMasterPic = async() => {
+
         var masterPic = await this.props.modal.masterImageBase64
-        if(masterPic == "") masterPic = this.props.modal.masterImageUri
+        if(masterPic == null) masterPic = this.props.modal.masterImageUri
         else masterPic = `data:image/gif;base64,${masterPic}`
+
+        this.setState({
+            masterPic: masterPic
+        })
+    }
+
+    render() {
 
         return (
             <TouchableOpacity onPress={this.onPress.bind(this)} >
-                <ImageBackground resizeMode='cover' style={{width: deviceWidth*3/4, padding: 10, margin: 10, backgroundColor:'grey', height: deviceHeight*.2}} source={{uri: masterPic}}>
+                <ImageBackground resizeMode='cover' style={{width: deviceWidth*3/4, padding: 10, margin: 10, backgroundColor:'grey', height: deviceHeight*.2}} source={{uri: this.state.masterPic}}>
                     
                         <View style={{flexDirection: 'column', alignContent:'space-between'}}>
                             

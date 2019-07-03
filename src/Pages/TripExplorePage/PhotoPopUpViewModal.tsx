@@ -13,7 +13,8 @@ interface IProps {
 }
 
 interface IState {
-    modalBottom: any
+    modalBottom: any,
+    images: Array<string>
 }
 
 const deviceWidth = Dimensions.get('window').width;
@@ -23,23 +24,27 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
-            modalBottom: 0
+            modalBottom: 0,
+            images: []
         }
+        this.populateImages()
     }
 
-    async render() {
-
+    populateImages = async() => {
+        
         var imageArray = []
-        var imageArrayPromiseResolve = await this.props.lastStepClicked.imageBase64 || []
+        var imageArrayPromiseResolve = JSON.parse(await this.props.lastStepClicked.imageBase64 || "[]")
         for(var image of imageArrayPromiseResolve) {
             imageArray.push(`data:image/gif;base64,${image}`)
         }
 
-        if(imageArray.length < this.props.lastStepClicked.imageUris.length) {
-            for(var i = imageArray.length; i < this.props.lastStepClicked.imageUris.length; i++)
-                imageArray.push(this.props.lastStepClicked.imageUris[i])
-        } 
+        this.setState({
+            images: imageArray
+        })
+    }
 
+
+    render() {
         return (<Modal
             animationType='fade'
             visible={this.props.photoModalVisible}
@@ -69,7 +74,7 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
                                 stickyHeaderIndices={[0]}
                             >
                                 {
-                                    imageArray.map((image, index) => (
+                                    this.state.images.map((image, index) => (
                                         image != "" ?
                                             <View style={{ width: deviceWidth - 60, height: deviceWidth - 60, alignContent: 'center', backgroundColor: 'black' }} key={index}>
                                                 <Image

@@ -31,11 +31,15 @@ export class StepModal {
     }
 
     async GenerateBase64Images() {
+        var imageData = []
+        var key = ""
         for(var image of this.imageUris) {
             var alreadyGenerated = await AsyncStorage.getItem(image)
             if(alreadyGenerated == null) {
                 var data = await PhotoLibraryProcessor.GetImageBase64(image)
-                await AsyncStorage.setItem(image, data)
+                imageData.push(data)
+                key.concat(image)
+                await AsyncStorage.setItem(key, JSON.stringify(imageData))
             }
         }
     }

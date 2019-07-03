@@ -66,6 +66,7 @@ export class LoginUserPage extends React.Component<IProps, IState> {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
 
+        console.log(userInfo)
         var registered: boolean = await this.Controller.LoginUsingGoogle(this.state.email, userInfo.idToken || "")
         if(registered)
             this.props.setPage(Page[Page.SEARCH])

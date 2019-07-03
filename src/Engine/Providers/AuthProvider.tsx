@@ -1,5 +1,6 @@
 
 import { GoogleSignin } from 'react-native-google-signin';
+import * as Constants from '../Constants';
 
 
 export interface RegisterUserModal {
@@ -13,7 +14,7 @@ export interface LoginUserModal {
     Password: string
 }
 
-const ServerURLWithoutEndingSlash = 'http://192.168.0.111:8080'
+const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8080"
 
 interface LoginModal {
     Token: string

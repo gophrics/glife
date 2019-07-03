@@ -179,6 +179,7 @@ export class TripUtils {
             return res
         })
         .catch((err) => {
+            console.log("Auth token " + AuthProvider.Token)
             console.warn(err)
             throw err
         })

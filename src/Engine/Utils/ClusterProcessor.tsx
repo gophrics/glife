@@ -134,10 +134,13 @@ export class ClusterProcessor {
         })
 
         for(var item of cluster) {
-            latitudeSum += item.latitude;
-            longitudeSum += item.longitude;
-            imageUris.push(item.image)
-            markers.push(new Region(item.latitude, item.longitude, 0, 0))
+            if(item.image) {
+                latitudeSum += item.latitude;
+                longitudeSum += item.longitude;
+                PublisherSubscriber.ImageBus = item.image
+                imageUris.push(item.image);
+                markers.push(new Region(item.latitude, item.longitude, 0, 0))
+            }
         }
 
         var _step: StepModal = new StepModal()
@@ -150,7 +153,6 @@ export class ClusterProcessor {
         _step.masterImageUri = imageUris[0];
         _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
 
-        PublisherSubscriber.ImageBus = imageUris[0];
 
         return _step;
     }

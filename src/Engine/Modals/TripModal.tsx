@@ -32,7 +32,9 @@ export class TripModal {
             var data = await PhotoLibraryProcessor.GetImageBase64(this.masterPicURL)
             await AsyncStorage.setItem(this.masterPicURL, data)
         }
-        for(var step of this.steps) {
+        for(var _step of this.steps) {
+            var step = new StepModal()
+            step.CopyConstructor(_step)
             await step.GenerateBase64Images()
         }
     }

@@ -20,7 +20,6 @@ export class StepModal {
     distanceTravelled: number
     description: string
     temperature: string
-    backgroundProcessingComplete: boolean;
 
     get masterImageBase64(){
         return AsyncStorage.getItem(this.masterImageUri)
@@ -62,6 +61,24 @@ export class StepModal {
         this.description = "";
         this.temperature = "";
         this._masterImageBase64 = "";
-        this.backgroundProcessingComplete = true;
+    }
+
+    CopyConstructor = (step: any) => {
+        this.stepId = step.stepId;
+        this.meanLatitude = step.meanLatitude;
+        this.meanLongitude = step.meanLongitude;
+        this.location = step.location;
+        this.startTimestamp = step.startTimestamp;
+        this.endTimestamp = step.endTimestamp;
+        this.imageUris = step.imageUris
+        this._imageBase64 = step._imageBase64;
+        this.timelineData = step.timelineData;
+        this.markers = step.markers;
+        this.masterImageUri = step.masterImageUri;
+        this.masterMarker = step.masterMarker
+        this.distanceTravelled = step.distanceTravelled;
+        this.description = step.description;
+        this.temperature = step.temperature;
+        this._masterImageBase64 = step._masterImageBase64;
     }
 }

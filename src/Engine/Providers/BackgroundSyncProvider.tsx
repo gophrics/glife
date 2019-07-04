@@ -27,13 +27,13 @@ export class BackgroundSyncProvider {
                 var trip = new TripModal()
                 trip.CopyConstructor(_trip)
                 await trip.GenerateBase64Images()
-                await this.TrimTripForUpload(trip)
-                var serverHash = await TripUtils.GetTripCheckSumServer(trip)
-                var clientHash = Md5.hashStr(trip.toString())
+                var _trip = await this.TrimTripForUpload(trip)
+                var serverHash = await TripUtils.GetTripCheckSumServer(_trip)
+                var clientHash = Md5.hashStr(_trip.toString())
                 if(serverHash.Hash != clientHash) {
                     _trip.syncComplete = false
-                    console.log("Server hash: " + JSON.stringify(serverHash))
-                    console.log("Client hash: " + clientHash)
+                    console.warn("Server hash: " + JSON.stringify(serverHash))
+                    console.warn("Client hash: " + clientHash)
                     console.log("Server client hash mismatch, uploading")
                     console.log(trip)
                     
@@ -65,6 +65,9 @@ export class BackgroundSyncProvider {
             steps.push(step)
         }
         trip.steps = steps
+        var _trip: TripModal = new TripModal()
+        _trip.CopyConstructor(trip)
+        return _trip
     }
 
 }

@@ -114,8 +114,8 @@ export async function GetImageBase64(imageuri: string) {
     console.log("Syncing " + imageuri)
     var res = await ImageResizer.createResizedImage(
         imageuri,
-        1000,
-        1000,
+        256,
+        256,
         'JPEG',
         25,
         0,

@@ -37,6 +37,7 @@ export class StepModal {
         for(var image of this.imageUris) {
             var alreadyGenerated = await AsyncStorage.getItem(image)
             if(alreadyGenerated == null) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 var data = await PhotoLibraryProcessor.GetImageBase64(image)
                 await AsyncStorage.setItem(image, JSON.stringify(data))
             }

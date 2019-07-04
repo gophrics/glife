@@ -68,7 +68,7 @@ export class StepComponent extends React.Component<IProps, IState> {
                         
                         <View style={{flexDirection: 'column', alignContent: 'space-between'}}>
                             <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.distanceTravelled + " km"}</Text>
-                            <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.modal.imageUris.length + " photos taken"}</Text>
+                            <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{(this.props.modal.imageUris || this.props.modal._imageBase64).length + " photos taken"}</Text>
                             <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{""}</Text>
                             <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{""}</Text>
                             {

@@ -61,12 +61,18 @@ export class BackgroundSyncProvider {
             _s.imageUris = []
 
             _s._masterImageBase64 = await AsyncStorage.getItem(_s.masterImageUri) || ""
-            _s.masterImageUri = ""
+            
+            delete _s.imageUris
+            delete _s.masterImageUri
             steps.push(step)
         }
         trip.steps = steps
         var _trip: TripModal = new TripModal()
         _trip.CopyConstructor(trip)
+
+        delete _trip.masterPicURL
+
+        console.warn(_trip)
         return _trip
     }
 

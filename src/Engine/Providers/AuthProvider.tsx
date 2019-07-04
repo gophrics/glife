@@ -100,6 +100,7 @@ export class AuthProvider {
             })
         })
         .then((res) => {
+            console.warn(res)
             try {
                 return res.json()
             } catch(err) {

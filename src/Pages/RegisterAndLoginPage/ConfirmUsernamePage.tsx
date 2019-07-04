@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, TextInput, Button } from 'react-native'
+import { View, TextInput, Text, TouchableOpacity } from 'react-native'
 import { RegisterAndLoginController } from './RegisterAndLoginController';
 import { Page } from '../../Modals/ApplicationEnums';
 
@@ -48,9 +48,11 @@ export class ConfirmUsernamePage extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View>
-                <TextInput placeholder={this.state.username} />
-                <Button title="Done" onPress={this.onDonePress} />
+            <View style={{flex: 1, }}>
+                <TextInput style={{fontSize: 22, color:'white'}} placeholder={this.state.username} />
+                <TouchableOpacity onPress={this.onDonePress} >
+                    <Text style={{color:'white'}}>Done</Text>
+                </TouchableOpacity>
             </View>
         )
     }

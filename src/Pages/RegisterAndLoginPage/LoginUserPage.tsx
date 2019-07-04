@@ -81,14 +81,14 @@ export class LoginUserPage extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View style={{alignContent:'center', justifyContent:'center'}}>
-                <TextInput style={{fontSize: 22, padding: 5}} placeholder={"Enter Email"} onChangeText={this.onEmailChange} />
-                <TextInput style={{fontSize: 22, padding: 5}} placeholder={"Enter Password"} onChangeText={this.onPasswordChange} />
-                <TouchableOpacity style={{backgroundColor:'white', padding: 5, borderRadius: 5}} onPress={this.login} >
-                    <Text style={{color:'black'}}>Login</Text>
+            <View style={{alignContent:'center', flex:1, flexDirection:'column', width: '100%', justifyContent: "center"}}>
+                <TextInput style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center", width: '50%'}} placeholder={"Enter Email"} onChangeText={this.onEmailChange} />
+                <TextInput style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center", width: '50%'}} placeholder={"Enter Password"} onChangeText={this.onPasswordChange} />
+                <TouchableOpacity style={{backgroundColor:'white', padding: 5, borderRadius: 5, margin: 10, width: '20%', height:'5%', alignSelf:'center'}} onPress={this.login} >
+                    <Text style={{color:'black', fontSize:18, textAlign:'center', alignSelf:'center', textAlignVertical:'center'}}>Login</Text>
                 </TouchableOpacity>
                 <GoogleSigninButton
-                    style={{ width: 192, height: 48 }}
+                    style={{ width: 192, height: 48, alignSelf:'center' }}
                     size={GoogleSigninButton.Size.Wide}
                     color={GoogleSigninButton.Color.Dark}
                     onPress={this.loginUsingGoogle}

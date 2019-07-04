@@ -86,22 +86,25 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <View style={{alignContent:'center', justifyContent: "center"}}>
-                <TextInput  style={{fontSize: 22, padding: 5}}  placeholder={"Enter Email"} onChangeText={this.onEmailChange} />
-                <TextInput  style={{fontSize: 22, padding: 5}}  placeholder={"Enter Phone"} onChangeText={this.onPhoneChange} />
-                <TextInput  style={{fontSize: 22, padding: 5}}  placeholder={"Enter Password"} onChangeText={this.onPasswordChange} />
-                <TouchableOpacity style={{backgroundColor:'white', padding: 5, borderRadius: 5}} onPress={this.register} >
-                    <Text style={{fontSize: 18, color:'black'}}>Register</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{backgroundColor:'yellow', padding: 5, borderRadius: 5}} onPress={this.login} >
-                    <Text style={{fontSize: 16, color:'black'}}>Login</Text>
-                </TouchableOpacity>
+            <View style={{alignContent:'center', flex:1, flexDirection:'column', width: '100%', justifyContent: "center"}}>
+                <TextInput  style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center", width: '50%'}}  placeholder={"Enter Email"} onChangeText={this.onEmailChange} />
+                <TextInput  style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center",width: '50%'}}  placeholder={"Enter Phone"} onChangeText={this.onPhoneChange} />
+                <TextInput  style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center",width: '50%'}}  placeholder={"Enter Password"} onChangeText={this.onPasswordChange} />
+                <View style={{alignSelf:"center", margin: 10, flexDirection:"row", height:'5%'}}>
+                    <TouchableOpacity style={{backgroundColor:'white', margin: 10, padding: 5, borderRadius: 5, width: '20%', height:'100%'}} onPress={this.register} >
+                        <Text style={{fontSize: 18, color:'black', textAlign:'center', alignSelf:'center', textAlignVertical:'center'}}>Register</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{backgroundColor:'#00000000', margin: 10, padding: 5, borderRadius: 5, width: '20%', height:'100%'}} onPress={this.login} >
+                        <Text style={{fontSize: 16, color:'white', textDecorationLine: 'underline', textAlign:'center', textAlignVertical:'center'}}>Login</Text>
+                    </TouchableOpacity>
+                </View>
                 <GoogleSigninButton
-                    style={{ width: 192, height: 48 }}
+                    style={{ width: 192, height: 48, alignSelf:"center", margin: 10 }}
                     size={GoogleSigninButton.Size.Wide}
                     color={GoogleSigninButton.Color.Dark}
                     onPress={this.registerUsingGoogle}
                     disabled={this.state.registering}
+                
                 />
                 <Text style={{fontSize: 18, color:'red'}}>{this.state.error}</Text>
             </View>

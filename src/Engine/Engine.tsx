@@ -10,7 +10,6 @@ import { TripUtils } from './Utils/TripUtils';
 import { ClusterModal } from './Modals/ClusterModal';
 import { StepModal } from './Modals/StepModal';
 import { BackgroundSyncProvider } from './Providers/BackgroundSyncProvider';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export class Engine {
     BlobProvider: BlobProvider;

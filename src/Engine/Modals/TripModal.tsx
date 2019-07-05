@@ -6,7 +6,8 @@ import * as PhotoLibraryProcessor from '../Utils/PhotoLibraryProcessor';
 
 
 export class TripModal {
-    tripId: number
+    profileId: string
+    tripId: string
     steps: StepModal[]
     location : Region
     tripName: string
@@ -40,6 +41,7 @@ export class TripModal {
     }
 
     constructor() {
+        this.profileId = ""
         this.tripId = 0;
         this.steps = [];
         this.location = {} as Region
@@ -58,6 +60,7 @@ export class TripModal {
     }
 
     CopyConstructor = (trip: any) => {
+        this.profileId = trip.profileId;
         this.tripId = trip.tripId;
         this.steps = trip.steps || trip.tripAsSteps;
         this.location = trip.location;

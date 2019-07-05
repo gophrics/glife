@@ -8,6 +8,13 @@ export class SearchPageController {
 
     }
 
+    GetTrip = async(trip: TripModal) => {
+        var res = await TripUtils.GetTrip(trip.tripId, trip.profileId)
+        var t = new TripModal()
+        t.CopyConstructor(res)
+        return t;
+    }
+
     Search = async(text: string) => {
         var result = await TripUtils.Search(text)
         var returnresult: Array<TripModal> = []

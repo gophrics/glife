@@ -160,6 +160,29 @@ export class TripUtils {
         })
     }
 
+    static GetTrip(tripId: string, profileId: string) {
+        return fetch(ServerURLWithoutEndingSlash + '/api/v1/travel/gettrip', {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + AuthProvider.Token
+            },
+            body: JSON.stringify({
+                "tripId": tripId,
+                "profileId": profileId
+            })
+        })
+        .then((res) => {
+            return res.json()
+        })
+        .then((res) => {
+            return res
+        })
+        .catch((err) => {
+            console.warn(err)
+            throw err
+        })
+    }
+    
     static GetTripCheckSumServer(trip: TripModal): Promise<any> {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/travel/gettriphash',
         {

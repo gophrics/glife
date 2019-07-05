@@ -13,9 +13,13 @@ export class OnBoardingPageController {
         this.tempLocations = [];
         this.cursor = 0;
         this.culprits = [];
+        if(Engine.Instance.homeData.length == 0) this.AddEmptyHome()
     }
 
-
+    SaveData = () => {
+        Engine.Instance.SaveEngineData()
+    }
+    
     AddEmptyHome = () => {
         Engine.Instance.homeData.push({
           name: "",

@@ -47,8 +47,12 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
         })
     }
 
-    onTripPress = async(tripModal: TripModal) => {
-        this.props.setPage(Page[Page.TRIPEXPLORE], await this.Controller.GetTrip(tripModal))
+    onTripPress = (tripModal: TripModal) => {
+        this.Controller.GetTrip(tripModal)
+        .then((data) => {
+            console.log(data)
+           this.props.setPage(Page[Page.TRIPEXPLORE], data)
+        })
     }
 
     render() {

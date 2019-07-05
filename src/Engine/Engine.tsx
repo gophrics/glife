@@ -31,11 +31,11 @@ export class Engine {
         this.BlobProvider = new BlobProvider()
         this.Modal = new ProfileModal()
         this.TryLoadingProfile()
-        this.TryLoadingHomesData()
+        this.TryLoadingEngineData()
         this.BackgroundProcess = new BackgroundSyncProvider()
     }
 
-    SaveEngine = () => {
+    SaveEngineData = () => {
         this.BlobProvider.homeData = this.homeData;
         this.BlobProvider.homesForDataClustering = this.homesForDataClustering;
         this.BlobProvider.startTimestamp = this.startTimestamp;
@@ -63,8 +63,9 @@ export class Engine {
         }
     }
 
-    TryLoadingHomesData = () => {
+    TryLoadingEngineData = () => {
         if(this.BlobProvider.engineBlobLoaded) {
+            console.log(this.BlobProvider)
             this.homeData = this.BlobProvider.homeData;
             if(this.homeData) {
                 this.homeData.push({
@@ -77,7 +78,7 @@ export class Engine {
             if(this.engineLoaded == EngineLoadStatus.None) this.engineLoaded = EngineLoadStatus.Partial
             else this.engineLoaded = EngineLoadStatus.Full
         } else {
-            setTimeout(this.TryLoadingHomesData, 1000)
+            setTimeout(this.TryLoadingEngineData, 1000)
         }
     }
 

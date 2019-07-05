@@ -11,7 +11,7 @@ import { OnBoardingPageViewModal } from './Pages/OnBoardingPage/OnBoardingPageVi
 import TripExplorePageViewModal from './Pages/TripExplorePage/TripExplorePageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/NewTripPage/NewTripPageViewModal';
-import { BlobProvider } from './Engine/Providers/BlobProvider';
+import AsyncStorage from '@react-native-community/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
@@ -50,7 +50,7 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    // AsyncStorage.clear()
+    //ßß AsyncStorage.clear()
     
     Engine.Instance.BlobProvider.loadBlob()
     .then((res) => {

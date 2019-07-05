@@ -32,10 +32,17 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
             culprits: [0],
             homes: this.Controller.GetAllHomesData()
         }
+
+        if(this.Controller.GetName() == undefined || this.Controller.GetName() == "")
+            this.props.setPage(Page[Page.PREONBOARDING])
     }
 
     componentDidMount = () => {
         this.validateData()
+    }
+
+    componentWillUnmount = () => {
+        this.Controller.SaveData();
     }
 
     getTempLocations = () => {
@@ -123,6 +130,8 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
 
     render() {
 
+
+        console.log(this.state.homes)
         return (
             <View style={{flex: 1}}>
                 <View>

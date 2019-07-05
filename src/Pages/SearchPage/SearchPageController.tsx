@@ -10,6 +10,7 @@ export class SearchPageController {
 
     GetTrip = async(trip: TripModal) => {
         var res = await TripUtils.GetTrip(trip.tripId, trip.profileId)
+        console.log(res)
         var t = new TripModal()
         t.CopyConstructor(res)
         return t;
@@ -22,7 +23,6 @@ export class SearchPageController {
         for(var trip of result) {
             var t: TripModal = new TripModal()
             t.CopyConstructor(trip)
-            t.populateAll()
             returnresult.push(t)
         }
         return returnresult

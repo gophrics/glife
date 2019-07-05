@@ -62,7 +62,13 @@ export class TripModal {
     CopyConstructor = (trip: any) => {
         this.profileId = trip.profileId;
         this.tripId = trip.tripId;
-        this.steps = trip.steps || trip.tripAsSteps;
+        var steps = []
+        for(var step of trip.steps || []) {
+            var _s = new StepModal();
+            _s.CopyConstructor(step)
+            steps.push(_s)
+        }
+        this.steps = steps
         this.location = trip.location;
         this.temperature = trip.temperature;
         this.daysOfTravel = trip.daysOfTravel;

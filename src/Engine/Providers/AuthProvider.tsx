@@ -24,13 +24,11 @@ export class AuthProvider {
 
     static _Token: string = "";
     
-    get Token() : string{
-        console.warn("Token " + AuthProvider._Token)
+    static get Token() : string{
         return AuthProvider._Token
     }
 
-    set Token(t: string){
-        console.warn("Setting token " + t)
+    static set Token(t: string){
         AuthProvider._Token = t
     }
 

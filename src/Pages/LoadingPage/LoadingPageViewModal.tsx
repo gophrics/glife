@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, Image, ProgressViewIOS, ProgressBarAndroid } from 'react-native';
+import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, Image, ProgressViewIOS, ProgressBarAndroid, Dimensions } from 'react-native';
 import { PublisherSubscriber } from '../../Engine/PublisherSubscriber'
 import { Page } from '../../Modals/ApplicationEnums';
 import { LoadingPageController } from './LoadingPageController';
@@ -39,7 +39,7 @@ interface IState {
 }
 
 
-
+const deviceWidth = Dimensions.get('screen').width
 export default class LoadingPageViewModal extends React.Component<IProps, IState> {
 
     Controller: LoadingPageController;
@@ -97,8 +97,8 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
         return (
             <View style={{width: '100%', justifyContent:'center', flex: 1}}>
                 <Text style={styles.infoText}>Going through your photo library</Text>
-                <View style={{width: "60%", justifyContent:'center', alignSelf: 'center'}}>
-                    <Image style={{width: 100, height: 100}} resizeMode='cover' source={{ uri: this.state.image }}/>
+                <View style={{width: "100%", justifyContent:'center', alignSelf: 'center'}}>
+                    <Image style={{width: deviceWidth*.5, height: deviceWidth*.5, alignSelf:'center'}} resizeMode='cover' source={{ uri: this.state.image }}/>
                 </View>
                 <Text style={{fontSize: 16, textAlign:'center', padding: 20, color:"white"}}>Make sure you don't close the app, and phone doesn't get locked</Text>
                 <View style={{width: "60%", alignSelf: 'center'}}>

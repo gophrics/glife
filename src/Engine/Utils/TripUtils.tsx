@@ -21,7 +21,7 @@ export class TripUtils {
         var today: Date = new Date()
         var endTimestamp = Engine.Instance.BlobProvider.endTimestamp
         
-        var homesDataForClustering = Engine.Instance.BlobProvider.homeData;
+        var homesDataForClustering = Engine.Instance.BlobProvider.homesForDataClustering;
         var dataToExtend = homesDataForClustering[endTimestamp]
 
         while(endTimestamp <= today.getTime()/8.64e7) {
@@ -30,7 +30,7 @@ export class TripUtils {
         }
 
         Engine.Instance.BlobProvider.endTimestamp = endTimestamp;
-        Engine.Instance.BlobProvider.homeData = homesDataForClustering;
+        Engine.Instance.BlobProvider.homesForDataClustering = homesDataForClustering;
         Engine.Instance.BlobProvider.saveEngineData()
     }
 

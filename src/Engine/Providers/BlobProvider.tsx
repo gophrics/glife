@@ -25,6 +25,8 @@ export class BlobProvider {
     }
 
     saveEngineData = () => {
+        console.log("Save enigne data")
+        console.log(this.homeData)
         AsyncStorage.setItem('EngineData', JSON.stringify({
             homeData: this.homeData,
             homesForDataClustering: this.homesForDataClustering,
@@ -49,6 +51,7 @@ export class BlobProvider {
     loadEngineData = () => {
         return AsyncStorage.getItem('EngineData').then((data) => {
             this.engineBlobLoaded = true;
+            console.log(data)
             if(data != null) {
                 var EngineData = JSON.parse(data)
                 this.homeData = EngineData.homeData

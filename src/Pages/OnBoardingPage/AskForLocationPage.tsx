@@ -23,6 +23,7 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
             location: ""
         }
         this.Controller = new OnBoardingPageController()
+        console.log(this.Controller.GetAllHomesData())
         this.cursor = this.Controller.GetAllHomesData().length - 1;
     }
 

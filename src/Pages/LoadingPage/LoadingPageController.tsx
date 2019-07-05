@@ -1,22 +1,12 @@
-import { LoadingPageModal } from "./LoadingPageModal";
 import { PermissionsAndroid, Platform } from 'react-native';
 import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor'
 import { TripUtils } from '../../Engine/Utils/TripUtils';
-import { ProfilePageController } from "../ProfilePage/ProfilePageController";
-import { TripExplorePageController } from "../TripExplorePage/TripExplorePageController";
-import { HomeDataModal } from "../../Modals/ApplicationEnums";
 import * as Engine from "../../Engine/Engine";
 
-export class LoadingPageController {
-
-    Modal: LoadingPageModal;
-    ProfilePageController: ProfilePageController;
-    TripExplorePageController: TripExplorePageController;
+export class LoadingPageController { 
 
     constructor() {
-      this.Modal = new LoadingPageModal()
-      this.TripExplorePageController = new TripExplorePageController()
-      this.ProfilePageController = new ProfilePageController()
+      
     }
     
     GetTotalToLoad = (): number => {
@@ -25,23 +15,6 @@ export class LoadingPageController {
 
     GetFinishedLoading = (): number => {
       return TripUtils.GetFinishedLoading()
-    }
-
-    GetAllHomesData = () : Array<HomeDataModal> => {
-      return this.Modal.homeData;
-    }
-
-    SetAllHomeData = (homeData: Array<HomeDataModal>) => {
-      this.Modal.homeData = homeData;
-      this.Modal.Save()
-    }
-
-    GetHomeData = (index: number) => {
-      return this.Modal.homeData[index]
-    }
-
-    SetHomeData = (index: number, home: HomeDataModal) => {
-      this.Modal.homeData[index] = home;
     }
 
     RequestPermissionAndroid = async() : Promise<boolean> => {

@@ -13,8 +13,8 @@ export class TripUtils {
     static FINISHED_LOADING = 0;
     static LAST_TRIP_PRESS = 0;
     
-    static GenerateTripId = () : number => {
-        return Math.floor(Math.random()*10000000)
+    static GenerateTripId = () : string => {
+        return Math.floor(Math.random()*10000000).toString()
     }
 
     static ExtendHomeDataToDate = () => {

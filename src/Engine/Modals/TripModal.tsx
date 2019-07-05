@@ -42,7 +42,7 @@ export class TripModal {
 
     constructor() {
         this.profileId = ""
-        this.tripId = 0;
+        this.tripId = "";
         this.steps = [];
         this.location = {} as Region
         this.temperature = ""

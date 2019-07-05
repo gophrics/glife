@@ -1,37 +1,38 @@
 import { HomeDataModal } from "../../Modals/ApplicationEnums";
-import { LoadingPageController } from "../LoadingPage/LoadingPageController";
-import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 import { TripUtils } from '../../Engine/Utils/TripUtils';
+import * as Engine from '../../Engine/Engine';
 
 export class OnBoardingPageController {
 
     tempLocations: any[][];
     cursor: number;
     culprits: Array<number>;
-    LoadingPageController: LoadingPageController;
-    ProfilePageController: ProfilePageController;
 
 
     constructor() {
         this.tempLocations = [];
         this.cursor = 0;
         this.culprits = [];
-        this.LoadingPageController = new LoadingPageController();
-        this.ProfilePageController = new ProfilePageController();
-        if(this.LoadingPageController.GetAllHomesData().length == 0)
-            this.LoadingPageController.AddEmptyHome()
+    }
+
+
+    AddEmptyHome = () => {
+        Engine.Instance.homeData.push({
+          name: "",
+          timestamp: 0
+        } as HomeDataModal)
     }
 
     GetAllHomesData = () => {
-        return this.LoadingPageController.GetAllHomesData()
+        return Engine.Instance.homeData;
     }
 
     GetHomeData = (index: number) => {
-        return this.LoadingPageController.GetHomeData(index)
+        return Engine.Instance.homeData[index]
     }
 
     GetName = () : string => {
-        return this.ProfilePageController.getName();
+        return Engine.Instance.Modal.name
     }
 
     GetTempLocations = () => {
@@ -39,13 +40,11 @@ export class OnBoardingPageController {
     }
 
     SetAllHomeData = (homes: Array<HomeDataModal>) => {
-        this.LoadingPageController.SetAllHomeData(homes)    
+        Engine.Instance.homeData = homes
     }
 
     SetHomeName = (index: number, name: string) => {
-        var home = this.LoadingPageController.GetHomeData(index)
-        home.name = name;
-        this.LoadingPageController.SetHomeData(index, home)
+        Engine.Instance.homeData[index].name = name
     }
 
     SetCursor = (index: number) => {
@@ -58,39 +57,34 @@ export class OnBoardingPageController {
     }
 
     onCalenderConfirm = (pos: number, dateObject: Date) => {
-        var home = this.LoadingPageController.GetHomeData(pos)
-        home.timestamp = dateObject.getTime();
-        this.LoadingPageController.SetHomeData(pos, home)
+        Engine.Instance.homeData[pos].timestamp = dateObject.getTime();
     }
 
     onLocationChangeText = (pos: number, text: string) => {
-        console.log(pos)
-        var home = this.LoadingPageController.GetHomeData(pos)
-        home.name = text
-        this.LoadingPageController.SetHomeData(pos, home)
+        Engine.Instance.homeData[pos].name = text
     }
 
     onNewHomeClick = () => {
-        this.LoadingPageController.AddEmptyHome()
+        this.AddEmptyHome()
         this.cursor = this.GetAllHomesData().length + 1;
         this.culprits.push(0)
     }
 
     onDeleteHome = (index: number) => {
         var homes = []
-        for (var i = 0; i < this.LoadingPageController.GetAllHomesData().length; i++) {
+        for (var i = 0; i < Engine.Instance.homeData.length; i++) {
             if (i != index) {
 
                 if (i == index - 1) {
                     homes.push({
-                        name: this.LoadingPageController.GetHomeData(i).name,
-                        timestamp: this.LoadingPageController.GetHomeData(index).timestamp
+                        name: Engine.Instance.homeData[i].name,
+                        timestamp: Engine.Instance.homeData[index].timestamp
                     })
                 } else 
-                    homes.push(this.LoadingPageController.GetHomeData(i))
+                    homes.push(Engine.Instance.homeData[i])
             }
         }
-        this.LoadingPageController.SetAllHomeData(homes)
+        Engine.Instance.homeData = homes
     }
 
 
@@ -125,7 +119,7 @@ export class OnBoardingPageController {
         for (var i = 0; i < culprits.length; i++) culprits.push(1)
 
         this.tempLocations = []
-        for (var home of this.LoadingPageController.GetAllHomesData()) {
+        for (var home of Engine.Instance.homeData) {
             if(home.name == "") {
                 culprits[count] = 1;
                 count++; continue;

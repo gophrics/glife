@@ -2,14 +2,17 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { ClusterModal } from '../Modals/ClusterModal';
 import { TripUtils } from '../Utils/TripUtils';
 import { AuthProvider } from './AuthProvider';
+import { HomeDataModal } from '../../Modals/ApplicationEnums';
  
 export class BlobProvider {
 
     private pageDataPipe: {[ key: string] : any} = {}
-    homeData: {[key:number]: ClusterModal} = {}
+    homeData: Array<HomeDataModal> = []
+    homesForDataClustering: {[key: number]: ClusterModal } = {}
     startTimestamp: number = 0
     endTimestamp: number = 0
     blobLoaded: boolean = false;
+    engineBlobLoaded: boolean = false;
 
     constructor() {
         this.loadBlob()
@@ -24,6 +27,7 @@ export class BlobProvider {
     saveEngineData = () => {
         AsyncStorage.setItem('EngineData', JSON.stringify({
             homeData: this.homeData,
+            homesForDataClustering: this.homesForDataClustering,
             startTimestamp: this.startTimestamp,
             endTimestamp: this.endTimestamp,
             loginInfo: AuthProvider.loginInfo
@@ -44,9 +48,11 @@ export class BlobProvider {
 
     loadEngineData = () => {
         return AsyncStorage.getItem('EngineData').then((data) => {
+            this.engineBlobLoaded = true;
             if(data != null) {
                 var EngineData = JSON.parse(data)
                 this.homeData = EngineData.homeData
+                this.homesForDataClustering = EngineData.homesForDataClustering
                 this.startTimestamp = EngineData.startTimestamp
                 this.endTimestamp = EngineData.endTimestamp
                 AuthProvider.loginInfo = EngineData.loginInfo

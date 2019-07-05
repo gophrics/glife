@@ -16,7 +16,7 @@ export class BackgroundSyncProvider {
     }
 
     Sync = async() => {
-        if(!Engine.Instance || !Engine.Instance.engineLoaded) {
+        if(!Engine.Instance || Engine.Instance.engineLoaded != Engine.EngineLoadStatus.Full) {
             setTimeout(this.Sync, 1000)
             return
         }
@@ -32,10 +32,10 @@ export class BackgroundSyncProvider {
                 var clientHash = Md5.hashStr(_trip.toString())
                 if(serverHash.Hash != clientHash) {
                     _trip.syncComplete = false
-                    console.warn("Server hash: " + JSON.stringify(serverHash))
-                    console.warn("Client hash: " + clientHash)
-                    console.log("Server client hash mismatch, uploading")
-                    console.log(trip)
+                    // console.warn("Server hash: " + JSON.stringify(serverHash))
+                    // console.warn("Client hash: " + clientHash)
+                    // console.log("Server client hash mismatch, uploading")
+                    // console.log(trip)
                     
                     await TripUtils.SaveTrip(trip)
                 } else {

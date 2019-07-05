@@ -12,7 +12,7 @@ export class ProfilePageController {
     }
 
     loadModal = () => {
-        if(Engine.Instance.engineLoaded) {
+        if(Engine.EngineLoadStatus.Full) {
             this.Modal = Engine.Instance.Modal;
         } else {
             setTimeout(this.loadModal, 1000)

@@ -22,7 +22,18 @@ interface LoginModal {
 
 export class AuthProvider {
 
-    static Token: string = "";
+    static _Token: string = "";
+    
+    get Token() : string{
+        console.warn("Token " + AuthProvider._Token)
+        return AuthProvider._Token
+    }
+
+    set Token(t: string){
+        console.warn("Setting token " + t)
+        AuthProvider._Token = t
+    }
+
     static loginInfo: LoginUserModal = { Email: "", Password: ""}
 
     static RegisterUserWithGoogle = async(): Promise<any> => {

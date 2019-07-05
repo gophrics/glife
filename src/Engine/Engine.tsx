@@ -11,20 +11,35 @@ import { ClusterModal } from './Modals/ClusterModal';
 import { StepModal } from './Modals/StepModal';
 import { BackgroundSyncProvider } from './Providers/BackgroundSyncProvider';
 
+export enum EngineLoadStatus{
+    None = 0,
+    Partial = 1,
+    Full = 2
+}
+
 export class Engine {
     BlobProvider: BlobProvider;
     Modal: ProfileModal
     BackgroundProcess: BackgroundSyncProvider;
-    homeData: any = "";
+    homeData: Array<HomeDataModal> = [];
+    homesForDataClustering: {[key: number]: ClusterModal } = {};
     startTimestamp: any = 0;
     endTimestamp: any = 0;
-    engineLoaded: boolean = false;
+    engineLoaded: EngineLoadStatus = EngineLoadStatus.None;
     
     constructor () {
         this.BlobProvider = new BlobProvider()
         this.Modal = new ProfileModal()
         this.TryLoadingProfile()
+        this.TryLoadingHomesData()
         this.BackgroundProcess = new BackgroundSyncProvider()
+    }
+
+    SaveEngine = () => {
+        this.BlobProvider.homeData = this.homeData;
+        this.BlobProvider.homesForDataClustering = this.homesForDataClustering;
+        this.BlobProvider.startTimestamp = this.startTimestamp;
+        this.BlobProvider.endTimestamp = this.endTimestamp;
     }
 
     Save = () => {
@@ -39,10 +54,30 @@ export class Engine {
     TryLoadingProfile = () => {
         if(this.BlobProvider.blobLoaded) {
             var data = this.BlobProvider.getBlobValue(Page[Page.PROFILE])
-            this.Modal = data
-            this.engineLoaded = true
+            if(data != undefined)
+                this.Modal.CopyConstructor(data)
+            if(this.engineLoaded == EngineLoadStatus.None) this.engineLoaded = EngineLoadStatus.Partial
+            else this.engineLoaded = EngineLoadStatus.Full
         } else {
             setTimeout(this.TryLoadingProfile, 1000)
+        }
+    }
+
+    TryLoadingHomesData = () => {
+        if(this.BlobProvider.engineBlobLoaded) {
+            this.homeData = this.BlobProvider.homeData;
+            if(this.homeData) {
+                this.homeData.push({
+                    name: "",
+                    timestamp: 0
+                  } as HomeDataModal)
+            }
+            this.endTimestamp = this.BlobProvider.endTimestamp;
+            this.startTimestamp = this.BlobProvider.startTimestamp;
+            if(this.engineLoaded == EngineLoadStatus.None) this.engineLoaded = EngineLoadStatus.Partial
+            else this.engineLoaded = EngineLoadStatus.Full
+        } else {
+            setTimeout(this.TryLoadingHomesData, 1000)
         }
     }
 
@@ -56,7 +91,7 @@ export class Engine {
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
 
         var data = await TripUtils.GenerateHomeData(this.homeData)
-        this.homeData = data["homeData"]
+        this.homesForDataClustering = data["homeData"]
         this.startTimestamp = data["startTimestamp"]
         this.endTimestamp = data["endTimestamp"]
 
@@ -81,7 +116,7 @@ export class Engine {
 
 
     GenerateTripFromPhotos = async (imageData: ImageDataModal[]): Promise<TripModal[]> => {
-        var homesDataForClustering = this.homeData
+        var homesDataForClustering = this.homesForDataClustering
         var endTimestamp = this.endTimestamp
 
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
@@ -141,9 +176,9 @@ export class Engine {
     }
 
 
-    async PopulateTripModalData(steps: StepModal[], tripId: number) {
+    async PopulateTripModalData(steps: StepModal[], tripId: string) {
         var tripResult: TripModal = new TripModal();
-        var homesDataForClustering = this.homeData
+        var homesDataForClustering = this.homesForDataClustering
 
         var homeStep = homesDataForClustering[Math.floor(steps[0].startTimestamp / 8.64e7) - 1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)

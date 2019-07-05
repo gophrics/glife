@@ -44,13 +44,6 @@ export class LoadingPageController {
       this.Modal.homeData[index] = home;
     }
 
-    AddEmptyHome = () => {
-      this.Modal.homeData.push({
-        name: "",
-        timestamp: 0
-      } as HomeDataModal)
-    }
-
     RequestPermissionAndroid = async() : Promise<boolean> => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -86,8 +79,6 @@ export class LoadingPageController {
             return false;
         }
         
-        console.log(this.GetAllHomesData())
-        Engine.Instance.SetHomeData(this.GetAllHomesData())
         return Engine.Instance.Initialize()
     }
 }

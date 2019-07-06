@@ -6,7 +6,7 @@ import * as Constants from "../Constants"
 import { TripModal } from '../Modals/TripModal';
 import * as Engine from '../Engine';
 
-const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8082"
+const ServerURLWithoutEndingSlash = Constants.ServerURL
 
 export class TripUtils {
     static TOTAL_TO_LOAD = 100;

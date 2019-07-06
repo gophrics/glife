@@ -355,6 +355,8 @@ export class Engine {
             return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
         })
 
+        this.Save()
+
         return this.Modal
     }
 

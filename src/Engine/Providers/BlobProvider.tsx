@@ -28,6 +28,7 @@ export class BlobProvider {
     }
 
     saveEngineData = () => {
+        console.log("Save Engine data")
         AsyncStorage.setItem('EngineData', JSON.stringify({
             homeData: this.homeData,
             homesForDataClustering: this.homesForDataClustering,
@@ -54,8 +55,8 @@ export class BlobProvider {
     loadEngineData = () => {
         return AsyncStorage.getItem('EngineData').then((data) => {
             this.engineBlobLoaded = true;
-            console.log(data)
             if(data != null) {
+                console.log(data)
                 var EngineData = JSON.parse(data)
                 this.homeData = EngineData.homeData
                 this.homesForDataClustering = EngineData.homesForDataClustering
@@ -65,7 +66,6 @@ export class BlobProvider {
                 this.password = EngineData.password || ""
                 AuthProvider.loginInfo = EngineData.loginInfo
             }
-            TripUtils.ExtendHomeDataToDate()
         })
     }
 

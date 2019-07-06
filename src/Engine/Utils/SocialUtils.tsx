@@ -2,7 +2,7 @@ import { AuthProvider } from "../Providers/AuthProvider";
 
 import * as Constants from "../Constants"
 
-const ServerURLWithoutEndingSlash = Constants.ServerURL + ":8083"
+const ServerURLWithoutEndingSlash = Constants.ServerURL
 
 export class SocialUtils {
     static Search = (text: string): Promise<any> => {

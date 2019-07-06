@@ -51,10 +51,13 @@ export class BottomNavigator extends React.Component<IProps, IState> {
                 <TouchableOpacity onPress={this.onSearchPress}>
                     <Icon name='search1' size={30} />
                 </TouchableOpacity>
-
+{
+    /*
                 <TouchableOpacity onPress={this.onFeedPress}> 
                     <Icon name='appstore-o' size={30} />   
                 </TouchableOpacity>
+    */
+}
                 
             </View>
         )

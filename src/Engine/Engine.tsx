@@ -28,10 +28,6 @@ export class Engine {
     BlobProvider: BlobProvider;
     Modal: ProfileModal
     BackgroundProcess: BackgroundSyncProvider;
-    homeData: Array<HomeDataModal> = [];
-    homesForDataClustering: { [key: number]: ClusterModal } = {};
-    startTimestamp: any = 0;
-    endTimestamp: any = 0;
     AppState: AppState = {loggedIn: false, engineLoaded: EngineLoadStatus.None}
 
     constructor() {
@@ -44,10 +40,7 @@ export class Engine {
     }
 
     SaveEngineData = () => {
-        this.BlobProvider.homeData = this.homeData;
-        this.BlobProvider.homesForDataClustering = this.homesForDataClustering;
-        this.BlobProvider.startTimestamp = this.startTimestamp;
-        this.BlobProvider.endTimestamp = this.endTimestamp;
+        this.BlobProvider.saveEngineData()
     }
 
     Save = () => {
@@ -66,29 +59,33 @@ export class Engine {
     }
 
     TryLogin = async () => {
-        if(!this.BlobProvider.engineBlobLoaded) {
+        if(this.BlobProvider.engineBlobLoaded) {
+            var loginModal = {
+                Email: this.BlobProvider.email,
+                Password: this.BlobProvider.password
+            } as LoginUserModal
+            var tryLoginUsingPassword = await AuthProvider.LoginUser(loginModal)
+            if (!tryLoginUsingPassword) {
+                var user = await GoogleSignin.signInSilently()
+                var res = await AuthProvider.LoginUserWithGoogle(user.user.email, user.idToken || "")
+                if(res) {
+                    this.AppState.loggedIn = true
+                } else {
+                    setTimeout(() => {
+                        this.TryLogin()
+                    }, 1000)
+                    return
+                }
+            } else {
+                this.AppState.loggedIn = false;
+                return
+            } 
+        } else {
             setTimeout(() => {
                 this.TryLogin()
             }, 1000)
             return
         }
-        var loginModal = {
-            Email: this.BlobProvider.email,
-            Password: this.BlobProvider.password
-        } as LoginUserModal
-        var tryLoginUsingPassword = await AuthProvider.LoginUser(loginModal)
-        if (!tryLoginUsingPassword) {
-            var user = await GoogleSignin.signInSilently()
-            var res = await AuthProvider.LoginUserWithGoogle(user.user.email, user.idToken || "")
-            this.AppState.loggedIn = true
-            console.log("Logged in: " + res)
-        } else {
-            this.AppState.loggedIn = false;
-        }
-        setTimeout(() => {
-            if (!this.AppState.loggedIn)
-                this.TryLogin()
-        }, 1000)
     }
 
     TryLoadingProfile = () => {
@@ -106,15 +103,15 @@ export class Engine {
     TryLoadingEngineData = () => {
         if (this.BlobProvider.engineBlobLoaded) {
             console.log(this.BlobProvider)
-            this.homeData = this.BlobProvider.homeData;
-            if (this.homeData) {
-                this.homeData.push({
+            this.BlobProvider.homeData = this.BlobProvider.homeData;
+            if (this.BlobProvider.homeData) {
+                this.BlobProvider.homeData.push({
                     name: "",
                     timestamp: 0
                 } as HomeDataModal)
             }
-            this.endTimestamp = this.BlobProvider.endTimestamp;
-            this.startTimestamp = this.BlobProvider.startTimestamp;
+            this.BlobProvider.endTimestamp = this.BlobProvider.endTimestamp;
+            this.BlobProvider.startTimestamp = this.BlobProvider.startTimestamp;
             if (this.AppState.engineLoaded == EngineLoadStatus.None) this.AppState.engineLoaded = EngineLoadStatus.Partial
             else this.AppState.engineLoaded = EngineLoadStatus.Full
         } else {
@@ -123,7 +120,7 @@ export class Engine {
     }
 
     SetHomeData = (homeData: Array<HomeDataModal>) => {
-        this.homeData = homeData
+        this.BlobProvider.homeData = homeData
     }
 
     Initialize = async (): Promise<boolean> => {
@@ -131,10 +128,10 @@ export class Engine {
         PublisherSubscriber.PauseUpdate = true;
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
 
-        var data = await TripUtils.GenerateHomeData(this.homeData)
-        this.homesForDataClustering = data["homeData"]
-        this.startTimestamp = data["startTimestamp"]
-        this.endTimestamp = data["endTimestamp"]
+        var data = await TripUtils.GenerateHomeData(this.BlobProvider.homeData)
+        this.BlobProvider.homesForDataClustering = data["homeData"]
+        this.BlobProvider.startTimestamp = data["startTimestamp"]
+        this.BlobProvider.endTimestamp = data["endTimestamp"]
 
         // Create a No photos found warning page
         if (photoRollInfos.length == 0) {
@@ -157,8 +154,8 @@ export class Engine {
 
 
     GenerateTripFromPhotos = async (imageData: ImageDataModal[]): Promise<TripModal[]> => {
-        var homesDataForClustering = this.homesForDataClustering
-        var endTimestamp = this.endTimestamp
+        var homesDataForClustering = this.BlobProvider.homesForDataClustering
+        var endTimestamp = this.BlobProvider.endTimestamp
 
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
         var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
@@ -219,7 +216,7 @@ export class Engine {
 
     async PopulateTripModalData(steps: StepModal[], tripId: string) {
         var tripResult: TripModal = new TripModal();
-        var homesDataForClustering = this.homesForDataClustering
+        var homesDataForClustering = this.BlobProvider.homesForDataClustering
 
         var homeStep = homesDataForClustering[Math.floor(steps[0].startTimestamp / 8.64e7) - 1]
         homeStep.timestamp = Math.floor(steps[0].startTimestamp - 8.64e7)

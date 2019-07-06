@@ -1,11 +1,16 @@
 import { AuthProvider } from "../../Engine/Providers/AuthProvider";
 import { TripUtils } from "../../Engine/Utils/TripUtils";
 import { TripModal } from "../../Engine/Modals/TripModal";
+import * as Engine from "../../Engine/Engine";
 
 export class SearchPageController {
 
     constructor() {
 
+    }
+
+    IsLoggedIn = () => {
+        return Engine.Instance.AppState.loggedIn
     }
 
     GetTrip = async(trip: TripModal) => {

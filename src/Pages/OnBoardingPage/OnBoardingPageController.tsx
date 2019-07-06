@@ -13,7 +13,7 @@ export class OnBoardingPageController {
         this.tempLocations = [];
         this.cursor = 0;
         this.culprits = [];
-        if(Engine.Instance.homeData.length == 0) this.AddEmptyHome()
+        if(Engine.Instance.BlobProvider.homeData.length == 0) this.AddEmptyHome()
     }
 
     SaveData = () => {
@@ -21,18 +21,19 @@ export class OnBoardingPageController {
     }
     
     AddEmptyHome = () => {
-        Engine.Instance.homeData.push({
+        Engine.Instance.BlobProvider.homeData.push({
           name: "",
           timestamp: 0
         } as HomeDataModal)
     }
 
     GetAllHomesData = () => {
-        return Engine.Instance.homeData;
+        console.log(Engine.Instance.BlobProvider.homeData)
+        return Engine.Instance.BlobProvider.homeData;
     }
 
     GetHomeData = (index: number) => {
-        return Engine.Instance.homeData[index]
+        return Engine.Instance.BlobProvider.homeData[index]
     }
 
     GetName = () : string => {
@@ -44,11 +45,12 @@ export class OnBoardingPageController {
     }
 
     SetAllHomeData = (homes: Array<HomeDataModal>) => {
-        Engine.Instance.homeData = homes
+        Engine.Instance.BlobProvider.homeData = homes
+        Engine.Instance.SaveEngineData()
     }
 
     SetHomeName = (index: number, name: string) => {
-        Engine.Instance.homeData[index].name = name
+        Engine.Instance.BlobProvider.homeData[index].name = name
     }
 
     SetCursor = (index: number) => {
@@ -61,11 +63,11 @@ export class OnBoardingPageController {
     }
 
     onCalenderConfirm = (pos: number, dateObject: Date) => {
-        Engine.Instance.homeData[pos].timestamp = dateObject.getTime();
+        Engine.Instance.BlobProvider.homeData[pos].timestamp = dateObject.getTime();
     }
 
     onLocationChangeText = (pos: number, text: string) => {
-        Engine.Instance.homeData[pos].name = text
+        Engine.Instance.BlobProvider.homeData[pos].name = text
     }
 
     onNewHomeClick = () => {
@@ -76,19 +78,19 @@ export class OnBoardingPageController {
 
     onDeleteHome = (index: number) => {
         var homes = []
-        for (var i = 0; i < Engine.Instance.homeData.length; i++) {
+        for (var i = 0; i < Engine.Instance.BlobProvider.homeData.length; i++) {
             if (i != index) {
 
                 if (i == index - 1) {
                     homes.push({
-                        name: Engine.Instance.homeData[i].name,
-                        timestamp: Engine.Instance.homeData[index].timestamp
+                        name: Engine.Instance.BlobProvider.homeData[i].name,
+                        timestamp: Engine.Instance.BlobProvider.homeData[index].timestamp
                     })
                 } else 
-                    homes.push(Engine.Instance.homeData[i])
+                    homes.push(Engine.Instance.BlobProvider.homeData[i])
             }
         }
-        Engine.Instance.homeData = homes
+        Engine.Instance.BlobProvider.homeData = homes
     }
 
 
@@ -123,7 +125,7 @@ export class OnBoardingPageController {
         for (var i = 0; i < culprits.length; i++) culprits.push(1)
 
         this.tempLocations = []
-        for (var home of Engine.Instance.homeData) {
+        for (var home of Engine.Instance.BlobProvider.homeData) {
             if(home.name == "") {
                 culprits[count] = 1;
                 count++; continue;

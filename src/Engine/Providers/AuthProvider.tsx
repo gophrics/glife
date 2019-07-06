@@ -34,7 +34,7 @@ export class AuthProvider {
 
     static loginInfo: LoginUserModal = { Email: "", Password: ""}
 
-    static RegisterUserWithGoogle = async(): Promise<any> => {
+    static RegisterUserWithGoogle = async(): Promise<boolean> => {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
         console.log(userInfo)
@@ -42,7 +42,7 @@ export class AuthProvider {
         return AuthProvider._RegisterUserWithGoogle(userInfo.idToken)
     }
 
-    static _RegisterUserWithGoogle = async(idToken: string|null): Promise<any> => {
+    static _RegisterUserWithGoogle = async(idToken: string|null): Promise<boolean> => {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/registerWithGoogle', {
             method: 'POST',
             body: JSON.stringify({
@@ -53,20 +53,20 @@ export class AuthProvider {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res: unknown) => {
             AuthProvider.Token = (res as LoginModal).Token
-            return res
+            return true
         })
         .catch((err) => {
             console.log(err)
-            throw err
+            throw false
         })
     }
 
-    static RegisterUser = (data: RegisterUserModal) => {
+    static RegisterUser = (data: RegisterUserModal): Promise<boolean> => {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/register', {
             method: 'POST',
             body: JSON.stringify({
@@ -79,20 +79,21 @@ export class AuthProvider {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res: unknown) => {
             AuthProvider.Token = (res as LoginModal).Token
-            return res
+            return true
         })
         .catch((err) => {
             console.log(err)
-            throw err
+            return false
         })
     }
 
-    static LoginUser = (data: LoginUserModal) => {
+    static LoginUser = (data: LoginUserModal): Promise<boolean> => {
+        console.log(data)
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/login', {
             method: 'POST',
             body: JSON.stringify({
@@ -100,25 +101,26 @@ export class AuthProvider {
                 password: data.Password  
             })
         })        
-        .then((res) => {
+        .then(async(res) => {
+            console.log(res)
             try {
-                return res.json()
+                return await res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })        
         .then((res: unknown) => {
             console.log(res)
             AuthProvider.Token = (res as LoginModal).Token
-            return res
+            return true
         })
         .catch((err) => {
             console.log(err)
-            throw err
+            return false
         })
     }
 
-    static LoginUserWithGoogle = (email: string, idToken: string|null) => {
+    static LoginUserWithGoogle = (email: string, idToken: string|null) : Promise<boolean> => {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/loginWithGoogle', {
             method: 'POST',
             body: JSON.stringify({
@@ -131,17 +133,17 @@ export class AuthProvider {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res: unknown) => {
             console.log(res)
             AuthProvider.Token = (res as LoginModal).Token
-            return res
+            return true
         })
         .catch((err) => {
             console.log(err)
-            throw err
+            return false
         })
     }
 }

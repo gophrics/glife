@@ -38,6 +38,7 @@ export class StepComponent extends React.Component<IProps, IState> {
         if(masterPic == "") masterPic = this.props.modal.masterImageUri
         else masterPic = `data:image/gif;base64,${masterPic}`
         
+        console.log(masterPic)
         this.state = {
             temperature: 0,
             masterPic: masterPic

@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { Image, Button, View, TextInput, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native'
-import DateTimePicker from "react-native-modal-datetime-picker";
 import { HomeDataModal, Page } from '../../Modals/ApplicationEnums';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { OnBoardingPageController } from './OnBoardingPageController';
@@ -64,30 +63,6 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         return this.state.culprits.indexOf(1) == -1 && this.state.culprits.indexOf(2) == -1;
     }
 
-    onCalenderClick = (pos: number) => {
-        this.setState({
-            showPicker: true
-        })
-        this.Controller.SetCursor(pos)
-    }
-
-    onCalenderConfirm = async(dateObject: Date) => {
-        this.cachedDate = dateObject;
-        
-        if(await this.validateData()) { 
-            this.Controller.onCalenderConfirm(this.Controller.cursor, dateObject)
-            this.setState({
-                showPicker: false,
-            })
-        }
-    }
-
-    onCalenderCancel = () => {
-        this.setState({
-            showPicker: false
-        })
-    }
-
     onLocationTextChange = (pos: number, text: string) => {
         this.Controller.SetCursor(pos)
         this.Controller.onLocationChangeText(pos, text)
@@ -129,9 +104,6 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
     }
 
     render() {
-
-
-        console.log(this.state.homes)
         return (
             <View style={{flex: 1}}>
                 <View>
@@ -144,9 +116,6 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                         {
                             this.state.homes.map((home, i) => (
                                 <View key={i + 'a'} style={{ flexDirection: 'row', alignSelf:'center'}}>
-                                    <TouchableOpacity onPress={() => this.onCalenderClick(i)}>
-                                        <Image style={{ width: 30, height: 30, padding: 2 }} source={require('../../Assets/icons8-calendar-52.png')} />
-                                    </TouchableOpacity>
                                     <View style={{ flexDirection: 'column', alignSelf:'center'}}>
                                         <TextInput
                                             editable={true}
@@ -178,14 +147,6 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                             <Text style={{ fontSize: 22 }}>Next</Text>
                         </TouchableOpacity>
                     </ScrollView>
-                </View>
-                <View>
-                    <DateTimePicker
-                        date={this.cachedDate}
-                        isVisible={this.state.showPicker}
-                        onConfirm={this.onCalenderConfirm.bind(this)}
-                        onCancel={this.onCalenderCancel.bind(this)}
-                    />
                 </View>
             </View>
         )

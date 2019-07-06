@@ -8,11 +8,9 @@ import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 export class NewTripPageController {
 
     Modal: NewTripPageModal
-    ProfilePageController: ProfilePageController;
 
     constructor() {
         this.Modal = new NewTripPageModal()
-        this.ProfilePageController = new ProfilePageController()
     }
 
     setTripTitle = (title: string) => {
@@ -43,8 +41,8 @@ export class NewTripPageController {
         var homeStep: StepModal = new StepModal();
         homeStep.startTimestamp = today.getTime()
         homeStep.endTimestamp = today.getTime() + 1 ; //milliseconds
-        homeStep.meanLatitude = Engine.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
-        homeStep.meanLongitude = Engine.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
+        homeStep.meanLatitude = Engine.Instance.homesForDataClustering[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
+        homeStep.meanLongitude = Engine.Instance.homesForDataClustering[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
         homeStep.location = "Home"
         homeStep.stepId = 1;
 
@@ -53,15 +51,15 @@ export class NewTripPageController {
         homeStep = new StepModal()
         homeStep.startTimestamp = today.getTime() + 1;
         homeStep.endTimestamp = today.getTime() + 1;
-        homeStep.meanLatitude = Engine.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
-        homeStep.meanLongitude = Engine.Instance.homeData[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude        
+        homeStep.meanLatitude = Engine.Instance.homesForDataClustering[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
+        homeStep.meanLongitude = Engine.Instance.homesForDataClustering[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude        
         homeStep.location = "Home"
         homeStep.stepId = 100000;
         this.Modal.data.steps.push(homeStep)
 
         this.Modal.data.tripId = TripUtils.GenerateTripId()
 
-        this.ProfilePageController.UpdateProfileDataWithTrip(this.Modal.data)
+        Engine.Instance.UpdateProfileDataWithTrip(this.Modal.data)
         
         return true
     }

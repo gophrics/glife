@@ -31,7 +31,8 @@ export class TripModal {
         var alreadyGenerated = await AsyncStorage.getItem(this.masterPicURL);
         if(alreadyGenerated == null) {
             var data = await PhotoLibraryProcessor.GetImageBase64(this.masterPicURL)
-            await AsyncStorage.setItem(this.masterPicURL, data)
+            if(data != "")
+                await AsyncStorage.setItem(this.masterPicURL, data)
         }
         for(var _step of this.steps) {
             var step = new StepModal()

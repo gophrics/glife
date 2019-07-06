@@ -134,13 +134,12 @@ export class ClusterProcessor {
         })
 
         for(var item of cluster) {
-            if(item.image) {
-                latitudeSum += item.latitude;
-                longitudeSum += item.longitude;
-                PublisherSubscriber.ImageBus = item.image
-                imageUris.push(item.image);
-                markers.push(new Region(item.latitude, item.longitude, 0, 0))
-            }
+            latitudeSum += item.latitude;
+            longitudeSum += item.longitude;
+            if(item.image)
+            PublisherSubscriber.ImageBus = item.image
+            imageUris.push(item.image);
+            markers.push(new Region(item.latitude, item.longitude, 0, 0))
         }
 
         var _step: StepModal = new StepModal()

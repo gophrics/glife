@@ -26,7 +26,7 @@ export class ProfileUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res: any) => {
@@ -47,7 +47,7 @@ export class ProfileUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })        
         .then((res: any) => {
@@ -70,7 +70,7 @@ export class ProfileUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })        
         .then((res: any) => {

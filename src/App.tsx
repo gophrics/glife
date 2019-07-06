@@ -24,8 +24,6 @@ import { NoPermissionIOS } from './Pages/NoPermissionIOS';
 import { AskForLocationChangeDatePage } from './Pages/OnBoardingPage/AskForLocationChangeDatePage';
 import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
 import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
-import { RegisterAndLoginController } from './Pages/RegisterAndLoginPage/RegisterAndLoginController';
-import { AuthProvider } from './Engine/Providers/AuthProvider';
 import * as Engine from './Engine/Engine';
 import { PublisherSubscriber } from './Engine/PublisherSubscriber';
 
@@ -40,7 +38,6 @@ interface IProps {
 
 export default class App extends React.Component<IProps, IState> {
 
-  loggedIn: boolean;
 
   constructor(props: IProps) {
     super(props);
@@ -52,14 +49,7 @@ export default class App extends React.Component<IProps, IState> {
     // Uncomment for development
     // AsyncStorage.clear()
     
-    Engine.Instance.BlobProvider.loadBlob()
-    .then((res) => {
-      this.setState({
-        page: res == null || res[Page[Page.PROFILE]] == undefined || res[Page[Page.PROFILE]].countriesVisited == undefined ? Page[Page.PREONBOARDING] : Page[Page.PROFILE]
-      })
-    })
-
-    this.loggedIn = false;
+    this.Initialize()
 
     GoogleSignin.configure({
       scopes: ['profile', 'email'], // what API you want to access on behalf of the user, default is email and profile
@@ -70,6 +60,22 @@ export default class App extends React.Component<IProps, IState> {
       forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login
       accountName: '', // [Android] specifies an account name on the device that should be used
     })
+  }
+
+  Initialize = () => {
+    if(Engine.Instance.AppState.engineLoaded == Engine.EngineLoadStatus.Full) {
+      if (Engine.Instance.Modal.name != "") {
+        this.setState({
+          page: Page[Page.PROFILE]
+        })
+      } else {
+        this.setState({
+          page: Page[Page.PREONBOARDING]
+        })
+      }
+    } else {
+      setTimeout(this.Initialize, 1000)
+    }
   }
 
   setPage(page: string, data: any = null) {

@@ -29,7 +29,7 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
         }
 
         this.Controller = new SearchPageController();
-        if(this.Controller.getAuthToken() == "")
+        if(!this.Controller.IsLoggedIn())
             this.props.setPage(Page[Page.REGISTER])
     }
 
@@ -65,7 +65,10 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
                 <ScrollView>
                     {
                         this.state.searchResults.map((el, index) => (
-                            <TripComponent tripModal={el} onPress={this.onTripPress}/>
+                            <View>
+                                <TripComponent tripModal={el} onPress={this.onTripPress}/>
+                                <View style={{height: '5%'}}/>
+                            </View>
                         ))
                     }
                 </ScrollView>

@@ -28,14 +28,14 @@ export class BlobProvider {
     }
 
     saveEngineData = () => {
-        console.log("Save enigne data")
-        console.log(this.homeData)
         AsyncStorage.setItem('EngineData', JSON.stringify({
             homeData: this.homeData,
             homesForDataClustering: this.homesForDataClustering,
             startTimestamp: this.startTimestamp,
             endTimestamp: this.endTimestamp,
-            loginInfo: AuthProvider.loginInfo
+            loginInfo: AuthProvider.loginInfo,
+            email: this.email,
+            password: this.password
         }))
     }
 
@@ -61,7 +61,7 @@ export class BlobProvider {
                 this.homesForDataClustering = EngineData.homesForDataClustering
                 this.startTimestamp = EngineData.startTimestamp
                 this.endTimestamp = EngineData.endTimestamp
-                this.username = EngineData.username || ""
+                this.email = EngineData.email || ""
                 this.password = EngineData.password || ""
                 AuthProvider.loginInfo = EngineData.loginInfo
             }

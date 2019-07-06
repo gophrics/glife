@@ -15,7 +15,7 @@ export class SocialUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
     }
@@ -31,7 +31,7 @@ export class SocialUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res) => {

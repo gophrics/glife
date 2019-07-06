@@ -35,6 +35,8 @@ export class RegisterAndLoginController {
             } as LoginUserModal)
             if(res) {
                 Engine.Instance.setEmailPassword(email, password)
+                Engine.Instance.AppState.loggedIn = true;
+                Engine.Instance.SaveEngineData()
                 return true
             } 
             return false
@@ -52,7 +54,9 @@ export class RegisterAndLoginController {
                 Password: password
             } as RegisterUserModal)
             if(res) {
-                Engine.Instance.setEmailPassword(email, password)
+                Engine.Instance.setEmailPassword(email, password);
+                Engine.Instance.AppState.loggedIn = true;
+                Engine.Instance.SaveEngineData()
                 return true
             } 
             return false
@@ -65,7 +69,11 @@ export class RegisterAndLoginController {
     LoginUsingGoogle = async(email: string, idToken: string) : Promise<boolean> => {
         try {
             var res = await AuthProvider.LoginUserWithGoogle(email, idToken)
-            if(res) return true
+            if(res) {
+                Engine.Instance.AppState.loggedIn = true;
+                Engine.Instance.SaveEngineData()
+                return true
+            } 
             return false
         } catch(err) {
             this.error = err.toString();
@@ -76,7 +84,11 @@ export class RegisterAndLoginController {
     RegisterUsingGoogle = async () : Promise<boolean> => {
         try {
             var res = await AuthProvider.RegisterUserWithGoogle()
-            if(res) return true
+            if(res) {
+                Engine.Instance.AppState.loggedIn = true;
+                Engine.Instance.SaveEngineData()
+                return true
+            } 
             return false
         } catch(err) {
             this.error = err;

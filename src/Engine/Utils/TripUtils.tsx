@@ -89,7 +89,7 @@ export class TripUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         }).then((res) => {
             return res
@@ -108,7 +108,7 @@ export class TripUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res) => {
@@ -133,7 +133,7 @@ export class TripUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res) => {
@@ -152,7 +152,7 @@ export class TripUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res) => {
@@ -173,7 +173,7 @@ export class TripUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res) => {
@@ -196,7 +196,7 @@ export class TripUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res) => {
@@ -223,7 +223,7 @@ export class TripUtils {
             try {
                 return res.json()
             } catch(err) {
-                throw res
+                throw res.body
             }
         })
         .then((res) => {

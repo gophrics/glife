@@ -16,7 +16,7 @@ export class BackgroundSyncProvider {
     }
 
     Sync = async() => {
-        if(!Engine.Instance || Engine.Instance.engineLoaded != Engine.EngineLoadStatus.Full) {
+        if(!Engine.Instance || Engine.Instance.AppState.engineLoaded != Engine.EngineLoadStatus.Full) {
             setTimeout(this.Sync, 1000)
             return
         }
@@ -26,6 +26,7 @@ export class BackgroundSyncProvider {
             for(var _trip of this.ProfileData.trips) {
                 var trip = new TripModal()
                 trip.CopyConstructor(_trip)
+                console.log(trip)
                 await trip.GenerateBase64Images()
                 var _trip = await this.TrimTripForUpload(trip)
                 var serverHash = await TripUtils.GetTripCheckSumServer(_trip)
@@ -62,7 +63,6 @@ export class BackgroundSyncProvider {
             _s.imageUris = []
 
             _s._masterImageBase64 = await AsyncStorage.getItem(_s.masterImageUri) || ""
-            console.log(_s._masterImageBase64)
             delete _s.imageUris
             delete _s.masterImageUri
             steps.push(step)

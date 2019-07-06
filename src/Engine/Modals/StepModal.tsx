@@ -38,13 +38,15 @@ export class StepModal {
             var alreadyGenerated = await AsyncStorage.getItem(image)
             if(alreadyGenerated == null) {
                 var data = await PhotoLibraryProcessor.GetImageBase64(image)
-                await AsyncStorage.setItem(image, data)
+                if(data != "")
+                    await AsyncStorage.setItem(image, data)
             }
         }
         var alreadyGenerated = await AsyncStorage.getItem(this.masterImageUri);
         if(alreadyGenerated == null) {
             var data = await PhotoLibraryProcessor.GetImageBase64(this.masterImageUri)
-            await AsyncStorage.setItem(this.masterImageUri, data)
+            if(data != "")
+                await AsyncStorage.setItem(this.masterImageUri, data)
         }
     }
 
@@ -69,21 +71,21 @@ export class StepModal {
     }
 
     CopyConstructor = (step: any) => {
-        this.stepId = step.stepId;
-        this.meanLatitude = step.meanLatitude;
-        this.meanLongitude = step.meanLongitude;
-        this.location = step.location;
-        this.startTimestamp = step.startTimestamp;
-        this.endTimestamp = step.endTimestamp;
-        this.imageUris = step.imageUris
-        this._imageBase64 = step._imageBase64;
-        this.timelineData = step.timelineData;
-        this.markers = step.markers;
-        this.masterImageUri = step.masterImageUri;
-        this.masterMarker = step.masterMarker
-        this.distanceTravelled = step.distanceTravelled;
-        this.description = step.description;
-        this.temperature = step.temperature;
-        this._masterImageBase64 = step._masterImageBase64;
+        this.stepId = step.stepId || "";
+        this.meanLatitude = step.meanLatitude || 0;
+        this.meanLongitude = step.meanLongitude || 0;
+        this.location = step.location || "";
+        this.startTimestamp = step.startTimestamp || 0;
+        this.endTimestamp = step.endTimestamp || 0;
+        this.imageUris = step.imageUris || [];
+        this._imageBase64 = step._imageBase64 || [];
+        this.timelineData = step.timelineData || [];
+        this.markers = step.markers || [];
+        this.masterImageUri = step.masterImageUri || "";
+        this.masterMarker = step.masterMarker || {}
+        this.distanceTravelled = step.distanceTravelled || 0;
+        this.description = step.description || "";
+        this.temperature = step.temperature || "0";
+        this._masterImageBase64 = step._masterImageBase64 || "";
     }
 }

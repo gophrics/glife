@@ -35,7 +35,7 @@ export class StepComponent extends React.Component<IProps, IState> {
     
     populateMasterPic = () => {
         var masterPic = this.props.modal._masterImageBase64
-        if(masterPic == "" && this.props.modal._imageBase64 != undefined) masterPic = this.props.modal._imageBase64[0]
+        if(masterPic == "" && (this.props.modal._imageBase64 != undefined && this.props.modal._imageBase64.length > 0)) masterPic = this.props.modal._imageBase64[0]
         if(masterPic ==  "" ) masterPic = this.props.modal.masterImageUri
         else masterPic = `data:image/gif;base64,${masterPic}`
         

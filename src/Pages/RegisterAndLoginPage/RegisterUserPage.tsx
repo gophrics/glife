@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { Page } from '../../Modals/ApplicationEnums';
 import { RegisterAndLoginController } from './RegisterAndLoginController';
@@ -56,9 +56,8 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
         })
         var registered: boolean = await this.Controller.Register(this.state.email, this.state.password, this.state.phone)
         if(registered) {
-            this.props.setPage(Page[Page.CONFIRMUSERNAME])
-        }
-        else {
+            this.props.setPage(Page[Page.SEARCH])
+        } else {
             this.setState({
                 registering: false,
                 error: this.Controller.error
@@ -71,9 +70,9 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
             registering: true
         })
         var registered: boolean = await this.Controller.RegisterUsingGoogle()
-        if(registered)
-            this.props.setPage(Page[Page.CONFIRMUSERNAME])
-        else {
+        if(registered) {
+            this.props.setPage(Page[Page.SEARCH])
+        } else {
             this.setState({
                 registering: false,
                 error: this.Controller.error
@@ -88,6 +87,21 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
     render() {
         return (
             <View style={{alignContent:'center', flex:1, flexDirection:'column', width: '100%', justifyContent: "center"}}>
+                {
+                    this.state.registering ? 
+                        <View style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <ActivityIndicator size='large' />
+                        </View>
+                    : <View />
+                }
                 <TextInput  style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center", width: '50%'}}  placeholder={"Enter Email"} onChangeText={this.onEmailChange} />
                 <TextInput  style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center",width: '50%'}}  placeholder={"Enter Phone"} onChangeText={this.onPhoneChange} />
                 <TextInput  style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center",width: '50%'}}  placeholder={"Enter Password"} onChangeText={this.onPasswordChange} />

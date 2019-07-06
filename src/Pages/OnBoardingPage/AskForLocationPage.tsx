@@ -65,6 +65,7 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
                             <TextInput
                                 style={[{ alignSelf: "center", textAlign: 'center', fontSize: 22, padding: 3, color: 'white' }, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
                                 placeholder={"Enter home"}
+                                onEndEditing={this.validateData}
                                 onChangeText={this.onLocationChange}>{this.state.location}</TextInput>
                         </View>
                         :
@@ -73,6 +74,7 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
                             <TextInput
                                 style={[{ alignSelf: "center", textAlign: 'center', fontSize: 22, padding: 3, color: 'white' }, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
                                 placeholder={"Enter home"}
+                                onEndEditing={this.validateData}
                                 onChangeText={this.onLocationChange}>{this.state.location}</TextInput>
                         </View>
                 }

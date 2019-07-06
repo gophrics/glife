@@ -24,10 +24,10 @@ export class AskForLocationChangeDatePage extends React.Component<IProps, IState
         this.state = {
             showPicker: false
         }
-
-        this.cachedDate = new Date()
+        
         this.Controller = new OnBoardingPageController()
         this.cursor = this.Controller.GetAllHomesData().length - 1;
+        this.cachedDate = this.Controller.GetCachedDate()
     }
 
     onCalenderPress = (ev: any) => {
@@ -39,6 +39,7 @@ export class AskForLocationChangeDatePage extends React.Component<IProps, IState
     onCalenderConfirm = (date: Date) => {
         this.Controller.onCalenderConfirm(this.cursor-1, date)
         this.cachedDate = date;
+        this.Controller.SetCachedDate(date);
         this.setState({
             showPicker: false
         })

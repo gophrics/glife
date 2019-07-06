@@ -1,6 +1,7 @@
 import { HomeDataModal } from "../../Modals/ApplicationEnums";
 import { TripUtils } from '../../Engine/Utils/TripUtils';
 import * as Engine from '../../Engine/Engine';
+import { PublisherSubscriber } from "../../Engine/PublisherSubscriber";
 
 export class OnBoardingPageController {
 
@@ -14,6 +15,14 @@ export class OnBoardingPageController {
         this.cursor = 0;
         this.culprits = [];
         if(Engine.Instance.BlobProvider.homeData.length == 0) this.AddEmptyHome()
+    }
+
+    GetCachedDate = () => {
+        return PublisherSubscriber.Bus['date']
+    }
+
+    SetCachedDate = (date: Date) => {
+        PublisherSubscriber.Bus['date'] = date;
     }
 
     SaveData = () => {

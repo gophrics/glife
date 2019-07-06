@@ -1,5 +1,5 @@
 import { StepModal } from "./StepModal";
-import Region from "./Region";
+import { Region } from "react-native-maps";
 import { TripUtils } from "../Utils/TripUtils";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as PhotoLibraryProcessor from '../Utils/PhotoLibraryProcessor';
@@ -23,6 +23,30 @@ export class TripModal {
     public: boolean
     syncComplete: boolean
 
+    async GetUploadData() {
+        var data: any = {}
+        data['tripId'] = this.tripId;
+        data['tripName'] = this.tripName;
+        data['profileId'] = this.profileId;
+        data['steps'] = []
+        for(var step of this.steps) {
+            data['steps'].push(step.GetUploadData())
+        }
+        data['public'] = this.public;
+        data['masterPicBase64'] = await this.masterPicBase64;
+        data['startDate'] = this.startDate;
+        data['endDate'] = this.endDate;
+        data['temperature'] = this.temperature;
+        data['countryCode'] = this.countryCode;
+        data['daysOfTravel'] = this.daysOfTravel;
+        data['distanceTravelled'] = this.distanceTravelled;
+        data['activities'] = this.activities;
+        data['location'] = this.location;
+        data['syncComplete'] = this.syncComplete;
+
+        return data
+    }
+    
     get masterPicBase64() {
         return AsyncStorage.getItem(this.masterPicURL)
     }
@@ -117,7 +141,7 @@ export class TripModal {
             longitude: this.steps[1].meanLongitude,
             latitudeDelta: 0,
             longitudeDelta: 0
-        } as Region
+        } as Region;
     }
 
     populateTemperature = () => {

@@ -1,1 +1,1 @@
-export const ServerURL = 'http://beerwithai.com'
+export const ServerURL = 'http://192.168.0.106'

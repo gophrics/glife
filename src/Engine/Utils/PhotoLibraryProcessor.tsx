@@ -111,22 +111,19 @@ export function triangulatePhotoLocationInfo(regionInfos: Array<Region>): Region
 }
 
 export async function GetImageBase64(imageuri: string): Promise<string> {
-
     if(imageuri == undefined) return ""
-    console.log("Syncing" + imageuri)
+
     try {
         var res = await ImageResizer.createResizedImage(
             imageuri,
-            10,
-            10,
+            512,
+            512,
             'JPEG',
             100,
             0,
             "",
         )
     } catch(err) {
-        console.log(imageuri)
-        console.log(err)
         return ""
     }
     var base64encodeddata = await RNFS.readFile(res.uri, 'base64')    

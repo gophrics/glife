@@ -1,10 +1,10 @@
 import {Region} from 'react-native-maps';
-import * as Engine from '../Engine'
 import AsyncStorage from "@react-native-community/async-storage";
 import * as PhotoLibraryProcessor from '../Utils/PhotoLibraryProcessor';
 
 export class StepModal {
     stepId: number
+    stepName: string
     meanLatitude: number
     meanLongitude: number
     location: string
@@ -12,10 +12,8 @@ export class StepModal {
     endTimestamp: number
     timelineData: string[]
     imageUris: string[]
-    _imageBase64: string[]
     markers: Region[]
     masterImageUri: string
-    _masterImageBase64: string
     masterMarker: Region
     distanceTravelled: number
     description: string
@@ -50,6 +48,29 @@ export class StepModal {
         }
     }
 
+    async GetUploadData() {
+        var data: any = {}
+        data['stepId'] = this.stepId;
+        data['stepName'] = this.stepName;
+        data['imageBase64'] = [];
+        for(var image of this.imageBase64) {
+            data['imageBase64'].push(await image)
+        }
+        data['masterImageBase64'] = await this.masterImageBase64;
+        data['masterMarker'] = this.masterMarker;
+        data['markers'] = this.markers;
+        data['meanLatitude'] = this.meanLatitude;
+        data['meanLongitude'] = this.meanLongitude;
+        data['location'] = this.location;
+        data['startTimestamp'] = this.startTimestamp;
+        data['endTimestamp'] = this.endTimestamp;
+        data['timelineData'] = this.timelineData;
+        data['distanceTravelled'] = this.distanceTravelled;
+        data['description'] = this.description;
+        data['temperature'] = this.temperature;
+
+        return data;
+    }
 
     constructor() {
         this.stepId = 0;
@@ -59,7 +80,6 @@ export class StepModal {
         this.startTimestamp = 0;
         this.endTimestamp = 0;
         this.imageUris = []
-        this._imageBase64 = [];
         this.timelineData = [];
         this.markers = [];
         this.masterImageUri = "";
@@ -67,7 +87,7 @@ export class StepModal {
         this.distanceTravelled = 0;
         this.description = "";
         this.temperature = "";
-        this._masterImageBase64 = "";
+        this.stepName = "";
     }
 
     CopyConstructor = (step: any) => {
@@ -78,7 +98,6 @@ export class StepModal {
         this.startTimestamp = step.startTimestamp || 0;
         this.endTimestamp = step.endTimestamp || 0;
         this.imageUris = step.imageUris || [];
-        this._imageBase64 = step._imageBase64 || [];
         this.timelineData = step.timelineData || [];
         this.markers = step.markers || [];
         this.masterImageUri = step.masterImageUri || "";
@@ -86,6 +105,5 @@ export class StepModal {
         this.distanceTravelled = step.distanceTravelled || 0;
         this.description = step.description || "";
         this.temperature = step.temperature || "0";
-        this._masterImageBase64 = step._masterImageBase64 || "";
     }
 }

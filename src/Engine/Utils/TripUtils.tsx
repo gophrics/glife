@@ -17,58 +17,6 @@ export class TripUtils {
         return Math.floor(Math.random()*10000000).toString()
     }
 
-    static ExtendHomeDataToDate = () => {
-        var today: Date = new Date()
-        var endTimestamp = Engine.Instance.BlobProvider.endTimestamp
-        
-        var homesDataForClustering = Engine.Instance.BlobProvider.homesForDataClustering;
-        var dataToExtend = homesDataForClustering[endTimestamp]
-
-        while(endTimestamp <= today.getTime()/8.64e7) {
-            homesDataForClustering[endTimestamp] = dataToExtend;
-            endTimestamp++
-        }
-
-        Engine.Instance.BlobProvider.endTimestamp = endTimestamp;
-        Engine.Instance.BlobProvider.homesForDataClustering = homesDataForClustering;
-        Engine.Instance.BlobProvider.saveEngineData()
-    }
-
-    static GenerateHomeData = async(homeInfo: Array<HomeDataModal>) : Promise<any> => {
-
-        var homes: Array<{latitude: number, longitude: number, timestamp: number}> = [];
-        var homesDataForClustering: {[key:number]: ClusterModal} = [];
-
-        for(var element of homeInfo) {
-            var res = await TripUtils.getCoordinatesFromLocation(element.name)
-            res = res[0];
-            homes.push({
-                latitude: Number.parseFloat(res.lat),
-                longitude: Number.parseFloat(res.lon),
-                timestamp: (element.timestamp as number)
-            })
-        }
-
-        var startTimestamp = Math.ceil((new Date()).getTime()/8.64e7);
-        var endTimestamp = startTimestamp;
-        homes.sort((a, b) => {
-            return b.timestamp - a.timestamp;
-        })
-
-        for(var data of homes) {
-            while(startTimestamp >= Math.floor(data.timestamp/8.64e7) && startTimestamp >= 0) {
-                homesDataForClustering[startTimestamp] = data as ClusterModal;
-                startTimestamp--;
-            }
-        }
-
-        return {
-            "homeData": homesDataForClustering,
-            "startTimestamp": startTimestamp,
-            "endTimestamp": endTimestamp
-        }
-    }
-
     static GetTotalToLoad = () => {
         return TripUtils.TOTAL_TO_LOAD
     }

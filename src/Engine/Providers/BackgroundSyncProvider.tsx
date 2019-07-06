@@ -54,8 +54,11 @@ export class BackgroundSyncProvider {
         trip.masterPicURL = "";
         var steps = []
         for(var step of trip.steps) {
+            console.log("TrimTripForUpload")
+            console.log(step)
             var _s = new StepModal()
             _s.CopyConstructor(step)
+            console.log(_s)
             for(var image of _s.imageUris) {
                 var _i = await AsyncStorage.getItem(image) || ""
                 _s._imageBase64.push(_i)

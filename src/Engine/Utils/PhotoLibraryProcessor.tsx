@@ -114,15 +114,21 @@ export async function GetImageBase64(imageuri: string): Promise<string> {
 
     if(imageuri == undefined) return ""
     console.log("Syncing" + imageuri)
-    var res = await ImageResizer.createResizedImage(
-        imageuri,
-        10,
-        10,
-        'JPEG',
-        100,
-        0,
-        "",
-    )
+    try {
+        var res = await ImageResizer.createResizedImage(
+            imageuri,
+            10,
+            10,
+            'JPEG',
+            100,
+            0,
+            "",
+        )
+    } catch(err) {
+        console.log(imageuri)
+        console.log(err)
+        return ""
+    }
     var base64encodeddata = await RNFS.readFile(res.uri, 'base64')    
     return base64encodeddata
 }

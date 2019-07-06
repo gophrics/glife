@@ -36,6 +36,7 @@ export class Engine {
         this.TryLoadingProfile()
         this.TryLoadingEngineData()
         this.TryLogin()
+        this.ExtendHomeDataToDate()
         this.BackgroundProcess = new BackgroundSyncProvider()
     }
 
@@ -128,10 +129,7 @@ export class Engine {
         PublisherSubscriber.PauseUpdate = true;
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
 
-        var data = await TripUtils.GenerateHomeData(this.BlobProvider.homeData)
-        this.BlobProvider.homesForDataClustering = data["homeData"]
-        this.BlobProvider.startTimestamp = data["startTimestamp"]
-        this.BlobProvider.endTimestamp = data["endTimestamp"]
+        await this.GenerateHomeData()
 
         // Create a No photos found warning page
         if (photoRollInfos.length == 0) {
@@ -152,6 +150,57 @@ export class Engine {
         return true
     }
 
+
+    GenerateHomeData = async(): Promise<void> => {
+
+        var homes: Array<{latitude: number, longitude: number, timestamp: number}> = [];
+        var homesDataForClustering: {[key:number]: ClusterModal} = [];
+
+        for(var element of this.BlobProvider.homeData) {
+            var res = await TripUtils.getCoordinatesFromLocation(element.name)
+            res = res[0];
+            homes.push({
+                latitude: Number.parseFloat(res.lat),
+                longitude: Number.parseFloat(res.lon),
+                timestamp: (element.timestamp as number)
+            })
+        }
+
+        var startTimestamp = Math.ceil((new Date()).getTime()/8.64e7);
+        var endTimestamp = startTimestamp;
+        homes.sort((a, b) => {
+            return b.timestamp - a.timestamp;
+        })
+
+        for(var data of homes) {
+            while(startTimestamp >= Math.floor(data.timestamp/8.64e7) && startTimestamp >= 0) {
+                homesDataForClustering[startTimestamp] = data as ClusterModal;
+                startTimestamp--;
+            }
+        }
+
+        this.BlobProvider.homesForDataClustering = homesDataForClustering;
+        this.BlobProvider.startTimestamp = startTimestamp
+        this.BlobProvider.endTimestamp = endTimestamp
+        this.SaveEngineData()
+    }
+
+    ExtendHomeDataToDate = () => {
+        var today: Date = new Date()
+        var endTimestamp = this.BlobProvider.endTimestamp
+        
+        var homesDataForClustering = this.BlobProvider.homesForDataClustering;
+        var dataToExtend = homesDataForClustering[endTimestamp]
+
+        while(endTimestamp <= today.getTime()/8.64e7) {
+            homesDataForClustering[endTimestamp] = dataToExtend;
+            endTimestamp++
+        }
+
+        this.BlobProvider.endTimestamp = endTimestamp;
+        this.BlobProvider.homesForDataClustering = homesDataForClustering;
+        this.SaveEngineData()
+    }
 
     GenerateTripFromPhotos = async (imageData: ImageDataModal[]): Promise<TripModal[]> => {
         var homesDataForClustering = this.BlobProvider.homesForDataClustering

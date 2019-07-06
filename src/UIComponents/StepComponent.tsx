@@ -21,7 +21,7 @@ export class StepComponent extends React.Component<IProps, IState> {
     retryCount = 20;
     constructor(props: IProps) {
         super(props)
-
+        console.log(this.props.modal)
         this.populateMasterPic()
     }
 
@@ -35,10 +35,10 @@ export class StepComponent extends React.Component<IProps, IState> {
     
     populateMasterPic = () => {
         var masterPic = this.props.modal._masterImageBase64
-        if(masterPic == "") masterPic = this.props.modal.masterImageUri
+        if(masterPic == "" && this.props.modal._imageBase64 != undefined) masterPic = this.props.modal._imageBase64[0]
+        if(masterPic ==  "" ) masterPic = this.props.modal.masterImageUri
         else masterPic = `data:image/gif;base64,${masterPic}`
         
-        console.log(masterPic)
         this.state = {
             temperature: 0,
             masterPic: masterPic

@@ -55,7 +55,7 @@ export class AuthProvider {
             return res
         })
         .catch((err) => {
-            console.warn(err)
+            console.log(err)
             throw err
         })
     }
@@ -75,7 +75,7 @@ export class AuthProvider {
             return res
         })
         .catch((err) => {
-            console.warn(err)
+            console.log(err)
             throw err
         })
     }
@@ -95,7 +95,7 @@ export class AuthProvider {
             return res
         })
         .catch((err) => {
-            console.warn(err)
+            console.log(err)
             throw err
         })
     }
@@ -109,7 +109,7 @@ export class AuthProvider {
             })
         })
         .then((res) => {
-            console.warn(res)
+            console.log(res)
             try {
                 return res.json()
             } catch(err) {
@@ -122,7 +122,7 @@ export class AuthProvider {
             return res
         })
         .catch((err) => {
-            console.warn(err)
+            console.log(err)
             throw err
         })
     }

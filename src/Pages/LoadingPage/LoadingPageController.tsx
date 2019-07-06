@@ -39,7 +39,7 @@ export class LoadingPageController {
               return false
             }
           } catch (err) {
-            console.warn(err)
+            console.log(err)
             return false
           }
     }

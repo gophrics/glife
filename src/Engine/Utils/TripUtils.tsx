@@ -108,7 +108,7 @@ export class TripUtils {
             return res;
         })
         .catch((err) => {
-            console.warn(err);
+            console.log(err);
             throw err
         })
     }
@@ -178,7 +178,7 @@ export class TripUtils {
             return res
         })
         .catch((err) => {
-            console.warn(err)
+            console.log(err)
             throw err
         })
     }
@@ -203,7 +203,7 @@ export class TripUtils {
         })
         .catch((err) => {
             console.log("Auth token " + AuthProvider.Token)
-            console.warn(err)
+            console.log(err)
             throw err
         })
     }

@@ -38,7 +38,7 @@ export class StepModal {
             var alreadyGenerated = await AsyncStorage.getItem(image)
             if(alreadyGenerated == null) {
                 var data = await PhotoLibraryProcessor.GetImageBase64(image)
-                await AsyncStorage.setItem(image, JSON.stringify(data))
+                await AsyncStorage.setItem(image, data)
             }
         }
     }

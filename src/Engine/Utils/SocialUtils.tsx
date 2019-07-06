@@ -31,7 +31,7 @@ export class SocialUtils {
             return res
         })
         .catch((err) => {
-            console.warn(err)
+            console.log(err)
             return err
         })
     }

@@ -59,6 +59,7 @@ export class TripComponent extends React.Component<IProps, IState> {
             masterPic: masterPic,
             location: "..."
         }
+        console.log(this.state.masterPic)
     }
 
     //'#98FB98', '#228B22']

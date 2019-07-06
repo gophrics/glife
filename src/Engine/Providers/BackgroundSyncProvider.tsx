@@ -32,8 +32,8 @@ export class BackgroundSyncProvider {
                 var clientHash = Md5.hashStr(_trip.toString())
                 if(serverHash.Hash != clientHash) {
                     _trip.syncComplete = false
-                    // console.warn("Server hash: " + JSON.stringify(serverHash))
-                    // console.warn("Client hash: " + clientHash)
+                    // console.log("Server hash: " + JSON.stringify(serverHash))
+                    // console.log("Client hash: " + clientHash)
                     // console.log("Server client hash mismatch, uploading")
                     // console.log(trip)
                     
@@ -56,7 +56,8 @@ export class BackgroundSyncProvider {
             var _s = new StepModal()
             _s.CopyConstructor(step)
             for(var image of _s.imageUris) {
-                _s._imageBase64.push(await AsyncStorage.getItem(image) || "")
+                var _i = await AsyncStorage.getItem(image) || ""
+                _s._imageBase64.push(_i)
             }
             _s.imageUris = []
 

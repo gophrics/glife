@@ -105,7 +105,7 @@ export class Engine {
             var trips = await this.GenerateTripFromPhotos(photoRollInfos)
             this.ClearAndUpdateProfileDataWithAllTrips(trips)
         } catch (error) {
-            console.warn(error)
+            console.log(error)
             PublisherSubscriber.PauseUpdate = false;
             this.Save()
             return true;

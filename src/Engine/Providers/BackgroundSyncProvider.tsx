@@ -29,6 +29,8 @@ export class BackgroundSyncProvider {
                 var serverHash = await TripUtils.GetTripCheckSumServer(trip)
                 var clientHash = Md5.hashStr(_trip.toString())
                 if(serverHash.Hash != clientHash) {
+                    console.log("Server hash " + serverHash.Hash)
+                    console.log("Client hash " + clientHash)
                     trip.syncComplete = false                    
                     await TripUtils.SaveTrip(_trip)
                 } else {
@@ -36,7 +38,7 @@ export class BackgroundSyncProvider {
                 }
             }
         } catch (err) {
-            console.log(err)
+            console.error(err)
         }
         setTimeout(this.Sync, 1000)   
     }

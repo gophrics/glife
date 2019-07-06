@@ -86,7 +86,11 @@ export class TripUtils {
             })
         })
         .then((res) => {
-            return res.json()
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
         }).then((res) => {
             return res
         })
@@ -101,7 +105,11 @@ export class TripUtils {
             }
         })
         .then((res) => {
-            return res.json()
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
         })
         .then((res) => {
             console.log("Search Travel " + JSON.stringify(res))
@@ -122,8 +130,13 @@ export class TripUtils {
             })
         })
         .then((res) => {
-            return res.json()
-        }).then((res) => {
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
+        })
+        .then((res) => {
             return res
         })
     }
@@ -136,7 +149,11 @@ export class TripUtils {
             })
         })
         .then((res) => {
-            return res.json()
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
         })
         .then((res) => {
             return res
@@ -153,8 +170,11 @@ export class TripUtils {
             body: JSON.stringify(trip)
         })
         .then((res) => {
-            console.warn(res)
-            return res.json()
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
         })
         .then((res) => {
             return res
@@ -173,7 +193,11 @@ export class TripUtils {
             })
         })
         .then((res) => {
-            return res.json()
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
         })
         .then((res) => {
             return res
@@ -196,7 +220,11 @@ export class TripUtils {
             })
         })
         .then((res) => {
-            return res.json()
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
         })
         .then((res) => {
             console.log(res)

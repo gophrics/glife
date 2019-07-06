@@ -50,7 +50,7 @@ export default class App extends React.Component<IProps, IState> {
       navigatorVisible: true
     };
     // Uncomment for development
-    //ßß AsyncStorage.clear()
+    // AsyncStorage.clear()
     
     Engine.Instance.BlobProvider.loadBlob()
     .then((res) => {
@@ -70,25 +70,6 @@ export default class App extends React.Component<IProps, IState> {
       forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login
       accountName: '', // [Android] specifies an account name on the device that should be used
     })
-    
-    this.tryLogin()
-  }
-  
-  tryLogin = async() => {    
-    var LoginController = new RegisterAndLoginController();
-    var tryLoginUsingPassword = await LoginController.Login(AuthProvider.loginInfo.Email, AuthProvider.loginInfo.Password)
-    if(!tryLoginUsingPassword) {
-      var user = await GoogleSignin.signInSilently()
-      var res = await LoginController.LoginUsingGoogle(user.user.email, user.idToken || "")
-      this.loggedIn = true
-      console.log("Logged in: " + res)
-    } else {
-      this.loggedIn = false;
-    }
-    setTimeout(() => {      
-      if(!this.loggedIn)
-        this.tryLogin()
-    }, 10000)
   }
 
   setPage(page: string, data: any = null) {

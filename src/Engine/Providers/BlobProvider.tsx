@@ -14,6 +14,9 @@ export class BlobProvider {
     blobLoaded: boolean = false;
     engineBlobLoaded: boolean = false;
 
+    email: string = "";
+    password: string = "";
+
     constructor() {
         this.loadBlob()
         this.loadEngineData()
@@ -58,6 +61,8 @@ export class BlobProvider {
                 this.homesForDataClustering = EngineData.homesForDataClustering
                 this.startTimestamp = EngineData.startTimestamp
                 this.endTimestamp = EngineData.endTimestamp
+                this.username = EngineData.username || ""
+                this.password = EngineData.password || ""
                 AuthProvider.loginInfo = EngineData.loginInfo
             }
             TripUtils.ExtendHomeDataToDate()

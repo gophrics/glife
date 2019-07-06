@@ -49,7 +49,13 @@ export class AuthProvider {
                 token: idToken
             })
         })
-        .then((res) => {return res.json()})
+        .then((res) => {
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
+        })
         .then((res: unknown) => {
             AuthProvider.Token = (res as LoginModal).Token
             return res
@@ -69,7 +75,13 @@ export class AuthProvider {
                 password: data.Password
             })
         })        
-        .then((res) => {return res.json()})
+        .then((res) => {
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
+        })
         .then((res: unknown) => {
             AuthProvider.Token = (res as LoginModal).Token
             return res
@@ -88,7 +100,13 @@ export class AuthProvider {
                 password: data.Password  
             })
         })        
-        .then((res) => {return res.json()})
+        .then((res) => {
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
+        })        
         .then((res: unknown) => {
             console.log(res)
             AuthProvider.Token = (res as LoginModal).Token

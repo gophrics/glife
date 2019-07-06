@@ -12,7 +12,11 @@ export class SocialUtils {
                 "Authorization": "Bearer " + AuthProvider.Token
             }
         }).then((res) => {
-            return res.json()
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
         })
     }
 
@@ -24,7 +28,11 @@ export class SocialUtils {
             }
         })
         .then((res) => {
-            return res.json()
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
         })
         .then((res) => {
             console.log(res)

@@ -22,7 +22,13 @@ export class ProfileUtils {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/generate_username', {
             method: 'GET'
         })        
-        .then((res) => { return res.json()} )
+        .then((res) => {
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
+        })
         .then((res: any) => {
             console.log(res)
             return (res as RandomUsernameModal).Username
@@ -37,7 +43,13 @@ export class ProfileUtils {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/username_exist/' + username, {
             method: 'GET'
         })
-        .then((res) => { return res.json()} )
+        .then((res) => {
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
+        })        
         .then((res: any) => {
             return (res as ValidateUsernameModal).Result
         })
@@ -54,7 +66,13 @@ export class ProfileUtils {
                 "Authentication": AuthProvider.Token
             }
         })
-        .then((res) => { return res.json()} )
+        .then((res) => {
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
+        })        
         .then((res: any) => {
             return res
         })

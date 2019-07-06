@@ -55,8 +55,9 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
             registering: true
         })
         var registered: boolean = await this.Controller.Register(this.state.email, this.state.password, this.state.phone)
-        if(registered)
+        if(registered) {
             this.props.setPage(Page[Page.CONFIRMUSERNAME])
+        }
         else {
             this.setState({
                 registering: false,

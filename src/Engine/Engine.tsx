@@ -10,11 +10,18 @@ import { TripUtils } from './Utils/TripUtils';
 import { ClusterModal } from './Modals/ClusterModal';
 import { StepModal } from './Modals/StepModal';
 import { BackgroundSyncProvider } from './Providers/BackgroundSyncProvider';
+import { AuthProvider, LoginUserModal } from './Providers/AuthProvider';
+import { GoogleSignin } from 'react-native-google-signin';
 
-export enum EngineLoadStatus{
+export enum EngineLoadStatus {
     None = 0,
     Partial = 1,
     Full = 2
+}
+
+export interface AppState {
+    loggedIn : boolean
+    engineLoaded: EngineLoadStatus
 }
 
 export class Engine {
@@ -22,16 +29,17 @@ export class Engine {
     Modal: ProfileModal
     BackgroundProcess: BackgroundSyncProvider;
     homeData: Array<HomeDataModal> = [];
-    homesForDataClustering: {[key: number]: ClusterModal } = {};
+    homesForDataClustering: { [key: number]: ClusterModal } = {};
     startTimestamp: any = 0;
     endTimestamp: any = 0;
-    engineLoaded: EngineLoadStatus = EngineLoadStatus.None;
-    
-    constructor () {
+    AppState: AppState = {loggedIn: false, engineLoaded: EngineLoadStatus.None}
+
+    constructor() {
         this.BlobProvider = new BlobProvider()
         this.Modal = new ProfileModal()
         this.TryLoadingProfile()
         this.TryLoadingEngineData()
+        this.TryLogin()
         this.BackgroundProcess = new BackgroundSyncProvider()
     }
 
@@ -51,32 +59,64 @@ export class Engine {
         this.BlobProvider.setBlobValue(Page[Page.PROFILE], this.Modal)
     }
 
+    setEmailPassword = (email: string, password: string) => {
+        this.BlobProvider.email = email;
+        this.BlobProvider.password = password;
+        this.BlobProvider.saveEngineData();
+    }
+
+    TryLogin = async () => {
+        if(!this.BlobProvider.engineBlobLoaded) {
+            setTimeout(() => {
+                this.TryLogin()
+            }, 1000)
+            return
+        }
+        var loginModal = {
+            Email: this.BlobProvider.email,
+            Password: this.BlobProvider.password
+        } as LoginUserModal
+        var tryLoginUsingPassword = await AuthProvider.LoginUser(loginModal)
+        if (!tryLoginUsingPassword) {
+            var user = await GoogleSignin.signInSilently()
+            var res = await AuthProvider.LoginUserWithGoogle(user.user.email, user.idToken || "")
+            this.AppState.loggedIn = true
+            console.log("Logged in: " + res)
+        } else {
+            this.AppState.loggedIn = false;
+        }
+        setTimeout(() => {
+            if (!this.AppState.loggedIn)
+                this.TryLogin()
+        }, 1000)
+    }
+
     TryLoadingProfile = () => {
-        if(this.BlobProvider.blobLoaded) {
+        if (this.BlobProvider.blobLoaded) {
             var data = this.BlobProvider.getBlobValue(Page[Page.PROFILE])
-            if(data != undefined)
+            if (data != undefined)
                 this.Modal.CopyConstructor(data)
-            if(this.engineLoaded == EngineLoadStatus.None) this.engineLoaded = EngineLoadStatus.Partial
-            else this.engineLoaded = EngineLoadStatus.Full
+            if (this.AppState.engineLoaded == EngineLoadStatus.None) this.AppState.engineLoaded = EngineLoadStatus.Partial
+            else this.AppState.engineLoaded = EngineLoadStatus.Full
         } else {
             setTimeout(this.TryLoadingProfile, 1000)
         }
     }
 
     TryLoadingEngineData = () => {
-        if(this.BlobProvider.engineBlobLoaded) {
+        if (this.BlobProvider.engineBlobLoaded) {
             console.log(this.BlobProvider)
             this.homeData = this.BlobProvider.homeData;
-            if(this.homeData) {
+            if (this.homeData) {
                 this.homeData.push({
                     name: "",
                     timestamp: 0
-                  } as HomeDataModal)
+                } as HomeDataModal)
             }
             this.endTimestamp = this.BlobProvider.endTimestamp;
             this.startTimestamp = this.BlobProvider.startTimestamp;
-            if(this.engineLoaded == EngineLoadStatus.None) this.engineLoaded = EngineLoadStatus.Partial
-            else this.engineLoaded = EngineLoadStatus.Full
+            if (this.AppState.engineLoaded == EngineLoadStatus.None) this.AppState.engineLoaded = EngineLoadStatus.Partial
+            else this.AppState.engineLoaded = EngineLoadStatus.Full
         } else {
             setTimeout(this.TryLoadingEngineData, 1000)
         }
@@ -86,8 +126,8 @@ export class Engine {
         this.homeData = homeData
     }
 
-    Initialize  = async() : Promise<boolean> => {
-        
+    Initialize = async (): Promise<boolean> => {
+
         PublisherSubscriber.PauseUpdate = true;
         var photoRollInfos: ImageDataModal[] = await PhotoLibraryProcessor.getPhotosFromLibrary();
 
@@ -97,10 +137,10 @@ export class Engine {
         this.endTimestamp = data["endTimestamp"]
 
         // Create a No photos found warning page
-        if(photoRollInfos.length == 0) {
+        if (photoRollInfos.length == 0) {
             return true
         }
-        
+
         try {
             var trips = await this.GenerateTripFromPhotos(photoRollInfos)
             this.ClearAndUpdateProfileDataWithAllTrips(trips)
@@ -164,12 +204,12 @@ export class Engine {
     }
 
     ClearAndUpdateProfileDataWithAllTrips = (trips: TripModal[]) => {
-        for(var trip of trips)
+        for (var trip of trips)
             this.Modal.countriesVisited.push.apply(this.Modal.countriesVisited, trip.countryCode)
 
-        let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
+        let x = (countries: string[]) => countries.filter((v, i) => countries.indexOf(v) === i)
         this.Modal.countriesVisited = x(this.Modal.countriesVisited); // Removing duplicates
-        this.Modal.percentageWorldTravelled = Math.floor(this.Modal.countriesVisited.length*100/186)
+        this.Modal.percentageWorldTravelled = Math.floor(this.Modal.countriesVisited.length * 100 / 186)
         this.Modal.trips = trips
         this.Modal.trips.sort((a: TripModal, b: TripModal) => {
             return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
@@ -239,7 +279,7 @@ export class Engine {
                 step.temperature = Math.floor(Number.parseFloat(result.main.temp) - 273.15) + "ºC"
             }
         }
-        
+
         tripResult.tripId = tripId;
         tripResult.populateAll();
         tripResult.populateTitle(countries, places);
@@ -248,23 +288,23 @@ export class Engine {
     }
 
 
-    UpdateProfileDataWithTrip (trip: TripModal) : ProfileModal {
+    UpdateProfileDataWithTrip(trip: TripModal): ProfileModal {
         this.Modal.countriesVisited.push.apply(this.Modal.countriesVisited, trip.countryCode)
-        let x = (countries: string[]) => countries.filter((v,i) => countries.indexOf(v) === i)
+        let x = (countries: string[]) => countries.filter((v, i) => countries.indexOf(v) === i)
         this.Modal.countriesVisited = x(this.Modal.countriesVisited); // Removing duplicates
-        this.Modal.percentageWorldTravelled = Math.floor(this.Modal.countriesVisited.length*100/186)
+        this.Modal.percentageWorldTravelled = Math.floor(this.Modal.countriesVisited.length * 100 / 186)
 
         var newTrip: boolean = true;
-        for(var _trip of this.Modal.trips) {
-            if(_trip.tripId == trip.tripId){ 
-                _trip.CopyConstructor(trip); newTrip = false; break; 
+        for (var _trip of this.Modal.trips) {
+            if (_trip.tripId == trip.tripId) {
+                _trip.CopyConstructor(trip); newTrip = false; break;
             }
         }
 
-        if(newTrip) {
+        if (newTrip) {
             this.Modal.trips.push(trip)
         }
-        
+
         this.Modal.trips.sort((a: TripModal, b: TripModal) => {
             return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
         })

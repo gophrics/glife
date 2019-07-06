@@ -1,5 +1,6 @@
 import { AuthProvider, RegisterUserModal, LoginUserModal } from '../../Engine/Providers/AuthProvider'
 import { ProfileUtils } from '../../Engine/Utils/ProfileUtils';
+import * as Engine from '../../Engine/Engine';
 
 export class RegisterAndLoginController {
 
@@ -7,6 +8,14 @@ export class RegisterAndLoginController {
 
     constructor() {
         this.error = ""
+    }
+
+    GetCachedEmail = () => {
+        return Engine.Instance.BlobProvider.email
+    }
+
+    GetCachedPassword = () => {
+        return Engine.Instance.BlobProvider.password
     }
 
     GetRandomUsername = async(): Promise<string> => {
@@ -24,7 +33,10 @@ export class RegisterAndLoginController {
                 Email: email,
                 Password: password
             } as LoginUserModal)
-            if(res) return true
+            if(res) {
+                Engine.Instance.setEmailPassword(email, password)
+                return true
+            } 
             return false
         } catch(err) {
             this.error = err.toString()
@@ -39,7 +51,10 @@ export class RegisterAndLoginController {
                 Phone: phone,
                 Password: password
             } as RegisterUserModal)
-            if(res) return true
+            if(res) {
+                Engine.Instance.setEmailPassword(email, password)
+                return true
+            } 
             return false
         } catch(err) {
             this.error = err.toString()

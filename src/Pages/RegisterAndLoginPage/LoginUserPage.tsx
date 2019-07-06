@@ -24,8 +24,8 @@ export class LoginUserPage extends React.Component<IProps, IState> {
         this.Controller = new RegisterAndLoginController()
 
         this.state = {
-            email: "",
-            password: "",
+            email: this.Controller.GetCachedEmail(),
+            password: this.Controller.GetCachedPassword(),
             loginInProcess: false,
             error: ""
         }

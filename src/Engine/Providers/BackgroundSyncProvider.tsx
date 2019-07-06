@@ -62,7 +62,7 @@ export class BackgroundSyncProvider {
             _s.imageUris = []
 
             _s._masterImageBase64 = await AsyncStorage.getItem(_s.masterImageUri) || ""
-
+            console.log(_s._masterImageBase64)
             delete _s.imageUris
             delete _s.masterImageUri
             steps.push(step)

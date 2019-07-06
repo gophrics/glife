@@ -110,14 +110,14 @@ export function triangulatePhotoLocationInfo(regionInfos: Array<Region>): Region
     return triangulatedLocation;
 }
 
-export async function GetImageBase64(imageuri: string) {
+export async function GetImageBase64(imageuri: string): Promise<string> {
     console.log("Syncing " + imageuri)
     var res = await ImageResizer.createResizedImage(
         imageuri,
-        256,
-        256,
+        512,
+        512,
         'JPEG',
-        25,
+        100,
         0,
         "",
     )

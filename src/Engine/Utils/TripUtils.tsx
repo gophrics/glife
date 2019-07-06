@@ -153,6 +153,7 @@ export class TripUtils {
             body: JSON.stringify(trip)
         })
         .then((res) => {
+            console.warn(res)
             return res.json()
         })
         .then((res) => {

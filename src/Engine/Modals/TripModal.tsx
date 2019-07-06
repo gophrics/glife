@@ -19,7 +19,7 @@ export class TripModal {
     startDate: string
     endDate: string
     masterPicURL: string
-    _masterPicBase64: string
+    masterPicBase64: string
     public: boolean
     syncComplete: boolean
 
@@ -30,10 +30,10 @@ export class TripModal {
         data['profileId'] = this.profileId;
         data['steps'] = []
         for(var step of this.steps) {
-            data['steps'].push(step.GetUploadData())
+            data['steps'].push(await step.GetUploadData())
         }
         data['public'] = this.public;
-        data['masterPicBase64'] = await this.masterPicBase64;
+        data['masterPicBase64'] = await this.getMasterPicBase64();
         data['startDate'] = this.startDate;
         data['endDate'] = this.endDate;
         data['temperature'] = this.temperature;
@@ -47,7 +47,7 @@ export class TripModal {
         return data
     }
     
-    get masterPicBase64() {
+    getMasterPicBase64() {
         return AsyncStorage.getItem(this.masterPicURL)
     }
 
@@ -79,7 +79,7 @@ export class TripModal {
         this.tripName = ""
         this.countryCode = []
         this.masterPicURL = ""
-        this._masterPicBase64 = ""
+        this.masterPicBase64 = ""
         this.public = false
         this.syncComplete = false
     }
@@ -104,7 +104,6 @@ export class TripModal {
         this.tripName = trip.tripName || trip.title;
         this.countryCode = trip.countryCode;
         this.masterPicURL = trip.masterPicURL
-        this._masterPicBase64 = trip._masterPicBase64
     }
 
     populateAll = () => {

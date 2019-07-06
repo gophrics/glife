@@ -148,6 +148,8 @@ export class TripUtils {
             }
         })
         .then((res) => {
+            console.log("Get Trip")
+            console.log(res)
             return res
         })
         .catch((err) => {

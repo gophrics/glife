@@ -18,12 +18,14 @@ export class StepModal {
     distanceTravelled: number
     description: string
     temperature: string
+    masterImageBase64: string
+    imageBase64: string[];
 
-    get masterImageBase64(){
+    getMasterImageBase64() {
         return AsyncStorage.getItem(this.masterImageUri)
     }
 
-    get imageBase64() {
+    getImageBase64() {
         var promiseArray = [];
         for(var image of this.imageUris) {
             promiseArray.push(AsyncStorage.getItem(image))
@@ -53,17 +55,17 @@ export class StepModal {
         data['stepId'] = this.stepId;
         data['stepName'] = this.stepName;
         data['imageBase64'] = [];
-        for(var image of this.imageBase64) {
+        for(var image of this.getImageBase64()) {
             data['imageBase64'].push(await image)
         }
-        data['masterImageBase64'] = await this.masterImageBase64;
+        data['masterImageBase64'] = await this.getMasterImageBase64();
         data['masterMarker'] = this.masterMarker;
         data['markers'] = this.markers;
         data['meanLatitude'] = this.meanLatitude;
         data['meanLongitude'] = this.meanLongitude;
         data['location'] = this.location;
-        data['startTimestamp'] = this.startTimestamp;
-        data['endTimestamp'] = this.endTimestamp;
+        data['startTimestamp'] = this.startTimestamp.toString();
+        data['endTimestamp'] = this.endTimestamp.toString();
         data['timelineData'] = this.timelineData;
         data['distanceTravelled'] = this.distanceTravelled;
         data['description'] = this.description;
@@ -88,6 +90,8 @@ export class StepModal {
         this.description = "";
         this.temperature = "";
         this.stepName = "";
+        this.masterImageBase64 = "";
+        this.imageBase64 = [];
     }
 
     CopyConstructor = (step: any) => {
@@ -95,8 +99,8 @@ export class StepModal {
         this.meanLatitude = step.meanLatitude || 0;
         this.meanLongitude = step.meanLongitude || 0;
         this.location = step.location || "";
-        this.startTimestamp = step.startTimestamp || 0;
-        this.endTimestamp = step.endTimestamp || 0;
+        this.startTimestamp = step.startTimestamp ? Number.parseInt(step.startTimestamp) : 0;
+        this.endTimestamp = step.endTimestamp ? Number.parseInt(step.endTimestamp) :  0;
         this.imageUris = step.imageUris || [];
         this.timelineData = step.timelineData || [];
         this.markers = step.markers || [];

@@ -1,6 +1,6 @@
 import { CameraRoll, GetPhotosParamType, Platform, ImageStore, ImageEditor, ImageCropData } from 'react-native';
 import { ImageDataModal } from '../Modals/ImageDataModal';
-import Region from '../Modals/Region';
+import { Region } from 'react-native-maps';
 import { ClusterModal } from '../Modals/ClusterModal';
 import ImageResizer from 'react-native-image-resizer';
 import * as RNFS from 'react-native-fs';
@@ -38,7 +38,12 @@ export function checkPhotoPermission() : Promise<boolean> {
 
 
 export function convertImagetoImageModal(image: any) {
-    var regionData = new Region(image.node.location.latitude, image.node.location.longitude, 0, 0);
+    var regionData = {
+        latitude: image.node.location.latitude,
+        longitude: image.node.location.longitude,
+        latitudeDelta: 0,
+        longitudeDelta: 0
+    } as Region
     var imageData = new ImageDataModal(regionData, image.node.image.uri, image.node.timestamp*1000);
     return imageData;
 }
@@ -100,12 +105,12 @@ export function triangulatePhotoLocationInfo(regionInfos: Array<Region>): Region
         return a < b ? -1 : 1;
     });
 
-    var triangulatedLocation: Region = new Region(
-        latitudeArray.reduce((a, b) => { return a + b; }, 0) / latitudeArray.length,
-        longitudeArray.reduce((a, b) => { return a + b; }, 0) / longitudeArray.length,
-        0,
-        0
-    );
+    var triangulatedLocation: Region = {
+        latitude: latitudeArray.reduce((a, b) => { return a + b; }, 0) / latitudeArray.length,
+        longitude: longitudeArray.reduce((a, b) => { return a + b; }, 0) / longitudeArray.length,
+        latitudeDelta: 0,
+        longitudeDelta: 0
+    } as Region;
 
     return triangulatedLocation;
 }

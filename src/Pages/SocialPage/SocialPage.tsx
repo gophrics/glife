@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 import MapView, { Callout, Marker, AnimatedRegion } from 'react-native-maps';
 import { SliderItems } from '../../Modals/ApplicationEnums';
-import Region from '../../Engine/Modals/Region';
+import { Region } from 'react-native-maps';
 import SnapSlider from '../../UIComponents/SnapSlider';
 import ChatComponent from '../../UIComponents/ChatComponent';
 

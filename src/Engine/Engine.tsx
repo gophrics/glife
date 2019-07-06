@@ -105,12 +105,6 @@ export class Engine {
         if (this.BlobProvider.engineBlobLoaded) {
             console.log(this.BlobProvider)
             this.BlobProvider.homeData = this.BlobProvider.homeData;
-            if (this.BlobProvider.homeData) {
-                this.BlobProvider.homeData.push({
-                    name: "",
-                    timestamp: 0
-                } as HomeDataModal)
-            }
             this.BlobProvider.endTimestamp = this.BlobProvider.endTimestamp;
             this.BlobProvider.startTimestamp = this.BlobProvider.startTimestamp;
             if (this.AppState.engineLoaded == EngineLoadStatus.None) this.AppState.engineLoaded = EngineLoadStatus.Partial
@@ -203,10 +197,12 @@ export class Engine {
     }
 
     GenerateTripFromPhotos = async (imageData: ImageDataModal[]): Promise<TripModal[]> => {
+
         var homesDataForClustering = this.BlobProvider.homesForDataClustering
         var endTimestamp = this.BlobProvider.endTimestamp
 
         var clusterData: Array<ClusterModal> = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
+
         var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
 
         var tripResult: TripModal[] = [];

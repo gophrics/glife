@@ -7,7 +7,7 @@ import {
 import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
 import { StepComponent } from '../../UIComponents/StepComponent';
 import { StepModal } from '../../Engine/Modals/StepModal';
-import Region from '../../Engine/Modals/Region';
+import { Region } from 'react-native-maps';
 import { NewStepPageViewModal } from './NewStepPageViewModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import { CustomButton } from '../../UIComponents/CustomButton';

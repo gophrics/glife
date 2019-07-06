@@ -1,4 +1,4 @@
-import Region from './Region';
+import { Region } from 'react-native-maps'
 
 export class ImageDataModal {
     location: Region;

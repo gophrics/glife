@@ -1,6 +1,6 @@
 import { ClusterModal } from "../Modals/ClusterModal";
 import { StepModal } from "../Modals/StepModal";
-import Region from "../Modals/Region";
+import { Region } from 'react-native-maps';
 import { PublisherSubscriber } from "../PublisherSubscriber";
 
 export class ClusterProcessor {
@@ -136,10 +136,14 @@ export class ClusterProcessor {
         for(var item of cluster) {
             latitudeSum += item.latitude;
             longitudeSum += item.longitude;
-            if(item.image)
             PublisherSubscriber.ImageBus = item.image
             imageUris.push(item.image);
-            markers.push(new Region(item.latitude, item.longitude, 0, 0))
+            markers.push( {
+                latitude: item.latitude,
+                longitude: item.longitude,
+                latitudeDelta: 0,
+                longitudeDelta: 0
+            } as Region)
         }
 
         var _step: StepModal = new StepModal()
@@ -150,7 +154,12 @@ export class ClusterProcessor {
         _step.endTimestamp = cluster[cluster.length - 1].timestamp
         _step.imageUris = imageUris
         _step.masterImageUri = imageUris[0];
-        _step.masterMarker = new Region(_step.meanLatitude, _step.meanLongitude, 0, 0);
+        _step.masterMarker = {
+            latitude: _step.meanLatitude,
+            longitude: _step.meanLongitude,
+            latitudeDelta: 0,
+            longitudeDelta: 0
+        } as Region;
 
 
         return _step;

@@ -4,7 +4,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { StepModal } from '../../Engine/Modals/StepModal';
 import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ImageDataModal } from '../../Engine/Modals/ImageDataModal';
-import Region from '../../Engine/Modals/Region';
+import { Region } from 'react-native-maps';
 import { ClusterModal } from '../../Engine/Modals/ClusterModal';
 import { ClusterProcessor } from '../../Engine/Utils/ClusterProcessor';
 import { Page } from '../../Modals/ApplicationEnums';

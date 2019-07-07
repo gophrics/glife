@@ -39,7 +39,7 @@ export class TripExplorePageController {
         trip = await Engine.Instance.PopulateTripModalData(trip.steps.slice(1, trip.steps.length - 1), trip.tripId)
         trip.tripName = this.Modal.tripName;
 
-        Engine.Instance.UpdateProfileDataWithTrip(trip)
+        this.Modal = Engine.Instance.UpdateProfileDataWithTrip(trip)
     }
 
     onPhotoModalDismiss = (step: StepModal) => {

@@ -32,6 +32,10 @@ export class StepComponent extends React.Component<IProps, IState> {
         this.props.onPress(this.props.modal)
     }
     
+    componentDidUpdate = () => {
+        this.populateMasterPic()
+    }
+
     populateMasterPic = () => {
         var masterPic = this.props.modal.masterImageBase64
         if(masterPic == "" && (this.props.modal.imageBase64 != undefined && this.props.modal.imageBase64.length > 0)) masterPic = this.props.modal.imageBase64[0]

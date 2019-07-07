@@ -25,7 +25,12 @@ export class ProfileModal {
     }
 
     CopyConstructor = (profileData: ProfileModal) => {
-        this.trips = profileData.trips;
+        this.trips = [];
+        for(var trip of profileData.trips) {
+            var _t = new TripModal()
+            _t.CopyConstructor(trip)
+            this.trips.push(_t)
+        }
         this.countriesVisited = profileData.countriesVisited;
         this.percentageWorldTravelled = profileData.percentageWorldTravelled;
         this.coverPicURL = profileData.coverPicURL;

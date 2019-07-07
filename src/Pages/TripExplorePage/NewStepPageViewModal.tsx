@@ -130,9 +130,10 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
             loading: true
         })
         var result = await this.validateData()
-        if(!result)  {    
+        if(!result)  {
+            
             this.setState({
-                loading: false
+                loading: true
             })   
             return;
         }
@@ -183,7 +184,7 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
         return (
             <Modal visible={this.props.visible}>
                 <SafeAreaView style={{
-                    width: "80%",
+                    width: "100%",
                     height: "90%",
                     borderRadius: 10,
                     margin: 50,
@@ -200,9 +201,13 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
                                 top: 0,
                                 bottom: 0,
                                 alignItems: 'center',
-                                justifyContent: 'center'
+                                justifyContent: 'center',
+                                zIndex: 1,
+                                height:'100%',
+                                width: '100%',
+                                backgroundColor: '#80808077'
                             }}>
-                                <ActivityIndicator size='large' />
+                                <ActivityIndicator color={'black'} size='large' />
                             </View>
                         : <View />
                     }

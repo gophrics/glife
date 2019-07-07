@@ -235,7 +235,7 @@ export class Engine {
 
                 if (asynci == trips.length) {
                     tripResult.sort((a, b) => {
-                        return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+                        return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
                     })
                 }
             } catch (err) {
@@ -331,7 +331,7 @@ export class Engine {
     }
 
 
-    UpdateProfileDataWithTrip(trip: TripModal): ProfileModal {
+    UpdateProfileDataWithTrip(trip: TripModal): TripModal {
         this.Modal.countriesVisited.push.apply(this.Modal.countriesVisited, trip.countryCode)
         let x = (countries: string[]) => countries.filter((v, i) => countries.indexOf(v) === i)
         this.Modal.countriesVisited = x(this.Modal.countriesVisited); // Removing duplicates
@@ -340,7 +340,7 @@ export class Engine {
         var newTrip: boolean = true;
         for (var _trip of this.Modal.trips) {
             if (_trip.tripId == trip.tripId) {
-                _trip.CopyConstructor(trip); 
+                _trip.CopyConstructor(trip)
                 newTrip = false; 
                 break;
             }
@@ -351,14 +351,13 @@ export class Engine {
         }
 
         this.Modal.trips.sort((a: TripModal, b: TripModal) => {
-            return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+            return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
         })
 
         this.Save()
 
-        return this.Modal
+        return trip
     }
-
 }
 
 export var Instance = new Engine()

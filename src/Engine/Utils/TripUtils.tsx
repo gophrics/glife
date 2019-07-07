@@ -60,11 +60,9 @@ export class TripUtils {
             }
         })
         .then((res) => {
-            console.log("Search Travel " + JSON.stringify(res))
             return res;
         })
         .catch((err) => {
-            console.log(err);
             throw err
         })
     }
@@ -147,7 +145,6 @@ export class TripUtils {
             return res
         })
         .catch((err) => {
-            console.log(err)
             throw err
         })
     }
@@ -171,12 +168,9 @@ export class TripUtils {
             }
         })
         .then((res) => {
-            console.log(res)
             return res
         })
         .catch((err) => {
-            console.log("Auth token " + AuthProvider.Token)
-            console.log(err)
             throw err
         })
     }

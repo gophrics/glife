@@ -20,7 +20,6 @@ export class BlobProvider {
     constructor() {
         this.loadBlob()
         this.loadEngineData()
-        console.log("BlobProvider constructor called")
     }
 
     saveBlob = () => {
@@ -28,8 +27,6 @@ export class BlobProvider {
     }
 
     saveEngineData = () => {
-        console.log("Save Engine data")
-        console.log(this.homeData)
         AsyncStorage.setItem('EngineData', JSON.stringify({
             homeData: this.homeData,
             homesForDataClustering: this.homesForDataClustering,

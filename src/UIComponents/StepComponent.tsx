@@ -21,7 +21,6 @@ export class StepComponent extends React.Component<IProps, IState> {
     retryCount = 20;
     constructor(props: IProps) {
         super(props)
-        console.log(this.props.modal)
         this.populateMasterPic()
     }
 

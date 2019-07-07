@@ -42,8 +42,6 @@ export class NewTripPageController {
         homeStep.startTimestamp = today.getTime()
         homeStep.endTimestamp = today.getTime() + 1 ; //milliseconds
 
-        console.log(Math.floor(homeStep.startTimestamp / 8.64e7))
-        console.log(Engine.Instance.BlobProvider.homesForDataClustering)
         homeStep.meanLatitude = Engine.Instance.BlobProvider.homesForDataClustering[Math.floor(homeStep.startTimestamp / 8.64e7)].latitude
         homeStep.meanLongitude = Engine.Instance.BlobProvider.homesForDataClustering[Math.floor(homeStep.startTimestamp / 8.64e7)].longitude
         homeStep.location = "Home"

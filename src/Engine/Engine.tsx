@@ -104,7 +104,6 @@ export class Engine {
 
     TryLoadingEngineData = () => {
         if (this.BlobProvider.engineBlobLoaded) {
-            console.log(this.BlobProvider)
             this.BlobProvider.homeData = this.BlobProvider.homeData;
             this.BlobProvider.endTimestamp = this.BlobProvider.endTimestamp;
             this.BlobProvider.startTimestamp = this.BlobProvider.startTimestamp;
@@ -135,7 +134,6 @@ export class Engine {
             var trips = await this.GenerateTripFromPhotos(photoRollInfos)
             this.ClearAndUpdateProfileDataWithAllTrips(trips)
         } catch (error) {
-            console.log(error)
             PublisherSubscriber.PauseUpdate = false;
             this.Save()
             return true;
@@ -241,7 +239,6 @@ export class Engine {
                     })
                 }
             } catch (err) {
-                console.log(err)
                 i--;
             }
         }

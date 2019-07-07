@@ -36,7 +36,6 @@ export class ProfileUtils {
             return res
         })
         .catch((err) => {
-            console.log(err)
             return err
         })
     }
@@ -53,11 +52,9 @@ export class ProfileUtils {
             }
         })
         .then((res: any) => {
-            console.log(res)
             return (res as RandomUsernameModal).Username
         })
         .catch((err) => {
-            console.log(err)
             throw err
         })
     }

@@ -15,7 +15,6 @@ export class BackgroundSyncProvider {
 
     Sync = async() => {
         if(!Engine.Instance || Engine.Instance.AppState.engineLoaded != Engine.EngineLoadStatus.Full || !Engine.Instance.AppState.loggedIn) {
-            console.log("Something wrong with syncing")
             setTimeout(this.Sync, 1000)
             return
         }

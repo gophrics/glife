@@ -14,12 +14,9 @@ export class SearchPageController {
     }
 
     GetTrip = async(trip: TripModal) => {
-        console.log("GetTrip called")
         var res = await TripUtils.GetTrip(trip.tripId, trip.profileId)
-        console.log(res.steps[1].imageBase64.length)
         var t = new TripModal()
         t.CopyConstructor(res)
-        console.log(t.steps[1].imageBase64.length)
         return t;
     }
 

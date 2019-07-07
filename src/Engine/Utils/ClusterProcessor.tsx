@@ -90,7 +90,6 @@ export class ClusterProcessor {
         }
 
         if(trip.length > 0) trips.push(trip)
-        console.log(trips)
         return trips;
     }
 

@@ -37,8 +37,6 @@ export class OnBoardingPageController {
     }
 
     GetAllHomesData = () => {
-        console.log("GetAllHomeData")
-        console.log(Engine.Instance.BlobProvider.homeData)
         return Engine.Instance.BlobProvider.homeData;
     }
 
@@ -55,8 +53,6 @@ export class OnBoardingPageController {
     }
 
     SetAllHomeData = (homes: Array<HomeDataModal>) => {
-        console.log("SaveAllHomeData")
-        console.log(homes)
         Engine.Instance.BlobProvider.homeData = homes
         Engine.Instance.SaveEngineData()
     }

@@ -37,7 +37,6 @@ export class AuthProvider {
     static RegisterUserWithGoogle = async(): Promise<boolean> => {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
-        console.log(userInfo)
         // If email entered is different from the google email, we use the google email for signup
         return AuthProvider._RegisterUserWithGoogle(userInfo.idToken)
     }
@@ -61,7 +60,6 @@ export class AuthProvider {
             return true
         })
         .catch((err) => {
-            console.log(err)
             throw false
         })
     }
@@ -87,13 +85,11 @@ export class AuthProvider {
             return true
         })
         .catch((err) => {
-            console.log(err)
             return false
         })
     }
 
     static LoginUser = (data: LoginUserModal): Promise<boolean> => {
-        console.log(data)
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/login', {
             method: 'POST',
             body: JSON.stringify({
@@ -102,7 +98,6 @@ export class AuthProvider {
             })
         })        
         .then(async(res) => {
-            console.log(res)
             try {
                 return await res.json()
             } catch(err) {
@@ -110,12 +105,10 @@ export class AuthProvider {
             }
         })        
         .then((res: unknown) => {
-            console.log(res)
             AuthProvider.Token = (res as LoginModal).Token
             return true
         })
         .catch((err) => {
-            console.log(err)
             return false
         })
     }
@@ -129,7 +122,6 @@ export class AuthProvider {
             })
         })
         .then((res) => {
-            console.log(res)
             try {
                 return res.json()
             } catch(err) {
@@ -137,12 +129,10 @@ export class AuthProvider {
             }
         })
         .then((res: unknown) => {
-            console.log(res)
             AuthProvider.Token = (res as LoginModal).Token
             return true
         })
         .catch((err) => {
-            console.log(err)
             return false
         })
     }

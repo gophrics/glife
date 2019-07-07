@@ -235,7 +235,7 @@ export class Engine {
 
                 if (asynci == trips.length) {
                     tripResult.sort((a, b) => {
-                        return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+                        return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
                     })
                 }
             } catch (err) {
@@ -340,7 +340,9 @@ export class Engine {
         var newTrip: boolean = true;
         for (var _trip of this.Modal.trips) {
             if (_trip.tripId == trip.tripId) {
-                _trip.CopyConstructor(trip); newTrip = false; break;
+                _trip.CopyConstructor(trip); 
+                newTrip = false; 
+                break;
             }
         }
 
@@ -349,7 +351,7 @@ export class Engine {
         }
 
         this.Modal.trips.sort((a: TripModal, b: TripModal) => {
-            return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+            return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
         })
 
         this.Save()

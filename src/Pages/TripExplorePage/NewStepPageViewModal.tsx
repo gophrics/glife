@@ -126,12 +126,16 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
     }
 
     onDone = async() => {
-        var result = await this.validateData()
-        if(!result) return;
-
         this.setState({
             loading: true
         })
+        var result = await this.validateData()
+        if(!result)  {    
+            this.setState({
+                loading: false
+            })   
+            return;
+        }
         var res = await TripUtils.getCoordinatesFromLocation(this.state.location)
         res = res[0]
 

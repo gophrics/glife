@@ -170,6 +170,9 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         })
 
         this.Controller = new TripExplorePageController()
+        this.setState({
+            steps: this.Controller.getSteps()
+        })
         this.initialize()
     }
 

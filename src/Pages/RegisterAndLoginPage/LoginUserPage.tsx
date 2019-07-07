@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, ActivityIndicator, TouchableOpacity } from 'react-native'
 import { GoogleSigninButton, GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { Page } from '../../Modals/ApplicationEnums';
 import { RegisterAndLoginController } from './RegisterAndLoginController';
@@ -80,6 +80,21 @@ export class LoginUserPage extends React.Component<IProps, IState> {
     render() {
         return (
             <View style={{alignContent:'center', flex:1, flexDirection:'column', width: '100%', justifyContent: "center"}}>
+                {
+                        this.state.loginInProcess ? 
+                            <View style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                bottom: 0,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <ActivityIndicator size='large' />
+                            </View>
+                        : <View />
+                }
                 <TextInput style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center", width: '50%'}} placeholder={"Enter Email"} onChangeText={this.onEmailChange} />
                 <TextInput style={{fontSize: 22, padding: 5, margin: 10, alignSelf:"center", width: '50%'}} placeholder={"Enter Password"} onChangeText={this.onPasswordChange} />
                 <TouchableOpacity style={{backgroundColor:'white', padding: 5, borderRadius: 5, margin: 10, width: '20%', height:'5%', alignSelf:'center'}} onPress={this.login} >

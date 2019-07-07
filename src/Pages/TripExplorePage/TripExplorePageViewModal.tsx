@@ -199,7 +199,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         var imageArray = []
         for(var step of this.state.steps) {
             var image = await step.masterImageBase64
-            if(image == null)
+            if(image == null || image == "")
                 imageArray.push(step.masterImageUri)
             else 
                 imageArray.push(`data:image/gif;base64,${image}`)
@@ -229,7 +229,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                                             style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox}
                                             onPress={(e) => this.onMarkerPress(e, step)}
                                         >
-                                            {step.masterImageUri != "" ?
+                                            {step.masterImageUri != "" || step.masterImageBase64 != "" ?
                                                 <View key={index + 'markerview'} style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} >
                                                     <Image
                                                         key={index + 'markerimage'}

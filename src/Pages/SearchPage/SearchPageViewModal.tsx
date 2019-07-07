@@ -53,6 +53,9 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
     }
 
     onTripPress = (tripModal: TripModal) => {
+        this.setState({
+            loading: true
+        })
         this.Controller.GetTrip(tripModal)
         .then((data) => {
            this.props.setPage(Page[Page.TRIPEXPLORE], data)
@@ -85,7 +88,7 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
                         : <View />
                     }
                     {
-                        this.state.searchResults.length == 0 && this.state.search != "" ? 
+                        this.state.searchResults.length == 0 && this.state.search != "" && !this.state.loading ? 
                             <View style={{alignContent:'center', justifyContent:'center'}}>
                                 <Text style={{color:'white', fontSize:22}}>No results found</Text>
                             </View>

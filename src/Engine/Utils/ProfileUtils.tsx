@@ -18,6 +18,29 @@ export class ProfileUtils {
 
     }
 
+    static GetProfileId = () : Promise<any> => {
+        return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/get_profileid', {
+            method: 'GET',
+            headers: {
+                "Authorization": "Bearer " + AuthProvider.Token
+            }
+        })
+        .then((res) => {
+            try {
+                return res.json()
+            } catch(err) {
+                throw res.body
+            }
+        })
+        .then((res) => {
+            return res
+        })
+        .catch((err) => {
+            console.log(err)
+            return err
+        })
+    }
+
     static GetRandomUsername = () : Promise<string> => {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/generate_username', {
             method: 'GET'
@@ -63,7 +86,7 @@ export class ProfileUtils {
         return fetch(ServerURLWithoutEndingSlash + '/api/v1/profile/setusername/' + username, {
             method: 'GET',
             headers: {
-                "Authentication": AuthProvider.Token
+                "Authorization": "Bearer " + AuthProvider.Token
             }
         })
         .then((res) => {

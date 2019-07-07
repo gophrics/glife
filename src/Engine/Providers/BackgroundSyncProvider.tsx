@@ -15,6 +15,7 @@ export class BackgroundSyncProvider {
 
     Sync = async() => {
         if(!Engine.Instance || Engine.Instance.AppState.engineLoaded != Engine.EngineLoadStatus.Full || !Engine.Instance.AppState.loggedIn) {
+            console.log("Something wrong with syncing")
             setTimeout(this.Sync, 1000)
             return
         }
@@ -27,13 +28,12 @@ export class BackgroundSyncProvider {
                 var _trip = await t.GetUploadData()
 
                 var serverHash = await TripUtils.GetTripCheckSumServer(trip)
-                var clientHash = Md5.hashStr(_trip.toString())
+                var clientHash = Md5.hashStr(JSON.stringify(_trip))
                 if(serverHash.Hash != clientHash) {
                     console.log("Server hash " + serverHash.Hash)
                     console.log("Client hash " + clientHash)
                     trip.syncComplete = false        
                     console.log("Uploading trip ")
-                    console.log(_trip)            
                     await TripUtils.SaveTrip(_trip)
                 } else {
                     trip.syncComplete = true

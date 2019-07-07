@@ -30,12 +30,17 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
         console.log(this.props.lastStepClicked)
         var imageArray = [];
         var i = 0;
-        for(i = 0; i < this.props.lastStepClicked._imageBase64.length; i++) {
-            imageArray.push(`data:image/gif;base64,${this.props.lastStepClicked._imageBase64[i]}`)
-        }
-        while(i < this.props.lastStepClicked.imageUris.length) {
-            imageArray.push(this.props.lastStepClicked.imageUris[i])
-            i++
+        if(this.props.lastStepClicked.imageBase64) {
+            for(i = 0; i < this.props.lastStepClicked.imageBase64.length; i++) {
+                imageArray.push(`data:image/gif;base64,${this.props.lastStepClicked.imageBase64[i]}`)
+            }
+        }   
+
+        if(this.props.lastStepClicked.imageUris) {
+            while(i < this.props.lastStepClicked.imageUris.length) {
+                imageArray.push(this.props.lastStepClicked.imageUris[i])
+                i++
+            }
         }
         console.log(imageArray)
 

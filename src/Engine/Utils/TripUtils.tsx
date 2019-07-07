@@ -118,14 +118,10 @@ export class TripUtils {
             body: JSON.stringify(trip)
         })
         .then((res) => {
-            try {
-                return res.json()
-            } catch(err) {
-                throw res.body
-            }
-        })
-        .then((res) => {
             return res
+        })
+        .catch((err) => {
+            return err
         })
     }
 
@@ -148,8 +144,6 @@ export class TripUtils {
             }
         })
         .then((res) => {
-            console.log("Get Trip")
-            console.log(res)
             return res
         })
         .catch((err) => {

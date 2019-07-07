@@ -14,6 +14,7 @@ export class SearchPageController {
     }
 
     GetTrip = async(trip: TripModal) => {
+        console.log("GetTrip called")
         var res = await TripUtils.GetTrip(trip.tripId, trip.profileId)
         console.log(res)
         var t = new TripModal()

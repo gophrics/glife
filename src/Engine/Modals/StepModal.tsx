@@ -8,8 +8,8 @@ export class StepModal {
     meanLatitude: number
     meanLongitude: number
     location: string
-    startTimestamp: number
-    endTimestamp: number
+    startTimestamp: string
+    endTimestamp: string
     timelineData: string[]
     imageUris: string[]
     markers: Region[]
@@ -79,8 +79,8 @@ export class StepModal {
         this.meanLatitude = 0;
         this.meanLongitude = 0;
         this.location = "";
-        this.startTimestamp = 0;
-        this.endTimestamp = 0;
+        this.startTimestamp = "";
+        this.endTimestamp = "";
         this.imageUris = []
         this.timelineData = [];
         this.markers = [];
@@ -95,20 +95,20 @@ export class StepModal {
     }
 
     CopyConstructor = (step: any) => {
-        this.stepId = step.stepId || "";
-        this.meanLatitude = step.meanLatitude || 0;
-        this.meanLongitude = step.meanLongitude || 0;
-        this.location = step.location || "";
-        this.startTimestamp = step.startTimestamp ? Number.parseInt(step.startTimestamp) : 0;
-        this.endTimestamp = step.endTimestamp ? Number.parseInt(step.endTimestamp) :  0;
-        this.imageUris = step.imageUris || [];
-        this.timelineData = step.timelineData || [];
-        this.markers = step.markers || [];
-        this.masterImageUri = step.masterImageUri || "";
-        this.masterMarker = step.masterMarker || {}
-        this.distanceTravelled = step.distanceTravelled || 0;
-        this.description = step.description || "";
-        this.temperature = step.temperature || "0";
+        this.stepId = step.stepId;
+        this.meanLatitude = step.meanLatitude;
+        this.meanLongitude = step.meanLongitude;
+        this.location = step.location;
+        this.startTimestamp = step.startTimestamp;
+        this.endTimestamp = step.endTimestamp;
+        this.imageUris = step.imageUris;
+        this.timelineData = step.timelineData;
+        this.markers = step.markers;
+        this.masterImageUri = step.masterImageUri;
+        this.masterMarker = step.masterMarker;
+        this.distanceTravelled = step.distanceTravelled;
+        this.description = step.description;
+        this.temperature = step.temperature;
         this.masterImageBase64 = step.masterImageBase64;
     }
 }

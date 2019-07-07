@@ -3,6 +3,7 @@ import { Region } from "react-native-maps";
 import { TripUtils } from "../Utils/TripUtils";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as PhotoLibraryProcessor from '../Utils/PhotoLibraryProcessor';
+import { ProfileUtils } from "../Utils/ProfileUtils";
 
 
 export class TripModal {
@@ -27,7 +28,7 @@ export class TripModal {
         var data: any = {}
         data['tripId'] = this.tripId;
         data['tripName'] = this.tripName;
-        data['profileId'] = this.profileId;
+        data['profileId'] = (await ProfileUtils.GetProfileId()).profileId;
         data['steps'] = []
         for(var step of this.steps) {
             data['steps'].push(await step.GetUploadData())

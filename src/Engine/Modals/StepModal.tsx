@@ -109,5 +109,6 @@ export class StepModal {
         this.distanceTravelled = step.distanceTravelled || 0;
         this.description = step.description || "";
         this.temperature = step.temperature || "0";
+        this.masterImageBase64 = step.masterImageBase64;
     }
 }

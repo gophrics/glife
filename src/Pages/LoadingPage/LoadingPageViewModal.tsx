@@ -75,7 +75,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
         })
         setTimeout(() => {
             this.updateImage()
-        }, 1000);
+        }, 100);
     }
 
     getLoadingDetails = () => {

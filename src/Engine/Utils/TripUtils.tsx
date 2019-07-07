@@ -170,7 +170,11 @@ export class TripUtils {
             })
         })
         .then((res) => {
-            return res.json()
+            try {
+                return res.json()
+            } catch(err) {
+                throw res
+            }
         })
         .then((res) => {
             console.log(res)

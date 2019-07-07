@@ -136,7 +136,8 @@ export class ClusterProcessor {
         for(var item of cluster) {
             latitudeSum += item.latitude;
             longitudeSum += item.longitude;
-            PublisherSubscriber.ImageBus = item.image
+            if(item.image != undefined)
+                PublisherSubscriber.ImageBus = item.image
             imageUris.push(item.image);
             markers.push( {
                 latitude: item.latitude,

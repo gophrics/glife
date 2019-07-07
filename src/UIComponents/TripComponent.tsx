@@ -52,6 +52,8 @@ export class TripComponent extends React.Component<IProps, IState> {
     }
 
     populateMasterImage = () => {
+        console.log("Got trip")
+        console.log(this.props.tripModal)
         var masterPic = this.props.tripModal.masterPicBase64
         if(masterPic == "") masterPic = this.props.tripModal.masterPicURL
         else masterPic = `data:image/gif;base64,${masterPic}`

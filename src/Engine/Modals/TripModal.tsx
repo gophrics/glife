@@ -103,7 +103,8 @@ export class TripModal {
         this.endDate = trip.endDate;
         this.tripName = trip.tripName || trip.title;
         this.countryCode = trip.countryCode;
-        this.masterPicURL = trip.masterPicURL
+        this.masterPicURL = trip.masterPicURL;
+        this.masterPicBase64 = trip.masterPicBase64;
     }
 
     populateAll = () => {

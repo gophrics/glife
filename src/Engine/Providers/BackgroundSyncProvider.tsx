@@ -14,7 +14,7 @@ export class BackgroundSyncProvider {
     }
 
     Sync = async() => {
-        if(!Engine.Instance || Engine.Instance.AppState.engineLoaded != Engine.EngineLoadStatus.Full) {
+        if(!Engine.Instance || Engine.Instance.AppState.engineLoaded != Engine.EngineLoadStatus.Full || !Engine.Instance.AppState.loggedIn) {
             setTimeout(this.Sync, 1000)
             return
         }
@@ -31,16 +31,19 @@ export class BackgroundSyncProvider {
                 if(serverHash.Hash != clientHash) {
                     console.log("Server hash " + serverHash.Hash)
                     console.log("Client hash " + clientHash)
-                    trip.syncComplete = false                    
+                    trip.syncComplete = false        
+                    console.log("Uploading trip ")
+                    console.log(_trip)            
                     await TripUtils.SaveTrip(_trip)
                 } else {
                     trip.syncComplete = true
                 }
             }
+            setTimeout(this.Sync, 1000)   
         } catch (err) {
             console.error(err)
+            setTimeout(this.Sync, 1000)
         }
-        setTimeout(this.Sync, 1000)   
     }
 
 }

@@ -215,7 +215,6 @@ export class Engine {
         for (var i = 0; i < trips.length; i++) {
 
             try {
-                console.log(asynci)
                 var trip = trips[i]
 
                 trip.sort((a: ClusterModal, b: ClusterModal) => {
@@ -225,7 +224,6 @@ export class Engine {
                 var _steps: StepModal[] = await ClusterProcessor.RunStepClustering(trip);
                 var _trip: TripModal = await this.PopulateTripModalData(_steps, TripUtils.GenerateTripId());
 
-                console.log(_trip)
                 tripResult.push(_trip)
 
                 asynci++;

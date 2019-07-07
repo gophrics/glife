@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, ScrollView } from 'react-native'
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
 import { SearchPageController } from './SearchPageController';
 import { SearchBar } from 'react-native-elements';
 import { Page } from '../../Modals/ApplicationEnums';
@@ -13,6 +13,7 @@ interface IProps {
 interface IState {
     search: string,
     searchResults: Array<TripModal>
+    loading: boolean
 }
 
 
@@ -25,7 +26,8 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
 
         this.state = {
             search: "",
-            searchResults: []
+            searchResults: [],
+            loading: false
         }
 
         this.Controller = new SearchPageController();
@@ -40,8 +42,12 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
     }
 
     search = async() => {
+        this.setState({
+            loading: true
+        })
         var result = await this.Controller.Search(this.state.search)
         this.setState({
+            loading: false,
             searchResults: result
         })
     }
@@ -62,16 +68,40 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
                     value={this.state.search}
                     onEndEditing={this.search}
                 />
-                <ScrollView>
+                <View>
                     {
-                        this.state.searchResults.map((el, index) => (
-                            <View>
-                                <TripComponent tripModal={el} onPress={this.onTripPress}/>
-                                <View style={{height: '5%'}}/>
+                        this.state.loading ? 
+                            <View style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                bottom: 0,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <ActivityIndicator size='large' />
                             </View>
-                        ))
+                        : <View />
                     }
-                </ScrollView>
+                    {
+                        this.state.searchResults.length == 0 && this.state.search != "" ? 
+                            <View style={{alignContent:'center', justifyContent:'center'}}>
+                                <Text style={{color:'white', fontSize:22}}>No results found</Text>
+                            </View>
+                        : <View />
+                    }
+                    <ScrollView>
+                        {
+                            this.state.searchResults.map((el, index) => (
+                                <View>
+                                    <TripComponent tripModal={el} onPress={this.onTripPress}/>
+                                    <View style={{height: '5%'}}/>
+                                </View>
+                            ))
+                        }
+                    </ScrollView>
+                </View>
             </View>
         )
     }

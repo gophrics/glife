@@ -1,14 +1,14 @@
 import * as React from 'react'
-import { Text, View, ScrollView, Image, Modal, TextInput, Button, SafeAreaView, Dimensions } from 'react-native'
+import { Text, View, ActivityIndicator, ScrollView, Image, Modal, TextInput, Button, SafeAreaView, Dimensions } from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
 import { StepModal } from '../../Engine/Modals/StepModal';
 import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ImageDataModal } from '../../Engine/Modals/ImageDataModal';
-import { Region } from 'react-native-maps';
 import { ClusterModal } from '../../Engine/Modals/ClusterModal';
 import { ClusterProcessor } from '../../Engine/Utils/ClusterProcessor';
 import { Page } from '../../Modals/ApplicationEnums';
 import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor';
+import { Region } from 'react-native-maps';
 
 interface IProps {
     visible: boolean,
@@ -21,6 +21,7 @@ interface IState {
     imageUris: string[]
     location: string
     locationWrong: number
+    loading: boolean
 }
 
 const deviceWidth = Dimensions.get('window').width
@@ -41,7 +42,8 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
             showPicker: false,
             imageUris: [],
             location: "",
-            locationWrong: 0
+            locationWrong: 0,
+            loading: false
         }
 
         PhotoLibraryProcessor.checkPhotoPermission()
@@ -127,13 +129,21 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
         var result = await this.validateData()
         if(!result) return;
 
+        this.setState({
+            loading: true
+        })
         var res = await TripUtils.getCoordinatesFromLocation(this.state.location)
         res = res[0]
 
         var step = new StepModal()
         var imageDataList: Array<ImageDataModal> = []
         for (var image of this.data['images']) {
-            imageDataList.push(new ImageDataModal(new Region(Number.parseFloat(res.lat), Number.parseFloat(res.lon), 0, 0), image.path, (new Date(Number.parseInt(image.creationDate) * 1000)).getTime()))
+            imageDataList.push(new ImageDataModal({
+                latitude: Number.parseFloat(res.lat),
+                longitude: Number.parseFloat(res.lon),
+                latitudeDelta: 0,
+                longitudeDelta: 0
+            } as Region, image.path, (new Date(Number.parseInt(image.creationDate) * 1000)).getTime()))
         }
 
         step.masterImageUri = imageDataList[0].image;
@@ -177,6 +187,21 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
                     backgroundColor:"#00000000",
                     alignSelf: 'center'
                 }}>
+                    {
+                        this.state.loading ? 
+                            <View style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                bottom: 0,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <ActivityIndicator size='large' />
+                            </View>
+                        : <View />
+                    }
                     <View style={{top: 0, right:0}}>
                         <Button onPress={this.onCloseWithoutSubmit}  title="X"/>
                     </View>

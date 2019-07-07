@@ -8,8 +8,8 @@ export class StepModal {
     meanLatitude: number
     meanLongitude: number
     location: string
-    startTimestamp: string
-    endTimestamp: string
+    startTimestamp: number
+    endTimestamp: number
     timelineData: string[]
     imageUris: string[]
     markers: Region[]
@@ -64,8 +64,8 @@ export class StepModal {
         data['meanLatitude'] = this.meanLatitude;
         data['meanLongitude'] = this.meanLongitude;
         data['location'] = this.location;
-        data['startTimestamp'] = this.startTimestamp.toString();
-        data['endTimestamp'] = this.endTimestamp.toString();
+        data['startTimestamp'] = this.startTimestamp;
+        data['endTimestamp'] = this.endTimestamp;
         data['timelineData'] = this.timelineData;
         data['distanceTravelled'] = this.distanceTravelled;
         data['description'] = this.description;
@@ -79,8 +79,8 @@ export class StepModal {
         this.meanLatitude = 0;
         this.meanLongitude = 0;
         this.location = "";
-        this.startTimestamp = "";
-        this.endTimestamp = "";
+        this.startTimestamp = 0;
+        this.endTimestamp = 0;
         this.imageUris = []
         this.timelineData = [];
         this.markers = [];
@@ -102,6 +102,7 @@ export class StepModal {
         this.startTimestamp = step.startTimestamp;
         this.endTimestamp = step.endTimestamp;
         this.imageUris = step.imageUris;
+        this.imageBase64 = step.imageBase64;
         this.timelineData = step.timelineData;
         this.markers = step.markers;
         this.masterImageUri = step.masterImageUri;

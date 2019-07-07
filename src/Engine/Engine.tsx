@@ -12,6 +12,7 @@ import { StepModal } from './Modals/StepModal';
 import { BackgroundSyncProvider } from './Providers/BackgroundSyncProvider';
 import { AuthProvider, LoginUserModal } from './Providers/AuthProvider';
 import { GoogleSignin } from 'react-native-google-signin';
+import App from '../App';
 
 export enum EngineLoadStatus {
     None = 0,
@@ -56,11 +57,11 @@ export class Engine {
     setEmailPassword = (email: string, password: string) => {
         this.BlobProvider.email = email;
         this.BlobProvider.password = password;
-        this.BlobProvider.saveEngineData();
+        this.SaveEngineData();
     }
 
     TryLogin = async () => {
-        if(this.BlobProvider.engineBlobLoaded) {
+        if(this.AppState.engineLoaded == EngineLoadStatus.Full) {
             var loginModal = {
                 Email: this.BlobProvider.email,
                 Password: this.BlobProvider.password
@@ -180,20 +181,24 @@ export class Engine {
     }
 
     ExtendHomeDataToDate = () => {
-        var today: Date = new Date()
-        var endTimestamp = this.BlobProvider.endTimestamp
-        
-        var homesDataForClustering = this.BlobProvider.homesForDataClustering;
-        var dataToExtend = homesDataForClustering[endTimestamp]
+        if(this.AppState.engineLoaded == EngineLoadStatus.Full) {
+            var today: Date = new Date()
+            var endTimestamp = this.BlobProvider.endTimestamp
+            
+            var homesDataForClustering = this.BlobProvider.homesForDataClustering;
+            var dataToExtend = homesDataForClustering[endTimestamp]
 
-        while(endTimestamp <= today.getTime()/8.64e7) {
-            homesDataForClustering[endTimestamp] = dataToExtend;
-            endTimestamp++
+            while(endTimestamp <= today.getTime()/8.64e7) {
+                homesDataForClustering[endTimestamp] = dataToExtend;
+                endTimestamp++
+            }
+
+            this.BlobProvider.endTimestamp = endTimestamp;
+            this.BlobProvider.homesForDataClustering = homesDataForClustering;
+            this.SaveEngineData()
+        } else {
+            setTimeout(this.ExtendHomeDataToDate, 1000)
         }
-
-        this.BlobProvider.endTimestamp = endTimestamp;
-        this.BlobProvider.homesForDataClustering = homesDataForClustering;
-        this.SaveEngineData()
     }
 
     GenerateTripFromPhotos = async (imageData: ImageDataModal[]): Promise<TripModal[]> => {

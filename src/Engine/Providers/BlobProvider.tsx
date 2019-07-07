@@ -55,7 +55,6 @@ export class BlobProvider {
 
     loadEngineData = () => {
         return AsyncStorage.getItem('EngineData').then((data) => {
-            this.engineBlobLoaded = true;
             if(data != null) {
                 var EngineData = JSON.parse(data)
                 this.homeData = EngineData.homeData
@@ -66,6 +65,7 @@ export class BlobProvider {
                 this.password = EngineData.password || ""
                 AuthProvider.loginInfo = EngineData.loginInfo
             }
+            this.engineBlobLoaded = true;
         })
     }
 

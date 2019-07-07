@@ -27,7 +27,7 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
     }
 
     populateImages = () => {
-        console.log(this.props.lastStepClicked)
+        console.log(this.props.lastStepClicked.imageBase64.length)
         var imageArray = [];
         var i = 0;
         if(this.props.lastStepClicked.imageBase64) {

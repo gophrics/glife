@@ -36,6 +36,7 @@ export class RegisterAndLoginController {
             if(res) {
                 Engine.Instance.setEmailPassword(email, password)
                 Engine.Instance.AppState.loggedIn = true;
+                console.log("Login")
                 Engine.Instance.SaveEngineData()
                 return true
             } 
@@ -56,6 +57,7 @@ export class RegisterAndLoginController {
             if(res) {
                 Engine.Instance.setEmailPassword(email, password);
                 Engine.Instance.AppState.loggedIn = true;
+                console.log("Register")
                 Engine.Instance.SaveEngineData()
                 return true
             } 
@@ -71,6 +73,7 @@ export class RegisterAndLoginController {
             var res = await AuthProvider.LoginUserWithGoogle(email, idToken)
             if(res) {
                 Engine.Instance.AppState.loggedIn = true;
+                console.log("LoginUsingGoogle")
                 Engine.Instance.SaveEngineData()
                 return true
             } 
@@ -86,6 +89,7 @@ export class RegisterAndLoginController {
             var res = await AuthProvider.RegisterUserWithGoogle()
             if(res) {
                 Engine.Instance.AppState.loggedIn = true;
+                console.log("RegisterUsingGoogle")
                 Engine.Instance.SaveEngineData()
                 return true
             } 

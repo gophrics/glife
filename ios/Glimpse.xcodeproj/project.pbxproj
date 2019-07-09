@@ -43,6 +43,9 @@
 		35D6111F01B44DB9AAADF1AF /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46EA43F876B341C1B71E09A6 /* Feather.ttf */; };
 		4FECC0B9977743079020166F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BCC3E4A076742F399538C1F /* Zocial.ttf */; };
 		6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6391C19ECC604B43B0673441 /* libAirMaps.a */; };
+		7259594022D4F58C007A713C /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7259593F22D4F58C007A713C /* Engine.swift */; };
+		7259594322D4F5B2007A713C /* PhotoLibraryProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7259594222D4F5B2007A713C /* PhotoLibraryProcessor.swift */; };
+		7259594622D4F9C7007A713C /* PhotoLibraryProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7259594522D4F9C7007A713C /* PhotoLibraryProcessor.m */; };
 		726E193F225BA5A5003EA830 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 726E193E225BA569003EA830 /* libRCTCameraRoll.a */; };
 		7270EF9222A275B2000F2EED /* Glimpse_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7270EF6C22A275B2000F2EED /* Glimpse_logo.png */; };
 		7A60C3DCD774477EB77A7250 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */; };
@@ -408,6 +411,10 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6391C19ECC604B43B0673441 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		6BCC3E4A076742F399538C1F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		7259593F22D4F58C007A713C /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		7259594222D4F5B2007A713C /* PhotoLibraryProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryProcessor.swift; sourceTree = "<group>"; };
+		7259594422D4F850007A713C /* Glimpse-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Glimpse-Bridging-Header.h"; sourceTree = "<group>"; };
+		7259594522D4F9C7007A713C /* PhotoLibraryProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoLibraryProcessor.m; sourceTree = "<group>"; };
 		726E1939225BA569003EA830 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		7270EF6C22A275B2000F2EED /* Glimpse_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Glimpse_logo.png; path = ../src/Assets/Glimpse_logo.png; sourceTree = "<group>"; };
 		72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -573,6 +580,7 @@
 		13B07FAE1A68108700A75B9A /* Glimpse */ = {
 			isa = PBXGroup;
 			children = (
+				7259591822D4F549007A713C /* Engine */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -582,6 +590,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				7259594422D4F850007A713C /* Glimpse-Bridging-Header.h */,
 			);
 			name = Glimpse;
 			sourceTree = "<group>";
@@ -636,6 +645,24 @@
 				5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7259591822D4F549007A713C /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				7259594122D4F591007A713C /* Utils */,
+				7259593F22D4F58C007A713C /* Engine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		7259594122D4F591007A713C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7259594222D4F5B2007A713C /* PhotoLibraryProcessor.swift */,
+				7259594522D4F9C7007A713C /* PhotoLibraryProcessor.m */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		726E193A225BA569003EA830 /* Products */ = {
@@ -1417,6 +1444,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				7259594322D4F5B2007A713C /* PhotoLibraryProcessor.swift in Sources */,
+				7259594022D4F58C007A713C /* Engine.swift in Sources */,
+				7259594622D4F9C7007A713C /* PhotoLibraryProcessor.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1479,6 +1509,7 @@
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 42R76S82DR;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1511,6 +1542,7 @@
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 42R76S82DR;
@@ -1566,7 +1598,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Glimpse-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1599,7 +1632,8 @@
 				PRODUCT_NAME = Glimpse;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Glimpse-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

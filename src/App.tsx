@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {
   View,
-  SafeAreaView
+  SafeAreaView,
+  NativeModules
 } from 'react-native'
 import {Page} from './Modals/ApplicationEnums';
 import LoadingPageViewModal from './Pages/LoadingPage/LoadingPageViewModal';
@@ -60,6 +61,12 @@ export default class App extends React.Component<IProps, IState> {
       forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login
       accountName: '', // [Android] specifies an account name on the device that should be used
     })
+    this.testfunc()
+  }
+
+  async testfunc() {
+    console.log("Test is called")
+    NativeModules.PhotoLibraryProcessor.getPhotosFromLibrary((o: any) => {console.log(o)})
   }
 
   Initialize = () => {

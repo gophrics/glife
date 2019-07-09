@@ -43,6 +43,9 @@
 		35D6111F01B44DB9AAADF1AF /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46EA43F876B341C1B71E09A6 /* Feather.ttf */; };
 		4FECC0B9977743079020166F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BCC3E4A076742F399538C1F /* Zocial.ttf */; };
 		6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6391C19ECC604B43B0673441 /* libAirMaps.a */; };
+		7218352A22D51A1800F7682B /* ImageDataModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218352922D51A1800F7682B /* ImageDataModal.swift */; };
+		7218352C22D51A6C00F7682B /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218352B22D51A6C00F7682B /* Region.swift */; };
+		7218352E22D51BAE00F7682B /* ClusterModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218352D22D51BAE00F7682B /* ClusterModal.swift */; };
 		7259594022D4F58C007A713C /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7259593F22D4F58C007A713C /* Engine.swift */; };
 		7259594322D4F5B2007A713C /* PhotoLibraryProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7259594222D4F5B2007A713C /* PhotoLibraryProcessor.swift */; };
 		7259594622D4F9C7007A713C /* PhotoLibraryProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7259594522D4F9C7007A713C /* PhotoLibraryProcessor.m */; };
@@ -411,6 +414,9 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6391C19ECC604B43B0673441 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		6BCC3E4A076742F399538C1F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		7218352922D51A1800F7682B /* ImageDataModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataModal.swift; sourceTree = "<group>"; };
+		7218352B22D51A6C00F7682B /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		7218352D22D51BAE00F7682B /* ClusterModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterModal.swift; sourceTree = "<group>"; };
 		7259593F22D4F58C007A713C /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		7259594222D4F5B2007A713C /* PhotoLibraryProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryProcessor.swift; sourceTree = "<group>"; };
 		7259594422D4F850007A713C /* Glimpse-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Glimpse-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -647,9 +653,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7218352822D51A0300F7682B /* Modals */ = {
+			isa = PBXGroup;
+			children = (
+				7218352922D51A1800F7682B /* ImageDataModal.swift */,
+				7218352B22D51A6C00F7682B /* Region.swift */,
+				7218352D22D51BAE00F7682B /* ClusterModal.swift */,
+			);
+			path = Modals;
+			sourceTree = "<group>";
+		};
 		7259591822D4F549007A713C /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				7218352822D51A0300F7682B /* Modals */,
 				7259594122D4F591007A713C /* Utils */,
 				7259593F22D4F58C007A713C /* Engine.swift */,
 			);
@@ -1444,8 +1461,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				7218352A22D51A1800F7682B /* ImageDataModal.swift in Sources */,
 				7259594322D4F5B2007A713C /* PhotoLibraryProcessor.swift in Sources */,
 				7259594022D4F58C007A713C /* Engine.swift in Sources */,
+				7218352E22D51BAE00F7682B /* ClusterModal.swift in Sources */,
+				7218352C22D51A6C00F7682B /* Region.swift in Sources */,
 				7259594622D4F9C7007A713C /* PhotoLibraryProcessor.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);

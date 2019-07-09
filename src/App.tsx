@@ -66,7 +66,8 @@ export default class App extends React.Component<IProps, IState> {
 
   async testfunc() {
     console.log("Test is called")
-    NativeModules.PhotoLibraryProcessor.getPhotosFromLibrary((o: any) => {console.log(o)})
+    var res = await NativeModules.PhotoLibraryProcessor.getPhotosFromLibrary()
+    console.log(res)
   }
 
   Initialize = () => {

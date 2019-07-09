@@ -10,5 +10,5 @@
 #import "React/RCTBridgeModule.h"
 
 @interface RCT_EXTERN_MODULE(PhotoLibraryProcessor, NSObject)
-RCT_EXTERN_METHOD(getPhotosFromLibrary: (RCTResponseSenderBlock)callback)
+RCT_EXTERN_METHOD(getPhotosFromLibrary: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 @end

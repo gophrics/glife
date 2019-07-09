@@ -63,58 +63,6 @@ export function convertImageToCluster (images: Array<ImageDataModal>, endTimesta
     return clusterData
 }
 
-export function getMarkers(imageDataArray: Array<ImageDataModal>): Array<Region> {
-    var markers: Array<Region> = [];
-    for (var imageData of imageDataArray) {
-        markers.push(imageData.location);
-    }
-    return markers;
-}
-
-export function getTimelineData(imageDataArray: Array<ImageDataModal>) : Array<number> {
-    var timelineData: Array<number> = [];
-    for (var imageData of imageDataArray) {
-        timelineData.push(imageData.timestamp);
-    }
-    return timelineData;
-}
-
-export function getImageUriArray(imageDataArray: Array<ImageDataModal>) : Array<any> {
-    var imageUriArray: Array<string> = [];
-    for (var imageData of imageDataArray) {
-        imageUriArray.push(imageData.image);
-    }
-    return imageUriArray;
-}
-
-export function triangulatePhotoLocationInfo(regionInfos: Array<Region>): Region {
-
-    var latitudeArray: Array<number> = [];
-    var longitudeArray: Array<number> = [];
-
-    for (var region of regionInfos) {
-        latitudeArray.push(region.latitude);
-        longitudeArray.push(region.longitude);
-    }
-
-    // Sorting in ascending order
-    latitudeArray.sort((a, b) => {
-        return a < b ? -1 : 1;
-    });
-    longitudeArray.sort((a, b) => {
-        return a < b ? -1 : 1;
-    });
-
-    var triangulatedLocation: Region = {
-        latitude: latitudeArray.reduce((a, b) => { return a + b; }, 0) / latitudeArray.length,
-        longitude: longitudeArray.reduce((a, b) => { return a + b; }, 0) / longitudeArray.length,
-        latitudeDelta: 0,
-        longitudeDelta: 0
-    } as Region;
-
-    return triangulatedLocation;
-}
-
 export async function GetImageBase64(imageuri: string): Promise<string> {
     if(imageuri == undefined) return ""
 

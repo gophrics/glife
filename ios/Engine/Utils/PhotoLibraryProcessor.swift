@@ -13,7 +13,7 @@ import Photos
 @objc(PhotoLibraryProcessor)
 class PhotoLibraryProcessor: NSObject {
   
-  @objc func getPhotosFromLibrary(_ callback: RCTResponseSenderBlock) -> Void {
+  @objc func getPhotosFromLibrary(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
     let allPhotos = PHAsset.fetchAssets(with: .image, options: PHFetchOptions())
     var arrayOfPHAsset : [[String: Any]] = []
     allPhotos.enumerateObjects({(object: AnyObject!,
@@ -36,6 +36,34 @@ class PhotoLibraryProcessor: NSObject {
         }
       }
     })
-    callback([arrayOfPHAsset])
+    resolve(arrayOfPHAsset)
+  }
+  
+  func convertImageToCluster(images: [ImageDataModal], endTimestamp: Int64) {
+    var clusterData: [ClusterModal]  = [];
+    for image in images {
+      var _modal = ClusterModal()
+      _modal.image = image.image;
+      _modal.latitude = image.location.latitude;
+      _modal.longitude = image.location.longitude;
+      _modal.timestamp = image.timestamp;
+      clusterData.append(_modal)
+    }
+  }
+  
+  func GetJPEGFromPHAsset(path: String) -> Data? {
+    let asset: PHAsset? = PHAsset.fetchAssets(withLocalIdentifiers: [path], options: .none).firstObject
+    if (asset != nil) {
+      let retinaSquare = CGSize(width: 1000, height: 1000)
+      var thumbnail: UIImage? = nil
+      PHImageManager.default().requestImage(for: asset!, targetSize: retinaSquare, contentMode: .aspectFit, options: PHImageRequestOptions(), resultHandler: {(result, info)->Void in
+        thumbnail = result!
+      })
+      if thumbnail != nil {
+        return UIImageJPEGRepresentation(thumbnail!, 100)
+      }
+      return nil
+    }
+    return nil
   }
 }

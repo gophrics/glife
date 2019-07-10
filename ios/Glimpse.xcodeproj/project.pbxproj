@@ -54,6 +54,8 @@
 		729ADC6D22D636F000466CAF /* DatabaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729ADC6C22D636F000466CAF /* DatabaseProvider.swift */; };
 		729ADC6F22D6399C00466CAF /* PhotoLibraryProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 729ADC6E22D6399C00466CAF /* PhotoLibraryProcessor.m */; };
 		729ADC7122D63A0100466CAF /* ClusterProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729ADC7022D63A0100466CAF /* ClusterProcessor.swift */; };
+		729ADC7322D645BD00466CAF /* TripUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729ADC7222D645BD00466CAF /* TripUtils.swift */; };
+		729ADC7522D647EE00466CAF /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729ADC7422D647EE00466CAF /* AuthProvider.swift */; };
 		72F0498A22D62EF100DC3124 /* StepModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F0498922D62EF100DC3124 /* StepModal.swift */; };
 		72F049B222D62FB000DC3124 /* TripModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F049B122D62FB000DC3124 /* TripModal.swift */; };
 		72F049B422D6305600DC3124 /* ProfileModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F049B322D6305600DC3124 /* ProfileModal.swift */; };
@@ -431,6 +433,8 @@
 		729ADC6C22D636F000466CAF /* DatabaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProvider.swift; sourceTree = "<group>"; };
 		729ADC6E22D6399C00466CAF /* PhotoLibraryProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoLibraryProcessor.m; sourceTree = "<group>"; };
 		729ADC7022D63A0100466CAF /* ClusterProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterProcessor.swift; sourceTree = "<group>"; };
+		729ADC7222D645BD00466CAF /* TripUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripUtils.swift; sourceTree = "<group>"; };
+		729ADC7422D647EE00466CAF /* AuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProvider.swift; sourceTree = "<group>"; };
 		72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		72F0498922D62EF100DC3124 /* StepModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepModal.swift; sourceTree = "<group>"; };
 		72F049B122D62FB000DC3124 /* TripModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripModal.swift; sourceTree = "<group>"; };
@@ -696,6 +700,7 @@
 				7259594222D4F5B2007A713C /* PhotoLibraryProcessor.swift */,
 				729ADC6E22D6399C00466CAF /* PhotoLibraryProcessor.m */,
 				729ADC7022D63A0100466CAF /* ClusterProcessor.swift */,
+				729ADC7222D645BD00466CAF /* TripUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -730,6 +735,7 @@
 			children = (
 				72F049B622D6314900DC3124 /* BlobProvider.swift */,
 				729ADC6C22D636F000466CAF /* DatabaseProvider.swift */,
+				729ADC7422D647EE00466CAF /* AuthProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -1522,8 +1528,10 @@
 				7259594022D4F58C007A713C /* Engine.swift in Sources */,
 				72F049B922D631A700DC3124 /* HomeDataModal.swift in Sources */,
 				7218352E22D51BAE00F7682B /* ClusterModal.swift in Sources */,
+				729ADC7322D645BD00466CAF /* TripUtils.swift in Sources */,
 				72F049B222D62FB000DC3124 /* TripModal.swift in Sources */,
 				72F049B722D6314900DC3124 /* BlobProvider.swift in Sources */,
+				729ADC7522D647EE00466CAF /* AuthProvider.swift in Sources */,
 				7218352C22D51A6C00F7682B /* Region.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				72F049B422D6305600DC3124 /* ProfileModal.swift in Sources */,

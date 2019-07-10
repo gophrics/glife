@@ -112,7 +112,7 @@ class ClusterProcessor {
     return trips;
   }
   
-  static func EarthDistance(p: ClusterModal, q: ClusterModal) -> Float64 {
+  static func EarthDistance(p: ClusterModal, q: ClusterModal) -> Int64 {
     if(p == nil || q == nil) {
       return 0;
     }
@@ -127,7 +127,7 @@ class ClusterProcessor {
     var a = sin(dLat / 2) * sin(dLat / 2) +
     cos(ClusterProcessor.deg2rad(lat1)) * Math.cos(ClusterProcessor.deg2rad(lat2)) * sin(dLon / 2) * sin(dLon / 2);
     var c = 2 * atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * Float64(c);
+    var d = R * Int64(c);
     return d;
   }
   

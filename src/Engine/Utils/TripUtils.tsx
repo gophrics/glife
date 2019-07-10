@@ -175,16 +175,6 @@ export class TripUtils {
         })
     }
 
-    static UpdateTripBackground = async() => {
-        var profilePageModal = Engine.Instance.Modal;
-        var trips = profilePageModal.trips
-
-        for(var trip of trips) {
-            
-        }
-
-    }
-
     static getDateFromTimestamp(timestamp: number): string {
         var date = new Date(timestamp)
         return date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()

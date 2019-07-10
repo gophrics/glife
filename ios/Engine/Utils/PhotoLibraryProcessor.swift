@@ -13,7 +13,7 @@ import Photos
 @objc(PhotoLibraryProcessor)
 class PhotoLibraryProcessor: NSObject {
   
-  @objc func getPhotosFromLibrary(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+  static func getPhotosFromLibrary(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
     let allPhotos = PHAsset.fetchAssets(with: .image, options: PHFetchOptions())
     var arrayOfPHAsset : [[String: Any]] = []
     allPhotos.enumerateObjects({(object: AnyObject!,
@@ -39,7 +39,7 @@ class PhotoLibraryProcessor: NSObject {
     resolve(arrayOfPHAsset)
   }
   
-  func convertImageToCluster(images: [ImageDataModal], endTimestamp: Int64) {
+  static func convertImageToCluster(images: [ImageDataModal], endTimestamp: Int64) {
     var clusterData: [ClusterModal]  = [];
     for image in images {
       var _modal = ClusterModal()
@@ -51,7 +51,7 @@ class PhotoLibraryProcessor: NSObject {
     }
   }
   
-  func GetJPEGFromPHAsset(path: String) -> Data? {
+  static func GetJPEGFromPHAsset(path: String) -> Data? {
     let asset: PHAsset? = PHAsset.fetchAssets(withLocalIdentifiers: [path], options: .none).firstObject
     if (asset != nil) {
       let retinaSquare = CGSize(width: 1000, height: 1000)
@@ -66,4 +66,6 @@ class PhotoLibraryProcessor: NSObject {
     }
     return nil
   }
+  
+  
 }

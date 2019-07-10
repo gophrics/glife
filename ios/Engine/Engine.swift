@@ -7,3 +7,19 @@
 //
 
 import Foundation
+
+enum EngineLoadStatus {
+  case None
+  case Partial
+  case Full
+}
+
+class AppState {
+  var loggedIn : Bool
+  var engineLoaded: EngineLoadStatus
+}
+
+
+class Engine {
+  
+}

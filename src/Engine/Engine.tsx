@@ -12,7 +12,6 @@ import { StepModal } from './Modals/StepModal';
 import { BackgroundSyncProvider } from './Providers/BackgroundSyncProvider';
 import { AuthProvider, LoginUserModal } from './Providers/AuthProvider';
 import { GoogleSignin } from 'react-native-google-signin';
-import App from '../App';
 
 export enum EngineLoadStatus {
     None = 0,

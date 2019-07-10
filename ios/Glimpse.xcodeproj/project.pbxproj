@@ -51,6 +51,11 @@
 		7259594622D4F9C7007A713C /* PhotoLibraryProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7259594522D4F9C7007A713C /* PhotoLibraryProcessor.m */; };
 		726E193F225BA5A5003EA830 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 726E193E225BA569003EA830 /* libRCTCameraRoll.a */; };
 		7270EF9222A275B2000F2EED /* Glimpse_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7270EF6C22A275B2000F2EED /* Glimpse_logo.png */; };
+		72F0498A22D62EF100DC3124 /* StepModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F0498922D62EF100DC3124 /* StepModal.swift */; };
+		72F049B222D62FB000DC3124 /* TripModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F049B122D62FB000DC3124 /* TripModal.swift */; };
+		72F049B422D6305600DC3124 /* ProfileModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F049B322D6305600DC3124 /* ProfileModal.swift */; };
+		72F049B722D6314900DC3124 /* BlobProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F049B622D6314900DC3124 /* BlobProvider.swift */; };
+		72F049B922D631A700DC3124 /* HomeDataModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F049B822D631A700DC3124 /* HomeDataModal.swift */; };
 		7A60C3DCD774477EB77A7250 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8DE15B82C2784E1DBD11E12C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 125595E7CE4C4AF0AC055891 /* MaterialIcons.ttf */; };
@@ -424,6 +429,11 @@
 		726E1939225BA569003EA830 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		7270EF6C22A275B2000F2EED /* Glimpse_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Glimpse_logo.png; path = ../src/Assets/Glimpse_logo.png; sourceTree = "<group>"; };
 		72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		72F0498922D62EF100DC3124 /* StepModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepModal.swift; sourceTree = "<group>"; };
+		72F049B122D62FB000DC3124 /* TripModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripModal.swift; sourceTree = "<group>"; };
+		72F049B322D6305600DC3124 /* ProfileModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModal.swift; sourceTree = "<group>"; };
+		72F049B622D6314900DC3124 /* BlobProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobProvider.swift; sourceTree = "<group>"; };
+		72F049B822D631A700DC3124 /* HomeDataModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDataModal.swift; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		821AA665FFB34FFA86DA8EC7 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -659,6 +669,10 @@
 				7218352922D51A1800F7682B /* ImageDataModal.swift */,
 				7218352B22D51A6C00F7682B /* Region.swift */,
 				7218352D22D51BAE00F7682B /* ClusterModal.swift */,
+				72F0498922D62EF100DC3124 /* StepModal.swift */,
+				72F049B122D62FB000DC3124 /* TripModal.swift */,
+				72F049B322D6305600DC3124 /* ProfileModal.swift */,
+				72F049B822D631A700DC3124 /* HomeDataModal.swift */,
 			);
 			path = Modals;
 			sourceTree = "<group>";
@@ -666,6 +680,7 @@
 		7259591822D4F549007A713C /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				72F049B522D6313E00DC3124 /* Providers */,
 				7218352822D51A0300F7682B /* Modals */,
 				7259594122D4F591007A713C /* Utils */,
 				7259593F22D4F58C007A713C /* Engine.swift */,
@@ -705,6 +720,14 @@
 				72D19B0E225B8EA30090D512 /* libAirMaps.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		72F049B522D6313E00DC3124 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				72F049B622D6314900DC3124 /* BlobProvider.swift */,
+			);
+			path = Providers;
 			sourceTree = "<group>";
 		};
 		72F1E6F522C26E2500F166C9 /* Products */ = {
@@ -1461,13 +1484,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				72F0498A22D62EF100DC3124 /* StepModal.swift in Sources */,
 				7218352A22D51A1800F7682B /* ImageDataModal.swift in Sources */,
 				7259594322D4F5B2007A713C /* PhotoLibraryProcessor.swift in Sources */,
 				7259594022D4F58C007A713C /* Engine.swift in Sources */,
+				72F049B922D631A700DC3124 /* HomeDataModal.swift in Sources */,
 				7218352E22D51BAE00F7682B /* ClusterModal.swift in Sources */,
+				72F049B222D62FB000DC3124 /* TripModal.swift in Sources */,
+				72F049B722D6314900DC3124 /* BlobProvider.swift in Sources */,
 				7218352C22D51A6C00F7682B /* Region.swift in Sources */,
 				7259594622D4F9C7007A713C /* PhotoLibraryProcessor.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				72F049B422D6305600DC3124 /* ProfileModal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

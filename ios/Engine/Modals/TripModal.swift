@@ -7,41 +7,23 @@
 //
 
 import Foundation
+import RealmSwift
 
 class TripModal {
-  var profileId: String
-  var tripId: String
-  var steps: [StepModal]
-  var location : Region
-  var tripName: String
-  var countryCode: [String]
-  var temperature : String
-  var daysOfTravel: Int
-  var distanceTravelled : Int
-  var activities: [String]
-  var startDate: String
-  var endDate: String
-  var masterPicURL: String
-  var masterPicBase64: String
-  var isPublic: Bool
-  var syncComplete: Bool
-  
-  init() {
-    self.profileId = ""
-    self.tripId = "";
-    self.steps = [];
-    self.location = Region()
-    self.temperature = ""
-    self.daysOfTravel = 0
-    self.distanceTravelled = 0
-    self.activities = []
-    self.startDate = ""
-    self.endDate = ""
-    self.tripName = ""
-    self.countryCode = []
-    self.masterPicURL = ""
-    self.masterPicBase64 = ""
-    self.isPublic = false
-    self.syncComplete = false
-  }
+  @objc dynamic var profileId: String = ""
+  @objc dynamic var tripId: String = ""
+  @objc dynamic var steps: [StepModal] = []
+  @objc dynamic var location : Region = Region()
+  @objc dynamic var tripName: String = ""
+  @objc dynamic var countryCode: [String] = []
+  @objc dynamic var temperature : String = ""
+  @objc dynamic var daysOfTravel: Int = 0
+  @objc dynamic var distanceTravelled : Int = 0
+  @objc dynamic var activities: [String] = []
+  @objc dynamic var startDate: String = ""
+  @objc dynamic var endDate: String = ""
+  @objc dynamic var masterPicURL: String = ""
+  @objc dynamic var masterPicBase64: String = ""
+  @objc dynamic var isPublic: Bool = false
+  @objc dynamic var syncComplete: Bool = false
 }

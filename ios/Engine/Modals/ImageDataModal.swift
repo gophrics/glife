@@ -7,15 +7,10 @@
 //
 
 import Foundation
+import RealmSwift
 
-class ImageDataModal {
-  var location: Region
-  var image: String
-  var timestamp: Int64
-  
-  init() {
-    self.location = Region();
-    self.image = "";
-    self.timestamp = 0;
-  }
+class ImageDataModal: Object {
+  @objc dynamic var location: Region = Region()
+  @objc dynamic var image: String = ""
+  @objc dynamic var timestamp: Int64 = 0
 }

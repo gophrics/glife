@@ -2,6 +2,8 @@ target 'Glimpse'
 
 platform :ios, 9.0
 
+use_frameworks! 
+
 pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'RCTImage'
 ]
@@ -42,5 +44,7 @@ pod 'react-native-image-picker', :path => '../node_modules/react-native-image-pi
 pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
 pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+pod 'RealmSwift'
 
 pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'

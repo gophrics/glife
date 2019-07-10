@@ -7,25 +7,17 @@
 //
 
 import Foundation
+import RealmSwift
 
 class ProfileModal {
-  var trips: [TripModal]
-  var countriesVisited: [String]
-  var percentageWorldTravelled: Float
-  var coverPicURL: String
+  @objc dynamic var trips: [TripModal] = []
+  @objc dynamic var countriesVisited: [String] = []
+  @objc dynamic var percentageWorldTravelled: Float = 0
   
   // Profile stuff
-  var profilePicURL: String
-  var profileId: String
-  var name: String
+  @objc dynamic var coverPicURL: String = ""
+  @objc dynamic var profilePicURL: String = ""
+  @objc dynamic var profileId: String = ""
+  @objc dynamic var name: String = ""
   
-  init() {
-    self.trips = [];
-    self.countriesVisited = []
-    self.percentageWorldTravelled = 0
-    self.coverPicURL = ""
-    self.profilePicURL = ""
-    self.profileId = ""
-    self.name = ""
-  }
 }

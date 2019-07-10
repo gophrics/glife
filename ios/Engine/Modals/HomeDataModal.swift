@@ -7,13 +7,9 @@
 //
 
 import Foundation
+import RealmSwift
 
 class HomeDataModal {
-  var name: String
-  var timestamp: Int64
-  
-  init() {
-    self.name = ""
-    self.timestamp = 0
-  }
+  @objc dynamic var name: String = ""
+  @objc dynamic var timestamp: Int64 = 0
 }

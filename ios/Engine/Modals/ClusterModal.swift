@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import RealmSwift
 
 class ClusterModal {
   var id: Int

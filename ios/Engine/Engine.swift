@@ -21,13 +21,61 @@ class AppState {
 
 
 // Only Exposed APIs
-class Engine {
+class Engine: NSObject {
   
-  var BlobProvider: BlobProvider = BlobProvider()
+  var _BlobProvider: BlobProvider = BlobProvider()
   
-  func PopulateTripModalData(steps: [StepModal], tripId: String) -> {
-    var tripResult: TripModal = new TripModal();
-    var homesDataForClustering = self.BlobProvider.Modal.homesForDataClustering
+  func Initialize() {
+    
+    var photoRollInfos: [PHAsset] = PhotoLibraryProcessor.getPhotosFromLibrary();
+    
+    self.GenerateHomeData()
+    
+    // Create a No photos found warning page
+    if (photoRollInfos.length == 0) {
+      return true
+    }
+    
+    try {
+      var trips = self.GenerateTripFromPhotos(photoRollInfos)
+      self.ClearAndUpdateProfileDataWithAllTrips(trips)
+    } catch error {}
+    
+    return true
+  }
+  
+  
+  func GenerateTripFromPhotos() {
+    var homesDataForClustering = self._BlobProvider.homesForDataClustering
+    var endTimestamp = self._BlobProvider.endTimestamp
+
+    var clusterData: [ClusterModal] = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
+
+    var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
+    var tripResult: [TripModal] = [];
+    
+    if (trips.length == 0) {
+      throw "Not enough photos"
+    }
+    
+    for trip in trips {
+      trip.sort((a: ClusterModal, b: ClusterModal) => {
+          return a.timestamp < b.timestamp
+      });
+      var _steps: [StepModal] = ClusterProcessor.RunStepClustering(trip);
+      var _trip: TripModal = self.PopulateTripModalData(_steps, TripUtils.GenerateTripId());
+      tripResult.push(_trip)
+    }
+    
+    tripResult.sort((a, b) => {
+      return Date(b.endDate).getTime() < Date(a.endDate).getTime();
+    })
+
+  }
+  
+  func PopulateTripModalData(steps: [StepModal], tripId: String) {
+    var tripResult: TripModal = TripModal();
+    var homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering
 
     var homeStep = homesDataForClustering[(steps[0].startTimestamp / 8.64e4).round(.down) - 1]
     homeStep.timestamp = (steps[0].startTimestamp - 8.64e4)
@@ -41,7 +89,7 @@ class Engine {
     var countries: [String] = []
     var places: [String] = []
     
-    for step in steps) {
+    for step in steps {
       
       var _m = ClusterModal()
       _m.latitude = step.meanLatitude;
@@ -91,14 +139,7 @@ class Engine {
       }
       
       // Showing current weather now
-      result = await TripUtils.getWeatherFromCoordinates(step.meanLatitude, step.meanLongitude)
-      if (result && result.main) {
-        if (step.location == "") {
-          step.location = result.name
-          places.push(step.location)
-        }
-        step.temperature = Math.floor(Number.parseFloat(result.main.temp) - 273.15) + "ºC"
-      }
+      step.temperature = TripUtils.getWeatherFromCoordinates(step.meanLatitude, step.meanLongitude) + "ºC"
     }
     
     tripResult.tripId = tripId;
@@ -106,6 +147,84 @@ class Engine {
     tripResult.populateTitle(countries, places);
     
     return tripResult
-
+  }
+  
+  func GenerateHomeData(){
+  
+    class _home{
+      var latitude: Float64
+      var longitude: Float64
+      var timestamp: Int64
+    }
+    
+    var homes: [_home] = [];
+    var homesDataForClustering: [Int64:ClusterModal] = [:];
+  
+    for element in this._BlobProvider.homeData {
+      var res = TripUtils.getCoordinatesFromLocation(element.name)
+      var _el = _home()
+      _el.latitude = res.latitude
+      _el.longitude = res.longitude
+      _el.timestamp = element.timestamp
+      homes.append(_el)
+    }
+    
+    var startTimestamp = ((Date()).getTime()/8.64e4).round(.down);
+    var endTimestamp = startTimestamp;
+    homes.sort((a, b) => {
+      return b.timestamp < a.timestamp;
+    })
+  
+  for data in homes {
+    while(startTimestamp >= (data.timestamp/8.64e4).round(.down) && startTimestamp >= 0) {
+      homesDataForClustering[startTimestamp] = data as ClusterModal;
+      startTimestamp--;
+    }
+  }
+  
+    self._BlobProvider.homesForDataClustering = homesDataForClustering;
+    self._BlobProvider.startTimestamp = startTimestamp
+    self._BlobProvider.endTimestamp = endTimestamp
+    self.SaveEngineData()
+  }
+  
+  func ExtendHomeDataToDate() {
+    var today: Date = Date()
+    var endTimestamp = self._BlobProvider.endTimestamp
+    
+    var homesDataForClustering = self._BlobProvider.homesForDataClustering;
+    var dataToExtend = homesDataForClustering[endTimestamp]
+    
+    while(endTimestamp <= today.getTime()/8.64e4) {
+      homesDataForClustering[endTimestamp] = dataToExtend;
+      endTimestamp++
+    }
+    
+    self._BlobProvider.endTimestamp = endTimestamp;
+    self._BlobProvider.homesForDataClustering = homesDataForClustering;
+    self.SaveEngineData()
+  }
+  
+  func UpdateProfileDataWithTrip(trip: TripModal) {
+    self._BlobProvider.Modal.countriesVisited.push.apply(this.Modal.countriesVisited, trip.countryCode)
+    self._BlobProvider.Modal.percentageWorldTravelled = (this.Modal.countriesVisited.length * 100 / 186).round(.down)
+    
+    var newTrip: boolean = true;
+    for _trip in self._BlobProvider.Modal.trips {
+      if (_trip.tripId == trip.tripId) {
+        _trip.CopyConstructor(trip)
+        newTrip = false;
+        break;
+      }
+    }
+    
+    if (newTrip) {
+      this.Modal.trips.push(trip)
+    }
+    
+    self._BlobProvider.Modal.Modal.trips.sort((a: TripModal, b: TripModal) => {
+      return Date(b.endDate).getTime() < Date(a.endDate).getTime();
+    })
+    return trip
   }
 }

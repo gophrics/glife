@@ -23,7 +23,8 @@ post_install do |installer|
     end
   end
 end
-pod 'GoogleSignIn', '~> 4.4.0'
+
+pod 'GoogleSignIn'
 
 # Add new pods below this line
 pod 'RNBackgroundFetch', :path => '../node_modules/react-native-background-fetch'

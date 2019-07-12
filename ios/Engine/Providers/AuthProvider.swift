@@ -8,7 +8,24 @@
 
 import Foundation
 
+var ServerURLWithoutEndingSlash = Constants.ServerURL;
+
+class RegisterUserModal {
+  var Phone: String = ""
+  var Email: String = ""
+  var Password: String = ""
+}
+
+class LoginUserModal {
+  var Email: String = ""
+  var Password: String = ""
+}
+
 class AuthProvider {
   
   static var Token: String = "";
+  
+  func setAuthToken(token: String) {
+    AuthProvider.Token = token
+  }
 }

@@ -41,7 +41,7 @@ class TripModal {
     self.masterPicURL = self.steps[self.steps.length-2].masterImageUri;
   }
   
-  func populateDaysOfTravel = () => {
+  func populateDaysOfTravel(){
     self.daysOfTravel =  abs((self.steps[self.steps.length-1].endTimestamp/8.64e7) - Math.floor(self.steps[0].startTimestamp/8.64e7).round(.down))
   
     self.daysOfTravel = self.daysOfTravel == 0 ? 1 : self.daysOfTravel;
@@ -67,12 +67,12 @@ class TripModal {
     self.temperature = self.steps[1].temperature;
   }
   
-  func populateTitle(countries: [String], places: [String]) => {
+  func populateTitle(countries: [String], places: [String]){
     var tripName = "";
     if(countries.length == 1) {
       // Only home country, use places
       var index = 0;
-      for(var place of places) {
+      for place in places {
         if(index == 0) {
           tripName = place
         }

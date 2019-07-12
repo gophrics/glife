@@ -4,9 +4,7 @@ import android.app.Application;
 
 import com.beerwithai.BuildConfig;
 import com.facebook.react.ReactApplication;
-import com.rnfs.RNFSPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
-import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -15,8 +13,7 @@ import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
-import com.facebook.soloader.SoLoader;
-import com.horcrux.svg.SvgPackage; 
+import com.facebook.soloader.SoLoader; 
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,9 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new SQLitePluginPackage(),   // register SQLite Plugin here
             new MainReactPackage(),
-            new RNFSPackage(),
             new ImageResizerPackage(),
-            new RNGoogleSigninPackage(),
             new PickerPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),

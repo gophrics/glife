@@ -149,10 +149,8 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-fs')
     implementation project(':react-native-image-resizer')
     implementation project(':react-native-threads')
-    implementation project(':react-native-google-signin')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-vector-icons')
@@ -161,7 +159,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-sqlite-storage')
-    implementation project(':react-native-svg')
     implementation 'com.google.firebase:firebase-core:16.0.9'
 }
 

@@ -32,7 +32,7 @@ class BlobProvider {
     var trips: [TripModal] = try! Realm().objects(TripModal.self)
     var tripMetaArray: [[String: Any]] = []
     for trip in trips {
-      var tripMeta: [String: Any] = []
+      var tripMeta: [String: Any] = [:]
       tripMeta["masterPicURL"] = trip.masterPicURL
       tripMeta["profileId"] = trip.profileId
       tripMeta["startDate"] = trip.startDate

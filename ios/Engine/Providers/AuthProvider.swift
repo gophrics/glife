@@ -8,8 +8,6 @@
 
 import Foundation
 
-var ServerURLWithoutEndingSlash = Constants.ServerURL;
-
 class RegisterUserModal {
   var Phone: String = ""
   var Email: String = ""

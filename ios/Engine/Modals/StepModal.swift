@@ -7,9 +7,10 @@
 //
 
 import Foundation
-import RealmSwift 
+import RealmSwift
 
-class StepModal {
+@objc
+class StepModal : Object {
   @objc dynamic var stepId: Int = 0
   @objc dynamic var stepName: String = ""
   @objc dynamic var meanLatitude: Float64 = 0
@@ -22,7 +23,7 @@ class StepModal {
   @objc dynamic var masterImageUri: String = ""
   @objc dynamic var masterMarker: Region = Region()
   @objc dynamic var distanceTravelled: Int64 = 0
-  @objc dynamic var description: String = ""
+  @objc dynamic var desc: String = ""
   @objc dynamic var temperature: String = ""
   @objc dynamic var masterImageBase64: String = ""
   @objc dynamic var imageBase64: [String] = []

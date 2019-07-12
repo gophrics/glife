@@ -9,7 +9,8 @@
 import Foundation
 import RealmSwift
 
-class TripModal {
+@objc
+class TripModal: Object {
   @objc dynamic var profileId: String = ""
   @objc dynamic var tripId: String = ""
   @objc dynamic var steps: [StepModal] = []

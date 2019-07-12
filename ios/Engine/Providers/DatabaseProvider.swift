@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SwiftRealm
+import RealmSwift
 
 class DatabaseProvider {
   var db = try! Realm()

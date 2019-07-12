@@ -10,7 +10,7 @@ import Foundation
 
 
 @objc
-class ExposedAPI {
+class ExposedAPI: NSObject {
   @objc
   func getAllTrips(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     var data = Engine.EngineInstance._BlobProvider.getAllTripsWithData()
@@ -19,7 +19,7 @@ class ExposedAPI {
   
   @objc
   func getTrip(_ tripId: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    var data = Engine.EngineInstance._BlobProvider.getTrip(tripId)
+    var data = Engine.EngineInstance._BlobProvider.getTrip(tripId: tripId)
     resolve(data)
   }
   
@@ -39,20 +39,7 @@ class ExposedAPI {
   func addTrip(_ trip: [String: Any], resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     var data = TripModal()
     
-    data.activities = trip["activities"] as? String
-    data.countryCode = trip["countryCode"] as? [String]
-    data.daysOfTravel = trip["daysOfTravel"] as? Int
-    data.distanceTravelled = trip["distanceTravelled"] as? Int
-    data.endDate = trip["endDate"] as? String
-    data.isPublic = trip["isPublic"] as? Bool
-    data.location = trip["location"] as? String
-    data.masterPicURL = trip["masterPicURL"] as? String
-    data.profileId = trip["profileId"] as? String
-    data.startDate = trip["startDate"] as? String
-    data.syncComplete = trip["syncComplete"] as? Bool
-    data.temperature = trip["temperature"] as? String
-    data.tripId = trip["tripId"] as? String
-    data.tripName = trip["tripName"] as? String
+    data.CopyConstructor(trip: trip)
     
     Engine.EngineInstance.UpdateProfileDataWithTrip(trip: data)
   }

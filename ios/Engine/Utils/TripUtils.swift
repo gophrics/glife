@@ -19,7 +19,7 @@ class TripUtils {
     return String((Int.random(in: 0..<100)*100000))
   }
   
-  static func getWeatherFromCoordinates(latitude: Float64, longitude: Float64) -> String {
+  static func getWeatherFromCoordinates(latitude: Float64, longitude: Float64) -> Int {
     let urlString = ServerURLWithoutEndingSlash + "/api/v1/travel/searchweatherbylocation"
     let body: [String: Any] = [
       "latitude": latitude,
@@ -39,7 +39,7 @@ class TripUtils {
       }
       let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
       if let responseJSON = responseJSON as? [String: Any] {
-        result = Int64((responseJSON["main"] as! [String:Any])["temp"] as! Float64 - 273.15)
+        result = Int(Int64((responseJSON["main"] as! [String:Any])["temp"] as! Float64 - 273.15))
       }
     }
     

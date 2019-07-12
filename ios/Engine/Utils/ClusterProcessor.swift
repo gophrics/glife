@@ -26,34 +26,32 @@ class ClusterProcessor {
     
     for item in trip {
       // If distance between two modals are less than 10 km
-      if(ClusterProcessor.EarthDistance(item, firstItem) < 10) {
+      if(ClusterProcessor.EarthDistance(p: item, q: firstItem) < 10) {
         // We divide based on time
-        if(item.timestamp <= firstTimestamp + 8.64e7) {
-          _stepCluster[_it].push(item)
+        if(item.timestamp <= firstTimestamp + 86400) {
+          _stepCluster[_it].append(item)
         } else {
           firstTimestamp = item.timestamp
-          _stepCluster.push([item])
-          _it++;
+          _stepCluster.append([item])
+          _it += 1;
         }
       } else {
         // Else we divide based on distance
         firstTimestamp = item.timestamp
         firstItem = item;
-        _stepCluster.push([item])
-        _it++;
+        _stepCluster.append([item])
+        _it += 1;
       }
     }
     
     for cluster in _stepCluster {
-      var _step = ClusterProcessor.convertClusterToStep(cluster)
+      var _step = ClusterProcessor.convertClusterToStep(cluster: cluster)
       if(_step.stepId != -1) {
-        stepResult.push(_step)
+        stepResult.append(_step)
       }
     }
     
-    stepResult.sort((a, b) => {
-      return a.endTimestamp < b.endTimestamp;
-    })
+    stepResult.sorted(by: { $0.endTimestamp < $1.endTimestamp } )
     
     var i = 100;
     var previousStep: StepModal = StepModal();
@@ -69,10 +67,10 @@ class ClusterProcessor {
         var _n = ClusterModal()
         _n.latitude = previousStep.meanLatitude
         _n.longitude = previousStep.meanLongitude
-        distanceTravelled += ClusterProcessor.EarthDistance(_m , _n).round(.down)
+        distanceTravelled += ClusterProcessor.EarthDistance(p: _m , q: _n)
       }
       step.distanceTravelled = distanceTravelled;
-      step.description = "Description goes here...";
+      step.desc = "Description goes here...";
       i += 100;
       previousStep = step;
     }
@@ -85,34 +83,32 @@ class ClusterProcessor {
     var trips: [[ClusterModal]] = []
     var trip: [ClusterModal] = []
   
-    clusterData.sort((a, b) => {
-      return a.timestamp < b.timestamp
-    })
+    clusterData.sorted(by: { $0.timestamp < $1.timestamp })
   
     var prevData: ClusterModal = clusterData[0];
     for data in clusterData {
       // If distance from home is more than 40 km
-      if(ClusterProcessor.EarthDistance(homes[(data.timestamp/8.64e4).round(.down)], data) > 40
+      if(ClusterProcessor.EarthDistance(p: homes[(data.timestamp/86400).round(.down)], q: data) > 40
         // Noise filtering, if two pictures are taken 7 days apart, consider it a new trip
-        && (ClusterProcessor.TimeDistance(data, prevData) < 8.64e4*7)) {
-        trip.push(data)
-      } else if(trip.length > 0){
+        && (ClusterProcessor.TimeDistance(data, prevData) < 86400*7)) {
+        trip.append(data)
+      } else if(trip.count > 0){
           // If more than 3 photo were taken for the trip, it's officially considered a trip
-          if(trip.length > 3) {
-            trips.push(trip)
+          if(trip.count > 3) {
+            trips.append(trip)
           }
           trip = []
       }
       prevData = data
     }
   
-    if(trip.length > 0) {
-      trips.push(trip)
+    if(trip.count > 0) {
+      trips.append(trip)
     }
     return trips;
   }
   
-  static func EarthDistance(p: ClusterModal, q: ClusterModal) -> Int64 {
+  static func EarthDistance(p: ClusterModal, q: ClusterModal) -> Int {
     if(p == nil || q == nil) {
       return 0;
     }
@@ -122,13 +118,13 @@ class ClusterProcessor {
     var lon1 = p.longitude;
   
     var R: Float64 = 6371; // km
-    var dLat = ClusterProcessor.deg2rad(lat2 - lat1);
-    var dLon = ClusterProcessor.deg2rad(lon2 - lon1);
+    var dLat = ClusterProcessor.deg2rad(deg: lat2 - lat1);
+    var dLon = ClusterProcessor.deg2rad(deg: lon2 - lon1);
     var a = sin(dLat / 2) * sin(dLat / 2) +
-    cos(ClusterProcessor.deg2rad(lat1)) * Math.cos(ClusterProcessor.deg2rad(lat2)) * sin(dLon / 2) * sin(dLon / 2);
-    var c = 2 * atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * Int64(c);
-    return d;
+      cos(ClusterProcessor.deg2rad(deg: lat1)) * cos(ClusterProcessor.deg2rad(deg: lat2)) * sin(dLon / 2) * sin(dLon / 2);
+    var c = 2 * atan2(a.squareRoot(), (1 - a).squareRoot());
+    var d = R * Float64(c);
+    return Int(d);
   }
   
   static func convertClusterToStep(cluster: [ClusterModal]) -> StepModal {
@@ -138,14 +134,12 @@ class ClusterProcessor {
       return _step
     }
     
-    var latitudeSum = 0;
-    var longitudeSum = 0;
+    var latitudeSum: Float64 = 0;
+    var longitudeSum: Float64 = 0;
     var imageUris: [String] = []
     var markers: [Region] = []
     
-    cluster.sort((a, b) => {
-      return a.timestamp < b.timestamp;
-    })
+    cluster.sorted(by: { return $0.timestamp < $1.timestamp })
     
     for item in cluster {
       latitudeSum += item.latitude;
@@ -158,8 +152,8 @@ class ClusterProcessor {
     }
     
     var _step: StepModal = StepModal()
-    _step.meanLatitude = latitudeSum/cluster.count;
-    _step.meanLongitude = longitudeSum/cluster.count;
+    _step.meanLatitude = latitudeSum/Double(cluster.count);
+    _step.meanLongitude = longitudeSum/Double(cluster.count);
     _step.markers = markers;
     _step.startTimestamp = cluster[0].timestamp;
     _step.endTimestamp = cluster[cluster.count - 1].timestamp
@@ -173,7 +167,7 @@ class ClusterProcessor {
     return _step;
   }
 
-  static func deg2rad(deg: Float64) {
+  static func deg2rad(deg: Float64) -> Float64 {
     return deg * (Double.pi/180)
   }
 }

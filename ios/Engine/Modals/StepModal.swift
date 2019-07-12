@@ -22,7 +22,7 @@ class StepModal : Object {
   @objc dynamic var markers: [Region] = []
   @objc dynamic var masterImageUri: String = ""
   @objc dynamic var masterMarker: Region = Region()
-  @objc dynamic var distanceTravelled: Int64 = 0
+  @objc dynamic var distanceTravelled: Int = 0
   @objc dynamic var desc: String = ""
   @objc dynamic var temperature: String = ""
   @objc dynamic var masterImageBase64: String = ""

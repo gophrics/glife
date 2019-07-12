@@ -30,21 +30,38 @@ class TripModal: Object {
   
   
   func CopyConstructor(trip: [String:Any]) {
-    self.activities = trip["activities"] as? String
-    self.countryCode = trip["countryCode"] as? [String]
-    self.daysOfTravel = trip["daysOfTravel"] as? Int
-    self.distanceTravelled = trip["distanceTravelled"] as? Int
-    self.endDate = trip["endDate"] as? String
-    self.isPublic = trip["isPublic"] as? Bool
-    self.location = trip["location"] as? String
-    self.masterPicURL = trip["masterPicURL"] as? String
-    self.profileId = trip["profileId"] as? String
-    self.startDate = trip["startDate"] as? String
-    self.syncComplete = trip["syncComplete"] as? Bool
-    self.temperature = trip["temperature"] as? String
-    self.tripId = trip["tripId"] as? String
-    self.tripName = trip["tripName"] as? String
+    self.activities = trip["activities"] as! [String]
+    self.countryCode = trip["countryCode"] as! [String]
+    self.daysOfTravel = trip["daysOfTravel"] as! Int
+    self.distanceTravelled = trip["distanceTravelled"] as! Int
+    self.endDate = trip["endDate"] as! String
+    self.isPublic = trip["isPublic"] as! Bool
+    self.location = trip["location"] as! Region // this might be problematic
+    self.masterPicURL = trip["masterPicURL"] as! String
+    self.profileId = trip["profileId"] as! String
+    self.startDate = trip["startDate"] as! String
+    self.syncComplete = trip["syncComplete"] as! Bool
+    self.temperature = trip["temperature"] as! String
+    self.tripId = trip["tripId"] as! String
+    self.tripName = trip["tripName"] as! String
     
+  }
+  
+  func CopyConstructor(trip: TripModal) {
+    self.activities = trip.activities
+    self.countryCode = trip.countryCode
+    self.daysOfTravel = trip.daysOfTravel
+    self.distanceTravelled = trip.distanceTravelled
+    self.endDate = trip.endDate
+    self.isPublic = trip.isPublic
+    self.location = trip.location
+    self.masterPicURL = trip.masterPicURL
+    self.profileId = trip.profileId
+    self.startDate = trip.startDate
+    self.syncComplete = trip.syncComplete
+    self.temperature = trip.temperature
+    self.tripId = trip.tripId
+    self.tripName = trip.tripName
   }
   
   func populateAll() {

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Photos
 
 enum EngineLoadStatus {
   case None
@@ -15,8 +16,8 @@ enum EngineLoadStatus {
 }
 
 class AppState {
-  var loggedIn : Bool
-  var engineLoaded: EngineLoadStatus
+  var loggedIn : Bool = false
+  var engineLoaded: EngineLoadStatus = EngineLoadStatus.None
 }
 
 
@@ -26,30 +27,28 @@ class Engine: NSObject {
   var _BlobProvider: BlobProvider = BlobProvider()
   static var EngineInstance = Engine()
 
-  func Initialize() {
-    var photoRollInfos: [PHAsset] = PhotoLibraryProcessor.getPhotosFromLibrary();
+  func Initialize() -> Bool {
+    var photoRollInfos: [ClusterModal] = PhotoLibraryProcessor.getPhotosFromLibrary();
     
     self.GenerateHomeData()
     
     // Create a No photos found warning page
-    if (photoRollInfos.length == 0) {
+    if (photoRollInfos.count == 0) {
       return true
     }
     
     do {
-      try {
-        var trips = self.GenerateTripFromPhotos(photoRollInfos)
-        self.ClearAndUpdateProfileDataWithAllTrips(trips)
-      }
-    } catch error {}
+        var trips = try self.GenerateTripFromPhotos(imageData: photoRollInfos)
+        try self.ClearAndUpdateProfileDataWithAllTrips(trips)
+    } catch {}
     
     return true
   }
   
   
-  func GenerateTripFromPhotos() {
-    var homesDataForClustering = self._BlobProvider.homesForDataClustering
-    var endTimestamp = self._BlobProvider.endTimestamp
+  func GenerateTripFromPhotos(imageData: [ClusterModal]) {
+    var homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering
+    var endTimestamp = self._BlobProvider.Modal.endTimestamp
 
     var clusterData: [ClusterModal] = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
 
@@ -57,7 +56,7 @@ class Engine: NSObject {
     var tripResult: [TripModal] = [];
     
     if (trips.length == 0) {
-      throw "Not enough photos"
+      return
     }
     
     for trip in trips {
@@ -69,17 +68,14 @@ class Engine: NSObject {
       tripResult.push(_trip)
     }
     
-    tripResult.sort((a, b) => {
-      return Date(b.endDate).getTime() < Date(a.endDate).getTime();
-    })
-  }
+    tripResult.sorted(by: {$0.endDate > $1.endDate})
   
-  func PopulateTripModalData(steps: [StepModal], tripId: String) {
+  func PopulateTripModalData(steps: [StepModal], tripId: String) -> TripModal {
     var tripResult: TripModal = TripModal();
     var homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering
 
-    var homeStep = homesDataForClustering[(steps[0].startTimestamp / 8.64e4).round(.down) - 1]
-    homeStep.timestamp = (steps[0].startTimestamp - 8.64e4)
+    var homeStep = homesDataForClustering[(steps[0].startTimestamp / 86400).round(.down) - 1]
+    homeStep.timestamp = (steps[0].startTimestamp - 86400)
     
     var _stepModal: StepModal = ClusterProcessor.convertClusterToStep([homeStep])
     _stepModal.location = "Home";
@@ -92,67 +88,67 @@ class Engine: NSObject {
     
     for step in steps {
       
-      var _m = ClusterModal()
-      _m.latitude = step.meanLatitude;
-      _m.longitude = step.meanLongitude;
+      var _p = ClusterModal()
+      _p.latitude = step.meanLatitude;
+      _p.longitude = step.meanLongitude;
       
-      var _n = ClusterModal()
-      _n.latitude = tripResult.steps[i].meanLatitude;
-      _n.longitude = tripResult.steps[i].meanLongitude;
+      var _q = ClusterModal()
+      _q.latitude = tripResult.steps[i].meanLatitude;
+      _q.longitude = tripResult.steps[i].meanLongitude;
       
-      step.distanceTravelled = (tripResult.steps[i].distanceTravelled + ClusterProcessor.EarthDistance(_m, _n)).round(.down)
+      step.distanceTravelled = (tripResult.steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q)).round(.down)
       tripResult.steps.append(step);
-      i++;
+      i += 1;
     }
     
-    var homeStep2 = homesDataForClustering[(steps[steps.length - 1].endTimestamp / 8.64e4).round(.down) + 1]
-    homeStep2.timestamp = (steps[steps.length - 1].endTimestamp + 8.64e4).round(.down)
+    var homeStep2 = homesDataForClustering[(steps[steps.count - 1].endTimestamp / 86400).round(.down) + 1]
+    homeStep2.timestamp = (steps[steps.length - 1].endTimestamp + 86400).round(.down)
     
     var _stepModal2: StepModal = ClusterProcessor.convertClusterToStep([homeStep2])
     _stepModal2.location = "Home";
     
-    var _m = ClusterModal()
-    _m.latitude = _stepModal.meanLatitude
-    _m.longitude = _stepModal.meanLongitude
+    var _p = ClusterModal()
+    _p.latitude = _stepModal.meanLatitude
+    _p.longitude = _stepModal.meanLongitude
 
-    var _n = ClusterModal()
-    _n.latitude = tripResult.steps[i].meanLatitude
-    _n.longitude = tripResult.steps[i].meanLongitude
-    _stepModal2.distanceTravelled = (tripResult.steps[i].distanceTravelled + ClusterProcessor.EarthDistance(_m, _n))
+    var _q = ClusterModal()
+    _q.latitude = tripResult.steps[i].meanLatitude
+    _q.longitude = tripResult.steps[i].meanLongitude
+    _stepModal2.distanceTravelled = (tripResult.steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
     _stepModal2.stepId = 10000
     
     tripResult.steps.append(_stepModal2)
     
     // Load locations
     for step in steps {
-      var result = TripUtils.getLocationFromCoordinates(step.meanLatitude, step.meanLongitude)
+      var result = TripUtils.getLocationFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)
       
-      if (result && result.address && (result.address.county || result.address.state_district)) {
-        step.location = result.address.county || result.address.state_district
+      if (result != nil) {
+        step.location = result
         
-        if (countries.indexOf(result.address.country) == -1) {
-          countries.append(result.address.country)
+        if (countries.firstIndex(of: result) == nil) {
+          countries.append(result)
         }
-        if (places.indexOf(step.location) == -1) {
+        if (places.firstIndex(of: step.location) == nil) {
           places.append(step.location)
         }
-        tripResult.countryCode.push((result.address.country_code as string).toLocaleUpperCase())
+        tripResult.countryCode.append((result.address.country_code as String).toLocaleUpperCase())
       }
       
       // Showing current weather now
-      step.temperature = TripUtils.getWeatherFromCoordinates(step.meanLatitude, step.meanLongitude) + "ºC"
+      step.temperature = TripUtils.getWeatherFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude) + "ºC"
     }
     
     tripResult.tripId = tripId;
     tripResult.populateAll();
-    tripResult.populateTitle(countries, places);
+    tripResult.populateTitle(countries: countries, places: places);
     
     return tripResult
   }
   
   func GenerateHomeData(){
   
-    class _home{
+    struct _home{
       var latitude: Float64
       var longitude: Float64
       var timestamp: Int64
@@ -161,7 +157,7 @@ class Engine: NSObject {
     var homes: [_home] = [];
     var homesDataForClustering: [Int64:ClusterModal] = [:];
   
-    for element in this._BlobProvider.homeData {
+    for element in self._BlobProvider.Modal.homeData {
       var res = TripUtils.getCoordinatesFromLocation(element.name)
       var _el = _home()
       _el.latitude = res.latitude
@@ -170,62 +166,45 @@ class Engine: NSObject {
       homes.append(_el)
     }
     
-    var startTimestamp = ((Date()).getTime()/8.64e4).round(.down);
+    var startTimestamp = ((Date()).getTime()/86400).round(.down);
     var endTimestamp = startTimestamp;
-    homes.sort((a, b) => {
-      return b.timestamp < a.timestamp;
-    })
+    homes.sorted(by: {$0.timestamp < $1.timestamp})
   
     for data in homes {
-      while(startTimestamp >= (data.timestamp/8.64e4).round(.down) && startTimestamp >= 0) {
+      while(startTimestamp >= (data.timestamp/86400).round(.down) && startTimestamp >= 0) {
         homesDataForClustering[startTimestamp] = data as ClusterModal;
-        startTimestamp--;
+        startTimestamp -= 1;
       }
     }
   
-    self._BlobProvider.homesForDataClustering = homesDataForClustering;
-    self._BlobProvider.startTimestamp = startTimestamp
-    self._BlobProvider.endTimestamp = endTimestamp
-    self.SaveEngineData()
+    self._BlobProvider.Modal.homesForDataClustering = homesDataForClustering;
+    self._BlobProvider.Modal.startTimestamp = startTimestamp
+    self._BlobProvider.Modal.endTimestamp = endTimestamp
   }
   
   func ExtendHomeDataToDate() {
     var today: Date = Date()
-    var endTimestamp = self._BlobProvider.endTimestamp
+    var endTimestamp = self._BlobProvider.Modal.endTimestamp
     
-    var homesDataForClustering = self._BlobProvider.homesForDataClustering;
+    var homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering;
     var dataToExtend = homesDataForClustering[endTimestamp]
     
     while(endTimestamp <= today.getTime()/8.64e4) {
       homesDataForClustering[endTimestamp] = dataToExtend;
-      endTimestamp++
+      endTimestamp += 1
     }
     
     self._BlobProvider.endTimestamp = endTimestamp;
     self._BlobProvider.homesForDataClustering = homesDataForClustering;
-    self.SaveEngineData()
   }
   
-  func UpdateProfileDataWithTrip(trip: TripModal) {
-    self._BlobProvider.Modal.countriesVisited.push.apply(this.Modal.countriesVisited, trip.countryCode)
-    self._BlobProvider.Modal.percentageWorldTravelled = (this.Modal.countriesVisited.length * 100 / 186).round(.down)
+  func UpdateProfileDataWithTrip(trip: TripModal) -> TripModal {
+    self._BlobProvider.Modal.countriesVisited.append(trip.countryCode)
+    self._BlobProvider.Modal.percentageWorldTravelled = (self.Modal.countriesVisited.length * 100 / 186).round(.down)
     
-    var newTrip: boolean = true;
-    for _trip in self._BlobProvider.Modal.trips {
-      if (_trip.tripId == trip.tripId) {
-        _trip.CopyConstructor(trip)
-        newTrip = false;
-        break;
-      }
-    }
+    let _trip: TripModal = try! Realm().objects(TripModal.self).filter("tripId == " + trip.tripId).first ?? TripModal()
+    _trip.CopyConstructor(trip: trip)
     
-    if (newTrip) {
-      this.Modal.trips.push(trip)
-    }
-    
-    self._BlobProvider.Modal.Modal.trips.sort((a: TripModal, b: TripModal) => {
-      return Date(b.endDate).getTime() < Date(a.endDate).getTime();
-    })
     return trip
   }
 }

@@ -9,7 +9,8 @@
 import Foundation
 import RealmSwift
 
-class EngineModal {
+@objc
+class EngineModal: Object {
   @objc dynamic var homeData: [HomeDataModal] = []
   @objc dynamic var homesForDataClustering: [Int64: String] = [:]
   @objc dynamic var startTimestamp: Int64 = 0
@@ -29,7 +30,13 @@ class BlobProvider {
   }
   
   func getAllTripsWithData() -> [[String: Any]] {
-    var trips: [TripModal] = Array<TripModal>(try! Realm().objects(TripModal.self))
+    var trips: [TripModal] = []
+    let _relmResults = try! Realm().objects(TripModal.self)
+    
+    for trip in _relmResults {
+      trips.append(trip)
+    }
+    
     var tripMetaArray: [[String: Any]] = []
     for trip in trips {
       var tripMeta: [String: Any] = [:]
@@ -47,12 +54,12 @@ class BlobProvider {
   }
   
   func getTrip(tripId: String) -> TripModal {
-    var trip: TripModal = try! Realm().object(ofType: TripModal.self, forPrimaryKey: tripId)
+    let trip: TripModal = try! Realm().object(ofType: TripModal.self, forPrimaryKey: tripId) ?? TripModal()
     return trip
   }
   
   func getProfileData() -> [String: Any] {
-    var profile: ProfileModal = try! Realm().objects(ProfileModal.self).first
+    var profile: ProfileModal = try! Realm().objects(ProfileModal.self).first ?? ProfileModal()
     var profileMeta: [String: Any] = [:]
     
     profileMeta["countriesVisited"] = profile.countriesVisited
@@ -66,7 +73,7 @@ class BlobProvider {
   }
   
   func saveEngineData() {
-    let currentEngineModal = Database.db.objects(EngineModal.self)
+    var currentEngineModal = Database.db.objects(EngineModal.self)
     try! Database.db.write {
       currentEngineModal = self.Modal
     }

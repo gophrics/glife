@@ -18,7 +18,7 @@ class ExposedAPI: NSObject {
   }
   
   @objc
-  func getTrip(_ tripId: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  func getTrip(_ tripId: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     var data = Engine.EngineInstance._BlobProvider.getTrip(tripId: tripId)
     resolve(data)
   }

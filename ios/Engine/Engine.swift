@@ -50,7 +50,7 @@ class Engine: NSObject {
     var homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering
     var endTimestamp = self._BlobProvider.Modal.endTimestamp
 
-    var clusterData: [ClusterModal] = PhotoLibraryProcessor.convertImageToCluster(imageData, endTimestamp)
+    var clusterData: [ClusterModal] = PhotoLibraryProcessor.convertImageToCluster(images: imageData, endTimestamp: endTimestamp)
 
     var trips = ClusterProcessor.RunMasterClustering(clusterData, homesDataForClustering);
     var tripResult: [TripModal] = [];
@@ -136,7 +136,7 @@ class Engine: NSObject {
       }
       
       // Showing current weather now
-      step.temperature = TripUtils.getWeatherFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude) + "ºC"
+      step.temperature = String(TripUtils.getWeatherFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)) + "ºC"
     }
     
     tripResult.tripId = tripId;
@@ -158,15 +158,15 @@ class Engine: NSObject {
     var homesDataForClustering: [Int64:ClusterModal] = [:];
   
     for element in self._BlobProvider.Modal.homeData {
-      var res = TripUtils.getCoordinatesFromLocation(element.name)
-      var _el = _home()
+      var res = TripUtils.getCoordinatesFromLocation(location: element.name)
+      var _el = _home(latitude: 0, longitude: 0, timestamp: 0)
       _el.latitude = res.latitude
       _el.longitude = res.longitude
       _el.timestamp = element.timestamp
       homes.append(_el)
     }
     
-    var startTimestamp = ((Date()).getTime()/86400).round(.down);
+    var startTimestamp = (Date().timeIntervalSince1970/86400).round(.down);
     var endTimestamp = startTimestamp;
     homes.sorted(by: {$0.timestamp < $1.timestamp})
   
@@ -189,13 +189,13 @@ class Engine: NSObject {
     var homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering;
     var dataToExtend = homesDataForClustering[endTimestamp]
     
-    while(endTimestamp <= today.getTime()/8.64e4) {
+    while(endTimestamp <= Int64(today.timeIntervalSince1970/86400)) {
       homesDataForClustering[endTimestamp] = dataToExtend;
       endTimestamp += 1
     }
     
-    self._BlobProvider.endTimestamp = endTimestamp;
-    self._BlobProvider.homesForDataClustering = homesDataForClustering;
+    self._BlobProvider.Modal.endTimestamp = endTimestamp;
+    self._BlobProvider.Modal.homesForDataClustering = homesDataForClustering;
   }
   
   func UpdateProfileDataWithTrip(trip: TripModal) -> TripModal {

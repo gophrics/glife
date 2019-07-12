@@ -88,7 +88,7 @@ class ClusterProcessor {
     var prevData: ClusterModal = clusterData[0];
     for data in clusterData {
       // If distance from home is more than 40 km
-      if(ClusterProcessor.EarthDistance(p: homes[(data.timestamp/86400).round(.down)], q: data) > 40
+      if(ClusterProcessor.EarthDistance(p: homes[(data.timestamp/86400)], q: data) > 40
         // Noise filtering, if two pictures are taken 7 days apart, consider it a new trip
         && (ClusterProcessor.TimeDistance(data, prevData) < 86400*7)) {
         trip.append(data)
@@ -109,21 +109,19 @@ class ClusterProcessor {
   }
   
   static func EarthDistance(p: ClusterModal, q: ClusterModal) -> Int {
-    if(p == nil || q == nil) {
-      return 0;
-    }
-    var lat2 = q.latitude;
-    var lat1 = p.latitude;
-    var lon2 = q.longitude;
-    var lon1 = p.longitude;
+    
+    let lat2 = q.latitude;
+    let lat1 = p.latitude;
+    let lon2 = q.longitude;
+    let lon1 = p.longitude;
   
-    var R: Float64 = 6371; // km
-    var dLat = ClusterProcessor.deg2rad(deg: lat2 - lat1);
-    var dLon = ClusterProcessor.deg2rad(deg: lon2 - lon1);
-    var a = sin(dLat / 2) * sin(dLat / 2) +
+    let R: Float64 = 6371; // km
+    let dLat = ClusterProcessor.deg2rad(deg: lat2 - lat1);
+    let dLon = ClusterProcessor.deg2rad(deg: lon2 - lon1);
+    let a = sin(dLat / 2) * sin(dLat / 2) +
       cos(ClusterProcessor.deg2rad(deg: lat1)) * cos(ClusterProcessor.deg2rad(deg: lat2)) * sin(dLon / 2) * sin(dLon / 2);
-    var c = 2 * atan2(a.squareRoot(), (1 - a).squareRoot());
-    var d = R * Float64(c);
+    let c = 2 * atan2(a.squareRoot(), (1 - a).squareRoot());
+    let d = R * Float64(c);
     return Int(d);
   }
   

@@ -74,22 +74,22 @@ class TripModal: Object {
   }
   
   func populateMasterPic () {
-    self.masterPicURL = self.steps[self.steps.length-2].masterImageUri;
+    self.masterPicURL = self.steps[self.steps.count-2].masterImageUri;
   }
   
   func populateDaysOfTravel(){
-    self.daysOfTravel =  abs((self.steps[self.steps.length-1].endTimestamp/8.64e7) - Math.floor(self.steps[0].startTimestamp/8.64e7).round(.down))
+    self.daysOfTravel =  abs((self.steps[self.steps.count-1].endTimestamp/8.64e7) - (self.steps[0].startTimestamp/8.64e7).round(.down))
   
     self.daysOfTravel = self.daysOfTravel == 0 ? 1 : self.daysOfTravel;
   }
   
   func populateDistanceTravelled() {
-    self.distanceTravelled = self.steps[self.steps.length-1].distanceTravelled;
+    self.distanceTravelled = self.steps[self.steps.count-1].distanceTravelled;
   }
   
   func populateDates() {
     self.startDate = TripUtils.getDateFromTimestamp(self.steps[0].startTimestamp);
-    self.endDate = TripUtils.getDateFromTimestamp(self.steps[self.steps.length - 1].endTimestamp);
+    self.endDate = TripUtils.getDateFromTimestamp(self.steps[self.steps.count - 1].endTimestamp);
   }
   
   func populateLocation() {
@@ -105,7 +105,7 @@ class TripModal: Object {
   
   func populateTitle(countries: [String], places: [String]){
     var tripName = "";
-    if(countries.length == 1) {
+    if(countries.count == 1) {
       // Only home country, use places
       var index = 0;
       for place in places {
@@ -118,7 +118,7 @@ class TripModal: Object {
         if(index == 2)  {
           break;
         }
-        index++;
+        index += 1;
       }
     }
     else {
@@ -130,7 +130,7 @@ class TripModal: Object {
         else {
           tripName += ", " + country
         }
-        i++;
+        i += 1;
       }
     }
     self.tripName = tripName

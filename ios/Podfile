@@ -27,24 +27,18 @@ end
 pod 'GoogleSignIn'
 
 # Add new pods below this line
-pod 'RNBackgroundFetch', :path => '../node_modules/react-native-background-fetch'
 
 pod 'RNFS', :path => '../node_modules/react-native-fs'
 
 pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
 
-
 pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
-
-pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
 pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
 
 pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
 pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
-pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
 pod 'RealmSwift'
 

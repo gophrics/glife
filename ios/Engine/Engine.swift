@@ -24,9 +24,9 @@ class AppState {
 class Engine: NSObject {
   
   var _BlobProvider: BlobProvider = BlobProvider()
-  
+  static var EngineInstance = Engine()
+
   func Initialize() {
-    
     var photoRollInfos: [PHAsset] = PhotoLibraryProcessor.getPhotosFromLibrary();
     
     self.GenerateHomeData()
@@ -72,7 +72,6 @@ class Engine: NSObject {
     tripResult.sort((a, b) => {
       return Date(b.endDate).getTime() < Date(a.endDate).getTime();
     })
-
   }
   
   func PopulateTripModalData(steps: [StepModal], tripId: String) {
@@ -230,7 +229,3 @@ class Engine: NSObject {
     return trip
   }
 }
-
-}
-
-var EngineInstance = Engine()

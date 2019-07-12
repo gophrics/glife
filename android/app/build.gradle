@@ -149,12 +149,10 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-background-task')
     implementation project(':react-native-fs')
     implementation project(':react-native-image-resizer')
     implementation project(':react-native-threads')
     implementation project(':react-native-google-signin')
-    implementation project(':react-native-linear-gradient')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-vector-icons')

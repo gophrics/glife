@@ -4,11 +4,9 @@ import android.app.Application;
 
 import com.beerwithai.BuildConfig;
 import com.facebook.react.ReactApplication;
-import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
 import com.rnfs.RNFSPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -37,11 +35,9 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new SQLitePluginPackage(),   // register SQLite Plugin here
             new MainReactPackage(),
-            new BackgroundTaskPackage(),
             new RNFSPackage(),
             new ImageResizerPackage(),
             new RNGoogleSigninPackage(),
-            new LinearGradientPackage(),
             new PickerPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),

@@ -13,25 +13,25 @@ import Foundation
 class ExposedAPI {
   @objc
   func getAllTrips(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    var data = EngineInstance._BlobProvider.getAllTripsWithData()
+    var data = Engine.EngineInstance._BlobProvider.getAllTripsWithData()
     resolve(data)
   }
   
   @objc
   func getTrip(_ tripId: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    var data = EngineInstance._BlobProvider.getTrip(tripId)
+    var data = Engine.EngineInstance._BlobProvider.getTrip(tripId)
     resolve(data)
   }
   
   @objc
   func getProfileData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    var data = EngineInstance._BlobProvider.getProfileData()
+    var data = Engine.EngineInstance._BlobProvider.getProfileData()
     resolve(data)
   }
   
   @objc
   func generateTripsFromScratch(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    EngineInstance.Initialize()
+    Engine.EngineInstance.Initialize()
     resolve(true)
   }
   
@@ -39,21 +39,21 @@ class ExposedAPI {
   func addTrip(_ trip: [String: Any], resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     var data = TripModal()
     
-    data.activities = trip["activities"]
-    data.countryCode = trip["countryCode"]
-    data.daysOfTravel = trip["daysOfTravel"]
-    data.distanceTravelled = trip["distanceTravelled"]
-    data.endDate = trip["endDate"]
-    data.isPublic = trip["isPublic"]
-    data.location = trip["location"]
-    data.masterPicURL = trip["masterPicURL"]
-    data.profileId = trip["profileId"]
-    data.startDate = trip["startDate"]
-    data.syncComplete = trip["syncComplete"]
-    data.temperature = trip["temperature"]
-    data.tripId = trip["tripId"]
-    data.tripName = trip["tripName"]
+    data.activities = trip["activities"] as? String
+    data.countryCode = trip["countryCode"] as? [String]
+    data.daysOfTravel = trip["daysOfTravel"] as? Int
+    data.distanceTravelled = trip["distanceTravelled"] as? Int
+    data.endDate = trip["endDate"] as? String
+    data.isPublic = trip["isPublic"] as? Bool
+    data.location = trip["location"] as? String
+    data.masterPicURL = trip["masterPicURL"] as? String
+    data.profileId = trip["profileId"] as? String
+    data.startDate = trip["startDate"] as? String
+    data.syncComplete = trip["syncComplete"] as? Bool
+    data.temperature = trip["temperature"] as? String
+    data.tripId = trip["tripId"] as? String
+    data.tripName = trip["tripName"] as? String
     
-    EngineInstance.UpdateProfileDataWithTrip(data)
+    Engine.EngineInstance.UpdateProfileDataWithTrip(trip: data)
   }
 }

@@ -12,7 +12,7 @@ class ClusterProcessor {
   
   static func RunStepClustering(trip: [ClusterModal]) -> [StepModal] {
     if(trip.count == 0) {
-       throw "Recieved empty trip"
+       return [StepModal()]
     }
     
     var stepResult: [StepModal] = []

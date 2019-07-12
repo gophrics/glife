@@ -9,7 +9,8 @@
 import Foundation
 import RealmSwift
 
-class ProfileModal {
+@objc
+class ProfileModal : Object {
   @objc dynamic var countriesVisited: [String] = []
   @objc dynamic var percentageWorldTravelled: Float = 0
   

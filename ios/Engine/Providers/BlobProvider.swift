@@ -28,8 +28,8 @@ class BlobProvider {
     
   }
   
-  func getAllTripsWithData() {
-    var trips: [TripModal] = try! Realm().objects(TripModal.self)
+  func getAllTripsWithData() -> [[String: Any]] {
+    var trips: [TripModal] = Array<TripModal>(try! Realm().objects(TripModal.self))
     var tripMetaArray: [[String: Any]] = []
     for trip in trips {
       var tripMeta: [String: Any] = [:]
@@ -43,16 +43,16 @@ class BlobProvider {
       tripMetaArray.append(tripMeta)
     }
     
-    return trips
+    return tripMetaArray
   }
   
-  func getTrip(tripId: String) {
+  func getTrip(tripId: String) -> TripModal {
     var trip: TripModal = try! Realm().object(ofType: TripModal.self, forPrimaryKey: tripId)
     return trip
   }
   
-  func getProfileData() {
-    var profile: ProfileModal = try! Realm().objects(ofType: ProfileModal.self).first
+  func getProfileData() -> [String: Any] {
+    var profile: ProfileModal = try! Realm().objects(ProfileModal.self).first
     var profileMeta: [String: Any] = [:]
     
     profileMeta["countriesVisited"] = profile.countriesVisited

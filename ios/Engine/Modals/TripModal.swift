@@ -29,6 +29,24 @@ class TripModal: Object {
   @objc dynamic var syncComplete: Bool = false
   
   
+  func CopyConstructor(trip: [String:Any]) {
+    self.activities = trip["activities"] as? String
+    self.countryCode = trip["countryCode"] as? [String]
+    self.daysOfTravel = trip["daysOfTravel"] as? Int
+    self.distanceTravelled = trip["distanceTravelled"] as? Int
+    self.endDate = trip["endDate"] as? String
+    self.isPublic = trip["isPublic"] as? Bool
+    self.location = trip["location"] as? String
+    self.masterPicURL = trip["masterPicURL"] as? String
+    self.profileId = trip["profileId"] as? String
+    self.startDate = trip["startDate"] as? String
+    self.syncComplete = trip["syncComplete"] as? Bool
+    self.temperature = trip["temperature"] as? String
+    self.tripId = trip["tripId"] as? String
+    self.tripName = trip["tripName"] as? String
+    
+  }
+  
   func populateAll() {
     self.populateMasterPic();
     self.populateDaysOfTravel();

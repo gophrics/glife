@@ -13,7 +13,7 @@ import Photos
 @objc(PhotoLibraryProcessor)
 class PhotoLibraryProcessor: NSObject {
   
-  static func getPhotosFromLibrary(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> [PHAsset] {
+  static func getPhotosFromLibrary() -> [PHAsset] {
     let allPhotos = PHAsset.fetchAssets(with: .image, options: PHFetchOptions())
     var arrayOfPHAsset : [[String: Any]] = []
     allPhotos.enumerateObjects({(object: AnyObject!,
@@ -36,7 +36,6 @@ class PhotoLibraryProcessor: NSObject {
         }
       }
     })
-    resolve(arrayOfPHAsset)
     return arrayOfPHAsset
   }
   

@@ -36,9 +36,11 @@ class Engine: NSObject {
       return true
     }
     
-    try {
-      var trips = self.GenerateTripFromPhotos(photoRollInfos)
-      self.ClearAndUpdateProfileDataWithAllTrips(trips)
+    do {
+      try {
+        var trips = self.GenerateTripFromPhotos(photoRollInfos)
+        self.ClearAndUpdateProfileDataWithAllTrips(trips)
+      }
     } catch error {}
     
     return true
@@ -175,12 +177,12 @@ class Engine: NSObject {
       return b.timestamp < a.timestamp;
     })
   
-  for data in homes {
-    while(startTimestamp >= (data.timestamp/8.64e4).round(.down) && startTimestamp >= 0) {
-      homesDataForClustering[startTimestamp] = data as ClusterModal;
-      startTimestamp--;
+    for data in homes {
+      while(startTimestamp >= (data.timestamp/8.64e4).round(.down) && startTimestamp >= 0) {
+        homesDataForClustering[startTimestamp] = data as ClusterModal;
+        startTimestamp--;
+      }
     }
-  }
   
     self._BlobProvider.homesForDataClustering = homesDataForClustering;
     self._BlobProvider.startTimestamp = startTimestamp
@@ -228,3 +230,7 @@ class Engine: NSObject {
     return trip
   }
 }
+
+}
+
+var EngineInstance = Engine()

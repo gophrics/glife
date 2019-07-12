@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class EngineModal {
   @objc dynamic var homeData: [HomeDataModal] = []
@@ -25,6 +26,43 @@ class BlobProvider {
   
   init() {
     
+  }
+  
+  func getAllTripsWithData() {
+    var trips: [TripModal] = try! Realm().objects(TripModal.self)
+    var tripMetaArray: [[String: Any]] = []
+    for trip in trips {
+      var tripMeta: [String: Any] = []
+      tripMeta["masterPicURL"] = trip.masterPicURL
+      tripMeta["profileId"] = trip.profileId
+      tripMeta["startDate"] = trip.startDate
+      tripMeta["temperature"] = trip.temperature
+      tripMeta["countryCode"] = trip.countryCode
+      tripMeta["tripId"] = trip.tripId
+      
+      tripMetaArray.append(tripMeta)
+    }
+    
+    return trips
+  }
+  
+  func getTrip(tripId: String) {
+    var trip: TripModal = try! Realm().object(ofType: TripModal.self, forPrimaryKey: tripId)
+    return trip
+  }
+  
+  func getProfileData() {
+    var profile: ProfileModal = try! Realm().objects(ofType: ProfileModal.self).first
+    var profileMeta: [String: Any] = [:]
+    
+    profileMeta["countriesVisited"] = profile.countriesVisited
+    profileMeta["coverPicURL"] = profile.coverPicURL
+    profileMeta["profilePicURL"] = profile.profilePicURL
+    profileMeta["profileId"] = profile.profileId
+    profileMeta["percentageWorldTravelled"] = profile.percentageWorldTravelled
+    profileMeta["name"] = profile.name
+    
+    return profileMeta
   }
   
   func saveEngineData() {

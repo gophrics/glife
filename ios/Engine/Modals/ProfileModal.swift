@@ -10,7 +10,6 @@ import Foundation
 import RealmSwift
 
 class ProfileModal {
-  @objc dynamic var trips: [TripModal] = []
   @objc dynamic var countriesVisited: [String] = []
   @objc dynamic var percentageWorldTravelled: Float = 0
   

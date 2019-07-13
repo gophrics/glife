@@ -58,7 +58,7 @@ class PhotoLibraryProcessor: NSObject {
     var tripResult: [TripModal] = [];
     
     if (trips.count == 0) {
-      //throw
+      throw EngineError.coreEngineError("No trips found")
     }
     
     for trip in trips {

@@ -45,7 +45,7 @@ class BlobProvider {
   var Blob: EngineBlob = EngineBlob()
   
   init() {
-    
+    self.loadEngineData()
   }
   
   func getAllTripsWithData() -> [[String: Any]] {
@@ -93,13 +93,18 @@ class BlobProvider {
   
   func saveEngineData() {
     var currentEngineModal = Database.db.objects(EngineModal.self).first
-    try! Database.db.write {
-      currentEngineModal = self.Modal
+    if(currentEngineModal != nil) {
+      try! Database.db.write {
+        currentEngineModal = self.Modal
+      }
+    } else {
+      try! Database.db.write {
+        Database.db.add(self.Modal)
+      }
     }
   }
   
   func loadEngineData() {
     self.Modal = Database.db.objects(EngineModal.self).first!
   }
-  
 }

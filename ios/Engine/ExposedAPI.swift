@@ -28,6 +28,14 @@ class ExposedAPI: NSObject {
     var data = Engine.EngineInstance._BlobProvider.getProfileData()
     resolve(data)
   }
+
+  @objc
+  func setHomeDataFromUI(_ homeData: NSArray) {
+    var homeData:[HomeDataModal] = homeData as! [HomeDataModal]
+
+    Engine.EngineInstance.SetHomeData(homeData: homeData)
+    resolve(true)
+  }
   
   @objc
   func generateTripsFromScratch(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {

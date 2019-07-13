@@ -78,7 +78,7 @@ class TripModal: Object {
   }
   
   func populateDaysOfTravel(){
-    self.daysOfTravel =  abs((self.steps[self.steps.count-1].endTimestamp/8.64e7) - (self.steps[0].startTimestamp/8.64e7).round(.down))
+    self.daysOfTravel =  Int(abs((self.steps[self.steps.count-1].endTimestamp/86400) - (self.steps[0].startTimestamp/86400)))
   
     self.daysOfTravel = self.daysOfTravel == 0 ? 1 : self.daysOfTravel;
   }

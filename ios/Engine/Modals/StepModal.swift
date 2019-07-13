@@ -12,6 +12,8 @@ import RealmSwift
 @objc
 class StepModal : Object {
   @objc dynamic var stepId: Int = 0
+  @objc dynamic var tripId: String = ""
+  @objc dynamic var profileId: String = ""
   @objc dynamic var stepName: String = ""
   @objc dynamic var meanLatitude: Float64 = 0
   @objc dynamic var meanLongitude: Float64 = 0

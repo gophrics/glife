@@ -13,4 +13,6 @@ import RealmSwift
 class HomeDataModal: NSObject {
   @objc dynamic var name: String = ""
   @objc dynamic var timestamp: Int64 = 0
+  @objc dynamic var latitude: Float64 = 0
+  @objc dynamic var longitude: Float64 = 0
 }

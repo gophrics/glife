@@ -73,14 +73,14 @@ class BlobProvider {
   }
   
   func saveEngineData() {
-    var currentEngineModal = Database.db.objects(EngineModal.self)
+    var currentEngineModal = Database.db.objects(EngineModal.self).first
     try! Database.db.write {
       currentEngineModal = self.Modal
     }
   }
   
   func loadEngineData() {
-    self.Modal = Database.db.objects(EngineModal.self)
+    self.Modal = Database.db.objects(EngineModal.self).first
   }
   
 }

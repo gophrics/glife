@@ -30,18 +30,16 @@ class Engine: NSObject {
   func Initialize() -> Bool {
     self._BlobProvider.Modal.homesForDataClustering = try! self.GenerateHomeData(homeData: self._BlobProvider.Modal.homeData)
     
-    var photoRollInfos: [ClusterModal] = PhotoLibraryProcessor.getPhotosFromLibrary();
+    let photoRollInfos: [ClusterModal] = PhotoLibraryProcessor.getPhotosFromLibrary();
   
     // Create a No photos found warning page
     if (photoRollInfos.count == 0) {
       return true
     }
     
-    do {
-      var trips = try PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: self._BlobProvider.Modal.homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
-      try self.ClearAndUpdateProfileDataWithAllTrips(trips: trips)
-    } catch {}
-    
+    let trips = try PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: self._BlobProvider.Modal.homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
+    self.ClearAndUpdateProfileDataWithAllTrips(trips: trips)
+      
     return true
   }
   
@@ -82,11 +80,11 @@ class Engine: NSObject {
   
   
   func ExtendHomeDataToDate() {
-    var today: Date = Date()
+    let today: Date = Date()
     var endTimestamp = self._BlobProvider.Modal.endTimestamp
     
     var homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering;
-    var dataToExtend = homesDataForClustering[Int(endTimestamp)]
+    let dataToExtend = homesDataForClustering[Int(endTimestamp)]
     
     while(endTimestamp <= Int64(today.timeIntervalSince1970/86400)) {
       homesDataForClustering[Int(endTimestamp)] = dataToExtend;

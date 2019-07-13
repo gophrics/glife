@@ -21,7 +21,6 @@ class AppState {
 }
 
 
-// Only Exposed APIs
 class Engine: NSObject {
   
   var _BlobProvider: BlobProvider = BlobProvider()
@@ -39,11 +38,15 @@ class Engine: NSObject {
     
     let trips = try PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: self._BlobProvider.Modal.homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
     self.ClearAndUpdateProfileDataWithAllTrips(trips: trips)
-      
     return true
+  }
+
+  func SetHomeData(data: [HomeDataModal]) {
+    self._BlobProvider.Modal.homeData = data
   }
   
   func ClearAndUpdateProfileDataWithAllTrips(trips: [TripModal]) {
+    //TODO: Update profile data
     for trip in trips {
       self._BlobProvider.Blob.setTrip(trip: trip)
     }
@@ -51,7 +54,7 @@ class Engine: NSObject {
   
   func GenerateHomeData(homeData: [HomeDataModal]) throws -> [HomeDataModal] {
     if(homeData.count == 0) {
-      //throw runtimeError("No homes as input to be processed")
+      throw EngineError.coreEngineError("No homes as input to be processed")
     }
     
     var homesForDataClustering: [HomeDataModal] = []

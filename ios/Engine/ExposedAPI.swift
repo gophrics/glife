@@ -9,7 +9,7 @@
 import Foundation
 
 
-@objc
+@objc(ExposedAPI)
 class ExposedAPI: NSObject {
   @objc
   func getAllTrips(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {

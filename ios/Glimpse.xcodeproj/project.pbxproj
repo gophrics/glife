@@ -26,7 +26,6 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		25351DE847C349B797123362 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 45C395D3F7F040E5ABE81FB2 /* EvilIcons.ttf */; };
-		2AFF2604A957DB66DEC6B7A0 /* Pods_Glimpse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E15B02A0E7B10A0FD6F6C784 /* Pods_Glimpse.framework */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -43,6 +42,7 @@
 		3123CD7800054ED09349FA51 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B1AF7953CFD247918330340E /* FontAwesome5_Regular.ttf */; };
 		35D6111F01B44DB9AAADF1AF /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46EA43F876B341C1B71E09A6 /* Feather.ttf */; };
 		4FECC0B9977743079020166F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BCC3E4A076742F399538C1F /* Zocial.ttf */; };
+		6DCAF90E1D6842684EEBF06C /* libPods-Glimpse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F09E8579722C485E6BF70EB5 /* libPods-Glimpse.a */; };
 		6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6391C19ECC604B43B0673441 /* libAirMaps.a */; };
 		7218352A22D51A1800F7682B /* ImageDataModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218352922D51A1800F7682B /* ImageDataModal.swift */; };
 		7218352C22D51A6C00F7682B /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218352B22D51A6C00F7682B /* Region.swift */; };
@@ -457,10 +457,10 @@
 		B4385E417B924CB182827490 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		D32B6744307D519F744AB861 /* Pods-Glimpse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Glimpse.release.xcconfig"; path = "Target Support Files/Pods-Glimpse/Pods-Glimpse.release.xcconfig"; sourceTree = "<group>"; };
 		DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		E15B02A0E7B10A0FD6F6C784 /* Pods_Glimpse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Glimpse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EDB4E75BBB38403594D2C4FF /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
+		F09E8579722C485E6BF70EB5 /* libPods-Glimpse.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Glimpse.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCAEE3A1E1714AE0B8918F24 /* RNThread.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNThread.xcodeproj; path = "../node_modules/react-native-threads/ios/RNThread.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -493,7 +493,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */,
 				CB84B06125964CCE9DF44582 /* libRNThread.a in Frameworks */,
-				2AFF2604A957DB66DEC6B7A0 /* Pods_Glimpse.framework in Frameworks */,
+				6DCAF90E1D6842684EEBF06C /* libPods-Glimpse.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -650,7 +650,7 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				E15B02A0E7B10A0FD6F6C784 /* Pods_Glimpse.framework */,
+				F09E8579722C485E6BF70EB5 /* libPods-Glimpse.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -884,7 +884,6 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				889C0188182980130ECB688E /* [CP] Copy Pods Resources */,
-				A8F8ADFD271D5D52517460A7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1449,40 +1448,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Glimpse/Pods-Glimpse-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A8F8ADFD271D5D52517460A7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Glimpse/Pods-Glimpse-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
-				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/React/React.framework",
-				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/glog/glog.framework",
-				"${BUILT_PRODUCTS_DIR}/yoga/yoga.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/folly.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Glimpse/Pods-Glimpse-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

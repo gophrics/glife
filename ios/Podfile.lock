@@ -39,6 +39,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn
   - React/RCTImage (from `../node_modules/react-native`)
+  - Realm
   - RealmSwift
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -76,6 +77,6 @@ SPEC CHECKSUMS:
   RealmSwift: fe733e459d60dc7b6971d4cbee2eb4854097d12c
   yoga: 03ff42a6f223fb88deeaed60249020d80c3091ee
 
-PODFILE CHECKSUM: 7080522305c2b3b38b2e22c3e476bf5e9632e88d
+PODFILE CHECKSUM: 6860f54f64e144852d0f84d972374fc28c51f583
 
 COCOAPODS: 1.7.1

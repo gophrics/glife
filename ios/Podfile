@@ -1,8 +1,6 @@
 target 'Glimpse'
 
 platform :ios, 9.0
-use_frameworks! 
-
 
 pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'RCTImage'
@@ -27,3 +25,4 @@ pod 'GoogleSignIn'
 # Add new pods below this line
 
 pod 'RealmSwift'
+pod 'Realm', :modular_headers => true

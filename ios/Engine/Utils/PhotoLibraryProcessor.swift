@@ -54,7 +54,7 @@ class PhotoLibraryProcessor: NSObject {
   
   static func GenerateTripFromPhotos(clusterData: [ClusterModal], homesForDataClustering: [HomeDataModal], endTimestamp: Int64) -> [TripModal] {
     
-    var trips = ClusterProcessor.RunMasterClustering(clusterData: clusterData, homes: homesForDataClustering);
+    let trips = ClusterProcessor.RunMasterClustering(clusterData: clusterData, homes: homesForDataClustering);
     var tripResult: [TripModal] = [];
     
     if (trips.count == 0) {
@@ -62,9 +62,9 @@ class PhotoLibraryProcessor: NSObject {
     }
     
     for trip in trips {
-      var _trip = trip.sorted(by: { $0.timestamp < $1.timestamp })
-      var _steps: [StepModal] = ClusterProcessor.RunStepClustering(trip: _trip);
-      var __trip = PhotoLibraryProcessor.PopulateTripModalData(steps: _steps, tripId: TripUtils.GenerateTripId(), homesForDataClustering: homesForDataClustering);
+      let _trip = trip.sorted(by: { $0.timestamp < $1.timestamp })
+      let _steps: [StepModal] = ClusterProcessor.RunStepClustering(trip: _trip);
+      let __trip = PhotoLibraryProcessor.PopulateTripModalData(steps: _steps, tripId: TripUtils.GenerateTripId(), homesDataForClustering: homesForDataClustering);
       tripResult.append(__trip)
     }
     
@@ -75,11 +75,16 @@ class PhotoLibraryProcessor: NSObject {
   
   
   static func PopulateTripModalData(steps: [StepModal], tripId: String, homesDataForClustering: [HomeDataModal]) -> TripModal {
-    var tripResult: TripModal = TripModal();
-    var homeStep = homesDataForClustering[Int(steps[0].startTimestamp / 86400) - 1]
+    let tripResult: TripModal = TripModal();
+    let homeStep = homesDataForClustering[Int(steps[0].startTimestamp / 86400) - 1]
     homeStep.timestamp = (steps[0].startTimestamp - 86400)
     
-    var _stepModal: StepModal = ClusterProcessor.convertClusterToStep([homeStep])
+    let homeStepCluster = ClusterModal()
+    homeStepCluster.latitude = homeStep.latitude
+    homeStepCluster.longitude = homeStep.longitude
+    homeStepCluster.timestamp = homeStep.timestamp
+    
+    let _stepModal: StepModal = ClusterProcessor.convertClusterToStep(cluster: [homeStepCluster])
     _stepModal.location = "Home";
     _stepModal.stepId = 0;
     tripResult.steps.append(_stepModal)
@@ -90,11 +95,11 @@ class PhotoLibraryProcessor: NSObject {
     
     for step in steps {
       
-      var _p = ClusterModal()
+      let _p = ClusterModal()
       _p.latitude = step.meanLatitude;
       _p.longitude = step.meanLongitude;
       
-      var _q = ClusterModal()
+      let _q = ClusterModal()
       _q.latitude = tripResult.steps[i].meanLatitude;
       _q.longitude = tripResult.steps[i].meanLongitude;
       
@@ -103,17 +108,22 @@ class PhotoLibraryProcessor: NSObject {
       i += 1;
     }
     
-    var homeStep2 = homesDataForClustering[(steps[steps.count - 1].endTimestamp / 86400) + 1]
-    homeStep2.timestamp = (steps[steps.length - 1].endTimestamp + 86400).round(.down)
+    let homeStep2 = homesDataForClustering[Int(steps[steps.count - 1].endTimestamp / 86400) + 1]
+    homeStep2.timestamp = (steps[steps.count - 1].endTimestamp + 86400)
     
-    var _stepModal2: StepModal = ClusterProcessor.convertClusterToStep([homeStep2])
+    let homeStep2Cluster = ClusterModal()
+    homeStep2Cluster.latitude = homeStep2.latitude
+    homeStep2Cluster.longitude = homeStep2.longitude
+    homeStep2Cluster.timestamp = homeStep2.timestamp
+    
+    let _stepModal2: StepModal = ClusterProcessor.convertClusterToStep(cluster: [homeStep2Cluster])
     _stepModal2.location = "Home";
     
-    var _p = ClusterModal()
+    let _p = ClusterModal()
     _p.latitude = _stepModal.meanLatitude
     _p.longitude = _stepModal.meanLongitude
     
-    var _q = ClusterModal()
+    let _q = ClusterModal()
     _q.latitude = tripResult.steps[i].meanLatitude
     _q.longitude = tripResult.steps[i].meanLongitude
     _stepModal2.distanceTravelled = (tripResult.steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
@@ -123,20 +133,18 @@ class PhotoLibraryProcessor: NSObject {
     
     // Load locations
     for step in steps {
-      var result = TripUtils.getLocationFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)
+      let result = TripUtils.getLocationFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)
       
-      if (result != nil) {
-        step.location = result
-        
-        if (countries.firstIndex(of: result) == nil) {
-          countries.append(result)
-        }
-        if (places.firstIndex(of: step.location) == nil) {
-          places.append(step.location)
-        }
-        tripResult.countryCode.append((result as String).toLocaleUpperCase())
+      step.location = result
+    
+      if (countries.firstIndex(of: result) == nil) {
+        countries.append(result)
       }
-      
+      if (places.firstIndex(of: step.location) == nil) {
+        places.append(step.location)
+      }
+      tripResult.countryCode.append((result as String).lowercased())
+
       // Showing current weather now
       step.temperature = String(TripUtils.getWeatherFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)) + "ºC"
     }

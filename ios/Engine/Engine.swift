@@ -28,7 +28,7 @@ class Engine: NSObject {
   static var EngineInstance = Engine()
 
   func Initialize() -> Bool {
-    self._BlobProvider.Modal.homesForDataClustering = self.GenerateHomeData(homeData: self._BlobProvider.Modal.homeData)
+    self._BlobProvider.Modal.homesForDataClustering = try! self.GenerateHomeData(homeData: self._BlobProvider.Modal.homeData)
     
     var photoRollInfos: [ClusterModal] = PhotoLibraryProcessor.getPhotosFromLibrary();
   
@@ -39,10 +39,16 @@ class Engine: NSObject {
     
     do {
       var trips = try PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: self._BlobProvider.Modal.homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
-        try self.ClearAndUpdateProfileDataWithAllTrips(trips)
+      try self.ClearAndUpdateProfileDataWithAllTrips(trips: trips)
     } catch {}
     
     return true
+  }
+  
+  func ClearAndUpdateProfileDataWithAllTrips(trips: [TripModal]) {
+    for trip in trips {
+      self._BlobProvider.Blob.setTrip(trip: trip)
+    }
   }
   
   func GenerateHomeData(homeData: [HomeDataModal]) throws -> [HomeDataModal] {
@@ -80,10 +86,10 @@ class Engine: NSObject {
     var endTimestamp = self._BlobProvider.Modal.endTimestamp
     
     var homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering;
-    var dataToExtend = homesDataForClustering[endTimestamp]
+    var dataToExtend = homesDataForClustering[Int(endTimestamp)]
     
     while(endTimestamp <= Int64(today.timeIntervalSince1970/86400)) {
-      homesDataForClustering[endTimestamp] = dataToExtend;
+      homesDataForClustering[Int(endTimestamp)] = dataToExtend;
       endTimestamp += 1
     }
     
@@ -92,10 +98,10 @@ class Engine: NSObject {
   }
   
   func UpdateProfileDataWithTrip(trip: TripModal) -> TripModal {
-    self._BlobProvider.Modal.countriesVisited.append(trip.countryCode)
-    self._BlobProvider.Modal.percentageWorldTravelled = (self.Modal.countriesVisited.length * 100 / 186).round(.down)
-    
-    let _trip: TripModal = try! Realm().objects(TripModal.self).filter("tripId == " + trip.tripId).first ?? TripModal()
+    // Bug
+    self._BlobProvider.Blob.profileData.countriesVisited = trip.countryCode
+    self._BlobProvider.Blob.profileData.percentageWorldTravelled = Float((self._BlobProvider.Blob.profileData.countriesVisited.count * 100 / 186))    
+    let _trip: TripModal = try! Database.db.objects(TripModal.self).filter("tripId == " + trip.tripId).first ?? TripModal()
     _trip.CopyConstructor(trip: trip)
     
     return trip

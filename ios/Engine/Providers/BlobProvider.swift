@@ -12,7 +12,7 @@ import RealmSwift
 @objc
 class EngineModal: Object {
   @objc dynamic var homeData: [HomeDataModal] = []
-  @objc dynamic var homesForDataClustering: [Int64: String] = [:]
+  @objc dynamic var homesForDataClustering: [HomeDataModal] = []
   @objc dynamic var startTimestamp: Int64 = 0
   @objc dynamic var endTimestamp: Int64 = 0
   @objc dynamic var blobLoaded: Bool = false;
@@ -21,9 +21,28 @@ class EngineModal: Object {
   @objc dynamic var password: String = "";
 }
 
+
+@objc
+class EngineBlob: Object {
+  @objc dynamic var profileData: ProfileModal = ProfileModal()
+  @objc dynamic var trips: [TripModal] = []
+  
+  func setTrip(trip: TripModal) {
+    let _t = Database.db.objects(TripModal.self).filter("tripId == " + trip.tripId).first
+    if(_t != nil) {
+      _t!.CopyConstructor(trip: trip)
+    } else {
+      try! realm!.write {
+        realm!.add(trip)
+      }
+    }
+  }
+}
+
 class BlobProvider {
   
   var Modal: EngineModal = EngineModal()
+  var Blob: EngineBlob = EngineBlob()
   
   init() {
     
@@ -59,7 +78,7 @@ class BlobProvider {
   }
   
   func getProfileData() -> [String: Any] {
-    var profile: ProfileModal = try! Realm().objects(ProfileModal.self).first ?? ProfileModal()
+    let profile: ProfileModal = try! Realm().objects(ProfileModal.self).first ?? ProfileModal()
     var profileMeta: [String: Any] = [:]
     
     profileMeta["countriesVisited"] = profile.countriesVisited
@@ -80,7 +99,7 @@ class BlobProvider {
   }
   
   func loadEngineData() {
-    self.Modal = Database.db.objects(EngineModal.self).first
+    self.Modal = Database.db.objects(EngineModal.self).first!
   }
   
 }

@@ -88,8 +88,8 @@ class TripModal: Object {
   }
   
   func populateDates() {
-    self.startDate = TripUtils.getDateFromTimestamp(self.steps[0].startTimestamp);
-    self.endDate = TripUtils.getDateFromTimestamp(self.steps[self.steps.count - 1].endTimestamp);
+    self.startDate = TripUtils.getDateFromTimestamp(timestamp: self.steps[0].startTimestamp);
+    self.endDate = TripUtils.getDateFromTimestamp(timestamp: self.steps[self.steps.count - 1].endTimestamp);
   }
   
   func populateLocation() {

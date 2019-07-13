@@ -122,7 +122,7 @@ class TripUtils {
     request.httpMethod = "POST"
     request.httpBody = jsonData
     
-    let result = Region()
+    var result = Region()
     URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
@@ -130,23 +130,23 @@ class TripUtils {
       }
       let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
       if let responseJSON = responseJSON as? [[String: Any]] {
-        var _result = Region()
-        _result.latitude = (responseJSON as! [[String:Any]])[0]["lat"] as! Float64
-        _result.longitude = (responseJSON as! [[String:Any]])[0]["lon"] as! Float64
+        let _result = Region()
+        _result.latitude = (responseJSON )[0]["lat"] as! Float64
+        _result.longitude = (responseJSON )[0]["lon"] as! Float64
         result = _result
       }
     }
     return result
   }
   
-  static func GetTripUploadData(trip: TripModal) -> String {
-    
+  static func GetTripUploadData(trip: TripModal) -> [String: Any] {
+    return [:]
   }
   
   static func SaveTrip(trip: TripModal) -> Void {
     let urlString = ServerURLWithoutEndingSlash + "/api/v1/travel/savetrip"
     let body: [String: Any] = [
-      "trip": GetTripUploadData(trip: trip)
+      "trip": TripUtils.GetTripUploadData(trip: trip)
     ]
     let jsonData = try? JSONSerialization.data(withJSONObject: body)
     var request = URLRequest(url: URL(string: urlString)!)

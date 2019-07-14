@@ -25,4 +25,7 @@
             android:value="AIzaSyDra2PX2fNY7dr7AzkvNR1P2SNRIv5asK4"/>
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 </manifest>

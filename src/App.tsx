@@ -62,6 +62,9 @@ export default class App extends React.Component<IProps, IState> {
     })
   }
 
+  componentDidMount() {
+  }
+
   Initialize = () => {
     if(Engine.Instance.AppState.engineLoaded == Engine.EngineLoadStatus.Full) {
       if (Engine.Instance.Modal.name != "") {

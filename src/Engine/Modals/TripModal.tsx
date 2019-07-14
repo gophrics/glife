@@ -60,6 +60,7 @@ export class TripModal {
                 await AsyncStorage.setItem(this.masterPicURL, data)
         }
         for(var _step of this.steps) {
+            console.log("Generating base64 images")
             var step = new StepModal()
             step.CopyConstructor(_step)
             await step.GenerateBase64Images()

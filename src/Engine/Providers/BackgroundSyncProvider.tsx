@@ -15,6 +15,7 @@ export class BackgroundSyncProvider {
     }
 
     BackgroundSync = () => {
+        console.log("BackgroundSync function called")
         // Configure it.
         BackgroundFetch.configure({
             minimumFetchInterval: 15,     // <-- minutes (15 is minimum allowed)
@@ -37,6 +38,7 @@ export class BackgroundSyncProvider {
 
     Sync = async() => {
         this.ProfileData = Engine.Instance.Modal
+        console.log(this.ProfileData)
         for(var trip of this.ProfileData.trips) {
             var t = new TripModal()
             t.CopyConstructor(trip)

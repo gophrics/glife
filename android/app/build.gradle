@@ -105,8 +105,8 @@ android {
         applicationId "com.beerwithai.glimpse"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "2.0.2"
     }
     signingConfigs {
         release {
@@ -152,7 +152,6 @@ dependencies {
     implementation project(':react-native-background-fetch')
     implementation project(':react-native-fs')
     implementation project(':react-native-image-resizer')
-    implementation project(':react-native-threads')
     implementation project(':react-native-google-signin')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-image-crop-picker')

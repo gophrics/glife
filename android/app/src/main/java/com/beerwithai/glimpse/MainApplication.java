@@ -1,8 +1,6 @@
 package com.beerwithai.glimpse;
 
 import android.app.Application;
-
-import com.beerwithai.BuildConfig;
 import com.facebook.react.ReactApplication;
 import com.transistorsoft.rnbackgroundfetch.RNBackgroundFetchPackage;
 import com.rnfs.RNFSPackage;

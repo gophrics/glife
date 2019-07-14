@@ -31,10 +31,8 @@ class ExposedAPI: NSObject {
 
   @objc
   func setHomeDataFromUI(_ homeData: NSArray) {
-    var homeData:[HomeDataModal] = homeData as! [HomeDataModal]
-
-    Engine.EngineInstance.SetHomeData(homeData: homeData)
-    resolve(true)
+    let homeData:[HomeDataModal] = homeData as! [HomeDataModal]
+    Engine.EngineInstance.SetHomeData(data: homeData)
   }
   
   @objc
@@ -44,11 +42,46 @@ class ExposedAPI: NSObject {
   }
   
   @objc
-  func addTrip(_ trip: [String: Any], resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    var data = TripModal()
+  func addNewTrip(_ tripName: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     
-    data.CopyConstructor(trip: trip)
+    let today = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat="dd-MM-yyyy"
     
-    Engine.EngineInstance.UpdateProfileDataWithTrip(trip: data)
+    let data = TripModal()
+    data.startDate = dateFormatter.string(from: today)
+    data.endDate = dateFormatter.string(from: today)
+    data.tripName = tripName
+    data.tripId = TripUtils.GenerateTripId()
+    var operationResult = Engine.EngineInstance.UpdateProfileDataWithTrip(trip: data)
+    resolve(operationResult)
   }
+  
+  @objc
+  func getAllHomeData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    resolve(Engine.EngineInstance._BlobProvider.Modal.homeData)
+  }
+  
+  @objc
+  func getHomeData(_ index: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    resolve(Engine.EngineInstance._BlobProvider.Modal.homeData[index])
+  }
+  
+  @objc
+  func getName(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    resolve(Engine.EngineInstance._BlobProvider.Blob.profileData.name)
+  }
+  
+  @objc
+  func setAllHomeData(_ homeData: NSArray, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    Engine.EngineInstance._BlobProvider.Modal.homeData = homeData as! [HomeDataModal]
+    resolve(true)
+  }
+  
+  @objc
+  func setHomeTimestamp(_ timestamp: Int64, index: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    Engine.EngineInstance._BlobProvider.Modal.homeData[index].timestamp = timestamp
+    resolve(true)
+  }
+
 }

@@ -20,6 +20,9 @@ class AppState {
   var engineLoaded: EngineLoadStatus = EngineLoadStatus.None
 }
 
+enum EngineError: Error {
+  case coreEngineError(s: String)
+}
 
 class Engine: NSObject {
   
@@ -54,7 +57,7 @@ class Engine: NSObject {
   
   func GenerateHomeData(homeData: [HomeDataModal]) throws -> [HomeDataModal] {
     if(homeData.count == 0) {
-      throw EngineError.coreEngineError("No homes as input to be processed")
+      throw EngineError.coreEngineError(s: "No homes as input to be processed")
     }
     
     var homesForDataClustering: [HomeDataModal] = []
@@ -105,6 +108,6 @@ class Engine: NSObject {
     let _trip: TripModal = try! Database.db.objects(TripModal.self).filter("tripId == " + trip.tripId).first ?? TripModal()
     _trip.CopyConstructor(trip: trip)
     
-    return trip
+    return true
   }
 }

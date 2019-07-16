@@ -18,6 +18,7 @@ export class LoadingPageController {
     }
 
     AtleastOneTripExist = () => {
+      console.log(Engine.Instance.Modal.trips)
       return Engine.Instance.Modal.trips.length > 0
     }
     

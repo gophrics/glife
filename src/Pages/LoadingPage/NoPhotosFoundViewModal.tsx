@@ -24,8 +24,8 @@ export class NoPhotosFoundViewModal extends React.Component<IProps, IState> {
 
     render(){
         return (
-            <View style={{alignContent:'center', justifyContent:'center'}}>
-                <Text style={{fontSize: 22, color:'white', alignSelf:'center'}}>No photos were found with location tags, have you enabled location tagging in your camera?</Text>
+            <View style={{alignContent:'center', justifyContent:'center', height: '100%', width:'100%', padding: 10 }}>
+                <Text style={{fontSize: 22, color:'white', alignSelf:'center', textAlign:'center', paddingBottom: 100}}>No photos were found with location tags, have you enabled location tagging in your camera?</Text>
                 <Button title={"Continue"} onPress={this.onContinuePress}></Button>
             </View>
         )

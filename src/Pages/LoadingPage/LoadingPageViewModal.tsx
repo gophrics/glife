@@ -58,8 +58,12 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
         this.Controller = new LoadingPageController()
         this.Controller.Initialize()
         .then((res) => {
-            if(res)
-                this.props.setPage(Page[Page.PROFILE])
+            if(res) {
+                if(this.Controller.AtleastOneTripExist())
+                    this.props.setPage(Page[Page.PROFILE])
+                else
+                    this.props.setPage(Page[Page.NOPHOTOSFOUND])
+            }
             else
                 this.props.setPage(Page[Page.NOPERMISSIONIOS])
         })

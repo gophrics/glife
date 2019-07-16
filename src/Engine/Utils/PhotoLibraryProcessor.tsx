@@ -11,6 +11,7 @@ export async function getPhotosFromLibrary() : Promise<ImageDataModal[]> {
     return CameraRoll.getPhotos(options)
         .then(async (res) => {
 
+            console.log(res)
             var imageDataList: Array<ImageDataModal> = [];
             for (var image of res.edges) {
                 if (image && image.node && image.node.location &&

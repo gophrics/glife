@@ -105,8 +105,8 @@ android {
         applicationId "com.beerwithai.glimpse"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName "2.0.2"
+        versionCode 7
+        versionName "2.0.4"
     }
     signingConfigs {
         release {

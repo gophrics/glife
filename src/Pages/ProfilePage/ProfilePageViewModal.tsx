@@ -4,7 +4,7 @@ import { ProfileComponent } from '../../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../../UIComponents/StatsAsCardComponent';
 import { TripComponent } from '../../UIComponents/TripComponent';
-import { TripModal } from '../../Engine/Modals/TripModal';
+import { TripMeta } from '../../Engine/Modals/TripMeta';
 import { Page } from '../../Modals/ApplicationEnums';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { ProfilePageController } from './ProfilePageController';
@@ -75,7 +75,7 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
         setTimeout(this.getTrips, 100)
     }
 
-    onTripPress = (tripModal: TripModal) => {
+    onTripPress = (tripModal: TripMeta) => {
         this.props.setPage(Page[Page.TRIPEXPLORE], tripModal)
     }
 

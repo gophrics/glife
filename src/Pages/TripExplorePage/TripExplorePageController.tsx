@@ -1,4 +1,4 @@
-import { TripModal } from "../../Engine/Modals/TripModal";
+import { TripModal } from "../../Engine/Modals/TripMeta";
 import { StepModal } from '../../Engine/Modals/StepModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";

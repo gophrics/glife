@@ -1,5 +1,4 @@
-import { SocialUtils } from "../../Engine/Utils/SocialUtils";
-import { TripModal } from "../../Engine/Modals/TripModal";
+import { TripMeta } from "../../Engine/Modals/TripMeta";
 
 export class FeedPageController {
 
@@ -7,12 +6,11 @@ export class FeedPageController {
 
     }
 
-    GetFeed = async(): Promise<Array<TripModal>> => {
-        var feeds = await SocialUtils.GetFeed()
+    GetFeed = async(): Promise<Array<TripMeta>> => {
         return []
     }
 
-    onTripPress = (tripModal: TripModal) => {
+    onTripPress = (tripModal: TripMeta) => {
 
     }
 }

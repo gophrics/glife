@@ -1,26 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
-import { TripModal } from '../Engine/Modals/TripModal';
+import { TripMeta } from '../Engine/Modals/TripMeta';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { Region } from "react-native-maps";
-
-
-interface TripMeta{
-    profileId: string
-    tripId: string
-    location : Region
-    tripName: string
-    countryCode: string[]
-    temperature : string
-    daysOfTravel: number
-    distanceTravelled : number
-    activities: Array<string>
-    startDate: string
-    endDate: string
-    masterPic: string
-    public: boolean
-    syncComplete: boolean
-}
 
 interface IState {
     location: string
@@ -29,7 +10,7 @@ interface IState {
 
 interface IProps {
     tripModal: TripMeta
-    onPress: (tripModal: TripModal) => void
+    onPress: (tripModal: TripMeta) => void
 }
 
 const deviceHeight = Dimensions.get('window').height

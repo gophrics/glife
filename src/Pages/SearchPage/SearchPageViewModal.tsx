@@ -3,7 +3,7 @@ import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
 import { SearchPageController } from './SearchPageController';
 import { SearchBar } from 'react-native-elements';
 import { Page } from '../../Modals/ApplicationEnums';
-import { TripModal } from "../../Engine/Modals/TripModal";
+import { TripMeta } from "../../Engine/Modals/TripMeta";
 import { TripComponent } from '../../UIComponents/TripComponent';
 
 interface IProps {
@@ -12,7 +12,7 @@ interface IProps {
 
 interface IState {
     search: string,
-    searchResults: Array<TripModal>
+    searchResults: Array<TripMeta>
     loading: boolean
 }
 
@@ -52,14 +52,11 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
         })
     }
 
-    onTripPress = (tripModal: TripModal) => {
+    onTripPress = (trip: TripMeta) => {
         this.setState({
             loading: true
         })
-        this.Controller.GetTrip(tripModal)
-        .then((data) => {
-           this.props.setPage(Page[Page.TRIPEXPLORE], data)
-        })
+        this.props.setPage(Page[Page.TRIPEXPLORE], trip)
     }
 
     render() {

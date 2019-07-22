@@ -100,7 +100,6 @@ export class StepModal {
         this.endTimestamp = step.endTimestamp;v
         this.imageUris = step.imageUris;
         this.imageBase64 = step.imageBase64;
-        this.timelineData = step.timelineData;
         this.markers = step.markers;
         this.masterImageUri = step.masterImageUri;
         this.masterMarker = step.masterMarker;

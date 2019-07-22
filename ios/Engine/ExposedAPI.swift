@@ -12,50 +12,50 @@ import Foundation
 @objc(ExposedAPI)
 class ExposedAPI: NSObject {
     
-  @objc
-  func getTripsMeta(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    // TODO: Get meta of all trips for better memory
-    resolve(data)
-  }
+   @objc
+   func getTripsMeta(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        // TODO: Get meta of all trips for better memory
+        resolve(data)
+   }
   
-  @objc
-  func getTrip(_ tripId: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    var data = Engine.EngineInstance._BlobProvider.getTrip(tripId: tripId)
-    resolve(data)
-  }
+   @objc
+   func getTrip(_ tripId: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        var data = Engine.EngineInstance._BlobProvider.getTrip(tripId: tripId)
+        resolve(data)
+   }
   
-  @objc
-  func getProfileData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    var data = Engine.EngineInstance._BlobProvider.getProfileData()
-    resolve(data)
-  }
+   @objc
+   func getProfileData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        var data = Engine.EngineInstance._BlobProvider.getProfileData()
+        resolve(data)
+   }
 
-  @objc
-  func setHomeDataFromUI(_ homeData: NSArray) {
-    let homeData:[HomeDataModal] = homeData as! [HomeDataModal]
-    Engine.EngineInstance.SetHomeData(data: homeData)
-  }
+   @objc
+   func setHomeDataFromUI(_ homeData: NSArray) {
+        let homeData:[HomeDataModal] = homeData as! [HomeDataModal]
+        Engine.EngineInstance.SetHomeData(data: homeData)
+   }
   
-  @objc
-  func addNewTrip(_ tripName: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+   @objc
+   func addNewTrip(_ tripName: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     
-    let today = Date()
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat="dd-MM-yyyy"
+        let today = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat="dd-MM-yyyy"
     
-    let data = TripModal()
-    data.startDate = dateFormatter.string(from: today)
-    data.endDate = dateFormatter.string(from: today)
-    data.tripName = tripName
-    data.tripId = TripUtils.GenerateTripId()
-    var operationResult = Engine.EngineInstance.UpdateProfileDataWithTrip(trip: data)
-    resolve(operationResult)
-  }
+        let data = TripModal()
+        data.startDate = dateFormatter.string(from: today)
+        data.endDate = dateFormatter.string(from: today)
+        data.tripName = tripName
+        data.tripId = TripUtils.GenerateTripId()
+        var operationResult = Engine.EngineInstance.UpdateProfileDataWithTrip(trip: data)
+        resolve(operationResult)
+   }
   
-  @objc
-  func getHomeData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    resolve(Engine.EngineInstance._BlobProvider.Modal.homeData)
-  }
+   @objc
+   func getHomeData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(Engine.EngineInstance._BlobProvider.Modal.homeData)
+   }
   
     @objc
     func getName(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {

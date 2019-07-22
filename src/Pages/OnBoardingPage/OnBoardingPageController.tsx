@@ -34,7 +34,7 @@ export class OnBoardingPageController {
     }
 
     SaveData = () => {
-        Engine.Instance.SaveEngineData()
+
     }
     
     AddEmptyHome = () => {
@@ -62,7 +62,6 @@ export class OnBoardingPageController {
 
     SetAllHomeData = (homes: Array<HomeDataModal>) => {
         this.homeData = homes
-        Engine.Instance.SaveEngineData()
     }
 
     SetHomeName = (index: number, name: string) => {

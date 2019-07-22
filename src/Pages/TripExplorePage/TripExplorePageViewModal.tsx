@@ -4,7 +4,7 @@ import {
     Dimensions,
     ScrollView, View, Image, Text, TouchableOpacity
 } from 'react-native';
-import MapView, { Marker, Polyline, Callout } from 'react-native-maps';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import { StepComponent } from '../../UIComponents/StepComponent';
 import { StepModal } from '../../Engine/Modals/StepModal';
 import { Region } from 'react-native-maps';
@@ -87,7 +87,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
 
             snapOffsets.push(snapOffsets.length == 0 ? deviceWidth * 3 / 4 + 20 + 20 : snapOffsets[key - 1] + deviceWidth * 3 / 4 + 20 + 20)
             markers.push.apply(markers, step.markers)
-            imageUriData.push.apply(imageUriData, step.imageUris)
+            imageUriData.push.apply(imageUriData, step.images)
             polylineArr.push({ latitude: step.meanLatitude, longitude: step.meanLongitude })
             key++;
         }

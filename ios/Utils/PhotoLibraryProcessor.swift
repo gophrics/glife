@@ -44,7 +44,7 @@ class PhotoLibraryProcessor: NSObject {
         thumbnail = result!
       })
       if thumbnail != nil {
-        return UIImageJPEGRepresentation(thumbnail!, 100)
+        return thumbnail!.jpegData(compressionQuality: 100)
       }
       return nil
     }
@@ -52,13 +52,13 @@ class PhotoLibraryProcessor: NSObject {
   }
   
   
-  static func GenerateTripFromPhotos(clusterData: [ClusterModal], homesForDataClustering: [HomeDataModal], endTimestamp: Int64) -> [TripModal] {
+  static func GenerateTripFromPhotos(clusterData: [ClusterModal], homesForDataClustering: [HomeDataModal], endTimestamp: Int64) throws -> [TripModal] {
     
     let trips = ClusterProcessor.RunMasterClustering(clusterData: clusterData, homes: homesForDataClustering);
     var tripResult: [TripModal] = [];
     
     if (trips.count == 0) {
-      throw EngineError.coreEngineError("No trips found")
+      throw EngineError.coreEngineError(message: "No trips found")
     }
     
     for trip in trips {

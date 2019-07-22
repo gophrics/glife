@@ -20,21 +20,20 @@ class AppState {
   var engineLoaded: EngineLoadStatus = EngineLoadStatus.None
 }
 
-enum EngineError: Error {
-  case coreEngineError(s: String)
-}
 
 class Engine: NSObject {
   
     var _BlobProvider: BlobProvider = BlobProvider()
     static var EngineInstance = Engine()
 
-    func init() {
+  override init() {
+        debugPrint("Init called for Engine")
+        super.init()
         self.ExtendHomeDataToDate()
     }
     
     func Initialize(homeData: [HomeDataModal]) -> Bool {
-        self.SetHomeData(homeData);
+      self.SetHomeData(data: homeData);
         
         self._BlobProvider.Modal.homesForDataClustering = try! self.GenerateHomeData(homeData: self._BlobProvider.Modal.homeData)
         
@@ -45,7 +44,7 @@ class Engine: NSObject {
           return true
         }
         
-        let trips = try PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: self._BlobProvider.Modal.homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
+        let trips = try! PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: self._BlobProvider.Modal.homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
         self.ClearAndUpdateProfileDataWithAllTrips(trips: trips)
         return true
     }
@@ -63,7 +62,7 @@ class Engine: NSObject {
   
   func GenerateHomeData(homeData: [HomeDataModal]) throws -> [HomeDataModal] {
     if(homeData.count == 0) {
-      throw EngineError.coreEngineError(s: "No homes as input to be processed")
+      throw EngineError.coreEngineError(message: "No homes as input to be processed")
     }
     
     var homesForDataClustering: [HomeDataModal] = []
@@ -114,6 +113,6 @@ class Engine: NSObject {
     let _trip: TripModal = try! Database.db.objects(TripModal.self).filter("tripId == " + trip.tripId).first ?? TripModal()
     _trip.CopyConstructor(trip: trip)
     
-    return true
+    return _trip
   }
 }

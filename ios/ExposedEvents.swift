@@ -9,22 +9,21 @@
 
 import Foundation
 
-
 @objc(ExposedEvents)
 class ExposedEvents: RCTEventEmitter {
 
     @objc
-    static func GetTotalToLoad() {
+    func GetTotalToLoad() {
         sendEvent(withName:"getTotalToLoad", body: ["totalToLoad", 10]) //TODO
     }
     
     @objc
-    static func GetTotalLoaded() {
+    func GetTotalLoaded() {
         sendEvent(withName:"getTotalLoaded", body:["totalLoaded", 1]) //TODO
     }
     
     @objc
-    static func GetImageBeingLoaded() {
+    func GetImageBeingLoaded() {
         sendEvent(withName:"getImageBeingLoaded", body:["imageBeingLoaded", "imageuri"]) //TODO
     }
     
@@ -33,9 +32,9 @@ class ExposedEvents: RCTEventEmitter {
     override func supportedEvents() -> [String]! {
         return ["getTotalToLoad", "getTotalLoaded", "getImageBeingLoaded"]
     }
-    
-    // you also need to add the override attribute
-    // on these methods
-    override func constantsToExport() {}
-    override static func requiresMainQueueSetup() {}
+//
+//    // you also need to add the override attribute
+//    // on these methods
+//    override func constantsToExport() {}
+//    override static func requiresMainQueueSetup() {}
 }

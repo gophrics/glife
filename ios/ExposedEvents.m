@@ -11,4 +11,4 @@
 
 @interface RCT_EXTERN_MODULE(ExposedEvents, RCTEventEmitter)
 
-}
+@end

@@ -37,6 +37,11 @@ PODS:
     - React/RCTNetwork
   - React/RCTNetwork (0.59.9):
     - React/Core
+  - Realm (3.17.0):
+    - Realm/Headers (= 3.17.0)
+  - Realm/Headers (3.17.0)
+  - RealmSwift (3.17.0):
+    - Realm (= 3.17.0)
   - RNBackgroundFetch (2.6.1):
     - React
   - RNCAsyncStorage (1.5.0):
@@ -67,6 +72,8 @@ DEPENDENCIES:
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - React/RCTImage (from `../node_modules/react-native`)
+  - Realm
+  - RealmSwift
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNFS (from `../node_modules/react-native-fs`)
@@ -83,6 +90,8 @@ SPEC REPOS:
     - GoogleToolboxForMac
     - GTMSessionFetcher
     - QBImagePickerController
+    - Realm
+    - RealmSwift
     - RSKImageCropper
 
 EXTERNAL SOURCES:
@@ -133,6 +142,8 @@ SPEC CHECKSUMS:
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   react-native-image-resizer: ecae22b577b0425cd7803eb8145243038dd4b6bd
   react-native-sqlite-storage: e2514e75e65458cc2c6590d181bd1947ec6f4e3f
+  Realm: b30db41ff34fc858ffc25ba8d44a82c164e7ccd0
+  RealmSwift: fe733e459d60dc7b6971d4cbee2eb4854097d12c
   RNBackgroundFetch: b7a6da09d9e557d02b6f71891fe9cdba70ea0b51
   RNCAsyncStorage: 63407ea82f1b5ac8fc53a0b8c569b08e0516a9e0
   RNFS: d229ee245fa9685417e6d9367031d670d723547e
@@ -143,6 +154,6 @@ SPEC CHECKSUMS:
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: 03ff42a6f223fb88deeaed60249020d80c3091ee
 
-PODFILE CHECKSUM: 4bf7423d0de9b9662cabfde787f3e985cd308a03
+PODFILE CHECKSUM: 6aa02e857bc38be71f046c58759e85434a55c73b
 
 COCOAPODS: 1.7.1

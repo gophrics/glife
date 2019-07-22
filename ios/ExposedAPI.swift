@@ -15,6 +15,9 @@ class ExposedAPI: NSObject {
   
     @objc
     func getProfileData(_ param: String, profileId: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        
+        print("Param: " + param)
+        print("ProfileId: " + profileId)
         var data = Engine.EngineInstance._BlobProvider.getProfileData()
         resolve(data)
     }
@@ -60,7 +63,7 @@ class ExposedAPI: NSObject {
     
     @objc
     func setName(_ name: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        resolve(Engine.EngineInstance.setName(name))
+        resolve(true)
     }
   
     @objc
@@ -77,27 +80,27 @@ class ExposedAPI: NSObject {
     
     @objc
     func InitializeEngine(_ homeData: NSArray, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        var result = Engine.EngineInstance.Initialize(homeData as! [HomeDataModal])
+      var result = Engine.EngineInstance.Initialize(homeData: homeData as! [HomeDataModal])
         resolve(result)
     }
     
     @objc
     func getCoordinatesFromLocation(_ name: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        var result = TripUtils.getCoordinatesFromLocation(name)
-        resovle(result)
+      var result = TripUtils.getCoordinatesFromLocation(location: name)
+      resolve(result)
     }
     
     
     @objc
     func setProfilePic(_ profilePicData: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        Engine.EngineInstance.Modal.profilePicData = profilePicData;
+        Engine.EngineInstance._BlobProvider.Blob.profileData.profilePicURL = profilePicData;
         resolve(true)
     }
     
     
     @objc
     func setCoverPic(_ coverPicURL: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        Engine.EngineInstance.Modal.coverPicURL = coverPicURL;
+        Engine.EngineInstance._BlobProvider.Blob.profileData.coverPicURL = coverPicURL;
         resolve(true)
     }
     

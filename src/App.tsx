@@ -60,19 +60,13 @@ export default class App extends React.Component<IProps, IState> {
       forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login
       accountName: '', // [Android] specifies an account name on the device that should be used
     })
-    this.testfunc()
-  }
-
-  async testfunc() {
-    console.log("Test is called")
-    var res = await NativeModules.PhotoLibraryProcessor.getPhotosFromLibrary()
-    console.log(res)
   }
 
   componentDidMount() {
   }
 
   Initialize = () => {
+    NativeModules.ExposedAPI.getProfileData("operationblue", "123")
     if(Engine.Instance.AppState.engineLoaded == Engine.EngineLoadStatus.Full) {
       if (Engine.Instance.Modal.name != "") {
         this.setState({

@@ -13,11 +13,10 @@ export interface AppState {
 }
 
 export class Engine {
-    Modal: ProfileModal
     AppState: AppState = {loggedIn: false, engineLoaded: EngineLoadStatus.None}
 
+    Cache: any = {}
     constructor() {
-        this.Modal = new ProfileModal()
     }
 
     SaveEngineData = () => {
@@ -27,7 +26,6 @@ export class Engine {
     }
 
     setName = (name: string) => {
-        this.Modal.name = name;
     }
 
     setEmailPassword = (email: string, password: string) => {

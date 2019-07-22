@@ -1,26 +1,51 @@
-import { ProfileModal } from "../../Engine/Modals/ProfileModal";
 import ImagePicker from 'react-native-image-crop-picker';
-import * as Engine from '../../Engine/Engine'
+import { NativeModules } from "react-native";
+import { Region } from "react-native-maps";
+
+interface TripMeta{
+    profileId: string
+    tripId: string
+    location : Region
+    tripName: string
+    countryCode: string[]
+    temperature : string
+    daysOfTravel: number
+    distanceTravelled : number
+    activities: Array<string>
+    startDate: string
+    endDate: string
+    masterPic: string
+    public: boolean
+    syncComplete: boolean
+}
+
+interface ProfileMeta {
+    trips: TripMeta[];
+    countriesVisited: string[]
+    percentageWorldTravelled: number
+    coverPicURL: string
+
+    // Profile stuff
+    profilePicURL: string
+    profileId: string
+    name: string
+}
 
 export class ProfilePageController {
-
-    Modal: ProfileModal
     
+    Modal: ProfileMeta;
+
     constructor() {
-        this.Modal = Engine.Instance.Modal
+        this.Modal = {} as ProfileMeta;
         this.loadModal()
     }
 
-    loadModal = () => {
-        if(Engine.EngineLoadStatus.Full) {
-            this.Modal = Engine.Instance.Modal;
-        } else {
-            setTimeout(this.loadModal, 1000)
-        }
+    loadModal = async() => {
+        this.Modal = await NativeModules.getProfileMeta()
     }
     
     onProfilePicChange = (profilePicURL: string) => {
-        this.Modal.profilePicURL = profilePicURL
+        NativeModules.setProfilePic(profilePicURL);
     }
 
     onCoverPicChangePress = () => {
@@ -28,31 +53,23 @@ export class ProfilePageController {
     }
 
     onCoverPicChange = (coverPicURL: string) => {
-        this.Modal.coverPicURL = coverPicURL
-    }
-
-    getName = () : string => {
-        return this.Modal.name;
-    }
-
-    setName = (name: string) => {
-        Engine.Instance.setName(name)
+        NativeModules.setCoverPic(coverPicURL)
     }
     
-    getTrips = () => {
+    getTrips = async() : Promise<Array<TripMeta>> => {
         return this.Modal.trips
     }
 
-    getProfilePicURL = () => {
-        return this.Modal.profilePicURL
+    getProfilePicURL = async() => {
+        return this.Modal.profilePicURL;
     }
 
-    getCoverPicURL = () => {
-        return this.Modal.coverPicURL
+    getCoverPicURL = async() => {
+        return this.Modal.coverPicURL;
     }
 
     getCountriesVisitedArray = () => {
-        return this.Modal.countriesVisited
+        return this.Modal.countriesVisited;
     }
 
     getNumberOfCountriesVisited = () => {

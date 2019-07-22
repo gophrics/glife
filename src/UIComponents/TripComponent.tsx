@@ -1,8 +1,26 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import { TripModal } from '../Engine/Modals/TripModal';
-import { TripUtils } from '../Engine/Utils/TripUtils';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { Region } from "react-native-maps";
+
+
+interface TripMeta{
+    profileId: string
+    tripId: string
+    location : Region
+    tripName: string
+    countryCode: string[]
+    temperature : string
+    daysOfTravel: number
+    distanceTravelled : number
+    activities: Array<string>
+    startDate: string
+    endDate: string
+    masterPic: string
+    public: boolean
+    syncComplete: boolean
+}
 
 interface IState {
     location: string
@@ -10,7 +28,7 @@ interface IState {
 }
 
 interface IProps {
-    tripModal: TripModal
+    tripModal: TripMeta
     onPress: (tripModal: TripModal) => void
 }
 
@@ -30,31 +48,11 @@ export class TripComponent extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props)
-        this.getLocations();
         this.populateMasterImage();
     }
 
-    getLocations() {
-        if(this.retryCount <= 0) return;
-        this.retryCount--;
-        TripUtils.getLocationFromCoordinates(this.props.tripModal.location.latitude,
-            this.props.tripModal.location.longitude)
-        .then((res) => {
-            if(res.address) {
-                res = res.address.country
-                this.setState({
-                    location: res
-                })
-            } else {
-                this.getLocations()
-            }
-        })
-    }
-
     populateMasterImage = () => {
-        var masterPic = this.props.tripModal.masterPicBase64
-        if(masterPic == "") masterPic = this.props.tripModal.masterPicURL
-        else masterPic = `data:image/gif;base64,${masterPic}`
+        var masterPic = this.props.tripModal.masterPic
         this.state = {
             masterPic: masterPic,
             location: "..."

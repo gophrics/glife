@@ -1,21 +1,16 @@
-import { TripModal } from "../../Engine/Modals/TripModal";
 import { StepModal } from '../../Engine/Modals/StepModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 import * as Engine from "../../Engine/Engine";
-import { PublisherSubscriber } from '../../Engine/PublisherSubscriber'
+import { NativeModules } from "react-native";
 
 export class TripExplorePageController {
-
-    Modal: TripModal
     NewStepId: number
     ProfilePageController: ProfilePageController
 
     constructor() {
         this.NewStepId = 2;
         this.ProfilePageController = new ProfilePageController()
-        this.Modal = new TripModal()
-        this.Modal.CopyConstructor(PublisherSubscriber.Bus[Page[Page.TRIPEXPLORE]] as TripModal || {})
     }
 
     onNewStepPress = (step: StepModal) => {
@@ -27,19 +22,7 @@ export class TripExplorePageController {
             return;
         }
 
-        //Right now, we're calcualting step based on images, and not overriding them
-        _step.stepId = this.NewStepId;
-
-        var trip: TripModal = this.Modal as TripModal
-        trip.steps.push(_step);
-        trip.steps.sort((a: StepModal, b: StepModal) => {
-            return a.stepId - b.stepId;
-        })
-
-        trip = await Engine.Instance.PopulateTripModalData(trip.steps.slice(1, trip.steps.length - 1), trip.tripId)
-        trip.tripName = this.Modal.tripName;
-
-        this.Modal = Engine.Instance.UpdateProfileDataWithTrip(trip)
+        NativeModules.newStep(_step)
     }
 
     onPhotoModalDismiss = (step: StepModal) => {

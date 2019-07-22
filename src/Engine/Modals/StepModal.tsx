@@ -1,111 +1,60 @@
-import {Region} from 'react-native-maps';
-import AsyncStorage from "@react-native-community/async-storage";
-import * as PhotoLibraryProcessor from '../Utils/PhotoLibraryProcessor';
+import { NativeModules } from 'react-native';
 
 export class StepModal {
-    stepId: number
-    stepName: string
-    meanLatitude: number
-    meanLongitude: number
-    location: string
-    startTimestamp: number
-    endTimestamp: number
-    imageUris: string[]
-    markers: Region[]
-    masterImageUri: string
-    masterMarker: Region
-    distanceTravelled: number
-    description: string
-    temperature: string
-    masterImageBase64: string
-    imageBase64: string[];
+    profileId: string = ""
+    tripId: string = ""
+    stepId: number = 0
 
-    getMasterImageBase64() {
-        return AsyncStorage.getItem(this.masterImageUri)
+    get stepName() {
+        return NativeModules.getStepData('stepName', this.profileId, this.tripId, this.stepId)
     }
 
-    getImageBase64() {
-        var promiseArray = [];
-        for(var image of this.imageUris) {
-            promiseArray.push(AsyncStorage.getItem(image))
-        }
-        return promiseArray
+    get meanLatitude() {
+        return NativeModules.getStepData('meanLatitude', this.profileId, this.tripId, this.stepId)
     }
 
-    async GenerateBase64Images() {
-        for(var image of this.imageUris) {
-            var alreadyGenerated = await AsyncStorage.getItem(image)
-            if(alreadyGenerated == null) {
-                var data = await PhotoLibraryProcessor.GetImageBase64(image)
-                if(data != "")
-                    await AsyncStorage.setItem(image, data)
-            }
-        }
-        var alreadyGenerated = await AsyncStorage.getItem(this.masterImageUri);
-        if(alreadyGenerated == null) {
-            var data = await PhotoLibraryProcessor.GetImageBase64(this.masterImageUri)
-            if(data != "")
-                await AsyncStorage.setItem(this.masterImageUri, data)
-        }
+    get meanLongitude() {
+        return NativeModules.getStepData('meanLongitude', this.profileId, this.tripId, this.stepId)
     }
 
-    async GetUploadData() {
-        var data: any = {}
-        data['stepId'] = this.stepId;
-        data['stepName'] = this.stepName;
-        data['imageBase64'] = [];
-        for(var image of this.getImageBase64()) {
-            data['imageBase64'].push(await image)
-        }
-        data['masterImageBase64'] = await this.getMasterImageBase64();
-        data['masterMarker'] = this.masterMarker;
-        data['markers'] = this.markers;
-        data['meanLatitude'] = this.meanLatitude;
-        data['meanLongitude'] = this.meanLongitude;
-        data['location'] = this.location;
-        data['startTimestamp'] = this.startTimestamp;
-        data['endTimestamp'] = this.endTimestamp;
-        data['distanceTravelled'] = this.distanceTravelled;
-        data['description'] = this.description;
-        data['temperature'] = this.temperature;
-
-        return data;
+    get location() {
+        return NativeModules.getStepData('location', this.profileId, this.tripId, this.stepId)
     }
 
-    constructor() {
-        this.stepId = 0;
-        this.meanLatitude = 0;
-        this.meanLongitude = 0;
-        this.location = "";
-        this.startTimestamp = 0;
-        this.endTimestamp = 0;
-        this.imageUris = []
-        this.markers = [];
-        this.masterImageUri = "";
-        this.masterMarker = { latitude: 0, longitude: 0 } as Region
-        this.distanceTravelled = 0;
-        this.description = "";
-        this.temperature = "";
-        this.stepName = "";
-        this.masterImageBase64 = "";
-        this.imageBase64 = [];
+    get startTimestamp() {
+        return NativeModules.getStepData('startTimestamp', this.profileId, this.tripId, this.stepId)
     }
 
-    CopyConstructor = (step: any) => {
-        this.stepId = step.stepId;
-        this.meanLatitude = step.meanLatitude;
-        this.meanLongitude = step.meanLongitude;
-        this.location = step.location;
-        this.startTimestamp = step.startTimestamp;
-        this.endTimestamp = step.endTimestamp;v
-        this.imageUris = step.imageUris;
-        this.imageBase64 = step.imageBase64;
-        this.markers = step.markers;
-        this.masterImageUri = step.masterImageUri;
-        this.masterMarker = step.masterMarker;
-        this.distanceTravelled = step.distanceTravelled;
-        this.description = step.description;
-        this.temperature = step.temperature;
-        this.masterImageBase64 = step.masterImageBase64;
+    get endTimestamp() {
+        return NativeModules.getStepData('endTimestamp', this.profileId, this.tripId, this.stepId)
     }
+
+    get images() {
+        return NativeModules.getStepData('images', this.profileId, this.tripId, this.stepId)
+    }
+
+    get markers() {
+        return NativeModules.getStepData('markers', this.profileId, this.tripId, this.stepId)
+    }
+
+    get masterImage() {
+        return NativeModules.getStepData('masterImage', this.profileId, this.tripId, this.stepId)
+    }
+
+    get masterMarker() {
+        return NativeModules.getStepData('masterMarker', this.profileId, this.tripId, this.stepId)
+    }
+
+    get distanceTravelled() {
+        return NativeModules.getStepData('distanceTravelled', this.profileId, this.tripId, this.stepId)
+    }
+
+    get description() {
+        return NativeModules.getStepData('description', this.profileId, this.tripId, this.stepId)
+    }
+
+    get temperature() {
+        return NativeModules.getStepData('temperature', this.profileId, this.tripId, this.stepId)
+    }
+
 }

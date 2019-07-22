@@ -1,5 +1,6 @@
 import { TripModal } from "../../Engine/Modals/TripModal";
 import * as Engine from "../../Engine/Engine";
+import { NativeModules } from "react-native";
 
 export class SearchPageController {
 
@@ -13,7 +14,7 @@ export class SearchPageController {
 
 
     Search = async(text: string) => {
-        var result = await TripUtils.Search(text)
+        var result = await NativeModules.Search(text)
         var returnresult: Array<TripModal> = []
 
         for(var trip of result) {
@@ -21,9 +22,5 @@ export class SearchPageController {
         }
 
         return returnresult
-    }
-
-    getAuthToken = () : string => {
-        return AuthProvider.Token;
     }
 }

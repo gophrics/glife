@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+import { ProfileModal } from './Modals/ProfileModal';
 
 export enum EngineLoadStatus {
     None = 0,

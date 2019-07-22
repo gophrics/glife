@@ -45,6 +45,8 @@
 		4FECC0B9977743079020166F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BCC3E4A076742F399538C1F /* Zocial.ttf */; };
 		6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6391C19ECC604B43B0673441 /* libAirMaps.a */; };
 		72098C3B22E5E58F00C6E57A /* Engine in Resources */ = {isa = PBXBuildFile; fileRef = 72098C3A22E5E58F00C6E57A /* Engine */; };
+		72098C8022E6241900C6E57A /* Engine in Sources */ = {isa = PBXBuildFile; fileRef = 72098C3A22E5E58F00C6E57A /* Engine */; };
+		72098C8122E6241F00C6E57A /* Glimpse-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 72098C1322E5E58F00C6E57A /* Glimpse-Bridging-Header.h */; };
 		726E193F225BA5A5003EA830 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 726E193E225BA569003EA830 /* libRCTCameraRoll.a */; };
 		7270EF9222A275B2000F2EED /* Glimpse_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7270EF6C22A275B2000F2EED /* Glimpse_logo.png */; };
 		79BC223EAA4B475490C68B9A /* TSBackgroundFetch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42EAFCF61B24736BCFD48C8 /* TSBackgroundFetch.framework */; };
@@ -1434,6 +1436,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72098C8122E6241F00C6E57A /* Glimpse-Bridging-Header.h in Sources */,
+				72098C8022E6241900C6E57A /* Engine in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				0A5C3CE7600149CBA3800AA0 /* RNBackgroundFetch+AppDelegate.m in Sources */,
@@ -1560,6 +1564,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A5B62B349C8CECB547D33BF5 /* Pods-Glimpse.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1595,6 +1600,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D32B6744307D519F744AB861 /* Pods-Glimpse.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

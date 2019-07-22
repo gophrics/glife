@@ -30,11 +30,11 @@ export class NewTripPage extends React.Component<IProps, IState> {
 
         this.Controller = new NewTripPageController()
 
-        this.Controller.checkPermissionToAccessPhotoLibrary()
-        .then((res: boolean) => {
-                if(!res) this.props.setPage(Page[Page.NOPERMISSIONIOS])
-            }
-        )
+        // this.Controller.checkPermissionToAccessPhotoLibrary()
+        // .then((res: boolean) => {
+        //         if(!res) this.props.setPage(Page[Page.NOPERMISSIONIOS])
+        //     }
+        // )
     }
 
     onTitleChange = (title: string) => {

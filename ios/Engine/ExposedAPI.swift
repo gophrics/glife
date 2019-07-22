@@ -12,24 +12,25 @@ import Foundation
 @objc(ExposedAPI)
 class ExposedAPI: NSObject {
     
-   @objc
-   func getTripsMeta(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        // TODO: Get meta of all trips for better memory
-        resolve(data)
-   }
   
-   @objc
-   func getTrip(_ tripId: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        var data = Engine.EngineInstance._BlobProvider.getTrip(tripId: tripId)
+    @objc
+    func getProfileData(_ param: String, profileId: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        var data = Engine.EngineInstance._BlobProvider.getProfileData()
         resolve(data)
-   }
-  
+    }
+    
    @objc
-   func getProfileData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    func getTripData(_ param: String, profileId: String, tripId: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
         var data = Engine.EngineInstance._BlobProvider.getProfileData()
         resolve(data)
    }
-
+    
+   @objc
+    func getStepData(_ param: String, profileId: String, tripId: String, stepId: Int64, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        var data = Engine.EngineInstance._BlobProvider.getProfileData()
+        resolve(data)
+   }
+    
    @objc
    func setHomeDataFromUI(_ homeData: NSArray) {
         let homeData:[HomeDataModal] = homeData as! [HomeDataModal]
@@ -56,6 +57,11 @@ class ExposedAPI: NSObject {
    func getHomeData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
         resolve(Engine.EngineInstance._BlobProvider.Modal.homeData)
    }
+    
+    @objc
+    func setName(_ name: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(Engine.EngineInstance.setName(name))
+    }
   
     @objc
     func getName(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {

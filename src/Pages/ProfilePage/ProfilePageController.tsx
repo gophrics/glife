@@ -16,6 +16,10 @@ export class ProfilePageController {
     loadModal = async() => {
         this.Modal = Instance.Modal;
     }
+
+    setName = (name: string) => {
+        NativeModules.setName(name)
+    }
     
     onProfilePicChange = (profilePicURL: string) => {
         NativeModules.setProfilePic(profilePicURL);

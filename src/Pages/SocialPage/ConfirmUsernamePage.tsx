@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { View, Text, TextInput, TouchableOpacity,  } from 'react-native'
-import { ProfileUtils } from '../../Engine/Utils/ProfileUtils';
+import { View, Text, TextInput, TouchableOpacity, NativeModules,  } from 'react-native'
 import { Page } from '../../Modals/ApplicationEnums';
 
 interface IProps {
@@ -23,7 +22,7 @@ export class ConfirmUsernamePage extends React.Component<IProps, IState> {
     }
 
     generateRandomUsername = async() => {
-        var username = await ProfileUtils.GetRandomUsername()
+        var username = await NativeModules.GetRandomUsername()
         this.setState({
             username: username
         })
@@ -37,10 +36,10 @@ export class ConfirmUsernamePage extends React.Component<IProps, IState> {
 
     confirmUsername = async () => {
 
-        var result = await ProfileUtils.ValidateUsername(this.state.username)
+        var result = await NativeModules.ValidateUsername(this.state.username)
         if(!result) return
-        ProfileUtils.SetUsername(this.state.username)
-        .then((res) => {
+        NativeModules.SetUsername(this.state.username)
+        .then((res: any) => {
             if(res) {
                 this.props.setPage(Page[Page.SEARCH])
             }

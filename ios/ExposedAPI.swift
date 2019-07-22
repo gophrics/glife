@@ -79,8 +79,8 @@ class ExposedAPI: NSObject {
     
     
     @objc
-    func InitializeEngine(_ homeData: NSArray, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-      var result = Engine.EngineInstance.Initialize(homeData: homeData as! [HomeDataModal])
+    func InitializeEngine(_ homeData: NSArray, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        var result = Engine.EngineInstance.Initialize(homeData: homeData as! [HomeDataModal])
         resolve(result)
     }
     

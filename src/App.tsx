@@ -66,7 +66,6 @@ export default class App extends React.Component<IProps, IState> {
   }
 
   Initialize = () => {
-    NativeModules.ExposedAPI.getProfileData("operationblue", "123")
     if(Engine.Instance.AppState.engineLoaded == Engine.EngineLoadStatus.Full) {
       if (Engine.Instance.Modal.name != "") {
         this.setState({

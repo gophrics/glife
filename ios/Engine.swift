@@ -21,14 +21,13 @@ class AppState {
 }
 
 
-class Engine: NSObject {
+final class Engine {
   
     var _BlobProvider: BlobProvider = BlobProvider()
     static var EngineInstance = Engine()
 
-  override init() {
-        debugPrint("Init called for Engine")
-        super.init()
+    init() {
+        print("Init called for Engine")
         self.ExtendHomeDataToDate()
     }
     

@@ -26,22 +26,14 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
         this.populateImages()
     }
 
-    populateImages = () => {
+    populateImages = async() => {
         var imageArray = [];
-        var i = 0;
-        if(this.props.lastStepClicked.imageBase64) {
-            for(i = 0; i < this.props.lastStepClicked.imageBase64.length; i++) {
-                imageArray.push(`data:image/gif;base64,${this.props.lastStepClicked.imageBase64[i]}`)
-            }
-        }   
-
-        if(this.props.lastStepClicked.imageUris) {
-            while(i < this.props.lastStepClicked.imageUris.length) {
-                imageArray.push(this.props.lastStepClicked.imageUris[i])
-                i++
-            }
+        
+        var images = await this.props.lastStepClicked.images;
+        for(var image of images ) {
+            imageArray.push(`data:image/gif;base64,${image}`)
         }
-
+        
         this.state = {
             modalBottom: 0,
             images: imageArray

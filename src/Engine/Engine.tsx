@@ -21,18 +21,13 @@ export class Engine {
     constructor() {
         this.Modal = new ProfileModal()
     }
-
-    SaveEngineData = () => {
-    }
-
-    Save = () => {
-    }
-
+    
     setName = (name: string) => {
+
     }
 
     setEmailPassword = (email: string, password: string) => {
-        this.SaveEngineData();
+
     }
 
     Initialize = async (): Promise<boolean> => {

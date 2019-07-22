@@ -1,13 +1,10 @@
 import * as React from 'react'
-import { Text, View, ActivityIndicator, ScrollView, Image, Modal, TextInput, Button, SafeAreaView, Dimensions } from 'react-native'
+import { Text, View, ActivityIndicator, ScrollView, Image, Modal, TextInput, Button, SafeAreaView, Dimensions, NativeModules } from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
 import { StepModal } from '../../Engine/Modals/StepModal';
-import { TripUtils } from '../../Engine/Utils/TripUtils';
 import { ImageDataModal } from '../../Engine/Modals/ImageDataModal';
 import { ClusterModal } from '../../Engine/Modals/ClusterModal';
-import { ClusterProcessor } from '../../Engine/Utils/ClusterProcessor';
 import { Page } from '../../Modals/ApplicationEnums';
-import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor';
 import { Region } from 'react-native-maps';
 
 interface IProps {
@@ -45,12 +42,6 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
             locationWrong: 0,
             loading: false
         }
-
-        PhotoLibraryProcessor.checkPhotoPermission()
-        .then((res) => {
-                if(!res) this.props.setPage(Page[Page.NOPERMISSIONIOS])
-            }
-        )
     }
 
     onLocationTextChange = (location: string) => {
@@ -110,7 +101,7 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
             return false
         }
 
-        var res = await TripUtils.getCoordinatesFromLocation(this.state.location)
+        var res = await NativeModules.getCoordinatesFromLocation(this.state.location)
         res = this.removeDuplicates(res)
         for (var obj of res) {
             this.tempLocations.push(obj);
@@ -137,10 +128,9 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
             })   
             return;
         }
-        var res = await TripUtils.getCoordinatesFromLocation(this.state.location)
+        var res = await NativeModules.getCoordinatesFromLocation(this.state.location)
         res = res[0]
-
-        var step = new StepModal()
+        
         var imageDataList: Array<ImageDataModal> = []
         for (var image of this.data['images']) {
             imageDataList.push(new ImageDataModal({
@@ -151,21 +141,7 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
             } as Region, image.path, (new Date(Number.parseInt(image.creationDate) * 1000)).getTime()))
         }
 
-        step.masterImageUri = imageDataList[0].image;
-
-        var clusterData: Array<ClusterModal> = [];
-        for (var i = 0; i < imageDataList.length; i++) {
-            clusterData.push({
-                image: imageDataList[i].image,
-                latitude: imageDataList[i].location.latitude,
-                longitude: imageDataList[i].location.longitude,
-                timestamp: imageDataList[i].timestamp,
-                id: i
-            } as ClusterModal)
-        }
-
-        var _step = ClusterProcessor.convertClusterToStep(clusterData);
-        _step.location = this.state.location
+        var _step = await NativeModules.addStep(imageDataList)
         this.props.onClose(_step)
     };
     

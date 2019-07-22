@@ -6,11 +6,9 @@ import { NativeModules } from "react-native";
 
 export class TripExplorePageController {
     NewStepId: number
-    ProfilePageController: ProfilePageController
 
     constructor() {
         this.NewStepId = 2;
-        this.ProfilePageController = new ProfilePageController()
     }
 
     onNewStepPress = (step: StepModal) => {

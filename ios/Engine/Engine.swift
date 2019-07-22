@@ -26,27 +26,33 @@ enum EngineError: Error {
 
 class Engine: NSObject {
   
-  var _BlobProvider: BlobProvider = BlobProvider()
-  static var EngineInstance = Engine()
+    var _BlobProvider: BlobProvider = BlobProvider()
+    static var EngineInstance = Engine()
 
-  func Initialize() -> Bool {
-    self._BlobProvider.Modal.homesForDataClustering = try! self.GenerateHomeData(homeData: self._BlobProvider.Modal.homeData)
-    
-    let photoRollInfos: [ClusterModal] = PhotoLibraryProcessor.getPhotosFromLibrary();
-  
-    // Create a No photos found warning page
-    if (photoRollInfos.count == 0) {
-      return true
+    func init() {
+        self.ExtendHomeDataToDate()
     }
     
-    let trips = try PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: self._BlobProvider.Modal.homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
-    self.ClearAndUpdateProfileDataWithAllTrips(trips: trips)
-    return true
-  }
+    func Initialize(homeData: [HomeDataModal]) -> Bool {
+        self.SetHomeData(homeData);
+        
+        self._BlobProvider.Modal.homesForDataClustering = try! self.GenerateHomeData(homeData: self._BlobProvider.Modal.homeData)
+        
+        let photoRollInfos: [ClusterModal] = PhotoLibraryProcessor.getPhotosFromLibrary();
+      
+        // Create a No photos found warning page
+        if (photoRollInfos.count == 0) {
+          return true
+        }
+        
+        let trips = try PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: self._BlobProvider.Modal.homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
+        self.ClearAndUpdateProfileDataWithAllTrips(trips: trips)
+        return true
+    }
 
-  func SetHomeData(data: [HomeDataModal]) {
-    self._BlobProvider.Modal.homeData = data
-  }
+    func SetHomeData(data: [HomeDataModal]) {
+      self._BlobProvider.Modal.homeData = data
+    }
   
   func ClearAndUpdateProfileDataWithAllTrips(trips: [TripModal]) {
     //TODO: Update profile data

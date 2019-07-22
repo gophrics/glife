@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -14,6 +15,7 @@
 		00E356F31AD99517003FC87E /* GlimpseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GlimpseTests.m */; };
 		045BEB09D1B5406E88B8233A /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4385E417B924CB182827490 /* FontAwesome5_Brands.ttf */; };
 		056CC3A5C8ED441A8AE49EF5 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F668CA1A85846D2ACE0F1F4 /* AntDesign.ttf */; };
+		0A5C3CE7600149CBA3800AA0 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FFDE1F72904DC2A4D5D796 /* RNBackgroundFetch+AppDelegate.m */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -42,8 +44,10 @@
 		35D6111F01B44DB9AAADF1AF /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46EA43F876B341C1B71E09A6 /* Feather.ttf */; };
 		4FECC0B9977743079020166F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BCC3E4A076742F399538C1F /* Zocial.ttf */; };
 		6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6391C19ECC604B43B0673441 /* libAirMaps.a */; };
+		72098C3B22E5E58F00C6E57A /* Engine in Resources */ = {isa = PBXBuildFile; fileRef = 72098C3A22E5E58F00C6E57A /* Engine */; };
 		726E193F225BA5A5003EA830 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 726E193E225BA569003EA830 /* libRCTCameraRoll.a */; };
 		7270EF9222A275B2000F2EED /* Glimpse_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7270EF6C22A275B2000F2EED /* Glimpse_logo.png */; };
+		79BC223EAA4B475490C68B9A /* TSBackgroundFetch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42EAFCF61B24736BCFD48C8 /* TSBackgroundFetch.framework */; };
 		7A60C3DCD774477EB77A7250 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8DE15B82C2784E1DBD11E12C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 125595E7CE4C4AF0AC055891 /* MaterialIcons.ttf */; };
@@ -60,8 +64,6 @@
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		FA75F22A91EBBD769026535C /* libPods-Glimpse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EF5C94BFC3AE55DD4A4832 /* libPods-Glimpse.a */; };
-		79BC223EAA4B475490C68B9A /* TSBackgroundFetch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42EAFCF61B24736BCFD48C8 /* TSBackgroundFetch.framework */; };
-		0A5C3CE7600149CBA3800AA0 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FFDE1F72904DC2A4D5D796 /* RNBackgroundFetch+AppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -409,6 +411,8 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6391C19ECC604B43B0673441 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		6BCC3E4A076742F399538C1F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		72098C1322E5E58F00C6E57A /* Glimpse-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Glimpse-Bridging-Header.h"; sourceTree = "<group>"; };
+		72098C3A22E5E58F00C6E57A /* Engine */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Engine; sourceTree = "<group>"; };
 		726E1939225BA569003EA830 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		7270EF6C22A275B2000F2EED /* Glimpse_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Glimpse_logo.png; path = ../src/Assets/Glimpse_logo.png; sourceTree = "<group>"; };
 		72C8EDB022A3C5DF00148244 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -422,15 +426,15 @@
 		A5B62B349C8CECB547D33BF5 /* Pods-Glimpse.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Glimpse.debug.xcconfig"; path = "Target Support Files/Pods-Glimpse/Pods-Glimpse.debug.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B1AF7953CFD247918330340E /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		B42EAFCF61B24736BCFD48C8 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = TSBackgroundFetch.framework; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = SDKROOT; };
 		B4385E417B924CB182827490 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		B6FFDE1F72904DC2A4D5D796 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		D32B6744307D519F744AB861 /* Pods-Glimpse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Glimpse.release.xcconfig"; path = "Target Support Files/Pods-Glimpse/Pods-Glimpse.release.xcconfig"; sourceTree = "<group>"; };
 		DBD0B538C8D94E5884F23F20 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EDB4E75BBB38403594D2C4FF /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		FCAEE3A1E1714AE0B8918F24 /* RNThread.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNThread.xcodeproj; path = "../node_modules/react-native-threads/ios/RNThread.xcodeproj"; sourceTree = "<group>"; };
-		B42EAFCF61B24736BCFD48C8 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; name = "TSBackgroundFetch.framework"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
-		B6FFDE1F72904DC2A4D5D796 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -577,6 +581,8 @@
 		13B07FAE1A68108700A75B9A /* Glimpse */ = {
 			isa = PBXGroup;
 			children = (
+				72098C3A22E5E58F00C6E57A /* Engine */,
+				72098C1322E5E58F00C6E57A /* Glimpse-Bridging-Header.h */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1275,6 +1281,7 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				056CC3A5C8ED441A8AE49EF5 /* AntDesign.ttf in Resources */,
 				B7634D2C0F3349ACBA8B3DF0 /* Entypo.ttf in Resources */,
+				72098C3B22E5E58F00C6E57A /* Engine in Resources */,
 				25351DE847C349B797123362 /* EvilIcons.ttf in Resources */,
 				35D6111F01B44DB9AAADF1AF /* Feather.ttf in Resources */,
 				7A60C3DCD774477EB77A7250 /* FontAwesome.ttf in Resources */,

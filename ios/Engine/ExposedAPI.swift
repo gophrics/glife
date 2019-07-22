@@ -36,12 +36,6 @@ class ExposedAPI: NSObject {
   }
   
   @objc
-  func generateTripsFromScratch(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    Engine.EngineInstance.Initialize()
-    resolve(true)
-  }
-  
-  @objc
   func addNewTrip(_ tripName: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     
     let today = Date()
@@ -73,15 +67,15 @@ class ExposedAPI: NSObject {
   }
   
   @objc
-  func setAllHomeData(_ homeData: NSArray, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    Engine.EngineInstance._BlobProvider.Modal.homeData = homeData as! [HomeDataModal]
-    resolve(true)
-  }
-  
-  @objc
   func setHomeTimestamp(_ timestamp: Int64, index: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     Engine.EngineInstance._BlobProvider.Modal.homeData[index].timestamp = timestamp
     resolve(true)
   }
+    
+    @objc
+    func InitializeEngine(_ homeData: NSArray, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        var result = Engine.EngineInstance.Initialize(homeData as! [HomeDataModal])
+        resolve(result)
+    }
 
 }

@@ -27,6 +27,7 @@ import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
 import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 import * as Engine from './Engine/Engine';
 import { PublisherSubscriber } from './Engine/PublisherSubscriber';
+import { NoPhotosFoundViewModal } from './Pages/LoadingPage/NoPhotosFoundViewModal';
 
 interface IState {
   page: string,
@@ -68,6 +69,9 @@ export default class App extends React.Component<IProps, IState> {
     console.log("Test is called")
     var res = await NativeModules.PhotoLibraryProcessor.getPhotosFromLibrary()
     console.log(res)
+  }
+
+  componentDidMount() {
   }
 
   Initialize = () => {
@@ -147,6 +151,8 @@ export default class App extends React.Component<IProps, IState> {
               <NoPermissionIOS setPage={this.setPage.bind(this)}/>
             : this.state.page == Page[Page.CONFIRMUSERNAME] ? 
               <ConfirmUsernamePage setPage={this.setPage.bind(this)}/>
+            : this.state.page == Page[Page.NOPHOTOSFOUND] ? 
+              <NoPhotosFoundViewModal setPage={this.setPage.bind(this)} />
             : <View />
           }
           

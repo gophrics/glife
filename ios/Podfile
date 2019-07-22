@@ -5,7 +5,9 @@ platform :ios, 9.0
 pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'RCTImage'
 ]
+pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
 rn_path = '../node_modules/react-native'
 pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
@@ -19,10 +21,26 @@ post_install do |installer|
     end
   end
 end
-
-pod 'GoogleSignIn'
+pod 'GoogleSignIn', '~> 4.4.0'
 
 # Add new pods below this line
+pod 'RNBackgroundFetch', :path => '../node_modules/react-native-background-fetch'
 
-pod 'RealmSwift'
-pod 'Realm', :modular_headers => true
+pod 'RNFS', :path => '../node_modules/react-native-fs'
+
+pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
+
+
+pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
+
+pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
+
+pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'

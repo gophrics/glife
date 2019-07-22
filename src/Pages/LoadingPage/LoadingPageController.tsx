@@ -17,6 +17,11 @@ export class LoadingPageController {
       return TripUtils.GetFinishedLoading()
     }
 
+    AtleastOneTripExist = () => {
+      console.log(Engine.Instance.Modal.trips)
+      return Engine.Instance.Modal.trips.length > 0
+    }
+    
     RequestPermissionAndroid = async() : Promise<boolean> => {
         try {
             const granted = await PermissionsAndroid.request(

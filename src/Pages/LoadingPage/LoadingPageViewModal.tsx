@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { Text,Platform, View, StyleSheet, ViewStyle, TextStyle, Image, ProgressViewIOS, ProgressBarAndroid, Dimensions } from 'react-native';
-import { PublisherSubscriber } from '../../Engine/PublisherSubscriber'
 import { Page } from '../../Modals/ApplicationEnums';
 import { LoadingPageController } from './LoadingPageController';
-import { TripUtils } from '../../Engine/Utils/TripUtils';
-import * as Engine from '../../Engine/Engine';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 
 interface Styles {
     spinnerContainer: ViewStyle,
@@ -67,28 +65,26 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
             else
                 this.props.setPage(Page[Page.NOPERMISSIONIOS])
         })
-        this.getLoadingDetails()
+        
+        const Events = new NativeEventEmitter(NativeModules.ExposedEvents)
 
-        this.updateImage()
-    }
-
-    updateImage = () => {
-        if(this.done) return
-        this.setState({
-            image: PublisherSubscriber.ImageBus
+        Events.addListener("getTotalToLoad", res => {
+            this.setState({
+                total: res.totalToLoad
+            })
         })
-        setTimeout(() => {
-            this.updateImage()
-        }, 100);
-    }
 
-    getLoadingDetails = () => {
-        if(this.done) return
-        this.setState({
-            total: TripUtils.TOTAL_TO_LOAD,
-            finished: TripUtils.FINISHED_LOADING
+        Events.addListener("getTotalLoaded", res => {
+            this.setState({
+                finished: res.totalLoaded
+            })
         })
-        setTimeout(this.getLoadingDetails, 1000)
+
+        Events.addListener("getImageBeingLoaded", res => {
+            this.setState({
+                image: res.imageBeingLoaded
+            })
+        })
     }
 
     componentWillUnmount = () => {

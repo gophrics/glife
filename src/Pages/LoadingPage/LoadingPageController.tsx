@@ -1,20 +1,10 @@
 import { PermissionsAndroid, Platform } from 'react-native';
-import * as PhotoLibraryProcessor from '../../Engine/Utils/PhotoLibraryProcessor'
-import { TripUtils } from '../../Engine/Utils/TripUtils';
 import * as Engine from "../../Engine/Engine";
 
 export class LoadingPageController { 
 
     constructor() {
       
-    }
-    
-    GetTotalToLoad = (): number => {
-      return TripUtils.GetTotalToLoad()
-    }
-
-    GetFinishedLoading = (): number => {
-      return TripUtils.GetFinishedLoading()
     }
 
     AtleastOneTripExist = () => {
@@ -50,13 +40,6 @@ export class LoadingPageController {
     }
 
     Initialize = async() => {
-      if(Platform.OS == "android") await this.RequestPermissionAndroid()
-        else if(Platform.OS == "ios") await PhotoLibraryProcessor.checkPhotoPermission()
-        
-        if(!(await PhotoLibraryProcessor.checkPhotoPermission())) {
-            return false;
-        }
-        
-        return Engine.Instance.Initialize()
+        return await Engine.Instance.Initialize()
     }
 }

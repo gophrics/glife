@@ -90,7 +90,7 @@ export default class App extends React.Component<IProps, IState> {
 
   setPage(page: string, data: any = null) {
     if(data != null) 
-      PublisherSubscriber.Bus[page] = data
+      Engine.Instance.Cache[page] = data
     this.setState({
       page: page
     });

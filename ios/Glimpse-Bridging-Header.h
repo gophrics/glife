@@ -6,6 +6,7 @@
 //  Copyright © 2019 Facebook. All rights reserved.
 //
 #import "React/RCTBridgeModule.h"
+#import "React/RCTEventEmitter.h"
 
 #ifndef Glimpse_Bridging_Header_h
 #define Glimpse_Bridging_Header_h

@@ -1,14 +1,21 @@
+import { TripModal } from '../../Engine/Modals/TripModal';
 import { StepModal } from '../../Engine/Modals/StepModal';
+
 import { Page } from '../../Modals/ApplicationEnums';
-import { ProfilePageController } from "../ProfilePage/ProfilePageController";
 import * as Engine from "../../Engine/Engine";
 import { NativeModules } from "react-native";
 
 export class TripExplorePageController {
     NewStepId: number
+    Modal: TripModal
 
     constructor() {
         this.NewStepId = 2;
+        this.Modal = Engine.Instance.Cache[Page[Page.TRIPEXPLORE]] as TripModal
+    }
+
+    SetDescription = (text: string, stepId: number) => {
+        NativeModules.setStepData('description', this.Modal.profileId, this.Modal.tripId, stepId)
     }
 
     onNewStepPress = (step: StepModal) => {
@@ -22,16 +29,7 @@ export class TripExplorePageController {
 
         NativeModules.newStep(_step)
     }
-
-    onPhotoModalDismiss = (step: StepModal) => {
-        for (var _step of this.Modal.steps) {
-            if (_step.stepId == step.stepId) {
-                _step = step; break;
-            }
-        }
-        Engine.Instance.BlobProvider.setBlobValue(Page[Page.STEPEXPLORE], this.Modal)
-    }
-
+    
     getFirstStep = () => {
         if (this.Modal.steps.length == 0)
             throw "No steps found"

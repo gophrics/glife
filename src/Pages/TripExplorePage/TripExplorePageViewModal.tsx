@@ -24,7 +24,6 @@ interface IState {
     newStep: boolean,
     newStepId: number,
     lastStepClicked: StepModal
-    editStepDescription: boolean
     steps: StepModal[]
     masterPic: string
     stepMarkerImages: Array<string>
@@ -45,6 +44,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     mapView: MapView | null = null;
 
     Controller: TripExplorePageController;
+
     constructor(props: any) {
         super(props);
         this.props.setNavigator(false)
@@ -58,9 +58,8 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            lastStepClicked: this.Controller.getFirstStep(),
-            editStepDescription: false,
-            steps: this.Controller.getSteps(),
+            lastStepClicked: new StepModal(),
+            steps: [],
             masterPic: "",
             stepMarkerImages: []
         }
@@ -71,17 +70,20 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         this.initialize();
     }
 
-    initialize() {
+    async initialize() {
+
+        var steps = await this.Controller.getSteps()
+        var lastStepClicked = steps[0]
         this.travelCardArray = []
         //Populate travelcard Array for each step
         var markers: Region[] = []
         var imageUriData: string[] = []
         var key: number = 0;
-        var tripStartTimestamp = this.state.steps[0].startTimestamp;
+        var tripStartTimestamp = steps[0].startTimestamp;
         var polylineArr = []
         snapOffsets = [];
 
-        for (var step of this.state.steps) {
+        for (var step of steps) {
             this.travelCardArray.push(<StepComponent key={key + 's'} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
             this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
 
@@ -99,7 +101,8 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             photoModalVisible: false,
             newStep: false,
             newStepId: -1,
-            lastStepClicked: this.state.steps[0]
+            lastStepClicked: steps[0],
+            steps: steps
         })
     }
 
@@ -177,14 +180,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
 
     // Photo Modal methods
     onPhotoModalDescriptionChange = (text: string) => {
-        this.state.lastStepClicked.description = text
-    }
-
-    onPhotoModalDismiss = () => {
-        this.setState({
-            editStepDescription: false
-        })
-        this.Controller.onPhotoModalDismiss(this.state.lastStepClicked)
+        this.Controller.SetDescription(text, this.state.lastStepClicked.stepId)
     }
 
     onPhotoModalClose = () => {
@@ -200,11 +196,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     populateStepMarkerImages = async() => {
         var imageArray = []
         for(var step of this.state.steps) {
-            var image = await step.masterImageBase64
-            if(image == null || image == "")
-                imageArray.push(step.masterImageUri)
-            else 
-                imageArray.push(`data:image/gif;base64,${image}`)
+            imageArray.push(`data:image/gif;base64,${await step.masterImage}`)
         }
         this.setState({
             stepMarkerImages: imageArray
@@ -231,7 +223,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                                             style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox}
                                             onPress={(e) => this.onMarkerPress(e, step)}
                                         >
-                                            {step.masterImageUri != "" || step.masterImageBase64 != "" ?
+                                            {step.masterImage != ""?
                                                 <View key={index + 'markerview'} style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} >
                                                     <Image
                                                         key={index + 'markerimage'}
@@ -266,7 +258,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                             photoModalVisible={this.state.photoModalVisible}
                             lastStepClicked={this.state.lastStepClicked}
                             onDescriptionChange={this.onPhotoModalDescriptionChange}
-                            onDismiss={this.onPhotoModalDismiss}
+                            onDismiss={this.onPhotoModalClose}
                             onModalClose={this.onPhotoModalClose}
                         /> :
                         <View />

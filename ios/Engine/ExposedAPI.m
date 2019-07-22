@@ -1,5 +1,5 @@
 //
-//  Engine.m
+//  ExposedAPI.m
 //  Glimpse
 //
 //  Created by Nitin Issac Joy on 12/07/19.
@@ -10,6 +10,7 @@
 #import "React/RCTBridgeModule.h"
 
 @interface RCT_EXTERN_MODULE(ExposedAPI, NSObject)
+
   RCT_EXTERN_METHOD(getAllTripsWithData: resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
   RCT_EXTERN_METHOD(getTrip: (NSInteger)tripId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)

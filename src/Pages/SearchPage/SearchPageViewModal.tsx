@@ -52,14 +52,11 @@ export class SearchPageViewModal extends React.Component<IProps, IState> {
         })
     }
 
-    onTripPress = (tripModal: TripModal) => {
+    onTripPress = (trip: TripModal) => {
         this.setState({
             loading: true
         })
-        this.Controller.GetTrip(tripModal)
-        .then((data) => {
-           this.props.setPage(Page[Page.TRIPEXPLORE], data)
-        })
+        this.props.setPage(Page[Page.TRIPEXPLORE], trip)
     }
 
     render() {

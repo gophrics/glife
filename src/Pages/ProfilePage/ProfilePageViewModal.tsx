@@ -8,7 +8,6 @@ import { TripModal } from '../../Engine/Modals/TripModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { ProfilePageController } from './ProfilePageController';
-import { JSXElement } from '@babel/types';
 
 interface IState {
     bottom: number,
@@ -43,15 +42,28 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
         this.state = {
             bottom: 200,
             scrollY: new Animated.Value(0),
-            coverPicURL: this.Controller.getCoverPicURL() == undefined || this.Controller.getCoverPicURL() == "" ? "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" : this.Controller.getCoverPicURL(),
-            profilePicURL: this.Controller.getProfilePicURL() == undefined || this.Controller.getCoverPicURL() == "" ? "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" : this.Controller.getProfilePicURL(),
+            coverPicURL: "",// "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" 
+            profilePicURL: "",// "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" 
             refreshing: false,
             tripRenderArray: []
         }
+        
+        this.loadState();
     }
 
-    getTrips = () => {
-        var trips = this.Controller.getTrips()
+    loadState = async() => {
+        this.setState({
+            bottom: 200,
+            scrollY: new Animated.Value(0),
+            coverPicURL: await this.Controller.getCoverPicURL(),
+            profilePicURL: await this.Controller.getProfilePicURL(),
+            refreshing: false,
+            tripRenderArray: []
+        })
+    }
+
+    getTrips = async() => {
+        var trips = await this.Controller.getTrips()
         var tripRenderArray: Array<JSX.Element> = []
         for (var trip of trips) {
             tripRenderArray.push(<TripComponent key={trip.tripId} tripModal={trip} onPress={this.onTripPress} />)

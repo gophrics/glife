@@ -8,6 +8,7 @@ interface IProps {
 }
 
 interface IState {
+    name: string
     valid: boolean
     location: string
 }
@@ -19,11 +20,18 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
+            name: "",
             valid: true,
             location: ""
         }
         this.Controller = new OnBoardingPageController()
         this.cursor = this.Controller.GetAllHomesData().length - 1;
+    }
+
+    getName = async() => {
+        this.setState({
+            name: await this.Controller.GetName()
+        })
     }
 
     validateData = async (): Promise<boolean> => {

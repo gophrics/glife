@@ -1,5 +1,3 @@
-import { AuthProvider, RegisterUserModal, LoginUserModal } from '../../Engine/Providers/AuthProvider'
-import { ProfileUtils } from '../../Engine/Utils/ProfileUtils';
 import * as Engine from '../../Engine/Engine';
 
 export class RegisterAndLoginController {
@@ -11,11 +9,11 @@ export class RegisterAndLoginController {
     }
 
     GetCachedEmail = () => {
-        return Engine.Instance.BlobProvider.email
+        return Engine.Instance.Modal.email
     }
 
     GetCachedPassword = () => {
-        return Engine.Instance.BlobProvider.password
+        return Engine.Instance.Modal.password
     }
 
     GetRandomUsername = async(): Promise<string> => {

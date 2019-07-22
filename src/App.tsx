@@ -12,7 +12,6 @@ import { OnBoardingPageViewModal } from './Pages/OnBoardingPage/OnBoardingPageVi
 import TripExplorePageViewModal from './Pages/TripExplorePage/TripExplorePageViewModal';
 import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/NewTripPage/NewTripPageViewModal';
-import AsyncStorage from '@react-native-community/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
 import { GoogleSignin } from 'react-native-google-signin';
@@ -26,7 +25,6 @@ import { AskForLocationChangeDatePage } from './Pages/OnBoardingPage/AskForLocat
 import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
 import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 import * as Engine from './Engine/Engine';
-import { PublisherSubscriber } from './Engine/PublisherSubscriber';
 import { NoPhotosFoundViewModal } from './Pages/LoadingPage/NoPhotosFoundViewModal';
 
 interface IState {

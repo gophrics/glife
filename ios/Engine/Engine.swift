@@ -54,7 +54,7 @@ class Engine: NSObject {
       self._BlobProvider.Modal.homeData = data
     }
   
-  func ClearAndUpdateProfileDataWithAllTrips(trips: [TripModal]) {
+   func ClearAndUpdateProfileDataWithAllTrips(trips: [TripModal]) {
     //TODO: Update profile data
     for trip in trips {
       self._BlobProvider.Blob.setTrip(trip: trip)

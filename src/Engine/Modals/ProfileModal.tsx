@@ -1,39 +1,32 @@
-import { TripModal } from '../Modals/TripModal';
+import { TripModal } from './TripModal';
+import { NativeModules } from 'react-native';
 
 export class ProfileModal {
+    trips: TripModal[] = []
+    countriesVisited: string[] = []
+    percentageWorldTravelled: number = 0
 
-    trips: TripModal[];
-    countriesVisited: string[]
-    percentageWorldTravelled: number
-    coverPicURL: string
-
-    // Profile stuff
-    profilePicURL: string
-    profileId: string
-    name: string
-    
-    constructor() {
-        this.trips = [];
-        this.countriesVisited = []
-        this.percentageWorldTravelled = 0
-        this.coverPicURL = ""
-        this.profilePicURL = ""
-        this.profileId = ""
-        this.name = ""
+    get coverPicURL() {
+        return NativeModules.getProfileData('coverPicURL')
     }
 
-    CopyConstructor = (profileData: ProfileModal) => {
-        this.trips = [];
-        for(var trip of profileData.trips) {
-            var _t = new TripModal()
-            _t.CopyConstructor(trip)
-            this.trips.push(_t)
-        }
-        this.countriesVisited = profileData.countriesVisited;
-        this.percentageWorldTravelled = profileData.percentageWorldTravelled;
-        this.coverPicURL = profileData.coverPicURL;
-        this.profilePicURL = profileData.profilePicURL;
-        this.profileId = profileData.profileId;
-        this.name = profileData.name;
+    get profilePicURL() {
+        return NativeModules.getProfileData('profilePicURL')
+    }
+
+    get profileId() {
+        return NativeModules.getProfileData('profileId')
+    }
+
+    get name() {
+        return NativeModules.getProfileData('name')
+    }
+
+    get password() {
+        return NativeModules.getProfileData('password')
+    }
+
+    get email() {
+        return NativeModules.getProfileData('email')
     }
 }

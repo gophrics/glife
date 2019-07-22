@@ -3,7 +3,6 @@ import { View, Text, Button, TouchableOpacity } from 'react-native';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { OnBoardingPageController } from './OnBoardingPageController';
 import { Page } from '../../Modals/ApplicationEnums';
-import { TripUtils } from '../../Engine/Utils/TripUtils';
 
 interface IProps {
     setPage: any
@@ -61,7 +60,7 @@ export class AskForLocationChangeDatePage extends React.Component<IProps, IState
                 {
                     <View>
                         <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>When did you move to {this.Controller.GetHomeData(this.cursor-1).name}?</Text>
-                        <Text style={{ marginTop: 50, fontSize: 22, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>{TripUtils.getDateFromTimestamp(this.cachedDate.getTime())}</Text>
+                        <Text style={{ marginTop: 50, fontSize: 22, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>{this.Controller.getDateFromTimestamp(this.cachedDate.getTime())}</Text>
                         <Button title={"Pick date"} onPress={this.onCalenderPress}/>
                     </View>
                 }

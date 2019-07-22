@@ -1,26 +1,24 @@
-import { ProfileModal } from "../../Engine/Modals/ProfileModal";
 import ImagePicker from 'react-native-image-crop-picker';
-import * as Engine from '../../Engine/Engine'
+import { NativeModules } from "react-native";
+import { ProfileModal } from '../../Engine/Modals/ProfileModal';
+import { TripModal } from '../../Engine/Modals/TripModal';
+import { Instance } from '../../Engine/Engine';
 
 export class ProfilePageController {
-
-    Modal: ProfileModal
     
+    Modal: ProfileModal;
+
     constructor() {
-        this.Modal = Engine.Instance.Modal
+        this.Modal = {} as ProfileModal;
         this.loadModal()
     }
 
-    loadModal = () => {
-        if(Engine.EngineLoadStatus.Full) {
-            this.Modal = Engine.Instance.Modal;
-        } else {
-            setTimeout(this.loadModal, 1000)
-        }
+    loadModal = async() => {
+        this.Modal = Instance.Modal;
     }
     
     onProfilePicChange = (profilePicURL: string) => {
-        this.Modal.profilePicURL = profilePicURL
+        NativeModules.setProfilePic(profilePicURL);
     }
 
     onCoverPicChangePress = () => {
@@ -28,31 +26,23 @@ export class ProfilePageController {
     }
 
     onCoverPicChange = (coverPicURL: string) => {
-        this.Modal.coverPicURL = coverPicURL
-    }
-
-    getName = () : string => {
-        return this.Modal.name;
-    }
-
-    setName = (name: string) => {
-        Engine.Instance.setName(name)
+        NativeModules.setCoverPic(coverPicURL)
     }
     
-    getTrips = () => {
+    getTrips = async() : Promise<Array<TripModal>> => {
         return this.Modal.trips
     }
 
-    getProfilePicURL = () => {
-        return this.Modal.profilePicURL
+    getProfilePicURL = async() => {
+        return this.Modal.profilePicURL;
     }
 
-    getCoverPicURL = () => {
-        return this.Modal.coverPicURL
+    getCoverPicURL = async() => {
+        return this.Modal.coverPicURL;
     }
 
     getCountriesVisitedArray = () => {
-        return this.Modal.countriesVisited
+        return this.Modal.countriesVisited;
     }
 
     getNumberOfCountriesVisited = () => {

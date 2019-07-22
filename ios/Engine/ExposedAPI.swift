@@ -11,9 +11,10 @@ import Foundation
 
 @objc(ExposedAPI)
 class ExposedAPI: NSObject {
+    
   @objc
-  func getAllTrips(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    var data = Engine.EngineInstance._BlobProvider.getAllTripsWithData()
+  func getTripsMeta(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    // TODO: Get meta of all trips for better memory
     resolve(data)
   }
   
@@ -52,30 +53,52 @@ class ExposedAPI: NSObject {
   }
   
   @objc
-  func getAllHomeData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  func getHomeData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     resolve(Engine.EngineInstance._BlobProvider.Modal.homeData)
   }
   
-  @objc
-  func getHomeData(_ index: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    resolve(Engine.EngineInstance._BlobProvider.Modal.homeData[index])
-  }
+    @objc
+    func getName(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        resolve(Engine.EngineInstance._BlobProvider.Blob.profileData.name)
+    }
   
-  @objc
-  func getName(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    resolve(Engine.EngineInstance._BlobProvider.Blob.profileData.name)
-  }
-  
-  @objc
-  func setHomeTimestamp(_ timestamp: Int64, index: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    Engine.EngineInstance._BlobProvider.Modal.homeData[index].timestamp = timestamp
-    resolve(true)
-  }
+    @objc
+    func setHomeTimestamp(_ timestamp: Int64, index: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        Engine.EngineInstance._BlobProvider.Modal.homeData[index].timestamp = timestamp
+        resolve(true)
+    }
+    
     
     @objc
     func InitializeEngine(_ homeData: NSArray, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
         var result = Engine.EngineInstance.Initialize(homeData as! [HomeDataModal])
         resolve(result)
+    }
+    
+    @objc
+    func getCoordinatesFromLocation(_ name: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        var result = TripUtils.getCoordinatesFromLocation(name)
+        resovle(result)
+    }
+    
+    
+    @objc
+    func setProfilePic(_ profilePicData: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        Engine.EngineInstance.Modal.profilePicData = profilePicData;
+        resolve(true)
+    }
+    
+    
+    @objc
+    func setCoverPic(_ coverPicURL: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        Engine.EngineInstance.Modal.coverPicURL = coverPicURL;
+        resolve(true)
+    }
+    
+    @objc
+    func getProfileMeta(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        // TODO: Get all profile data to be displayed in profile page
+        resolve(true)
     }
 
 }

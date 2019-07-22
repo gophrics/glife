@@ -1,4 +1,3 @@
-import { ProfileModal } from './Modals/ProfileModal';
 import { NativeModules } from 'react-native';
 
 export enum EngineLoadStatus {
@@ -13,8 +12,10 @@ export interface AppState {
 }
 
 export class Engine {
-    Modal: ProfileModal
     AppState: AppState = {loggedIn: false, engineLoaded: EngineLoadStatus.None}
+
+    Cache: any = {}
+    Modal: ProfileModal;
 
     constructor() {
         this.Modal = new ProfileModal()
@@ -27,7 +28,6 @@ export class Engine {
     }
 
     setName = (name: string) => {
-        this.Modal.name = name;
     }
 
     setEmailPassword = (email: string, password: string) => {

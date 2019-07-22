@@ -1,28 +1,36 @@
-import { HomeDataModal } from "../../Modals/ApplicationEnums";
-import { TripUtils } from '../../Engine/Utils/TripUtils';
+import { HomeDataModal } from "../../Engine/Modals/HomeDataModal";
 import * as Engine from '../../Engine/Engine';
-import { PublisherSubscriber } from "../../Engine/PublisherSubscriber";
+import { NativeModules } from 'react-native';
 
 export class OnBoardingPageController {
 
     tempLocations: any[][];
     cursor: number;
     culprits: Array<number>;
-
+    homeData: Array<HomeDataModal> = [];
 
     constructor() {
         this.tempLocations = [];
         this.cursor = 0;
         this.culprits = [];
-        if(Engine.Instance.BlobProvider.homeData.length == 0) this.AddEmptyHome()
+        this.loadHomeData();
+    }
+
+    loadHomeData = async() => {
+        this.homeData = await NativeModules.getHomeData()
+        if(this.homeData.length == 0) this.AddEmptyHome()
+    }
+
+    getDateFromTimestamp = (timestamp: number) => {
+        return "STUB" //TODO
     }
 
     GetCachedDate = () => {
-        return PublisherSubscriber.Bus['date'] || new Date()
+        return Engine.Instance.Cache['date'] || new Date()
     }
 
     SetCachedDate = (date: Date) => {
-        PublisherSubscriber.Bus['date'] = date;
+        Engine.Instance.Cache['date'] = date;
     }
 
     SaveData = () => {
@@ -30,22 +38,22 @@ export class OnBoardingPageController {
     }
     
     AddEmptyHome = () => {
-        Engine.Instance.BlobProvider.homeData.push({
-          name: "",
-          timestamp: 0
-        } as HomeDataModal)
+        this.homeData.push({
+            name: "",
+            timestamp: 0
+          } as HomeDataModal)
     }
 
     GetAllHomesData = () => {
-        return Engine.Instance.BlobProvider.homeData;
+        return this.homeData;
     }
 
     GetHomeData = (index: number) => {
-        return Engine.Instance.BlobProvider.homeData[index]
+        return this.homeData[index]
     }
 
-    GetName = () : string => {
-        return Engine.Instance.Modal.name
+    GetName = async() : Promise<string> => {
+        return await NativeModules.getName()
     }
 
     GetTempLocations = () => {
@@ -53,12 +61,12 @@ export class OnBoardingPageController {
     }
 
     SetAllHomeData = (homes: Array<HomeDataModal>) => {
-        Engine.Instance.BlobProvider.homeData = homes
+        this.homeData = homes
         Engine.Instance.SaveEngineData()
     }
 
     SetHomeName = (index: number, name: string) => {
-        Engine.Instance.BlobProvider.homeData[index].name = name
+        this.homeData[index].name = name
     }
 
     SetCursor = (index: number) => {
@@ -71,11 +79,11 @@ export class OnBoardingPageController {
     }
 
     onCalenderConfirm = (pos: number, dateObject: Date) => {
-        Engine.Instance.BlobProvider.homeData[pos].timestamp = dateObject.getTime();
+        this.homeData[pos].timestamp = dateObject.getTime();
     }
 
     onLocationChangeText = (pos: number, text: string) => {
-        Engine.Instance.BlobProvider.homeData[pos].name = text
+        this.homeData[pos].name = text
     }
 
     onNewHomeClick = () => {
@@ -86,21 +94,20 @@ export class OnBoardingPageController {
 
     onDeleteHome = (index: number) => {
         var homes = []
-        for (var i = 0; i < Engine.Instance.BlobProvider.homeData.length; i++) {
+        for (var i = 0; i < this.homeData.length; i++) {
             if (i != index) {
 
                 if (i == index - 1) {
                     homes.push({
-                        name: Engine.Instance.BlobProvider.homeData[i].name,
-                        timestamp: Engine.Instance.BlobProvider.homeData[index].timestamp
-                    })
+                        name: this.homeData[i].name,
+                        timestamp: this.homeData[index].timestamp
+                    } as HomeDataModal)
                 } else 
-                    homes.push(Engine.Instance.BlobProvider.homeData[i])
+                    homes.push(this.homeData[i])
             }
         }
-        Engine.Instance.BlobProvider.homeData = homes
+        this.homeData = homes
     }
-
 
     findExactName(obj: any, name: string) {
         for (var key of obj) {
@@ -133,12 +140,12 @@ export class OnBoardingPageController {
         for (var i = 0; i < culprits.length; i++) culprits.push(1)
 
         this.tempLocations = []
-        for (var home of Engine.Instance.BlobProvider.homeData) {
+        for (var home of this.homeData) {
             if(home.name == "") {
                 culprits[count] = 1;
                 count++; continue;
             }
-            var res = await TripUtils.getCoordinatesFromLocation(home.name)
+            var res = await NativeModules.getCoordinatesFromLocation(home.name)
             res = this.removeDuplicates(res)
             
             this.tempLocations.push([])

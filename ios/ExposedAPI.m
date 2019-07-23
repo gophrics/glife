@@ -11,7 +11,9 @@
 
 @interface RCT_EXTERN_MODULE(ExposedAPI, NSObject)
 
- RCT_EXTERN_METHOD(getProfileData: (NSString)operation profileId:(NSString)profileId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+ RCT_EXTERN_METHOD(getProfileData: (NSString)param profileId:(NSString)profileId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+
+ RCT_EXTERN_METHOD(setProfileData: (NSDictionary)value param:(NSString)param profileId:(NSString)profileId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
  RCT_EXTERN_METHOD(getTripData: (NSString)operation profileId:(NSString)profileId tripId:(NSString)tripId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 

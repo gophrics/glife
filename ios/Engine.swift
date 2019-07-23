@@ -8,6 +8,7 @@
 
 import Foundation
 import Photos
+import RealmSwift
 
 enum EngineLoadStatus {
   case None
@@ -31,8 +32,8 @@ final class Engine {
         self.ExtendHomeDataToDate()
     }
     
-    func Initialize(homeData: [HomeDataModal]) -> Bool {
-      self.SetHomeData(data: homeData);
+    func Initialize(homeData: List<HomeDataModal>) -> Bool {
+        self.SetHomeData(data: homeData);
         
         self._BlobProvider.Modal.homesForDataClustering = try! self.GenerateHomeData(homeData: self._BlobProvider.Modal.homeData)
         
@@ -48,45 +49,45 @@ final class Engine {
         return true
     }
 
-    func SetHomeData(data: [HomeDataModal]) {
+    func SetHomeData(data: List<HomeDataModal>) {
       self._BlobProvider.Modal.homeData = data
     }
   
-   func ClearAndUpdateProfileDataWithAllTrips(trips: [TripModal]) {
-    //TODO: Update profile data
-    for trip in trips {
-      self._BlobProvider.Blob.setTrip(trip: trip)
-    }
-  }
-  
-  func GenerateHomeData(homeData: [HomeDataModal]) throws -> [HomeDataModal] {
-    if(homeData.count == 0) {
-      throw EngineError.coreEngineError(message: "No homes as input to be processed")
-    }
-    
-    var homesForDataClustering: [HomeDataModal] = []
-    
-    for _ in 0...Int(homeData[0].timestamp/86400) {
-      homesForDataClustering.append(HomeDataModal())
-    }
-    
-    var currentTimestamp = Int(Date().timeIntervalSince1970/86400)
-    for data in homeData {
-      while(currentTimestamp >= Int(data.timestamp/86400)) {
-        let _el = HomeDataModal()
-        _el.timestamp = Int64(currentTimestamp)
-        _el.name = data.name
-        
-        let _region = TripUtils.getCoordinatesFromLocation(location: _el.name)
-        _el.latitude = _region.latitude
-        _el.longitude = _region.longitude
-        homesForDataClustering[currentTimestamp] = _el
-        currentTimestamp -= 1
+    func ClearAndUpdateProfileDataWithAllTrips(trips: [TripModal]) {
+      //TODO: Update profile data
+      for trip in trips {
+//TODO
       }
     }
-    
-    return homesForDataClustering
-  }
+  
+  func GenerateHomeData(homeData: List<HomeDataModal>) throws -> List<HomeDataModal> {
+      if(homeData.count == 0) {
+        throw EngineError.coreEngineError(message: "No homes as input to be processed")
+      }
+      
+      var homesForDataClustering: List<HomeDataModal> = List<HomeDataModal>()
+      
+      for _ in 0...Int(homeData[0].timestamp/86400) {
+        homesForDataClustering.append(HomeDataModal())
+      }
+      
+      var currentTimestamp = Int(Date().timeIntervalSince1970/86400)
+      for data in homeData {
+        while(currentTimestamp >= Int(data.timestamp/86400)) {
+          let _el = HomeDataModal()
+          _el.timestamp = Int64(currentTimestamp)
+          _el.name = data.name
+          
+          let _region = TripUtils.getCoordinatesFromLocation(location: _el.name)
+          _el.latitude = _region.latitude
+          _el.longitude = _region.longitude
+          homesForDataClustering[currentTimestamp] = _el
+          currentTimestamp -= 1
+        }
+      }
+      
+      return homesForDataClustering
+    }
   
   
   func ExtendHomeDataToDate() {
@@ -107,7 +108,10 @@ final class Engine {
   
   func UpdateProfileDataWithTrip(trip: TripModal) -> TripModal {
     // Bug
-    self._BlobProvider.Blob.profileData.countriesVisited = trip.countryCode
+    self._BlobProvider.Blob.profileData.countriesVisited = List<String>()
+    for countryCode in trip.countryCode {
+      self._BlobProvider.Blob.profileData.countriesVisited.append(countryCode)
+    }
     self._BlobProvider.Blob.profileData.percentageWorldTravelled = Float((self._BlobProvider.Blob.profileData.countriesVisited.count * 100 / 186))    
     let _trip: TripModal = try! Database.db.objects(TripModal.self).filter("tripId == " + trip.tripId).first ?? TripModal()
     _trip.CopyConstructor(trip: trip)

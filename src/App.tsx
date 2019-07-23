@@ -26,6 +26,7 @@ import { AskForLocationPage } from './Pages/OnBoardingPage/AskForLocationPage';
 import { ConfirmUsernamePage } from './Pages/SocialPage/ConfirmUsernamePage';
 import * as Engine from './Engine/Engine';
 import { NoPhotosFoundViewModal } from './Pages/LoadingPage/NoPhotosFoundViewModal';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface IState {
   page: string,
@@ -62,24 +63,30 @@ export default class App extends React.Component<IProps, IState> {
     })
   }
 
-  componentDidMount() {
-  }
-
-  Initialize = () => {
-    if(Engine.Instance.AppState.engineLoaded == Engine.EngineLoadStatus.Full) {
-      if (Engine.Instance.Modal.name != "") {
-        this.setState({
-          page: Page[Page.PROFILE]
+  Initialize = async() => {
+    AsyncStorage.getItem('profileId')
+    .then((res) => {
+      if(res) {
+        NativeModules.ExposedAPI.getProfileData('name', res)
+        .then((res2: string) => {
+          if(res2 != "") {
+            this.setState({
+              page: Page[Page.PROFILE]
+            })
+          } else {
+            this.setState({
+              page: Page[Page.PREONBOARDING]
+            })
+          }
         })
-      } else {
+      } else {  
+        AsyncStorage.setItem('profileId', 'randomGeneratedId')
         this.setState({
           page: Page[Page.PREONBOARDING]
         })
       }
-    } else {
-      setTimeout(this.Initialize, 1000)
-    }
-  }
+    })
+  } 
 
   setPage(page: string, data: any = null) {
     if(data != null) 

@@ -9,15 +9,13 @@
 import Foundation
 import RealmSwift
 
-@objc
 class ProfileModal : Object {
-  @objc dynamic var countriesVisited: [String] = []
-  @objc dynamic var percentageWorldTravelled: Float = 0
+  dynamic var countriesVisited: List<String> = List<String>()
+  dynamic var percentageWorldTravelled: Float = 0
   
   // Profile stuff
-  @objc dynamic var coverPicURL: String = ""
-  @objc dynamic var profilePicURL: String = ""
-  @objc dynamic var profileId: String = ""
-  @objc dynamic var name: String = ""
-  
+  dynamic var coverPicURL: String = ""
+  dynamic var profilePicURL: String = ""
+  dynamic var profileId: String = ""
+  dynamic var name: String = ""
 }

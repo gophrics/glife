@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class ClusterProcessor {
   
@@ -78,7 +79,7 @@ class ClusterProcessor {
     return stepResult;
   }
   
-  static func RunMasterClustering(clusterData: [ClusterModal], homes: [HomeDataModal]) -> [[ClusterModal]] {
+  static func RunMasterClustering(clusterData: [ClusterModal], homes: List<HomeDataModal>) -> [[ClusterModal]] {
   
     var trips: [[ClusterModal]] = []
     var trip: [ClusterModal] = []
@@ -161,10 +162,16 @@ class ClusterProcessor {
     let _step: StepModal = StepModal()
     _step.meanLatitude = latitudeSum/Double(cluster.count);
     _step.meanLongitude = longitudeSum/Double(cluster.count);
-    _step.markers = markers;
+    _step.markers = List<Region>()
+    for marker in markers {
+      _step.markers.append(marker)
+    }
     _step.startTimestamp = _cluster[0].timestamp;
     _step.endTimestamp = _cluster[cluster.count - 1].timestamp
-    _step.imageUris = imageUris
+    _step.images = List<String>()
+    for image in imageUris {
+      _step.images.append(image)
+    }
     _step.masterImageUri = imageUris[0];
     let _r = Region()
     _r.latitude = _step.meanLatitude

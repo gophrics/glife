@@ -7,38 +7,38 @@
 //
 
 import Foundation
-
+import RealmSwift
 
 @objc(ExposedAPI)
 class ExposedAPI: NSObject {
     
   
-    @objc
-    func getProfileData(_ param: String, profileId: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        
-        print("Param: " + param)
-        print("ProfileId: " + profileId)
-        var data = Engine.EngineInstance._BlobProvider.getProfileData()
-        resolve(data)
+  @objc
+  func getProfileData(_ param: String, profileId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+      
+      switch(param) {
+        case "name":
+          print("Name found ? " + (Database.db.objects(ProfileModal.self).first?.name ?? "A") );
+          resolve(Database.db.objects(ProfileModal.self).first?.name); break;
+        default: resolve(nil)
+      }
+  }
+  
+  @objc
+  func setProfileData(_ value: NSDictionary, param param:String, profileId profileId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    switch(param) {
+    case "name":
+      let profileData = Database.db.objects(ProfileModal.self).first!
+      try! Database.db.write() {
+        profileData.name = value["name"] as? String ?? "";
+      }
+      break;
+    default:
+      break;
     }
+    resolve(true)
+  }
     
-   @objc
-    func getTripData(_ param: String, profileId: String, tripId: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        var data = Engine.EngineInstance._BlobProvider.getProfileData()
-        resolve(data)
-   }
-    
-   @objc
-    func getStepData(_ param: String, profileId: String, tripId: String, stepId: Int64, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        var data = Engine.EngineInstance._BlobProvider.getProfileData()
-        resolve(data)
-   }
-    
-   @objc
-   func setHomeDataFromUI(_ homeData: NSArray) {
-        let homeData:[HomeDataModal] = homeData as! [HomeDataModal]
-        Engine.EngineInstance.SetHomeData(data: homeData)
-   }
   
    @objc
    func addNewTrip(_ tripName: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
@@ -80,7 +80,11 @@ class ExposedAPI: NSObject {
     
     @objc
     func InitializeEngine(_ homeData: NSArray, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        var result = Engine.EngineInstance.Initialize(homeData: homeData as! [HomeDataModal])
+        var homeDataList = List<HomeDataModal>()
+        for data in homeData {
+          homeDataList.append(data as! HomeDataModal)
+        }
+        var result = Engine.EngineInstance.Initialize(homeData: homeDataList)
         resolve(result)
     }
     

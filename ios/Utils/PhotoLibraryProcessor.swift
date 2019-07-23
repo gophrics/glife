@@ -9,6 +9,7 @@
 import Foundation
 import CoreLocation
 import Photos
+import RealmSwift
 
 @objc(PhotoLibraryProcessor)
 class PhotoLibraryProcessor: NSObject {
@@ -52,7 +53,7 @@ class PhotoLibraryProcessor: NSObject {
   }
   
   
-  static func GenerateTripFromPhotos(clusterData: [ClusterModal], homesForDataClustering: [HomeDataModal], endTimestamp: Int64) throws -> [TripModal] {
+  static func GenerateTripFromPhotos(clusterData: [ClusterModal], homesForDataClustering: List<HomeDataModal>, endTimestamp: Int64) throws -> [TripModal] {
     
     let trips = ClusterProcessor.RunMasterClustering(clusterData: clusterData, homes: homesForDataClustering);
     var tripResult: [TripModal] = [];
@@ -74,7 +75,7 @@ class PhotoLibraryProcessor: NSObject {
   }
   
   
-  static func PopulateTripModalData(steps: [StepModal], tripId: String, homesDataForClustering: [HomeDataModal]) -> TripModal {
+  static func PopulateTripModalData(steps: [StepModal], tripId: String, homesDataForClustering: List<HomeDataModal>) -> TripModal {
     let tripResult: TripModal = TripModal();
     let homeStep = homesDataForClustering[Int(steps[0].startTimestamp / 86400) - 1]
     homeStep.timestamp = (steps[0].startTimestamp - 86400)

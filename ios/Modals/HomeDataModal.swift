@@ -9,10 +9,9 @@
 import Foundation
 import RealmSwift
 
-@objc
-class HomeDataModal: NSObject {
-  @objc dynamic var name: String = ""
-  @objc dynamic var timestamp: Int64 = 0
-  @objc dynamic var latitude: Float64 = 0
-  @objc dynamic var longitude: Float64 = 0
+class HomeDataModal: Object {
+  dynamic var name: String = ""
+  dynamic var timestamp: Int64 = 0
+  dynamic var latitude: Float64 = 0
+  dynamic var longitude: Float64 = 0
 }

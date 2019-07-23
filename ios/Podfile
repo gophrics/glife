@@ -45,5 +45,6 @@ pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
 pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
-pod 'RealmSwift', :modular_headers => true
+pod 'RealmSwift', '~> 3.17', :modular_headers => true
+
 pod 'Realm', :modular_headers => true

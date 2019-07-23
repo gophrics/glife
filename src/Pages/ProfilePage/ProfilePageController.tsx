@@ -3,6 +3,7 @@ import { NativeModules } from "react-native";
 import { ProfileModal } from '../../Engine/Modals/ProfileModal';
 import { TripModal } from '../../Engine/Modals/TripModal';
 import { Instance } from '../../Engine/Engine';
+import * as Engine from '../../Engine/Engine';
 
 export class ProfilePageController {
     
@@ -17,8 +18,8 @@ export class ProfilePageController {
         this.Modal = Instance.Modal;
     }
 
-    setName = (name: string) => {
-        NativeModules.setName(name)
+    setName = async(name: string) => {
+        NativeModules.ExposedAPI.setProfileData({"name": name }, 'name', await Engine.Instance.Modal.profileId)
     }
     
     onProfilePicChange = (profilePicURL: string) => {

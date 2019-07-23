@@ -20,22 +20,60 @@ class ExposedAPI: NSObject {
       switch(param) {
         case "name":
           print("Name found ? " + (db.objects(ProfileModal.self).first?.name ?? "A") );
-          resolve(db.objects(ProfileModal.self).first?.name); break;
+          resolve(db.objects(ProfileModal.self).first?.name);
+          break;
+        case "trips":
+          var dbResponse = db.objects(TripModal.self)
+          var trips: [TripModal] = []
+          for trip in dbResponse {
+            trips.append(trip)
+          }
+          resolve(trips)
+          break;
+        case "percentageWorldTravelled":
+          resolve(db.objects(ProfileModal.self).first?.percentageWorldTravelled)
+          break;
+        case "countriesVisited":
+          let dbResponse = db.objects(ProfileModal.self).first?.countriesVisited ?? List<Country>()
+          var countriesVisited : [Country] = []
+          for country in dbResponse {
+            countriesVisited.append(country)
+          }
+          resolve(countriesVisited)
+          break;
+        case "coverPicURL":
+          let dbResponse = db.objects(ProfileModal.self).first?.coverPicURL ?? "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
+          resolve(dbResponse)
+          break;
+        case "profilePicURL":
+          let dbResponse = db.objects(ProfileModal.self).first?.profilePicURL ?? "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
+          resolve(dbResponse)
+          break;
+        case "email":
+          let dbResponse = db.objects(ProfileModal.self).first?.email
+          resolve(dbResponse)
+          break;
+        case "password":
+          let dbResponse = db.objects(ProfileModal.self).first?.password
+          resolve(dbResponse)
+          break;
         default: resolve(nil)
       }
   }
   
   @objc
   func setProfileData(_ value: NSDictionary, param param:String, profileId profileId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    let db = try! Realm()
     switch(param) {
-    case "name":
-      let profileData = Database.db.objects(ProfileModal.self).first!
-      try! Database.db.write() {
-        profileData.name = value["name"] as? String ?? "";
-      }
-      break;
-    default:
-      break;
+      case "name":
+        print("Setting name as " + (value["name"] as! String) );
+        let profileData = db.objects(ProfileModal.self).first!
+        try! db.write() {
+          profileData.name = value["name"] as? String ?? "";
+        }
+        break;
+      default:
+        break;
     }
     resolve(true)
   }

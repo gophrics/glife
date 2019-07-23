@@ -16,6 +16,10 @@ interface IState {
     profilePicURL: string
     refreshing: boolean
     tripRenderArray: Array<JSX.Element>
+
+    percentageWorldTravelled: number
+    flagsCollected: number
+    visitedCountryList: Array<string>
 }
 
 interface IProps {
@@ -45,7 +49,10 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
             coverPicURL: "",// "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" 
             profilePicURL: "",// "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" 
             refreshing: false,
-            tripRenderArray: []
+            tripRenderArray: [],
+            percentageWorldTravelled: 0,
+            visitedCountryList: [],
+            flagsCollected: 0
         }
         
         this.loadState();
@@ -58,7 +65,10 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
             coverPicURL: await this.Controller.getCoverPicURL(),
             profilePicURL: await this.Controller.getProfilePicURL(),
             refreshing: false,
-            tripRenderArray: []
+            tripRenderArray: [],
+            percentageWorldTravelled: await this.Controller.getPercentageWorldTravelled(),
+            visitedCountryList: await this.Controller.getNumberOfCountriesVisited(),
+            flagsCollected: (await this.Controller.getNumberOfCountriesVisited()).length
         })
     }
 
@@ -92,12 +102,12 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
 
     pickCoverPic = () => {
         this.Controller.onCoverPicChangePress()
-        .then((res: any) => {
-            this.Controller.onCoverPicChange(res.path)
-            this.setState({
-                coverPicURL: res.path
-            })
-        })
+        // .then((res: any) => {
+        //     this.Controller.onCoverPicChange(res.path)
+        //     this.setState({
+        //         coverPicURL: res.path
+        //     })
+        // })
     }
 
     componentDidMount = () => {
@@ -147,11 +157,11 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
                         <ProfileComponent scrollY={this.state.scrollY} HEADER_SCROLL_DISTANCE={HEADER_SCROLL_DISTANCE} profilePic={this.state.profilePicURL} onProfilePicChange={this.onProfilePicChange} />
                     </View>
                 </Animated.View>
-                    <WorldMapColouredComponent visitedCountryList={this.Controller.getCountriesVisitedArray()} />
+                    <WorldMapColouredComponent visitedCountryList={this.state.visitedCountryList} />
                     <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 10 }}>
-                        <StatsAsCardComponent text={"You travelled " + this.Controller.getPercentageWorldTravelled() + "% of the world"} />
+                        <StatsAsCardComponent text={"You travelled " + this.state.percentageWorldTravelled + "% of the world"} />
                         <View style={{ width: 10 }} />
-                        <StatsAsCardComponent text={"You've collected " + this.Controller.getNumberOfCountriesVisited() + " flags"} />
+                        <StatsAsCardComponent text={"You've collected " + this.state.flagsCollected + " flags"} />
                     </View>
                     <View style={{ height: 10 }} />
                     {this.state.tripRenderArray}

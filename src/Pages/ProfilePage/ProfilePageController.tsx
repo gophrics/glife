@@ -6,11 +6,9 @@ import * as Engine from '../../Engine/Engine';
 
 export class ProfilePageController {
     
-    Modal: ProfileModal;
+    Modal: ProfileModal = new ProfileModal();
 
     constructor() {
-        this.Modal = {} as ProfileModal;
-        this.loadModal()
     }
 
     loadModal = async() => {
@@ -34,26 +32,26 @@ export class ProfilePageController {
     }
     
     getTrips = async() : Promise<Array<TripModal>> => {
-        return this.Modal.trips
+        return await this.Modal.trips
     }
 
     getProfilePicURL = async() => {
-        return this.Modal.profilePicURL;
+        return await this.Modal.profilePicURL;
     }
 
     getCoverPicURL = async() => {
-        return this.Modal.coverPicURL;
+        return await this.Modal.coverPicURL;
     }
 
-    getCountriesVisitedArray = () => {
-        return this.Modal.countriesVisited;
+    getCountriesVisitedArray = async() => {
+        return await this.Modal.countriesVisited;
     }
 
-    getNumberOfCountriesVisited = () => {
-        return this.Modal.countriesVisited.length;
+    getNumberOfCountriesVisited = async() => {
+        return (await this.Modal.countriesVisited).length;
     }
 
-    getPercentageWorldTravelled = () => {
-        return this.Modal.percentageWorldTravelled;
+    getPercentageWorldTravelled = async() => {
+        return await this.Modal.percentageWorldTravelled;
     }
 }

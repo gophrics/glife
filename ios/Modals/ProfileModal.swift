@@ -22,4 +22,6 @@ class ProfileModal : Object {
   dynamic var profilePicURL: String = ""
   dynamic var profileId: String = ""
   dynamic var name: String = ""
+  dynamic var email: String = ""
+  dynamic var password: String = ""
 }

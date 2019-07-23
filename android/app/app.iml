@@ -188,17 +188,12 @@
     <orderEntry type="library" name="Gradle: androidx.collection:collection:1.0.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks:16.0.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-sdk-api:16.5.0@aar" level="project" />
-    <orderEntry type="module" module-name="react-native-google-signin" />
-    <orderEntry type="module" module-name="react-native-sqlite-storage" />
     <orderEntry type="module" module-name="react-native-background-fetch" />
-    <orderEntry type="module" module-name="react-native-image-crop-picker" />
     <orderEntry type="module" module-name="react-native-svg" />
     <orderEntry type="module" module-name="react-native-maps" />
-    <orderEntry type="module" module-name="react-native-image-resizer" />
     <orderEntry type="module" module-name="react-native-fs" />
     <orderEntry type="module" module-name="react-native-linear-gradient" />
     <orderEntry type="module" module-name="react-native-vector-icons" />
-    <orderEntry type="module" module-name="react-native-image-picker" />
     <orderEntry type="module" module-name="@react-native-community_async-storage" />
   </component>
 </module>

@@ -1,4 +1,3 @@
-import ImagePicker from 'react-native-image-crop-picker';
 import { NativeModules } from "react-native";
 import { ProfileModal } from '../../Engine/Modals/ProfileModal';
 import { TripModal } from '../../Engine/Modals/TripModal';
@@ -27,7 +26,7 @@ export class ProfilePageController {
     }
 
     onCoverPicChangePress = () => {
-       return ImagePicker.openPicker({})
+       //return ImagePicker.openPicker({})
     }
 
     onCoverPicChange = (coverPicURL: string) => {

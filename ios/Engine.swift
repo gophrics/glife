@@ -108,13 +108,14 @@ final class Engine {
   
   func UpdateProfileDataWithTrip(trip: TripModal) -> TripModal {
     // Bug
-    self._BlobProvider.Blob.profileData.countriesVisited = List<String>()
+    self._BlobProvider.Blob.profileData.countriesVisited = List<Country>()
     for countryCode in trip.countryCode {
-      self._BlobProvider.Blob.profileData.countriesVisited.append(countryCode)
+      let _obj = Country()
+      _obj.country = countryCode
+      self._BlobProvider.Blob.profileData.countriesVisited.append(_obj)
     }
     self._BlobProvider.Blob.profileData.percentageWorldTravelled = Float((self._BlobProvider.Blob.profileData.countriesVisited.count * 100 / 186))    
     let _trip: TripModal = try! Database.db.objects(TripModal.self).filter("tripId == " + trip.tripId).first ?? TripModal()
-    _trip.CopyConstructor(trip: trip)
     
     return _trip
   }

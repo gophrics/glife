@@ -14,7 +14,6 @@ import { SplashScreen } from './Pages/SplashScreen';
 import { NewTripPage } from './Pages/NewTripPage/NewTripPageViewModal';
 import LinearGradient from 'react-native-linear-gradient';
 import { SettingsPage } from './Pages/SettingsPage';
-import { GoogleSignin } from 'react-native-google-signin';
 import { RegisterUserPage } from './Pages/RegisterAndLoginPage/RegisterUserPage';
 import { LoginUserPage } from './Pages/RegisterAndLoginPage/LoginUserPage';
 import { PreOnBoardingPage } from './Pages/OnBoardingPage/PreOnBoardingPage';
@@ -51,16 +50,6 @@ export default class App extends React.Component<IProps, IState> {
     // AsyncStorage.clear()
     
     this.Initialize()
-
-    GoogleSignin.configure({
-      scopes: ['profile', 'email'], // what API you want to access on behalf of the user, default is email and profile
-      iosClientId: '249369235819-uc0l7d7imtlsebj80s93ucb1mvj6vo8v.apps.googleusercontent.com', // only for iOS
-      webClientId: '249369235819-11cfia1ht584n1kmk6gh6kbba8ab429u.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-      hostedDomain: '', // specifies a hosted domain restriction
-      forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login
-      accountName: '', // [Android] specifies an account name on the device that should be used
-    })
   }
 
   Initialize = async() => {

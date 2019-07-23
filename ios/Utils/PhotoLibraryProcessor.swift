@@ -88,7 +88,7 @@ class PhotoLibraryProcessor: NSObject {
     let _stepModal: StepModal = ClusterProcessor.convertClusterToStep(cluster: [homeStepCluster])
     _stepModal.location = "Home";
     _stepModal.stepId = 0;
-    tripResult.steps.append(_stepModal)
+    //tripResult.steps.append(_stepModal)
     
     var i = 0;
     var countries: [String] = []
@@ -101,11 +101,11 @@ class PhotoLibraryProcessor: NSObject {
       _p.longitude = step.meanLongitude;
       
       let _q = ClusterModal()
-      _q.latitude = tripResult.steps[i].meanLatitude;
-      _q.longitude = tripResult.steps[i].meanLongitude;
-      
-      step.distanceTravelled = (tripResult.steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
-      tripResult.steps.append(step);
+//      _q.latitude = tripResult.steps[i].meanLatitude;
+//      _q.longitude = tripResult.steps[i].meanLongitude;
+//
+//      step.distanceTravelled = (tripResult.steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
+//      tripResult.steps.append(step);
       i += 1;
     }
     
@@ -125,12 +125,12 @@ class PhotoLibraryProcessor: NSObject {
     _p.longitude = _stepModal.meanLongitude
     
     let _q = ClusterModal()
-    _q.latitude = tripResult.steps[i].meanLatitude
-    _q.longitude = tripResult.steps[i].meanLongitude
-    _stepModal2.distanceTravelled = (tripResult.steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
-    _stepModal2.stepId = 10000
-    
-    tripResult.steps.append(_stepModal2)
+//    _q.latitude = tripResult.steps[i].meanLatitude
+//    _q.longitude = tripResult.steps[i].meanLongitude
+//    _stepModal2.distanceTravelled = (tripResult.steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
+//    _stepModal2.stepId = 10000
+//
+//    tripResult.steps.append(_stepModal2)
     
     // Load locations
     for step in steps {
@@ -151,9 +151,9 @@ class PhotoLibraryProcessor: NSObject {
     }
     
     tripResult.tripId = tripId;
-    tripResult.populateAll();
-    tripResult.populateTitle(countries: countries, places: places);
-    
+//    tripResult.populateAll();
+//    tripResult.populateTitle(countries: countries, places: places);
+//    
     return tripResult
   }
   

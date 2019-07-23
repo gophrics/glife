@@ -9,6 +9,9 @@
 import Foundation
 import RealmSwift
 
+class Image: Object {
+  dynamic var image: String = "";
+}
 
 class StepModal : Object {
   dynamic var stepId: Int = 0
@@ -20,7 +23,7 @@ class StepModal : Object {
   dynamic var location: String = ""
   dynamic var startTimestamp: Int64 = 0
   dynamic var endTimestamp: Int64 = 0
-  dynamic var images: List<String> = List<String>()
+  dynamic var images: List<Image> = List<Image>()
   dynamic var markers: List<Region> = List<Region>()
   dynamic var masterImageUri: String = ""
   dynamic var masterMarker: Region = Region()

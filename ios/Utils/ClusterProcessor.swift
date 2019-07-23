@@ -168,9 +168,11 @@ class ClusterProcessor {
     }
     _step.startTimestamp = _cluster[0].timestamp;
     _step.endTimestamp = _cluster[cluster.count - 1].timestamp
-    _step.images = List<String>()
+    _step.images = List<Image>()
     for image in imageUris {
-      _step.images.append(image)
+      let _obj = Image()
+      _obj.image = image
+      _step.images.append(_obj)
     }
     _step.masterImageUri = imageUris[0];
     let _r = Region()

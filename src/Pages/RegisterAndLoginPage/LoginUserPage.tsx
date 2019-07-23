@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { View, Text, TextInput, ActivityIndicator, TouchableOpacity } from 'react-native'
-import { GoogleSigninButton, GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { Page } from '../../Modals/ApplicationEnums';
 import { RegisterAndLoginController } from './RegisterAndLoginController';
 
@@ -59,22 +58,22 @@ export class LoginUserPage extends React.Component<IProps, IState> {
     }
 
     loginUsingGoogle = async() => {
-        this.setState({
-            loginInProcess: true
-        })
+        // this.setState({
+        //     loginInProcess: true
+        // })
 
-        await GoogleSignin.hasPlayServices();
-        const userInfo = await GoogleSignin.signIn();
+        // await GoogleSignin.hasPlayServices();
+        // const userInfo = await GoogleSignin.signIn();
 
-        var registered: boolean = await this.Controller.LoginUsingGoogle(this.state.email, userInfo.idToken || "")
-        if(registered)
-            this.props.setPage(Page[Page.SEARCH])
-        else {
-            this.setState({
-                loginInProcess: false,
-                error: this.Controller.error
-            })
-        }
+        // var registered: boolean = await this.Controller.LoginUsingGoogle(this.state.email, userInfo.idToken || "")
+        // if(registered)
+        //     this.props.setPage(Page[Page.SEARCH])
+        // else {
+        //     this.setState({
+        //         loginInProcess: false,
+        //         error: this.Controller.error
+        //     })
+        // }
     }
 
     render() {
@@ -100,13 +99,6 @@ export class LoginUserPage extends React.Component<IProps, IState> {
                 <TouchableOpacity style={{backgroundColor:'white', padding: 5, borderRadius: 5, margin: 10, width: '20%', height:'5%', alignSelf:'center'}} onPress={this.login} >
                     <Text style={{color:'black', fontSize:18, textAlign:'center', alignSelf:'center', textAlignVertical:'center'}}>Login</Text>
                 </TouchableOpacity>
-                <GoogleSigninButton
-                    style={{ width: 192, height: 48, alignSelf:'center' }}
-                    size={GoogleSigninButton.Size.Wide}
-                    color={GoogleSigninButton.Color.Dark}
-                    onPress={this.loginUsingGoogle}
-                    disabled={this.state.loginInProcess}
-                />
                 <Text style={{fontSize: 18, color:'red'}}>{this.state.error}</Text>
             </View>
         )

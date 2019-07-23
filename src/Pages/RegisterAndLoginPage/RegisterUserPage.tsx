@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { Page } from '../../Modals/ApplicationEnums';
 import { RegisterAndLoginController } from './RegisterAndLoginController';
 
@@ -113,14 +112,6 @@ export class RegisterUserPage extends React.Component<IProps, IState> {
                         <Text style={{fontSize: 16, color:'white', textDecorationLine: 'underline', textAlign:'center', textAlignVertical:'center'}}>Login</Text>
                     </TouchableOpacity>
                 </View>
-                <GoogleSigninButton
-                    style={{ width: 192, height: 48, alignSelf:"center", margin: 10 }}
-                    size={GoogleSigninButton.Size.Wide}
-                    color={GoogleSigninButton.Color.Dark}
-                    onPress={this.registerUsingGoogle}
-                    disabled={this.state.registering}
-                
-                />
                 <Text style={{fontSize: 18, color:'red'}}>{this.state.error}</Text>
             </View>
         )

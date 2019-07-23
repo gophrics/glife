@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
 
 interface IState {
 }
@@ -27,10 +26,10 @@ export class ProfileComponent extends React.Component<IProps, IState> {
     }
 
     onProfilePicChange = () => {
-        ImagePicker.openPicker({
-        }).then((image: any) => {
-            this.props.onProfilePicChange(image.path)
-        });
+        // ImagePicker.openPicker({
+        // }).then((image: any) => {
+        //     this.props.onProfilePicChange(image.path)
+        // });
     }
 
 

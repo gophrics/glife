@@ -9,8 +9,12 @@
 import Foundation
 import RealmSwift
 
+class Country: Object {
+  dynamic var country: String = "";
+}
+
 class ProfileModal : Object {
-  dynamic var countriesVisited: List<String> = List<String>()
+  dynamic var countriesVisited: List<Country> = List<Country>()
   dynamic var percentageWorldTravelled: Float = 0
   
   // Profile stuff

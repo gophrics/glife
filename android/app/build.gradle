@@ -150,12 +150,7 @@ android {
 
 dependencies {
     implementation project(':react-native-background-fetch')
-    implementation project(':react-native-fs')
-    implementation project(':react-native-image-resizer')
-    implementation project(':react-native-google-signin')
     implementation project(':react-native-linear-gradient')
-    implementation project(':react-native-image-crop-picker')
-    implementation project(':react-native-image-picker')
     implementation project(':react-native-vector-icons')
     implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-maps')

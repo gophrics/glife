@@ -185,7 +185,7 @@ class TripUtils {
       }
       let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
       if let responseJSON = responseJSON as? [String: Any] {
-        result.CopyConstructor(trip: responseJSON)
+        //result.CopyConstructor(trip: responseJSON)
       }
     }
     

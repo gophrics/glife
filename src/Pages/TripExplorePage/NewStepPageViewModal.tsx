@@ -1,10 +1,7 @@
 import * as React from 'react'
 import { Text, View, ActivityIndicator, ScrollView, Image, Modal, TextInput, Button, SafeAreaView, Dimensions, NativeModules } from 'react-native'
-import ImagePicker from 'react-native-image-crop-picker';
 import { StepModal } from '../../Engine/Modals/StepModal';
 import { ImageDataModal } from '../../Engine/Modals/ImageDataModal';
-import { ClusterModal } from '../../Engine/Modals/ClusterModal';
-import { Page } from '../../Modals/ApplicationEnums';
 import { Region } from 'react-native-maps';
 
 interface IProps {
@@ -51,18 +48,18 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
     }
 
     onImagePickerPress = () => {
-        ImagePicker.openPicker({
-            multiple: true
-          }).then(images => {
-            this.data['images'] = images;
-            var imageUris: string[] = []
-            for(var item of this.data['images']) {
-                imageUris.push(item.sourceURL)
-            }
-            this.setState({
-                imageUris: imageUris
-            })
-          })
+        // ImagePicker.openPicker({
+        //     multiple: true
+        //   }).then(images => {
+        //     this.data['images'] = images;
+        //     var imageUris: string[] = []
+        //     for(var item of this.data['images']) {
+        //         imageUris.push(item.sourceURL)
+        //     }
+        //     this.setState({
+        //         imageUris: imageUris
+        //     })
+        //   })
     }
 
     findExactName(obj: any, name: string) {

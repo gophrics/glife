@@ -9,39 +9,45 @@ interface IProps {
 
 interface IState {
     name: string
+    lastHome: string
     valid: boolean
     location: string
+    templocations: Array<string>
 }
 
 export class AskForLocationPage extends React.Component<IProps, IState> {
 
     Controller: OnBoardingPageController;
-    cursor: number
+    cursor: number = 0;
+
     constructor(props: IProps) {
         super(props)
         this.state = {
             name: "",
+            lastHome: "",
             valid: true,
-            location: ""
+            location: "",
+            templocations: []
         }
         this.Controller = new OnBoardingPageController()
-        this.cursor = this.Controller.GetAllHomesData().length - 1;
     }
 
-    getName = async() => {
+    loadState = async() => {
         this.setState({
-            name: await this.Controller.GetName()
+            name: await this.Controller.GetName(),
+            lastHome: (await this.Controller.GetLastHomeData()).name
         })
     }
 
     validateData = async (): Promise<boolean> => {
-        var culprits: Array<number> = await this.Controller.validateAndGetCulprits()
+        var result = await this.Controller.validate()
 
         this.setState({
-            valid: culprits[this.cursor] == 0
+            valid: result.length == 0,
+            templocations: result
         })
 
-        return culprits[this.cursor] == 0;
+        return result.length == 0
     }
 
     onLocationChange = (text: string) => {
@@ -68,7 +74,7 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
                 {
                     this.cursor == 0 ?
                         <View>
-                            <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Where do you currently stay, {this.Controller.GetName()}?</Text>
+                            <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Where do you currently stay, {this.state.name}?</Text>
                             <TextInput
                                 style={[{ alignSelf: "center", textAlign: 'center', fontSize: 22, padding: 3, color: 'white' }, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
                                 placeholder={"Enter home"}
@@ -77,7 +83,7 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
                         </View>
                         :
                         <View>
-                            <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>From where did you move to {this.Controller.GetHomeData(this.cursor - 1).name}?</Text>
+                            <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>From where did you move to {this.state.lastHome}?</Text>
                             <TextInput
                                 style={[{ alignSelf: "center", textAlign: 'center', fontSize: 22, padding: 3, color: 'white' }, { borderWidth: this.state.valid ? 0 : 1, borderColor: this.state.valid ? "" : "darkred" }]}
                                 placeholder={"Enter home"}
@@ -91,9 +97,9 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
                     : <View />
                 }
                 <View style={{alignSelf:'center'}}>
-                {!this.state.valid && this.Controller.GetTempLocations()[this.cursor] ?
-                    this.Controller.GetTempLocations()[this.cursor].map((el, index) => (
-                        <Text style={{ color: 'lightgrey' }} onPress={(e: any) => this.setLocation(el)}>{"\n " + (index + 1) + ". " + el.name.trim() + ", " + el.country.trim() + "\n"}</Text>
+                {!this.state.valid?
+                    this.state.templocations.map((el, index) => (
+                        <Text style={{ color: 'lightgrey' }} onPress={(e: any) => this.setLocation(el)}>{"\n " + (index + 1) + ". " + el + "\n"}</Text>
                     )) : <View />}
                 </View>
                 <TouchableOpacity style={{ alignSelf: 'center', marginTop: 100, backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>

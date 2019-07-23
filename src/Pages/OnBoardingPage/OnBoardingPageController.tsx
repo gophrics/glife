@@ -48,8 +48,11 @@ export class OnBoardingPageController {
         return this.homeData;
     }
 
-    GetHomeData = (index: number) => {
-        return this.homeData[index]
+    GetLastHomeData = async() => {
+        if(this.homeData.length == 0) {
+            await this.loadHomeData()
+        }
+        return this.homeData[this.homeData.length-1]
     }
 
     GetName = async() : Promise<string> => {
@@ -118,7 +121,7 @@ export class OnBoardingPageController {
         return false;
     }
 
-    removeDuplicates = (obj: any) => {
+    removeDuplicatesAndTrimName = (obj: any) => {
         var result: { name: string, country: string }[] = []
         for (var key of obj) {
             var t = key.display_name.split(', ')
@@ -145,7 +148,7 @@ export class OnBoardingPageController {
                 count++; continue;
             }
             var res = await NativeModules.getCoordinatesFromLocation(home.name)
-            res = this.removeDuplicates(res)
+            res = this.removeDuplicatesAndTrimName(res)
             
             this.tempLocations.push([])
             
@@ -161,5 +164,15 @@ export class OnBoardingPageController {
         this.culprits = culprits;
 
         return culprits
+    }
+
+    validate = async() => {
+        var res = await NativeModules.getCoordinatesFromLocation(this.homeData[this.cursor])
+        res = this.removeDuplicatesAndTrimName(res)
+        var tempLocations = []
+        for (var obj of res) {
+            tempLocations.push(obj);
+        }
+        return tempLocations
     }
 }

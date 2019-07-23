@@ -15,11 +15,12 @@ class ExposedAPI: NSObject {
   
   @objc
   func getProfileData(_ param: String, profileId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-      
+    
+      let db = try! Realm()
       switch(param) {
         case "name":
-          print("Name found ? " + (Database.db.objects(ProfileModal.self).first?.name ?? "A") );
-          resolve(Database.db.objects(ProfileModal.self).first?.name); break;
+          print("Name found ? " + (db.objects(ProfileModal.self).first?.name ?? "A") );
+          resolve(db.objects(ProfileModal.self).first?.name); break;
         default: resolve(nil)
       }
   }

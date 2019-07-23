@@ -9,22 +9,19 @@
 import Foundation
 import RealmSwift
 
-@objc
 class TripModal: Object {
-  @objc dynamic var profileId: String = ""
-  @objc dynamic var tripId: String = ""
-  @objc dynamic var location : Region = Region()
-  @objc dynamic var tripName: String = ""
-  @objc dynamic var countryCode: [String] = []
-  @objc dynamic var temperature : String = ""
-  @objc dynamic var daysOfTravel: Int = 0
-  @objc dynamic var distanceTravelled : Int = 0
-  @objc dynamic var activities: [String] = []
-  @objc dynamic var startDate: String = ""
-  @objc dynamic var endDate: String = ""
-  @objc dynamic var masterPicURL: String = ""
-  @objc dynamic var masterPicBase64: String = ""
-  @objc dynamic var isPublic: Bool = false
-  @objc dynamic var syncComplete: Bool = false
-  
+  dynamic var profileId: String = ""
+  dynamic var tripId: String = ""
+  dynamic var location : Region? = Region()
+  dynamic var tripName: String = ""
+  dynamic var countryCode: List<Country> = List<Country>()
+  dynamic var temperature : String = ""
+  dynamic var daysOfTravel: Int = 0
+  dynamic var distanceTravelled : Int = 0
+  dynamic var startDate: String = ""
+  dynamic var endDate: String = ""
+  dynamic var masterPicURL: String = ""
+  dynamic var masterPicBase64: String = ""
+  dynamic var isPublic: Bool = false
+  dynamic var syncComplete: Bool = false
 }

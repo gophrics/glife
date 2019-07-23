@@ -111,7 +111,7 @@ final class Engine {
     self._BlobProvider.Blob.profileData.countriesVisited = List<Country>()
     for countryCode in trip.countryCode {
       let _obj = Country()
-      _obj.country = countryCode
+      _obj.country = countryCode.country
       self._BlobProvider.Blob.profileData.countriesVisited.append(_obj)
     }
     self._BlobProvider.Blob.profileData.percentageWorldTravelled = Float((self._BlobProvider.Blob.profileData.countriesVisited.count * 100 / 186))    

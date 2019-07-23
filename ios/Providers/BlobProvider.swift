@@ -9,7 +9,6 @@
 import Foundation
 import RealmSwift
 
-@objc
 class EngineModal: Object {
   dynamic var homeData: List<HomeDataModal> = List<HomeDataModal>()
   dynamic var homesForDataClustering: List<HomeDataModal> = List<HomeDataModal>()
@@ -21,11 +20,9 @@ class EngineModal: Object {
   dynamic var password: String = "";
 }
 
-
-@objc
 class EngineBlob: Object {
-  @objc dynamic var profileData: ProfileModal = ProfileModal()
-  @objc dynamic var trips: [TripModal] = []
+  dynamic var profileData: ProfileModal = ProfileModal()
+  dynamic var trips: List<TripModal> = List<TripModal>()
 }
 
 class BlobProvider {

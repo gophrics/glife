@@ -67,9 +67,15 @@ class ExposedAPI: NSObject {
     switch(param) {
       case "name":
         print("Setting name as " + (value["name"] as! String) );
-        let profileData = db.objects(ProfileModal.self).first!
+        let profileData = db.objects(ProfileModal.self).first
         try! db.write() {
-          profileData.name = value["name"] as? String ?? "";
+          if(profileData == nil) {
+            let profileData = ProfileModal()
+            profileData.name = value["name"] as? String ?? "";
+            db.add(profileData)
+          } else {
+            profileData!.name = value["name"] as? String ?? "";
+          }
         }
         break;
       default:

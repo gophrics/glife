@@ -15,3 +15,7 @@ class HomeDataModal: Object {
   dynamic var latitude: Float64 = 0
   dynamic var longitude: Float64 = 0
 }
+
+class HomeDataObject: Object {
+  dynamic var HomeData: List<HomeDataModal> = List<HomeDataModal>()
+}

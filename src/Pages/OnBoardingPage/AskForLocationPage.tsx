@@ -18,7 +18,6 @@ interface IState {
 export class AskForLocationPage extends React.Component<IProps, IState> {
 
     Controller: OnBoardingPageController;
-    cursor: number = 0;
 
     constructor(props: IProps) {
         super(props)
@@ -30,9 +29,11 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
             templocations: []
         }
         this.Controller = new OnBoardingPageController()
+        this.loadState()
     }
 
     loadState = async() => {
+        await this.Controller.loadHomeData()
         this.setState({
             name: await this.Controller.GetName(),
             lastHome: (await this.Controller.GetLastHomeData()).name
@@ -40,7 +41,7 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
     }
 
     validateData = async (): Promise<boolean> => {
-        var result = await this.Controller.validate()
+        var result = await this.Controller.validate(this.state.location)
 
         this.setState({
             valid: result.length == 0,
@@ -51,16 +52,20 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
     }
 
     onLocationChange = (text: string) => {
-        this.Controller.onLocationChangeText(this.cursor, text)
+        this.setState({
+            location: text
+        })
     }
 
     onNextButtonClick = async () => {
-        if (await this.validateData())
+        console.log(this.state.location)
+        if (await this.validateData()) {
+            this.Controller.SetLastHomeLocation(this.state.location)
             this.props.setPage(Page[Page.ONBOARDING])
+        }
     }
 
     setLocation = (obj: any) => {
-        this.Controller.onLocationChangeText(this.cursor, obj.name.trim() + ", " + obj.country.trim())
         this.setState({
             location: obj.name.trim() + ", " + obj.country.trim()
         })
@@ -69,10 +74,16 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
 
     render() {
 
+        if(!this.Controller.homeDataLoaded) {
+            return (
+                <View />
+            )
+        }
+
         return (
             <View>
                 {
-                    this.cursor == 0 ?
+                    !this.Controller.FirstHomeFilled() ?
                         <View>
                             <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Where do you currently stay, {this.state.name}?</Text>
                             <TextInput
@@ -93,7 +104,7 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
                 }
                 {
                     !this.state.valid?
-                            <Text style={{ color: 'red', padding: 3, alignSelf:'center' }} >{this.Controller.culprits[this.cursor] == 1 ? "Try nearest city, the digital overlords can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India\nPlaces found:" }</Text>
+                            <Text style={{ color: 'red', padding: 3, alignSelf:'center' }} >{this.state.templocations.length == 0 ? "Try nearest city, the digital overlords can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India\nPlaces found:" }</Text>
                     : <View />
                 }
                 <View style={{alignSelf:'center'}}>

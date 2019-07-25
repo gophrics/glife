@@ -111,7 +111,7 @@ class TripUtils {
     return result
   }
   
-  static func getCoordinatesFromLocation(location: String) -> Region {
+  static func getCoordinatesFromLocation(location: String) -> [Region] {
     let urlString = ServerURLWithoutEndingSlash + "/api/v1/travel/searchlocation"
     let body: [String: Any] = [
       "location": location
@@ -122,20 +122,32 @@ class TripUtils {
     request.httpMethod = "POST"
     request.httpBody = jsonData
     
-    var result = Region()
-    URLSession.shared.dataTask(with: request) { data, response, error in
+    var result: [Region] = []
+    
+    let semaphore = DispatchSemaphore(value: 0)
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+
       guard let data = data, error == nil else {
-        print("No data")
         return
       }
       let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
       if let responseJSON = responseJSON as? [[String: Any]] {
-        let _result = Region()
-        _result.latitude = (responseJSON )[0]["lat"] as! Float64
-        _result.longitude = (responseJSON )[0]["lon"] as! Float64
-        result = _result
+        
+        for _res in responseJSON {
+          dump(_res)
+          let _result = Region()
+          _result.name = _res["display_name"] as! String
+          _result.latitude = Float64(_res["lat"] as! String)!
+          _result.longitude = Float64(_res["lon"] as! String)!
+          result.append(_result)
+        }
+        semaphore.signal()
       }
     }
+    
+    task.resume()
+    semaphore.wait()
+    
     return result
   }
   

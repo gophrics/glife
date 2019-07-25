@@ -19,7 +19,6 @@ class ExposedAPI: NSObject {
       let db = try! Realm()
       switch(param) {
         case "name":
-          print("Name found ? " + (db.objects(ProfileModal.self).first?.name ?? "A") );
           resolve(db.objects(ProfileModal.self).first?.name);
           break;
         case "trips":
@@ -67,23 +66,73 @@ class ExposedAPI: NSObject {
     switch(param) {
       case "name":
         print("Setting name as " + (value["name"] as! String) );
-        let profileData = db.objects(ProfileModal.self).first
-        try! db.write() {
-          if(profileData == nil) {
+        let data = db.objects(ProfileModal.self)
+        
+        if let profileData = data.first {
+          try? db.write {
+            profileData.name = value["name"] as? String ?? "";
+          }
+        } else {
+          try? db.write {
             let profileData = ProfileModal()
             profileData.name = value["name"] as? String ?? "";
+            print("Setting name as " + profileData.name)
             db.add(profileData)
-          } else {
-            profileData!.name = value["name"] as? String ?? "";
           }
         }
+        // Name is not being saved by Realm, debug tomorrow
         break;
       default:
         break;
     }
     resolve(true)
   }
+  
+  @objc
+  func getHomeData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    let db = try! Realm()
+    let dbresult = db.objects(HomeDataModal.self)
     
+    var homeDataArray: [HomeDataModal] = []
+    
+    for result in dbresult{
+      homeDataArray.append(result)
+    }
+    
+    resolve(homeDataArray)
+  }
+  
+  @objc
+  func setHomeData(_ homeData:NSArray, resolve resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    
+    let db = try! Realm()
+    let dbresult = db.objects(HomeDataModal.self)
+    
+    for result in dbresult {
+        db.delete(result)
+    }
+    
+    for data in homeData {
+      try? db.write {
+        db.add(data as! HomeDataModal)
+      }
+    }
+    
+    resolve(true)
+  }
+  
+  @objc
+  func getCoordinatesFromLocation(_ location: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    let coordinatesArray = TripUtils.getCoordinatesFromLocation(location: location)
+    
+    var result : [[String:Any]] = []
+    
+    for _res in coordinatesArray {
+        result.append(_res.GetAsDictionary())
+    }
+    
+    resolve(result)
+  }
   
    @objc
    func addNewTrip(_ tripName: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
@@ -99,11 +148,6 @@ class ExposedAPI: NSObject {
         data.tripId = TripUtils.GenerateTripId()
         var operationResult = Engine.EngineInstance.UpdateProfileDataWithTrip(trip: data)
         resolve(operationResult)
-   }
-  
-   @objc
-   func getHomeData(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        resolve(Engine.EngineInstance._BlobProvider.Modal.homeData)
    }
     
     @objc

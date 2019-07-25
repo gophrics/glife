@@ -8,17 +8,18 @@ export class OnBoardingPageController {
     cursor: number;
     culprits: Array<number>;
     homeData: Array<HomeDataModal> = [];
+    homeDataLoaded: boolean = false;
 
     constructor() {
         this.tempLocations = [];
         this.cursor = 0;
         this.culprits = [];
-        this.loadHomeData();
     }
 
     loadHomeData = async() => {
-        this.homeData = await NativeModules.getHomeData()
+        this.homeData = await NativeModules.ExposedAPI.getHomeData()
         if(this.homeData.length == 0) this.AddEmptyHome()
+        this.homeDataLoaded = true;
     }
 
     getDateFromTimestamp = (timestamp: number) => {
@@ -29,12 +30,26 @@ export class OnBoardingPageController {
         return Engine.Instance.Cache['date'] || new Date()
     }
 
+    FirstHomeFilled = () => {
+        return this.homeData.length > 0 && this.homeData[0].name != ""
+    }
+
     SetCachedDate = (date: Date) => {
         Engine.Instance.Cache['date'] = date;
     }
 
-    SaveData = () => {
+    SetLastHomeLocation = (location: string) => {
+        this.homeData[this.homeData.length - 1].name = location
+        this.SaveData()
+    }
 
+    SetLastHomeTimestamp = (timestamp: number) => {
+        this.homeData[this.homeData.length - 1].timestamp = timestamp
+        this.SaveData()
+    }
+
+    SaveData = () => {
+        NativeModules.ExposedAPI.setHomeData(this.homeData)
     }
     
     AddEmptyHome = () => {
@@ -56,7 +71,7 @@ export class OnBoardingPageController {
     }
 
     GetName = async() : Promise<string> => {
-        return await NativeModules.getName()
+        return await NativeModules.ExposedAPI.getProfileData('name', 'randomGeneratedId')
     }
 
     GetTempLocations = () => {
@@ -147,17 +162,10 @@ export class OnBoardingPageController {
                 culprits[count] = 1;
                 count++; continue;
             }
-            var res = await NativeModules.getCoordinatesFromLocation(home.name)
-            res = this.removeDuplicatesAndTrimName(res)
-            
-            this.tempLocations.push([])
-            
-            for (var obj of res) {
-                this.tempLocations[count].push(obj);
-            }
 
-            if (res && res.length == 1 || (this.findExactName(res, home.name))) { culprits[count] = 0 }
-            else if (res) culprits[count] = 2
+            this.tempLocations[count] = await this.validate(home.name)
+
+            culprits[count] = this.tempLocations.length == 1 ? 0 : 1;
             count++
         }
         
@@ -166,8 +174,9 @@ export class OnBoardingPageController {
         return culprits
     }
 
-    validate = async() => {
-        var res = await NativeModules.getCoordinatesFromLocation(this.homeData[this.cursor])
+    validate = async(location: string) => {
+        var res = await NativeModules.ExposedAPI.getCoordinatesFromLocation(location)
+        console.log(res)
         res = this.removeDuplicatesAndTrimName(res)
         var tempLocations = []
         for (var obj of res) {

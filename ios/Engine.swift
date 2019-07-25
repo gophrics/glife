@@ -78,7 +78,7 @@ final class Engine {
           _el.timestamp = Int64(currentTimestamp)
           _el.name = data.name
           
-          let _region = TripUtils.getCoordinatesFromLocation(location: _el.name)
+          let _region = TripUtils.getCoordinatesFromLocation(location: _el.name)[0] //Bug
           _el.latitude = _region.latitude
           _el.longitude = _region.longitude
           homesForDataClustering[currentTimestamp] = _el

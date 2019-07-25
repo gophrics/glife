@@ -98,7 +98,7 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
             return false
         }
 
-        var res = await NativeModules.getCoordinatesFromLocation(this.state.location)
+        var res = await NativeModules.ExposedAPI.getCoordinatesFromLocation(this.state.location)
         res = this.removeDuplicates(res)
         for (var obj of res) {
             this.tempLocations.push(obj);
@@ -125,7 +125,7 @@ export class NewStepPageViewModal extends React.Component<IProps, IState> {
             })   
             return;
         }
-        var res = await NativeModules.getCoordinatesFromLocation(this.state.location)
+        var res = await NativeModules.ExposedAPI.getCoordinatesFromLocation(this.state.location)
         res = res[0]
         
         var imageDataList: Array<ImageDataModal> = []

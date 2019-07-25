@@ -134,7 +134,6 @@ class TripUtils {
       if let responseJSON = responseJSON as? [[String: Any]] {
         
         for _res in responseJSON {
-          dump(_res)
           let _result = Region()
           _result.name = _res["display_name"] as! String
           _result.latitude = Float64(_res["lat"] as! String)!

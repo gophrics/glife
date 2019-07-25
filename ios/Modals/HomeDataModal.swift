@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+@objcMembers
 class HomeDataModal: Object {
   dynamic var name: String = ""
   dynamic var timestamp: Int64 = 0
@@ -20,6 +21,10 @@ class HomeDataModal: Object {
     self.timestamp = dict["timestamp"] as? Int64 ?? 0
     self.latitude = dict["latitude"] as? Float64 ?? 0
     self.longitude = dict["longitude"] as? Float64 ?? 0
+  }
+  
+  override static func primaryKey() -> String? {
+    return "timestamp"
   }
 }
 

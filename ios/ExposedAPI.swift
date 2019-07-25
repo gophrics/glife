@@ -65,21 +65,22 @@ class ExposedAPI: NSObject {
     let db = try! Realm()
     switch(param) {
       case "name":
-        print("Setting name as " + (value["name"] as! String) );
         let data = db.objects(ProfileModal.self)
         
         if let profileData = data.first {
-          try? db.write {
-            profileData.name = value["name"] as? String ?? "";
-          }
+          profileData.name = value["name"] as! String;
+          print("Profile name: " + profileData.name);
         } else {
-          try? db.write {
+          try! db.write {
+            print("Value[name]")
+            dump(value["name"])
             let profileData = ProfileModal()
-            profileData.name = value["name"] as? String ?? "";
+            profileData.name = value["name"] as! String;
             print("Setting name as " + profileData.name)
-            db.add(profileData)
+            db.add(profileData, update: .all)
           }
         }
+        dump(db.objects(ProfileModal.self).count)
         // Name is not being saved by Realm, debug tomorrow
         break;
       default:
@@ -95,7 +96,9 @@ class ExposedAPI: NSObject {
     
     var homeDataArray: [HomeDataModal] = []
     
+    print("getHomeData called")
     for result in dbresult{
+      dump(result)
       homeDataArray.append(result)
     }
     

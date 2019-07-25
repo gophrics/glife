@@ -99,7 +99,7 @@ class ExposedAPI: NSObject {
     print("getHomeData called")
     for result in dbresult{
       dump(result)
-      homeDataArray.append(result)
+      homeDataArray.append(result.GetAsDictionary())
     }
     
     resolve(homeDataArray)
@@ -117,9 +117,9 @@ class ExposedAPI: NSObject {
     
     for data in homeData {
       dump(data)
-      var homeDataModal = HomeDataModal()
+      let homeDataModal = HomeDataModal()
       homeDataModal.CloneDictionary(dict: data as! [String:Any])
-      try? db.write {
+      try! db.write {
         db.add(homeDataModal)
       }
     }

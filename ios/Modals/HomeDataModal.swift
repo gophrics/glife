@@ -16,6 +16,10 @@ class HomeDataModal: Object {
   dynamic var latitude: Float64 = 0
   dynamic var longitude: Float64 = 0
   
+  override static func primaryKey() -> String? {
+    return "timestamp"
+  }
+  
   func CloneDictionary(dict: [String:Any]) {
     self.name = dict["name"] as? String ?? ""
     self.timestamp = dict["timestamp"] as? Int64 ?? 0
@@ -23,9 +27,16 @@ class HomeDataModal: Object {
     self.longitude = dict["longitude"] as? Float64 ?? 0
   }
   
-  override static func primaryKey() -> String? {
-    return "timestamp"
+  func GetAsDictionary() -> [String:Any] {
+    var dict: [String:Any] = [:]
+    dict["name"] = self.name;
+    dict["timestamp"] = self.timestamp;
+    dict["latitude"] = self.latitude;
+    dict["longitude"] = self.longitude;
+    
+    return dict;
   }
+  
 }
 
 class HomeDataObject: Object {

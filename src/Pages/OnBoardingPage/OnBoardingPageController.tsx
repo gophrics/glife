@@ -55,7 +55,9 @@ export class OnBoardingPageController {
     AddEmptyHome = () => {
         this.homeData.push({
             name: "",
-            timestamp: 0
+            timestamp: 0,
+            latitude: 0,
+            longitude: 0
           } as HomeDataModal)
     }
 
@@ -117,7 +119,9 @@ export class OnBoardingPageController {
                 if (i == index - 1) {
                     homes.push({
                         name: this.homeData[i].name,
-                        timestamp: this.homeData[index].timestamp
+                        timestamp: this.homeData[index].timestamp,
+                        latitude: 0,
+                        longitude: 0
                     } as HomeDataModal)
                 } else 
                     homes.push(this.homeData[i])
@@ -126,25 +130,15 @@ export class OnBoardingPageController {
         this.homeData = homes
     }
 
-    findExactName(obj: any, name: string) {
-        for (var key of obj) {
-            if ((key.name + ", " + key.country).trim() == name.trim()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    removeDuplicatesAndTrimName = (obj: any) => {
-        var result: { name: string, country: string }[] = []
+    trimName = (obj: any) : Array<string> => {
+        var result: Array<string> = []
+        var countries: Array<String> = []
         for (var key of obj) {
             var t = key.display_name.split(', ')
-            if (!this.findExactName(result, t[0] + ", " + t[t.length - 1]))
-                result.push({
-                    name: t[0],
-                    country: t[t.length - 1]
-                })
+            if (countries.indexOf(t[t.length - 1]) == -1) {
+                countries.push(t[t.length - 1])
+                result.push(t[0] + ", " + t[t.length - 1])
+            }
         }
         return result
     }
@@ -177,7 +171,7 @@ export class OnBoardingPageController {
     validate = async(location: string) => {
         var res = await NativeModules.ExposedAPI.getCoordinatesFromLocation(location)
         console.log(res)
-        res = this.removeDuplicatesAndTrimName(res)
+        res = this.trimName(res)
         var tempLocations = []
         for (var obj of res) {
             tempLocations.push(obj);

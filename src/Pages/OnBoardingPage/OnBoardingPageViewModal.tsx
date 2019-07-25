@@ -14,6 +14,9 @@ interface IState {
     validationInProgress: boolean
     culprits: Array<number>,
     homes: Array<HomeDataModal>
+
+    name: string
+    lastHomeTimestamp: number
 }
 
 export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
@@ -29,10 +32,21 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
             showPicker: false,
             validationInProgress: false,
             culprits: [0],
-            homes: this.Controller.GetAllHomesData()
+            homes: this.Controller.GetAllHomesData(),
+            name: "",
+            lastHomeTimestamp: 0
         }
+
+        this.loadState();
     }
     
+    loadState = async() => {
+        this.setState({
+            name: await this.Controller.GetName(),
+            lastHomeTimestamp: (await this.Controller.GetLastHomeData()).timestamp
+        })
+    }
+
     getTempLocations = () => {
         return this.Controller.GetTempLocations()
     }
@@ -96,7 +110,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         return (
             <View style={{flex: 1}}>
                 <View>
-                    <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Hi {this.Controller.GetName()}</Text>
+                    <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Hi {this.state.name}</Text>
                     <Text style={{ marginTop: 20, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Add your past home cities</Text>
                     <Text style={{ marginTop: 12, fontSize: 22, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>You could add later too ;)</Text>
                 </View>
@@ -120,7 +134,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                                             this.getTempLocations()[i].map((el, index) => (
                                                 <Text style={{ color: 'lightgrey'}} onPress={(e: any) => this.setLocation(i, el)}>{"\n " + (index+1) + ". " + el.name.trim() + ", " + el.country.trim() + "\n"}</Text>
                                             )) : <View />}
-                                        <Text style={{ color: 'white', fontSize: 20, marginBottom: 20, textAlign:'center'  }}>{home.timestamp == 0 ? "Long long ago" : this.Controller.GetDateAsString(home.timestamp)} - {i == 0 ? "Current" : this.Controller.GetDateAsString(this.Controller.GetHomeData(i-1).timestamp)}</Text>
+                                        <Text style={{ color: 'white', fontSize: 20, marginBottom: 20, textAlign:'center'  }}>{home.timestamp == 0 ? "Long long ago" : this.Controller.GetDateAsString(home.timestamp)} - {i == 0 ? "Current" : this.Controller.GetDateAsString(this.state.lastHomeTimestamp)}</Text>
                                     </View>
                                     {i != 0 ?
                                     <TouchableOpacity onPress={() => this.onDeleteHome(i)}>

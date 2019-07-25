@@ -103,7 +103,7 @@ class ExposedAPI: NSObject {
   }
   
   @objc
-  func setHomeData(_ homeData:NSArray, resolve resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  func setHomeData(_ homeData:NSArray, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     
     let db = try! Realm()
     let dbresult = db.objects(HomeDataModal.self)
@@ -113,8 +113,11 @@ class ExposedAPI: NSObject {
     }
     
     for data in homeData {
+      dump(data)
+      var homeDataModal = HomeDataModal()
+      homeDataModal.CloneDictionary(dict: data as! [String:Any])
       try? db.write {
-        db.add(data as! HomeDataModal)
+        db.add(homeDataModal)
       }
     }
     

@@ -44,11 +44,11 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
         var result = await this.Controller.validate(this.state.location)
 
         this.setState({
-            valid: result.length == 0,
+            valid: result.length == 1,
             templocations: result
         })
 
-        return result.length == 0
+        return result.length == 1
     }
 
     onLocationChange = (text: string) => {
@@ -65,11 +65,10 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
         }
     }
 
-    setLocation = (obj: any) => {
+    setLocation = (location: string) => {
         this.setState({
-            location: obj.name.trim() + ", " + obj.country.trim()
-        })
-        this.validateData()
+            location: location
+        }, this.validateData)
     }
 
     render() {

@@ -32,9 +32,7 @@ export class ProfilePageController {
     }
     
     getTrips = async() : Promise<Array<TripModal>> => {
-        var trips = await this.Modal.trips
-        console.log(trips)
-        return trips
+        return await this.Modal.trips
     }
 
     getProfilePicURL = async() => {

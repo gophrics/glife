@@ -2,7 +2,7 @@ import { NativeModules } from 'react-native';
 
 export class ProfileModal {
     profileId: string = "";
-
+    
     get percentageWorldTravelled() {
         return NativeModules.ExposedAPI.getProfileData('percentageWorldTravelled', this.profileId)
     }

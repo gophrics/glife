@@ -35,30 +35,19 @@ export class TripComponent extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props)
-        this.state = {
-            masterPic: "",
-            tripName:"...",
-            startDate: "",
-            endDate: null,
-            temperature: "",
-            daysOfTravel: 0,
-            distanceTravelled: 0
-        }
         this.loadState();
     }
 
-    loadState = async() => {
-        this.setState({
-            masterPic: await this.props.tripModal.masterImage,
-            tripName: await this.props.tripModal.tripName,
-            startDate: await this.props.tripModal.startDate,
-            endDate: await this.props.tripModal.endDate,
-            temperature: await this.props.tripModal.temperature,
-            daysOfTravel: await this.props.tripModal.daysOfTravel,
-            distanceTravelled: await this.props.tripModal.distanceTravelled
-        })
-
-        console.log(this.state.masterPic)
+    loadState = () => {
+        this.state = {
+            masterPic: this.props.tripModal.masterImage,
+            tripName: this.props.tripModal.tripName,
+            startDate: this.props.tripModal.startDate,
+            endDate: this.props.tripModal.endDate,
+            temperature: this.props.tripModal.temperature,
+            daysOfTravel: this.props.tripModal.daysOfTravel,
+            distanceTravelled: this.props.tripModal.distanceTravelled
+        }
     }
 
     //'#98FB98', '#228B22']

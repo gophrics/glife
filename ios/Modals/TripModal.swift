@@ -35,7 +35,7 @@ class TripModal: Object {
     dict["distanceTravelled"] = self.distanceTravelled;
     dict["startDate"] = self.startDate;
     dict["endDate"] = self.endDate;
-    dict["masterPicURL"] = self.masterImage;
+    dict["masterImage"] = self.masterImage;
     dict["isPublic"] = self.isPublic;
     dict["syncComplete"] = self.syncComplete;
     

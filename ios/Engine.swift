@@ -33,7 +33,7 @@ class Engine {
     }
     
     func Initialize() -> Bool {
-      
+        print("Dump : Initialize() called")
         let dbHomeDataArray = (try! Realm()).objects(HomeDataModal.self)
         let homeDataArray: List<HomeDataModal> = List<HomeDataModal>();
       
@@ -41,19 +41,30 @@ class Engine {
           homeDataArray.append(homeData)
         }
       
-        self._BlobProvider.Modal.homesForDataClustering = try! self.GenerateHomeData(homeData: homeDataArray)
+        let homesForDataClustering = try! self.GenerateHomeData(homeData: homeDataArray)
       
-        dump(self._BlobProvider.Modal.homesForDataClustering);
+        print("Dumping homesForClustering")
+        dump(homesForDataClustering);
+      
+        let photos = PHPhotoLibrary.authorizationStatus()
+        if photos == .notDetermined {
+          PHPhotoLibrary.requestAuthorization({status in
+            if status != .authorized{
+              return;
+            }
+          })
+        }
       
         let photoRollInfos: [ClusterModal] = PhotoLibraryProcessor.getPhotosFromLibrary();
       
         // Create a No photos found warning page
         if (photoRollInfos.count == 0) {
+          print("Dump: No photos found (Check photo permission?)")
           return true
         }
         
-        let trips = try! PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: self._BlobProvider.Modal.homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
-        self.ClearAndUpdateProfileDataWithAllTrips(trips: trips)
+        let trips = try! PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
+        self.UpdateDBWithTrips(trips: trips)
         return true
     }
 
@@ -61,35 +72,51 @@ class Engine {
       self._BlobProvider.Modal.homeData = data
     }
   
-    func ClearAndUpdateProfileDataWithAllTrips(trips: [TripModal]) {
-      //TODO: Update profile data
-      for trip in trips {
-//TODO
+    func UpdateDBWithTrips(trips: [TripModal]) {
+      var db = try! Realm();
+      for trip in trips{
+        print("DUMP: " + trip.tripId)
+        print("DUMP: " + trip.tripName)
+        let dbResult = db.objects(TripModal.self).filter{ $0.tripId == trip.tripId }
+        if let _trip = dbResult.first {
+          try! db.write {
+            _trip.CopyConstructor(modal: trip)
+          }
+        } else {
+          try! db.write {
+            db.add(trip)
+          }
+        }
       }
     }
   
-  func GenerateHomeData(homeData: List<HomeDataModal>) throws -> List<HomeDataModal> {
+  func GenerateHomeData(homeData: List<HomeDataModal>) throws -> List<HomesForDataClusteringModal> {
       if(homeData.count == 0) {
         throw EngineError.coreEngineError(message: "No homes as input to be processed")
       }
       
-      var homesForDataClustering: List<HomeDataModal> = List<HomeDataModal>()
-      
-      for _ in 0...Int(homeData[0].timestamp/86400) {
-        homesForDataClustering.append(HomeDataModal())
+      let homesForDataClustering: List<HomesForDataClusteringModal> = List<HomesForDataClusteringModal>()
+    
+      let today = Date()
+    
+      // Populate array till today with empty object
+      for i in 0...Int(today.timeIntervalSince1970/86400) + 1 {
+        print("Dump: " + String(i))
+        homesForDataClustering.append(HomesForDataClusteringModal())
       }
-      
+    
+      // Modify timestamp and location of objects in accordance with homeData input from user
       var currentTimestamp = Int(Date().timeIntervalSince1970/86400)
       for data in homeData {
+        let _region = TripUtils.getCoordinatesFromLocation(location: data.name)[0] // Bug
+        
         while(currentTimestamp >= Int(data.timestamp/86400)) {
-          let _el = HomeDataModal()
-          _el.timestamp = Int64(currentTimestamp)
-          _el.name = data.name
           
-          let _region = TripUtils.getCoordinatesFromLocation(location: _el.name)[0] //Bug
-          _el.latitude = _region.latitude
-          _el.longitude = _region.longitude
-          homesForDataClustering[currentTimestamp] = _el
+          homesForDataClustering[currentTimestamp].timestamp = Int64(currentTimestamp)
+          homesForDataClustering[currentTimestamp].name = data.name;
+          homesForDataClustering[currentTimestamp].latitude = _region.latitude;
+          homesForDataClustering[currentTimestamp].longitude = _region.longitude;
+          
           currentTimestamp -= 1
         }
       }

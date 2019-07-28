@@ -33,6 +33,9 @@ class PhotoLibraryProcessor: NSObject {
         }
       }
     })
+    
+    print("Dump: " + String(allPhotos.count))
+    print("Dump2: " + String(arrayOfPHAsset.count))
     return arrayOfPHAsset
   }
   
@@ -53,11 +56,12 @@ class PhotoLibraryProcessor: NSObject {
   }
   
   
-  static func GenerateTripFromPhotos(clusterData: [ClusterModal], homesForDataClustering: List<HomeDataModal>, endTimestamp: Int64) throws -> [TripModal] {
+  static func GenerateTripFromPhotos(clusterData: [ClusterModal], homesForDataClustering: List<HomesForDataClusteringModal>, endTimestamp: Int64) throws -> [TripModal] {
     
     let trips = ClusterProcessor.RunMasterClustering(clusterData: clusterData, homes: homesForDataClustering);
     var tripResult: [TripModal] = [];
     
+    print("Dump: " + String(trips.count))
     if (trips.count == 0) {
       throw EngineError.coreEngineError(message: "No trips found")
     }
@@ -71,11 +75,12 @@ class PhotoLibraryProcessor: NSObject {
     
     tripResult = tripResult.sorted(by: {$0.endDate > $1.endDate})
     
+    print("Dump 3: " + String(tripResult.count))
     return tripResult
   }
   
   
-  static func PopulateTripModalData(steps: [StepModal], tripId: String, homesDataForClustering: List<HomeDataModal>) -> TripModal {
+  static func PopulateTripModalData(steps: [StepModal], tripId: String, homesDataForClustering: List<HomesForDataClusteringModal>) -> TripModal {
     let tripResult: TripModal = TripModal();
     let homeStep = homesDataForClustering[Int(steps[0].startTimestamp / 86400) - 1]
     homeStep.timestamp = (steps[0].startTimestamp - 86400)

@@ -24,4 +24,22 @@ class TripModal: Object {
   dynamic var masterPicBase64: String = ""
   dynamic var isPublic: Bool = false
   dynamic var syncComplete: Bool = false
+  
+  func CopyConstructor(modal: TripModal) {
+    //self.profileId = modal.profileId;
+    //self.tripId = modal.tripId;
+    self.location = modal.location;
+    self.tripName = modal.tripName;
+    self.countryCode = modal.countryCode;
+    self.temperature = modal.temperature;
+    self.daysOfTravel = modal.daysOfTravel;
+    self.distanceTravelled = modal.distanceTravelled;
+    self.startDate = modal.startDate;
+    self.endDate = modal.endDate;
+    self.masterPicURL = modal.masterPicURL;
+    self.masterPicBase64 = modal.masterPicBase64;
+    //self.isPublic = modal.isPublic;
+    self.syncComplete = false;
+  }
+  
 }

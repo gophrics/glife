@@ -157,6 +157,7 @@ class ExposedAPI: NSObject {
   
   @objc
   func InitializeEngine(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    print("Dump : InitializeEngine called")
     let result = Engine.EngineInstance.Initialize()
     resolve(result)
   }

@@ -79,7 +79,7 @@ class ClusterProcessor {
     return stepResult;
   }
   
-  static func RunMasterClustering(clusterData: [ClusterModal], homes: List<HomeDataModal>) -> [[ClusterModal]] {
+  static func RunMasterClustering(clusterData: [ClusterModal], homes: List<HomesForDataClusteringModal>) -> [[ClusterModal]] {
   
     var trips: [[ClusterModal]] = []
     var trip: [ClusterModal] = []

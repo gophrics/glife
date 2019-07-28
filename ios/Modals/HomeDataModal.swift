@@ -39,6 +39,3 @@ class HomeDataModal: Object {
   
 }
 
-class HomeDataObject: Object {
-  dynamic var HomeData: List<HomeDataModal> = List<HomeDataModal>()
-}

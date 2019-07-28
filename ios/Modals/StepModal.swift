@@ -28,27 +28,9 @@ class StepModal : Object {
   dynamic var images: List<Image> = List<Image>()
   dynamic var markers: List<Region> = List<Region>()
   dynamic var masterImageUri: String = ""
-  dynamic var masterMarker: Region = Region()
+  // Dont know why this should be optional debug later
+  dynamic var masterMarker: Region? = Region()
   dynamic var distanceTravelled: Int = 0
   dynamic var desc: String = ""
   dynamic var temperature: String = ""
-  
-  func CopyConstructor(step: StepModal) {
-//    self.stepId = step.stepId;
-//    self.tripId = step.tripId;
-//    self.profileId = step.profileId;
-    self.stepName = step.stepName;
-    self.meanLatitude = step.meanLatitude;
-    self.meanLongitude = step.meanLongitude;
-    self.location = step.location;
-    self.startTimestamp = step.startTimestamp;
-    self.endTimestamp = step.endTimestamp;
-    self.images = step.images;
-    self.markers = step.markers;
-    self.masterImageUri = step.masterImageUri;
-    self.masterMarker = step.masterMarker;
-    self.distanceTravelled = step.distanceTravelled;
-    self.desc = step.desc;
-    self.temperature = step.temperature;
-  }
 }

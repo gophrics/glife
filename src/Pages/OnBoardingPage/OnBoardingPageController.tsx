@@ -18,6 +18,7 @@ export class OnBoardingPageController {
 
     loadHomeData = async() => {
         this.homeData = await NativeModules.ExposedAPI.getHomeData()
+        console.log(this.homeData);
         if(this.homeData.length == 0) this.AddEmptyHome()
         this.homeDataLoaded = true;
     }

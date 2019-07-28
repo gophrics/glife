@@ -27,6 +27,6 @@
 
   RCT_EXTERN_METHOD(addNewTrip: (NSString)tripName resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
-  RCT_EXTERN_METHOD(InitializeEngine: (NSArray *)homeData resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+  RCT_EXTERN_METHOD(InitializeEngine: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
 @end

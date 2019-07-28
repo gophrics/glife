@@ -41,12 +41,21 @@ class ExposedAPI: NSObject {
           resolve(countriesVisited)
           break;
         case "coverPicURL":
-          let dbResponse = db.objects(ProfileModal.self).first?.coverPicURL ?? "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
-          resolve(dbResponse)
+          let dbResponse = db.objects(ProfileModal.self)
+          if let coverPicUrl = dbResponse.first {
+            resolve(coverPicUrl);
+          } else {
+            resolve("https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg")
+          }
           break;
         case "profilePicURL":
-          let dbResponse = db.objects(ProfileModal.self).first?.profilePicURL ?? "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
-          resolve(dbResponse)
+          let dbResponse = db.objects(ProfileModal.self)
+          
+          if let coverPicUrl = dbResponse.first {
+            resolve(coverPicUrl);
+          } else {
+            resolve("https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg")
+          }
           break;
         case "email":
           let dbResponse = db.objects(ProfileModal.self).first?.email
@@ -68,8 +77,10 @@ class ExposedAPI: NSObject {
         let data = db.objects(ProfileModal.self)
         
         if let profileData = data.first {
-          profileData.name = value["name"] as! String;
-          print("Profile name: " + profileData.name);
+          try! db.write {
+            profileData.name = value["name"] as! String;
+            print("Profile name: " + profileData.name);
+          }
         } else {
           try! db.write {
             print("Value[name]")
@@ -94,12 +105,12 @@ class ExposedAPI: NSObject {
     let db = try! Realm()
     let dbresult = db.objects(HomeDataModal.self)
     
-    var homeDataArray: [HomeDataModal] = []
+    var homeDataArray: [[String:Any]] = []
     
     print("getHomeData called")
     for result in dbresult{
-      dump(result)
       homeDataArray.append(result.GetAsDictionary())
+      dump(result.GetAsDictionary())
     }
     
     resolve(homeDataArray)
@@ -112,8 +123,12 @@ class ExposedAPI: NSObject {
     let dbresult = db.objects(HomeDataModal.self)
     
     for result in dbresult {
+      try! db.write {
         db.delete(result)
+      }
     }
+    
+    dump(homeData)
     
     for data in homeData {
       dump(data)
@@ -139,6 +154,13 @@ class ExposedAPI: NSObject {
     
     resolve(result)
   }
+  
+  @objc
+  func InitializeEngine(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    let result = Engine.EngineInstance.Initialize()
+    resolve(result)
+  }
+  
   
    @objc
    func addNewTrip(_ tripName: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
@@ -171,18 +193,7 @@ class ExposedAPI: NSObject {
         Engine.EngineInstance._BlobProvider.Modal.homeData[index].timestamp = timestamp
         resolve(true)
     }
-    
-    
-    @objc
-    func InitializeEngine(_ homeData: NSArray, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        var homeDataList = List<HomeDataModal>()
-        for data in homeData {
-          homeDataList.append(data as! HomeDataModal)
-        }
-        var result = Engine.EngineInstance.Initialize(homeData: homeDataList)
-        resolve(result)
-    }
-    
+  
     @objc
     func getCoordinatesFromLocation(_ name: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
       var result = TripUtils.getCoordinatesFromLocation(location: name)

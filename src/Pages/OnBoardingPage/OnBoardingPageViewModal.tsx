@@ -41,8 +41,10 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
     }
     
     loadState = async() => {
+        await this.Controller.loadHomeData();
         this.setState({
             name: await this.Controller.GetName(),
+            homes: this.Controller.GetAllHomesData(),
             lastHomeTimestamp: (await this.Controller.GetLastHomeData()).timestamp
         })
     }

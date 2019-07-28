@@ -48,6 +48,11 @@ class BlobProvider {
   }
   
   func loadEngineData() {
-    self.Modal = Database.db.objects(EngineModal.self).first!
+    let dbResult = Database.db.objects(EngineModal.self)
+    if let modal = dbResult.first {
+      self.Modal = modal;
+    } else {
+      self.Modal = EngineModal()
+    }
   }
 }

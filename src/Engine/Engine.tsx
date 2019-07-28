@@ -31,7 +31,7 @@ export class Engine {
     }
 
     Initialize = async (): Promise<boolean> => {
-        return await NativeModules.InitializeEngine();
+        return await NativeModules.ExposedAPI.InitializeEngine();
     }
 }
 

@@ -22,21 +22,29 @@ class AppState {
 }
 
 
-final class Engine {
+class Engine {
   
     var _BlobProvider: BlobProvider = BlobProvider()
     static var EngineInstance = Engine()
 
     init() {
         print("Init called for Engine")
-        self.ExtendHomeDataToDate()
+        //self.ExtendHomeDataToDate()
     }
     
-    func Initialize(homeData: List<HomeDataModal>) -> Bool {
-        self.SetHomeData(data: homeData);
-        
-        self._BlobProvider.Modal.homesForDataClustering = try! self.GenerateHomeData(homeData: self._BlobProvider.Modal.homeData)
-        
+    func Initialize() -> Bool {
+      
+        let dbHomeDataArray = (try! Realm()).objects(HomeDataModal.self)
+        let homeDataArray: List<HomeDataModal> = List<HomeDataModal>();
+      
+        for homeData in dbHomeDataArray {
+          homeDataArray.append(homeData)
+        }
+      
+        self._BlobProvider.Modal.homesForDataClustering = try! self.GenerateHomeData(homeData: homeDataArray)
+      
+        dump(self._BlobProvider.Modal.homesForDataClustering);
+      
         let photoRollInfos: [ClusterModal] = PhotoLibraryProcessor.getPhotosFromLibrary();
       
         // Create a No photos found warning page

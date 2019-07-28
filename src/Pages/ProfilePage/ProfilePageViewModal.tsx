@@ -41,7 +41,6 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
         this.props.setNavigator(true)
         this.Controller = new ProfilePageController()
 
-        this.getTrips()
         
         this.state = {
             bottom: 200,
@@ -70,6 +69,7 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
             visitedCountryList: await this.Controller.getNumberOfCountriesVisited(),
             flagsCollected: (await this.Controller.getNumberOfCountriesVisited()).length
         })
+        this.getTrips()
     }
 
     getTrips = async() => {
@@ -82,7 +82,6 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
         this.setState({
             tripRenderArray: tripRenderArray
         })
-        setTimeout(this.getTrips, 100)
     }
 
     onTripPress = (tripModal: TripModal) => {

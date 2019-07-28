@@ -30,6 +30,23 @@ class StepModal : Object {
   dynamic var distanceTravelled: Int = 0
   dynamic var desc: String = ""
   dynamic var temperature: String = ""
-  dynamic var masterImageBase64: String = ""
-  dynamic var imageBase64: [String] = []
+  
+  func CopyConstructor(step: StepModal) {
+//    self.stepId = step.stepId;
+//    self.tripId = step.tripId;
+//    self.profileId = step.profileId;
+    self.stepName = step.stepName;
+    self.meanLatitude = step.meanLatitude;
+    self.meanLongitude = step.meanLongitude;
+    self.location = step.location;
+    self.startTimestamp = step.startTimestamp;
+    self.endTimestamp = step.endTimestamp;
+    self.images = step.images;
+    self.markers = step.markers;
+    self.masterImageUri = step.masterImageUri;
+    self.masterMarker = step.masterMarker;
+    self.distanceTravelled = step.distanceTravelled;
+    self.desc = step.desc;
+    self.temperature = step.temperature;
+  }
 }

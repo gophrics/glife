@@ -28,11 +28,13 @@ export class ProfilePageController {
     }
 
     onCoverPicChange = (coverPicURL: string) => {
-        NativeModules.setCoverPic(coverPicURL)
+        NativeModules.ExposedAPI.setProfileData('coverPicURL', coverPicURL)
     }
     
     getTrips = async() : Promise<Array<TripModal>> => {
-        return await this.Modal.trips
+        var trips = await this.Modal.trips
+        console.log(trips)
+        return trips
     }
 
     getProfilePicURL = async() => {

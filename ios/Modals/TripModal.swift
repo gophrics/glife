@@ -21,9 +21,27 @@ class TripModal: Object {
   dynamic var startDate: String = ""
   dynamic var endDate: String = ""
   dynamic var masterPicURL: String = ""
-  dynamic var masterPicBase64: String = ""
   dynamic var isPublic: Bool = false
   dynamic var syncComplete: Bool = false
+  
+  func GetAsDictionary() -> [String:Any] {
+    var dict : [String: Any] = [:]
+    dict["profileId"] = self.profileId;
+    dict["tripId"] = self.tripId;
+    dict["location"] = self.location;
+    dict["tripName"] = self.tripName;
+    dict["countryCode"] = self.countryCode;
+    dict["temperature"] = self.temperature;
+    dict["daysOfTravel"] = self.daysOfTravel;
+    dict["distanceTravelled"] = self.distanceTravelled;
+    dict["startDate"] = self.startDate;
+    dict["endDate"] = self.endDate;
+    dict["masterPicURL"] = self.masterPicURL;
+    dict["isPublic"] = self.isPublic;
+    dict["syncComplete"] = self.syncComplete;
+    
+    return dict;
+  }
   
   func CopyConstructor(modal: TripModal) {
     //self.profileId = modal.profileId;
@@ -37,7 +55,6 @@ class TripModal: Object {
     self.startDate = modal.startDate;
     self.endDate = modal.endDate;
     self.masterPicURL = modal.masterPicURL;
-    self.masterPicBase64 = modal.masterPicBase64;
     //self.isPublic = modal.isPublic;
     self.syncComplete = false;
   }

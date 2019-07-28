@@ -23,9 +23,9 @@ class ExposedAPI: NSObject {
           break;
         case "trips":
           var dbResponse = db.objects(TripModal.self)
-          var trips: [TripModal] = []
+          var trips: [[String:Any]] = []
           for trip in dbResponse {
-            trips.append(trip)
+            trips.append(trip.GetAsDictionary())
           }
           resolve(trips)
           break;

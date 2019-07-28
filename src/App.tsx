@@ -60,7 +60,7 @@ export default class App extends React.Component<IProps, IState> {
         .then((res2: string) => {
           if(res2 != "") {
             this.setState({
-              page: Page[Page.PREONBOARDING] // Change to profile
+              page: Page[Page.PROFILE] // Change to profile
             })
           } else {
             this.setState({

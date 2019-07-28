@@ -46,6 +46,8 @@ class Engine {
         print("Dumping homesForClustering")
         dump(homesForDataClustering);
       
+        // Clear out all the trips
+        self.ClearTripDB()
         let photos = PHPhotoLibrary.authorizationStatus()
         if photos == .notDetermined {
           PHPhotoLibrary.requestAuthorization({status in
@@ -72,11 +74,20 @@ class Engine {
       self._BlobProvider.Modal.homeData = data
     }
   
+    func ClearTripDB() {
+        let db = try! Realm()
+        let dbObjects = db.objects(TripModal.self)
+        for object in dbObjects {
+          try! db.write {
+              db.delete(object)
+          }
+        }
+    }
+  
     func UpdateDBWithTrips(trips: [TripModal]) {
-      var db = try! Realm();
+      let db = try! Realm();
       for trip in trips{
-        print("DUMP: " + trip.tripId)
-        print("DUMP: " + trip.tripName)
+        dump(trip, name: "Trip DUMP")
         let dbResult = db.objects(TripModal.self).filter{ $0.tripId == trip.tripId }
         if let _trip = dbResult.first {
           try! db.write {
@@ -129,7 +140,7 @@ class Engine {
     let today: Date = Date()
     var endTimestamp = self._BlobProvider.Modal.endTimestamp
     
-    var homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering;
+    let homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering;
     let dataToExtend = homesDataForClustering[Int(endTimestamp)]
     
     while(endTimestamp <= Int64(today.timeIntervalSince1970/86400)) {

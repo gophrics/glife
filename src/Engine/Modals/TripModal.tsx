@@ -3,48 +3,34 @@ import { NativeModules } from "react-native";
 export class TripModal {
     profileId: string = ""
     tripId: string = ""
+    tripName: string = "";
+    countryCode: Array<string> = [];
+    temperature: string = "";
+    daysOfTravel: number = 0;
+    distanceTravelled: number = 0;
+    startDate: string = "";
+    endDate: string = "";
+    masterImage: string = "";
+    public: boolean = false;
+
+    constructor() {
+    }
+
+    CopyConstructor(modal: any) {
+        this.profileId = modal.profileId;
+        this.tripId = modal.tripId;
+        this.tripName = modal.tripName;
+        this.countryCode = modal.countryCode;
+        this.temperature = modal.temperature;
+        this.daysOfTravel = modal.daysOfTravel;
+        this.distanceTravelled = modal.distanceTravelled;
+        this.startDate = modal.startDate;
+        this.endDate = modal.endDate;
+        this.masterImage = modal.masterImage;
+        this.public = modal.public;
+    }
 
     get steps() {
         return NativeModules.ExposedAPI.getTripData('steps', this.profileId, this.tripId)
-    }
-
-    get location() {
-        return NativeModules.ExposedAPI.getTripData('location', this.profileId, this.tripId)
-    }
-
-    get tripName() {
-        return NativeModules.ExposedAPI.getTripData('tripName', this.profileId, this.tripId)
-    }
-
-    get countryCode() {
-        return NativeModules.ExposedAPI.getTripData('countryCode', this.profileId, this.tripId)
-    }
-
-    get temperature() {
-        return NativeModules.ExposedAPI.getTripData('temperature', this.profileId, this.tripId)
-    }
-
-    get daysOfTravel() {
-        return NativeModules.ExposedAPI.getTripData('daysOfTravel', this.profileId, this.tripId)
-    }
-
-    get distanceTravelled() {
-        return NativeModules.ExposedAPI.getTripData('distanceTravelled', this.profileId, this.tripId)
-    }
-
-    get startDate() {
-        return NativeModules.ExposedAPI.getTripData('startDate', this.profileId, this.tripId)
-    }
-
-    get endDate() {
-        return NativeModules.ExposedAPI.getTripData('endDate', this.profileId, this.tripId)
-    }
-
-    get masterImage() {
-        return NativeModules.ExposedAPI.getTripData('masterImage', this.profileId, this.tripId)
-    }
-
-    get public() {
-        return NativeModules.ExposedAPI.getTripData('public', this.profileId, this.tripId)
     }
 }

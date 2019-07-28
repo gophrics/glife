@@ -114,6 +114,7 @@ class PhotoLibraryProcessor: NSObject {
       _q.longitude = steps[i].meanLongitude;
 
       step.distanceTravelled = (steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
+      print("DISTANCE TRAVELLED: " + String(step.distanceTravelled))
       step.tripId = tripId;
       _stepsForTrip.append(step);
       i += 1;

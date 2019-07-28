@@ -8,6 +8,7 @@ import { TripModal } from '../../Engine/Modals/TripModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { ProfilePageController } from './ProfilePageController';
+import { ProfileModal } from '../../Engine/Modals/ProfileModal';
 
 interface IState {
     bottom: number,
@@ -58,16 +59,17 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
     }
 
     loadState = async() => {
+        await this.Controller.loadModal();
         this.setState({
             bottom: 200,
             scrollY: new Animated.Value(0),
-            coverPicURL: await this.Controller.getCoverPicURL(),
-            profilePicURL: await this.Controller.getProfilePicURL(),
+            coverPicURL: this.Controller.getCoverPicURL(),
+            profilePicURL: this.Controller.getProfilePicURL(),
             refreshing: false,
             tripRenderArray: [],
-            percentageWorldTravelled: await this.Controller.getPercentageWorldTravelled(),
-            visitedCountryList: await this.Controller.getNumberOfCountriesVisited(),
-            flagsCollected: (await this.Controller.getNumberOfCountriesVisited()).length
+            percentageWorldTravelled: this.Controller.getPercentageWorldTravelled(),
+            visitedCountryList: this.Controller.getCountriesVisitedArray(),
+            flagsCollected: (this.Controller.getNumberOfCountriesVisited())
         })
         this.getTrips()
     }

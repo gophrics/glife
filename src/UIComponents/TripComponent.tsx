@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import { TripModal } from '../Engine/Modals/TripModal';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { thisExpression } from '@babel/types';
 
 interface IState {
     masterPic: string

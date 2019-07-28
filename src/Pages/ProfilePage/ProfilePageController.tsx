@@ -3,16 +3,17 @@ import { ProfileModal } from '../../Engine/Modals/ProfileModal';
 import { TripModal } from '../../Engine/Modals/TripModal';
 import { Instance } from '../../Engine/Engine';
 import * as Engine from '../../Engine/Engine';
+import { returnStatement } from "@babel/types";
 
 export class ProfilePageController {
     
     Modal: ProfileModal = new ProfileModal();
 
-    constructor() {
-    }
-
     loadModal = async() => {
-        this.Modal = Instance.Modal;
+        console.log(await NativeModules.ExposedAPI.getProfileData('all', 'randomGeneratedId'))
+        this.Modal.CopyConstructor(await NativeModules.ExposedAPI.getProfileData('all', 'randomGeneratedId'))
+        console.log("ProfileModal")
+        console.log(this.Modal)
     }
 
     setName = async(name: string) => {
@@ -32,26 +33,33 @@ export class ProfilePageController {
     }
     
     getTrips = async() : Promise<Array<TripModal>> => {
-        return await this.Modal.trips
+        let trips = await this.Modal.trips
+        var result: Array<TripModal> = [];
+        for(let trip of trips) {
+            var _t = new TripModal()
+            _t.CopyConstructor(trip)
+            result.push(_t)
+        }
+        return result
     }
 
-    getProfilePicURL = async() => {
-        return await this.Modal.profilePicURL;
+    getProfilePicURL = () => {
+        return this.Modal.profilePicURL;
     }
 
-    getCoverPicURL = async() => {
-        return await this.Modal.coverPicURL;
+    getCoverPicURL = () => {
+        return this.Modal.coverPicURL;
     }
 
-    getCountriesVisitedArray = async() => {
-        return await this.Modal.countriesVisited;
+    getCountriesVisitedArray = () => {
+        return this.Modal.countriesVisited;
     }
 
-    getNumberOfCountriesVisited = async() => {
-        return (await this.Modal.countriesVisited).length;
+    getNumberOfCountriesVisited = () => {
+        return (this.Modal.countriesVisited || []).length;
     }
 
-    getPercentageWorldTravelled = async() => {
-        return await this.Modal.percentageWorldTravelled;
+    getPercentageWorldTravelled = () => {
+        return this.Modal.percentageWorldTravelled;
     }
 }

@@ -27,6 +27,21 @@ class ProfileModal : Object {
   dynamic var email: String = ""
   dynamic var password: String = ""
   
+  func GetAsDictionary() -> [String:Any] {
+    var dict: [String:Any] = [:]
+    
+    dict["profileId"] = self.profileId;
+    dict["countriesVisited"] = self.countriesVisited;
+    dict["percentageWorldTravelled"] = self.percentageWorldTravelled;
+    dict["coverPicURL"] = self.coverPicURL;
+    dict["profilePicURL"] = self.profilePicURL;
+    dict["name"] = self.name;
+    dict["email"] = self.email;
+    dict["password"] = self.password;
+    
+    return dict;
+  }
+  
   override static func primaryKey() -> String? {
     return "profileId"
   }

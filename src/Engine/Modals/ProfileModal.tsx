@@ -2,36 +2,27 @@ import { NativeModules } from 'react-native';
 
 export class ProfileModal {
     profileId: string = "";
+    percentageWorldTravelled: number = 0;
+    countriesVisited: Array<string> = [];
+    coverPicURL: string = "";
+    profilePicURL: string = "";
+    name: string = "";
+    password: string = "";
+    email: string = "";
     
-    get percentageWorldTravelled() {
-        return NativeModules.ExposedAPI.getProfileData('percentageWorldTravelled', this.profileId)
-    }
 
-    get countriesVisited() {
-        return NativeModules.ExposedAPI.getProfileData('countriesVisited', this.profileId)
+    CopyConstructor(modal: any) {
+        this.profileId = modal.profileId;
+        this.percentageWorldTravelled  = modal.percentageWorldTravelled;
+        this.countriesVisited = modal.countriesVisited;
+        this.coverPicURL = modal.coverPicURL;
+        this.profilePicURL = modal.profilePicURL;
+        this.name = modal.name;
+        this.password = modal.password;
+        this.email = modal.email;
     }
 
     get trips() {
         return NativeModules.ExposedAPI.getProfileData('trips', this.profileId)
-    }
-
-    get coverPicURL() {
-        return NativeModules.ExposedAPI.getProfileData('coverPicURL', this.profileId)
-    }
-
-    get profilePicURL() {
-        return NativeModules.ExposedAPI.getProfileData('profilePicURL', this.profileId)
-    }
-
-    get name() {
-        return NativeModules.ExposedAPI.getProfileData('name', this.profileId)
-    }
-
-    get password() {
-        return NativeModules.ExposedAPI.getProfileData('password', this.profileId)
-    }
-
-    get email() {
-        return NativeModules.ExposedAPI.getProfileData('email', this.profileId)
     }
 }

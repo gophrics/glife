@@ -14,10 +14,18 @@ class ExposedAPI: NSObject {
     
   
   @objc
-  func getProfileData(_ param: String, profileId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  func getProfileData(_ param: String, profileId profileId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     
       let db = try! Realm()
       switch(param) {
+        case "all":
+          let dbData = db.objects(ProfileModal.self)
+          if let modal = dbData.first {
+            resolve(modal.GetAsDictionary())
+          } else {
+            resolve(false)
+          }
+          break;
         case "name":
           resolve(db.objects(ProfileModal.self).first?.name);
           break;
@@ -145,11 +153,14 @@ class ExposedAPI: NSObject {
     if let result = dbresult.first {
       
       switch(op) {
-      case "masterImage":
-        print("MASTERIMAGE: " + result.masterImage)
-        resolve(result.masterImage); break;
-      default:
-        resolve(false); break;
+        case "all":
+          resolve(result);
+          break;
+        case "masterImage":
+          print("MASTERIMAGE: " + result.masterImage)
+          resolve(result.masterImage); break;
+        default:
+          resolve(false); break;
       }
     } else {
       resolve(false)

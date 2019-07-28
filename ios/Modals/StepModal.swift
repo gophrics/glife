@@ -9,10 +9,12 @@
 import Foundation
 import RealmSwift
 
+@objcMembers
 class Image: Object {
   dynamic var image: String = "";
 }
 
+@objcMembers
 class StepModal : Object {
   dynamic var stepId: Int = 0
   dynamic var tripId: String = ""

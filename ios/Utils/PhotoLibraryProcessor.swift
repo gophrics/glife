@@ -81,7 +81,8 @@ class PhotoLibraryProcessor: NSObject {
   
   
   static func PopulateTripModalData(steps: [StepModal], tripId: String, homesDataForClustering: List<HomesForDataClusteringModal>) -> TripModal {
-    let tripResult: TripModal = TripModal();
+    
+    var tripResult: TripModal = TripModal();
     let homeStep = homesDataForClustering[Int(steps[0].startTimestamp / 86400) - 1]
     homeStep.timestamp = (steps[0].startTimestamp - 86400)
     
@@ -155,7 +156,7 @@ class PhotoLibraryProcessor: NSObject {
       if (places.firstIndex(of: step.location) == nil) {
         places.append(step.location)
       }
-      var _obj = Country()
+      let _obj = Country()
       _obj.country = result
       tripResult.countryCode.append(_obj)
 
@@ -164,12 +165,39 @@ class PhotoLibraryProcessor: NSObject {
     }
     
     tripResult.tripId = tripId;
-    //tripResult.populateAll();
-    //tripResult.populateTitle(countries: countries, places: places);
-
+    tripResult = PhotoLibraryProcessor.PopulateTripWithSteps(trip: tripResult, steps: _stepsForTrip)
     PhotoLibraryProcessor.UpdateDBWithSteps(steps: _stepsForTrip)
+    
+    print("Trip Result: ")
+    dump(tripResult)
     return tripResult
   }
+  
+  static func PopulateTripWithSteps(trip: TripModal, steps: [StepModal]) -> TripModal {
+    trip.daysOfTravel = Int((steps[steps.count - 1].endTimestamp - steps[0].startTimestamp)/86400)
+    var date = Date(timeIntervalSince1970: TimeInterval(steps[steps.count-1].endTimestamp))
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd-MM-yyyy"
+    trip.endDate = dateFormatter.string(from: date);
+    
+    trip.masterPicURL = steps[steps.count-2].masterImageUri
+    trip.isPublic = false;
+    
+    date = Date(timeIntervalSince1970: TimeInterval(steps[0].startTimestamp))
+    trip.startDate = dateFormatter.string(from: date)
+    trip.syncComplete = false;
+    trip.temperature = steps[steps.count - 2].temperature;
+    trip.tripName = steps[steps.count-2].location; // PhotoLibraryProcessor.GenerateTripNameFromSteps()
+  
+    return trip;
+  }
+  
+  static func GenerateTripNameFromSteps() -> String {
+    
+    return "";
+  }
+  
   
   static func UpdateDBWithSteps(steps: [StepModal]) {
     let db = try! Realm()
@@ -177,7 +205,8 @@ class PhotoLibraryProcessor: NSObject {
       let dbObjects = db.objects(StepModal.self).filter{ $0.tripId == step.tripId && $0.stepId == step.stepId }
       if let obj = dbObjects.first {
         try! db.write {
-          obj.CopyConstructor(step: step)
+          db.delete(obj);
+          db.add(step);
         }
       } else {
         try! db.write {

@@ -43,9 +43,6 @@ class Engine {
       
         let homesForDataClustering = try! self.GenerateHomeData(homeData: homeDataArray)
       
-        print("Dumping homesForClustering")
-        dump(homesForDataClustering);
-      
         // Clear out all the trips
         self.ClearTripDB()
         let photos = PHPhotoLibrary.authorizationStatus()
@@ -86,14 +83,20 @@ class Engine {
   
     func UpdateDBWithTrips(trips: [TripModal]) {
       let db = try! Realm();
+      
       for trip in trips{
-        dump(trip, name: "Trip DUMP")
+        print("DEBUG: Updating trip " + trip.tripId)
         let dbResult = db.objects(TripModal.self).filter{ $0.tripId == trip.tripId }
         if let _trip = dbResult.first {
+          print("DEBUG: Trip with tripId " + _trip.tripId + " found in db")
           try! db.write {
-            _trip.CopyConstructor(modal: trip)
+            // Right now we're deleting and adding the object everywhere, because that is what seem to work
+            db.delete(_trip)
+            db.add(trip)
           }
         } else {
+          print("DEBUG: Trip with tripId " + trip.tripId + " not found in db, adding")
+          dump(trip)
           try! db.write {
             db.add(trip)
           }

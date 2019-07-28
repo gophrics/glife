@@ -22,11 +22,15 @@ class ExposedAPI: NSObject {
           resolve(db.objects(ProfileModal.self).first?.name);
           break;
         case "trips":
-          var dbResponse = db.objects(TripModal.self)
+          let dbResponse = db.objects(TripModal.self)
           var trips: [[String:Any]] = []
+          
           for trip in dbResponse {
             trips.append(trip.GetAsDictionary())
           }
+          
+          dump(trips, name: "TripDump");
+          dump(dbResponse)
           resolve(trips)
           break;
         case "percentageWorldTravelled":
@@ -83,15 +87,11 @@ class ExposedAPI: NSObject {
           }
         } else {
           try! db.write {
-            print("Value[name]")
-            dump(value["name"])
             let profileData = ProfileModal()
             profileData.name = value["name"] as! String;
-            print("Setting name as " + profileData.name)
             db.add(profileData, update: .all)
           }
         }
-        dump(db.objects(ProfileModal.self).count)
         // Name is not being saved by Realm, debug tomorrow
         break;
       default:
@@ -110,7 +110,6 @@ class ExposedAPI: NSObject {
     print("getHomeData called")
     for result in dbresult{
       homeDataArray.append(result.GetAsDictionary())
-      dump(result.GetAsDictionary())
     }
     
     resolve(homeDataArray)
@@ -128,10 +127,7 @@ class ExposedAPI: NSObject {
       }
     }
     
-    dump(homeData)
-    
     for data in homeData {
-      dump(data)
       let homeDataModal = HomeDataModal()
       homeDataModal.CloneDictionary(dict: data as! [String:Any])
       try! db.write {

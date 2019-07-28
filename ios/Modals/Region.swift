@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+@objcMembers
 class Region: Object {
   dynamic var latitude: Float64 = 0
   dynamic var longitude: Float64 = 0

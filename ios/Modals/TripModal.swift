@@ -9,10 +9,10 @@
 import Foundation
 import RealmSwift
 
+@objcMembers
 class TripModal: Object {
   dynamic var profileId: String = ""
   dynamic var tripId: String = ""
-  dynamic var location : Region? = Region()
   dynamic var tripName: String = ""
   dynamic var countryCode: List<Country> = List<Country>()
   dynamic var temperature : String = ""
@@ -28,7 +28,6 @@ class TripModal: Object {
     var dict : [String: Any] = [:]
     dict["profileId"] = self.profileId;
     dict["tripId"] = self.tripId;
-    dict["location"] = self.location;
     dict["tripName"] = self.tripName;
     dict["countryCode"] = self.countryCode;
     dict["temperature"] = self.temperature;
@@ -42,21 +41,4 @@ class TripModal: Object {
     
     return dict;
   }
-  
-  func CopyConstructor(modal: TripModal) {
-    //self.profileId = modal.profileId;
-    //self.tripId = modal.tripId;
-    self.location = modal.location;
-    self.tripName = modal.tripName;
-    self.countryCode = modal.countryCode;
-    self.temperature = modal.temperature;
-    self.daysOfTravel = modal.daysOfTravel;
-    self.distanceTravelled = modal.distanceTravelled;
-    self.startDate = modal.startDate;
-    self.endDate = modal.endDate;
-    self.masterPicURL = modal.masterPicURL;
-    //self.isPublic = modal.isPublic;
-    self.syncComplete = false;
-  }
-  
 }

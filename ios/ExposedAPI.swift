@@ -139,6 +139,26 @@ class ExposedAPI: NSObject {
   }
   
   @objc
+  func getTripData(_ op: String, tripId tripId: String, profileId profileId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    let db = try! Realm()
+    let dbresult = db.objects(TripModal.self).filter{$0.tripId == tripId}
+    if let result = dbresult.first {
+      
+      switch(op) {
+      case "masterImage":
+        print("MASTERIMAGE: " + result.masterImage)
+        resolve(result.masterImage); break;
+      default:
+        resolve(false); break;
+      }
+    } else {
+      resolve(false)
+    }
+    
+  }
+  
+  
+  @objc
   func getCoordinatesFromLocation(_ location: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     let coordinatesArray = TripUtils.getCoordinatesFromLocation(location: location)
     

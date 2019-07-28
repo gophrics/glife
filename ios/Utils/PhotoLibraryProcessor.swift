@@ -168,8 +168,6 @@ class PhotoLibraryProcessor: NSObject {
     tripResult = PhotoLibraryProcessor.PopulateTripWithSteps(trip: tripResult, steps: _stepsForTrip)
     PhotoLibraryProcessor.UpdateDBWithSteps(steps: _stepsForTrip)
     
-    print("Trip Result: ")
-    dump(tripResult)
     return tripResult
   }
   
@@ -181,21 +179,32 @@ class PhotoLibraryProcessor: NSObject {
     dateFormatter.dateFormat = "dd-MM-yyyy"
     trip.endDate = dateFormatter.string(from: date);
     
-    trip.masterPicURL = steps[steps.count-2].masterImageUri
+    trip.masterImage = steps[steps.count-2].masterImage
     trip.isPublic = false;
     
     date = Date(timeIntervalSince1970: TimeInterval(steps[0].startTimestamp))
     trip.startDate = dateFormatter.string(from: date)
     trip.syncComplete = false;
     trip.temperature = steps[steps.count - 2].temperature;
-    trip.tripName = steps[steps.count-2].location; // PhotoLibraryProcessor.GenerateTripNameFromSteps()
+  
+    trip.tripName = PhotoLibraryProcessor.GenerateTripNameFromSteps(steps: steps)
   
     return trip;
   }
   
-  static func GenerateTripNameFromSteps() -> String {
+  static func GenerateTripNameFromSteps(steps: [StepModal]) -> String {
     
-    return "";
+    var locations: [String] = [];
+    
+    for step in steps{
+        locations.append(step.location)
+    }
+    
+    var result: String = "";
+    for loc in locations {
+      result += loc + " ";
+    }
+    return result;
   }
   
   

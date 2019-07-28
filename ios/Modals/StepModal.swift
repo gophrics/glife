@@ -27,7 +27,7 @@ class StepModal : Object {
   dynamic var endTimestamp: Int64 = 0
   dynamic var images: List<Image> = List<Image>()
   dynamic var markers: List<Region> = List<Region>()
-  dynamic var masterImageUri: String = ""
+  dynamic var masterImage: String = ""
   // Dont know why this should be optional debug later
   dynamic var masterMarker: Region? = Region()
   dynamic var distanceTravelled: Int = 0

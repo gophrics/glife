@@ -20,7 +20,7 @@ class TripModal: Object {
   dynamic var distanceTravelled : Int = 0
   dynamic var startDate: String = ""
   dynamic var endDate: String = ""
-  dynamic var masterPicURL: String = ""
+  dynamic var masterImage: String = ""
   dynamic var isPublic: Bool = false
   dynamic var syncComplete: Bool = false
   
@@ -35,7 +35,7 @@ class TripModal: Object {
     dict["distanceTravelled"] = self.distanceTravelled;
     dict["startDate"] = self.startDate;
     dict["endDate"] = self.endDate;
-    dict["masterPicURL"] = self.masterPicURL;
+    dict["masterPicURL"] = self.masterImage;
     dict["isPublic"] = self.isPublic;
     dict["syncComplete"] = self.syncComplete;
     

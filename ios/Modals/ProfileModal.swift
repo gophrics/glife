@@ -21,8 +21,8 @@ class ProfileModal : Object {
   dynamic var percentageWorldTravelled: Float = 0
   
   // Profile stuff
-  dynamic var coverPicURL: String = ""
-  dynamic var profilePicURL: String = ""
+  dynamic var coverPicURL: String = "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg"
+  dynamic var profilePicURL: String = "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
   dynamic var name: String = ""
   dynamic var email: String = ""
   dynamic var password: String = ""

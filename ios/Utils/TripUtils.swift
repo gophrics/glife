@@ -92,7 +92,9 @@ class TripUtils {
     request.httpBody = jsonData
 
     var result: String = ""
-    URLSession.shared.dataTask(with: request) { data, response, error in
+  
+    let semaphore = DispatchSemaphore(value: 0)
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
         return
@@ -100,13 +102,17 @@ class TripUtils {
       let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
       if let responseJSON = responseJSON as? [String: Any] {
         if((responseJSON["address"] as! [String:Any])["county"] != nil) {
-          result = (responseJSON["address"] as! [String:Any])["county"] as! String
+          result = (responseJSON["address"] as? [String:Any] ?? [:])["county"] as? String ?? ""
         }
         else {
-          result = (responseJSON["address"] as! [String:Any])["state_district"] as! String
+          result = (responseJSON["address"] as? [String:Any] ?? [:] )["state_district"] as? String ?? ""
         }
+        semaphore.signal()
       }
     }
+    
+    task.resume()
+    semaphore.wait()
     
     return result
   }

@@ -189,7 +189,8 @@ class PhotoLibraryProcessor: NSObject {
     trip.temperature = steps[steps.count - 2].temperature;
   
     trip.tripName = PhotoLibraryProcessor.GenerateTripNameFromSteps(steps: steps)
-  
+    trip.distanceTravelled = steps[steps.count - 1].distanceTravelled;
+    
     return trip;
   }
   
@@ -198,6 +199,7 @@ class PhotoLibraryProcessor: NSObject {
     var locations: [String] = [];
     
     for step in steps{
+      print("LOCATION: " + step.location)
         locations.append(step.location)
     }
     

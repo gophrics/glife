@@ -27,8 +27,6 @@ class StepModal : Object {
   dynamic var images: List<Image> = List<Image>()
   dynamic var markers: List<Region> = List<Region>()
   dynamic var masterImage: String = ""
-  // Dont know why this should be optional debug later
-  dynamic var masterMarker: Region? = Region()
   dynamic var distanceTravelled: Int = 0
   dynamic var desc: String = ""
   dynamic var temperature: String = ""
@@ -45,7 +43,7 @@ class StepModal : Object {
     dict["startTimestamp"] = self.startTimestamp;
     dict["endTimestamp"] = self.endTimestamp;
     dict["masterImage"] = self.masterImage;
-    dict["masterMarker"] = self.masterMarker;
+    dict["masterMarker"] = self.markers[0].GetAsDictionary();
     dict["distanceTravelled"] = self.distanceTravelled;
     dict["desc"] = self.desc;
     dict["temperature"] = self.temperature;

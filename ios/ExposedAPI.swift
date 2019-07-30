@@ -182,16 +182,19 @@ class ExposedAPI: NSObject {
   
   @objc
   func GetTotalToLoad(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    print("DEBUG: " + String(Constants.TOTAL_TO_LOAD))
     resolve(Constants.TOTAL_TO_LOAD)
   }
   
   @objc
   func GetTotalLoaded(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    print("DEBUG: " + String(Constants.TOTAL_LOADED))
     resolve(Constants.TOTAL_LOADED)
   }
   
   @objc
   func GetImageBeingLoaded(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    print("DEBUG: " + String(Constants.IMAGE_LOADED))
     resolve(Constants.IMAGE_LOADED)
   }
   

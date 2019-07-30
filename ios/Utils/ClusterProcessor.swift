@@ -176,10 +176,6 @@ class ClusterProcessor {
       _step.images.append(_obj)
     }
     _step.masterImage = imageUris[0];
-    let _r = Region()
-    _r.latitude = _step.meanLatitude
-    _r.longitude = _step.meanLongitude
-    _step.masterMarker = _r
     
     return _step;
   }

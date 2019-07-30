@@ -201,14 +201,12 @@ class PhotoLibraryProcessor: NSObject {
         result += step.stepName + ", ";
       }
       
-      print("Generating tripname with stepName " + step.stepName + " : " + result)
-      if locations.count > 2 {
+      if locations.count > 4 {
         break;
       }
     }
-    print("Generating tripname: " + result)
+    
     result = result.substring(to: result.lastIndex(of: ",") ?? String.Index(encodedOffset: result.count))
-    print("Generating tripname after substring: " + result)
     return result;
   }
   

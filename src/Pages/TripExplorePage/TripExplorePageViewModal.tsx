@@ -17,7 +17,6 @@ import { TripExplorePageController } from './TripExplorePageController';
 
 
 interface IState {
-    markers: Region[],
     imageUriData: string[],
     polylineArr: any[],
     photoModalVisible: boolean,
@@ -35,7 +34,6 @@ interface IProps {
 }
 
 const deviceWidth = Dimensions.get('window').width
-const deviceHeight = Dimensions.get('window').height
 let snapOffsets: Array<number> = []
 
 export default class TripExplorePageViewModal extends React.Component<IProps, IState> {
@@ -52,7 +50,6 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         this.Controller = new TripExplorePageController()
 
         this.state = {
-            markers: [],
             imageUriData: [],
             polylineArr: [],
             photoModalVisible: false,
@@ -72,10 +69,9 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         steps.sort((a: StepModal, b: StepModal) => {
             return a.stepId - b.stepId
         })
-        var lastStepClicked = steps[0]
+        console.log(steps)
         this.travelCardArray = []
         //Populate travelcard Array for each step
-        var markers: Region[] = []
         var imageUriData: string[] = []
         var key: number = 0;
         var tripStartTimestamp = steps[0].startTimestamp;
@@ -83,18 +79,16 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         snapOffsets = [];
 
         for (var step of steps) {
-            this.travelCardArray.push(<StepComponent key={key + 's'} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step)} />)
+            this.travelCardArray.push(<StepComponent key={key + 's'} modal={step} daysOfTravel={Math.floor((step.endTimestamp - tripStartTimestamp) / 8.64e7)} distanceTravelled={step.distanceTravelled} onPress={(step: StepModal) => this.onMarkerPress(null, step.stepId)} />)
             this.travelCardArray.push(<CustomButton key={key + 'b'} step={step} title={"+"} onPress={(step: StepModal) => this.onNewStepPress(step)} />)
 
             snapOffsets.push(snapOffsets.length == 0 ? deviceWidth * 3 / 4 + 20 + 20 : snapOffsets[key - 1] + deviceWidth * 3 / 4 + 20 + 20)
-            markers.push.apply(markers, step.markers)
             imageUriData.push.apply(imageUriData, step.images)
             polylineArr.push({ latitude: step.meanLatitude, longitude: step.meanLongitude })
             key++;
         }
 
         this.setState({
-            markers: markers,
             imageUriData: imageUriData,
             polylineArr: polylineArr,
             photoModalVisible: false,
@@ -128,7 +122,8 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         })
     }
 
-    onMarkerPress = (e: any, step: StepModal) => {
+    onMarkerPress = (e: any, stepId: number) => {
+        var step = this.state.steps[0];//TODO
         if ((step.meanLatitude != this.state.lastStepClicked.meanLatitude ||
             step.meanLatitude != this.state.lastStepClicked.meanLongitude) &&
             (step.stepName != "Home")) {
@@ -204,30 +199,32 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                         {
 
                             this.state.steps.map((step, index) => {
-                                return (
-                                    step.masterMarker != undefined && this.state.stepMarkerImages.length >= index ?
-                                        <Marker
-                                            key={index + 'marker'}
-                                            coordinate={step.masterMarker}
-                                            style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox}
-                                            onPress={(e) => this.onMarkerPress(e, step)}
-                                        >
-                                            {step.masterImage != ""?
-                                                <View key={index + 'markerview'} style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} >
-                                                    <Image
-                                                        key={index + 'markerimage'}
-                                                        style={this.state.lastStepClicked.stepId == step.stepId ? styles.largeImageBox : styles.imageBox} source={{ uri: this.state.stepMarkerImages[index] }}></Image>
-
-                                                    {this.state.lastStepClicked.stepId == step.stepId ? <Text style={{ color: 'white', fontStyle: 'italic' }}>{this.state.lastStepClicked.description}</Text> : <View />}
-                                                </View>
-                                                : <View key={index + 'markerviewdot'} />}
-                                        </Marker>
-                                        : <View
-                                            key={index + 'markerdot'} />
-                                )
-
+                                return {
+                                    coordinates: {
+                                        latitude: step.meanLatitude,
+                                        longitude: step.meanLongitude
+                                    },
+                                    image: step.masterImage,
+                                    index: index,
+                                    stepId: step.stepId
+                                }
                             })
+                            .map((el) => (
+                                <Marker
+                                    key={el.index + 'marker'}
+                                    coordinate={el.coordinates}
+                                    style={this.state.lastStepClicked.stepId == el.stepId ? styles.largeImageBox : styles.imageBox}
+                                    onPress={(e) => this.onMarkerPress(e, el.stepId)}
+                                >
+                                    <View key={el.index + 'markerview'} style={this.state.lastStepClicked.stepId == el.stepId ? styles.largeImageBox : styles.imageBox} >
+                                        <Image
+                                            key={el.index + 'markerimage'}
+                                            style={this.state.lastStepClicked.stepId == el.stepId ? styles.largeImageBox : styles.imageBox} source={{ uri: el.image }}></Image>
 
+                                        {this.state.lastStepClicked.stepId == el.stepId ? <Text style={{ color: 'white', fontStyle: 'italic' }}>{this.state.lastStepClicked.description}</Text> : <View />}
+                                    </View>
+                                </Marker>
+                            ))
                         }
                     </MapView>
                     <Callout>

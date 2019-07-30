@@ -53,6 +53,7 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
             image: ""
         }
 
+        this.loadState()
         this.Controller = new LoadingPageController()
         this.Controller.Initialize()
         .then((res) => {
@@ -66,11 +67,16 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
                 this.props.setPage(Page[Page.NOPERMISSIONIOS])
         })
 
-        this.loadState()
     }
 
     loadState = async() => {
-        console.log("loadState called")
+        let total = await NativeModules.ExposedAPI.GetTotalToLoad()
+        let finished = await NativeModules.ExposedAPI.GetTotalLoaded()
+        let image = await NativeModules.ExposedAPI.GetImageBeingLoaded()
+        
+        console.log(total)
+        console.log(finished)
+        console.log(image)
         this.setState({
             total: await NativeModules.ExposedAPI.GetTotalToLoad(),
             finished: await NativeModules.ExposedAPI.GetTotalLoaded(),

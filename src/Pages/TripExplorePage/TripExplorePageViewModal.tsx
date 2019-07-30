@@ -96,6 +96,8 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             newStepId: -1,
             lastStepClicked: steps[0],
             steps: steps
+        }, () => {
+            this.zoomToStep(this.state.steps[0])
         })
     }
 
@@ -183,10 +185,6 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         })
     }
 
-    onMapLayout = () => {
-        this.zoomToStep(this.state.steps[0])
-    }
-
     render() {
         return (
             <View>
@@ -194,7 +192,6 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                     <MapView style={{ width: '100%', height: '80%' }}
                         ref={ref => this.mapView = ref}
                         mapType='hybrid'
-                        onLayout={this.onMapLayout}
                     >
                         {
 
@@ -204,7 +201,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                                         latitude: step.meanLatitude,
                                         longitude: step.meanLongitude
                                     },
-                                    image: step.masterImage,
+                                    image: step.masterImage == "" ? "sad" : step.masterImage,
                                     index: index,
                                     stepId: step.stepId
                                 }

@@ -26,7 +26,15 @@ class ExposedAPI: NSObject {
             resolve(false)
           }
           break;
-      case "trips":
+        case "name":
+          let dbData = db.objects(ProfileModal.self)
+          if let modal = dbData.first {
+            resolve(modal.name)
+          } else {
+            resolve(false)
+          }
+          break;
+        case "trips":
           let dbData = db.objects(TripModal.self)
           var response: [[String:Any]] = []
           for data in dbData {

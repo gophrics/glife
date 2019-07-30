@@ -34,8 +34,6 @@ class PhotoLibraryProcessor: NSObject {
       }
     })
     
-    print("Dump: " + String(allPhotos.count))
-    print("Dump2: " + String(arrayOfPHAsset.count))
     return arrayOfPHAsset
   }
   
@@ -70,8 +68,8 @@ class PhotoLibraryProcessor: NSObject {
     var i = 0;
     for trip in trips {
       let _trip = trip.sorted(by: { $0.timestamp < $1.timestamp })
-      let _steps: [StepModal] = ClusterProcessor.RunStepClustering(trip: _trip);
-      let __trip = PhotoLibraryProcessor.PopulateTripModalData(steps: _steps, tripId: TripUtils.GenerateTripId(), homesDataForClustering: homesForDataClustering);
+      let _unsortedSteps: [StepModal] = ClusterProcessor.RunStepClustering(trip: _trip);
+      let __trip = PhotoLibraryProcessor.PopulateTripModalData(steps: _unsortedSteps.sorted(by: {$0.startTimestamp < $1.startTimestamp }), tripId: TripUtils.GenerateTripId(), homesDataForClustering: homesForDataClustering);
       tripResult.append(__trip);
       i += 1;
       Constants.TOTAL_LOADED = i;
@@ -98,7 +96,7 @@ class PhotoLibraryProcessor: NSObject {
     var _stepsForTrip: [StepModal] = []
     
     let _stepModal: StepModal = ClusterProcessor.convertClusterToStep(cluster: [homeStepCluster])
-    _stepModal.location = "Home";
+    _stepModal.stepName = "Home";
     _stepModal.stepId = 0;
     _stepModal.tripId = tripId;
     _stepsForTrip.append(_stepModal);
@@ -120,6 +118,7 @@ class PhotoLibraryProcessor: NSObject {
       step.distanceTravelled = (steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
       print("DISTANCE TRAVELLED: " + String(step.distanceTravelled))
       step.tripId = tripId;
+      step.stepId = i*100;
       _stepsForTrip.append(step);
       i += 1;
     }
@@ -133,20 +132,19 @@ class PhotoLibraryProcessor: NSObject {
     homeStep2Cluster.timestamp = homeStep2.timestamp
     
     let _stepModal2: StepModal = ClusterProcessor.convertClusterToStep(cluster: [homeStep2Cluster])
-    _stepModal2.location = "Home";
-    _stepModal.tripId = tripId;
+    _stepModal2.stepName = "Home";
+    _stepModal2.tripId = tripId;
+    _stepModal2.stepId = i*100;
     
     let _p = ClusterModal()
-    _p.latitude = _stepModal.meanLatitude
-    _p.longitude = _stepModal.meanLongitude
+    _p.latitude = _stepModal2.meanLatitude
+    _p.longitude = _stepModal2.meanLongitude
     
     let _q = ClusterModal()
     _q.latitude = _stepsForTrip[i].meanLatitude
     _q.longitude = _stepsForTrip[i].meanLongitude
     
     _stepModal2.distanceTravelled = (_stepsForTrip[_stepsForTrip.count - 2].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
-    _stepModal2.stepId = 10000
-
     _stepsForTrip.append(_stepModal2)
     
     // Load locations
@@ -158,8 +156,8 @@ class PhotoLibraryProcessor: NSObject {
       if (countries.firstIndex(of: result) == nil) {
         countries.append(result)
       }
-      if (places.firstIndex(of: step.location) == nil) {
-        places.append(step.location)
+      if (places.firstIndex(of: step.stepName) == nil) {
+        places.append(step.stepName)
       }
       let _obj = Country()
       _obj.country = result
@@ -170,6 +168,8 @@ class PhotoLibraryProcessor: NSObject {
     }
     
     tripResult.tripId = tripId;
+    
+    
     tripResult = PhotoLibraryProcessor.PopulateTripWithSteps(trip: tripResult, steps: _stepsForTrip)
     PhotoLibraryProcessor.UpdateDBWithSteps(steps: _stepsForTrip)
     
@@ -200,19 +200,19 @@ class PhotoLibraryProcessor: NSObject {
   
   static func GenerateTripNameFromSteps(steps: [StepModal]) -> String {
     
-    var locations: [String] = [];
+    var locations: [String] = [""];
     var result: String = "";
     
     for step in steps{
-      if locations.firstIndex(of: step.location) == -1 {
-        locations.append(step.location)
+      if locations.firstIndex(of: step.stepName) == -1 {
+        locations.append(step.stepName)
+        result += step.stepName + ", ";
       }
       
       if locations.count > 2 {
         break;
       }
       
-      result += step.location + ", ";
     }
     
     result = result.substring(to: result.lastIndex(of: ",") ?? String.Index(encodedOffset: result.count))

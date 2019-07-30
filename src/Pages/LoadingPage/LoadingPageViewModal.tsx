@@ -70,12 +70,13 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
     }
 
     loadState = async() => {
+        console.log("loadState called")
         this.setState({
             total: await NativeModules.ExposedAPI.GetTotalToLoad(),
             finished: await NativeModules.ExposedAPI.GetTotalLoaded(),
             image: await NativeModules.ExposedAPI.GetImageBeingLoaded()
         }, () => {
-            setTimeout(1000, this.loadState)
+            setTimeout(100, this.loadState)
         })
     }
 

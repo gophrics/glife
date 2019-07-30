@@ -166,6 +166,7 @@ class TripUtils {
     task.resume()
     semaphore.wait()
     
+    dump(getCoordinatesFromLocation, name: "getCoordinatesFromLocation")
     return result
   }
   

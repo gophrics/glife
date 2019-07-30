@@ -49,8 +49,8 @@ export class OnBoardingPageController {
         this.SaveData()
     }
 
-    SaveData = () => {
-        NativeModules.ExposedAPI.setHomeData(this.homeData)
+    SaveData = async() => {
+        await NativeModules.ExposedAPI.setHomeData(this.homeData)
     }
     
     AddEmptyHome = () => {
@@ -81,8 +81,9 @@ export class OnBoardingPageController {
         return this.tempLocations;
     }
 
-    SetAllHomeData = (homes: Array<HomeDataModal>) => {
+    SetAllHomeData = async(homes: Array<HomeDataModal>) => {
         this.homeData = homes
+        return await this.SaveData()
     }
 
     SetHomeName = (index: number, name: string) => {

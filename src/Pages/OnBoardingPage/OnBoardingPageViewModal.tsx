@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Image, Button, View, TextInput, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native'
-import { HomeDataModal, Page } from '../../Modals/ApplicationEnums';
+import { Page } from '../../Modals/ApplicationEnums';
+import { HomeDataModal } from '../../Engine/Modals/HomeDataModal';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { OnBoardingPageController } from './OnBoardingPageController';
 
@@ -76,14 +77,12 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         })
     }
 
-    onNextButtonClick = () => {
-        this.validateData()
-            .then((res) => {
-                if (res) {
-                    //this.Controller.SetAllHomeData(this.state.homes)
-                    this.props.setPage(Page[Page.LOADING])
-                }
-            })
+    onNextButtonClick = async() => {
+        var validateSuccess = await this.validateData()
+        if (validateSuccess) {
+            await this.Controller.SetAllHomeData(this.state.homes)
+            this.props.setPage(Page[Page.LOADING])
+        }
     }
 
     onDeleteHome = (pos: number) => {
@@ -110,6 +109,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
 
     render() {
         return (
+            <ScrollView contentContainerStyle={{ paddingBottom: 200}}  style={{ flex: 1, marginTop: 5, padding: 20, flexGrow: 1}} contentInset={{ bottom: 500 + this.state.homes.length*50}} >
             <View style={{flex: 1}}>
                 <View>
                     <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Hi {this.state.name}</Text>
@@ -117,7 +117,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                     <Text style={{ marginTop: 12, fontSize: 22, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>You could add later too ;)</Text>
                 </View>
                 <View style={{ flex: 1, height: '100%' }}>
-                    <ScrollView contentContainerStyle={{ paddingBottom: 200}}  style={{ flex: 1, marginTop: 5, padding: 20, flexGrow: 1}} contentInset={{ bottom: 500 + this.state.homes.length*50}} >
+                    
                         {
                             this.state.homes.map((home, i) => (
                                 <View key={i + 'a'} style={{ flexDirection: 'row', alignSelf:'center'}}>
@@ -151,9 +151,9 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                         <TouchableOpacity style={{ alignSelf: 'center', marginTop: 10, backgroundColor: 'white', borderRadius: 10, padding: 10 }} onPress={this.onNextButtonClick}>
                             <Text style={{ fontSize: 22 }}>Next</Text>
                         </TouchableOpacity>
-                    </ScrollView>
                 </View>
             </View>
+            </ScrollView>
         )
     }
 }

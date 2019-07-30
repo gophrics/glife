@@ -22,7 +22,6 @@ class StepModal : Object {
   dynamic var stepName: String = ""
   dynamic var meanLatitude: Float64 = 0
   dynamic var meanLongitude: Float64 = 0
-  dynamic var location: String = ""
   dynamic var startTimestamp: Int64 = 0
   dynamic var endTimestamp: Int64 = 0
   dynamic var images: List<Image> = List<Image>()
@@ -43,7 +42,6 @@ class StepModal : Object {
     dict["stepName"] = self.stepName;
     dict["meanLatitude"] = self.meanLatitude;
     dict["meanLongitude"] = self.meanLongitude;
-    dict["location"] = self.location;
     dict["startTimestamp"] = self.startTimestamp;
     dict["endTimestamp"] = self.endTimestamp;
     dict["masterImage"] = self.masterImage;

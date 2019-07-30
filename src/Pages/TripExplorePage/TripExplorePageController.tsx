@@ -37,6 +37,8 @@ export class TripExplorePageController {
     }
 
     getSteps = async() => {
-        return await this.Modal.steps
+        var steps = await this.Modal.steps;
+        console.log(steps)
+        return steps
     }
 }

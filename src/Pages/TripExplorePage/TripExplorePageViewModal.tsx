@@ -69,6 +69,9 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     async loadState() {
 
         var steps = await this.Controller.getSteps()
+        steps.sort((a: StepModal, b: StepModal) => {
+            return a.stepId - b.stepId
+        })
         var lastStepClicked = steps[0]
         this.travelCardArray = []
         //Populate travelcard Array for each step

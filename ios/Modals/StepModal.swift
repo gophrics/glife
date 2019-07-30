@@ -33,4 +33,25 @@ class StepModal : Object {
   dynamic var distanceTravelled: Int = 0
   dynamic var desc: String = ""
   dynamic var temperature: String = ""
+  
+  func GetAsDictionary() -> [String:Any] {
+    var dict: [String:Any] = [:]
+    
+    dict["stepId"] = self.stepId;
+    dict["tripId"] = self.tripId;
+    dict["profileId"] = self.profileId;
+    dict["stepName"] = self.stepName;
+    dict["meanLatitude"] = self.meanLatitude;
+    dict["meanLongitude"] = self.meanLongitude;
+    dict["location"] = self.location;
+    dict["startTimestamp"] = self.startTimestamp;
+    dict["endTimestamp"] = self.endTimestamp;
+    dict["masterImage"] = self.masterImage;
+    dict["masterMarker"] = self.masterMarker;
+    dict["distanceTravelled"] = self.distanceTravelled;
+    dict["desc"] = self.desc;
+    dict["temperature"] = self.temperature;
+    
+    return dict;
+  }
 }

@@ -132,7 +132,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     onMarkerPress = (e: any, step: StepModal) => {
         if ((step.meanLatitude != this.state.lastStepClicked.meanLatitude ||
             step.meanLatitude != this.state.lastStepClicked.meanLongitude) &&
-            (step.location != "Home")) {
+            (step.stepName != "Home")) {
 
             (this.mapView as MapView).animateToRegion({
                 latitude: step.meanLatitude,
@@ -173,7 +173,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         })
 
         this.setState({
-            steps: this.Controller.getSteps()
+            steps: await this.Controller.getSteps()
         })
         this.initialize()
     }

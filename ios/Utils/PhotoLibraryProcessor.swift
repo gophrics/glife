@@ -197,16 +197,21 @@ class PhotoLibraryProcessor: NSObject {
   static func GenerateTripNameFromSteps(steps: [StepModal]) -> String {
     
     var locations: [String] = [];
+    var result: String = "";
     
     for step in steps{
-      print("LOCATION: " + step.location)
+      if locations.firstIndex(of: step.location) == -1 {
         locations.append(step.location)
+      }
+      
+      if locations.count > 2 {
+        break;
+      }
+      
+      result += step.location + ", ";
     }
     
-    var result: String = "";
-    for loc in locations {
-      result += loc + " ";
-    }
+    result = result.substring(to: result.lastIndex(of: ",") ?? String.Index(encodedOffset: result.count)) 
     return result;
   }
   

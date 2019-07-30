@@ -152,20 +152,57 @@ class ExposedAPI: NSObject {
     let dbresult = db.objects(TripModal.self).filter{$0.tripId == tripId}
     if let result = dbresult.first {
       
-      switch(op) {
-        case "all":
+      
+    } else {
+      resolve(false)
+    }
+    
+    switch(op) {
+      case "all":
+        let db = try! Realm()
+        let dbresult = db.objects(TripModal.self).filter{$0.tripId == tripId}
+        if let result = dbresult.first {
           resolve(result);
-          break;
-        case "masterImage":
-          print("MASTERIMAGE: " + result.masterImage)
-          resolve(result.masterImage); break;
+        } else {
+          resolve(false);
+        }
+        break;
+      case "steps":
+        let db = try! Realm()
+        let dbresult = db.objects(StepModal.self).filter{$0.tripId == tripId}
+        if dbresult.count == 0 {
+          resolve(false); break;
+        }
+        var steps: [[String:Any]] = []
+        for obj in dbresult {
+          steps.append(obj.GetAsDictionary())
+        }
+        resolve(steps);
+        break;
+      default:
+        resolve(false); break;
+    }
+  }
+  
+  @objc
+  func getStepData(_ op: String, profileId profileId:String, tripId tripId:String, stepId stepId:Int, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    let db = try! Realm()
+    let dbresult = db.objects(StepModal.self).filter{$0.tripId == tripId}
+    if let _ = dbresult.first {
+      switch(op) {
+        case "images":
+          let dbresult2 = dbresult.filter{$0.stepId == stepId}
+          if let result2 = dbresult2.first {
+            resolve(result2.images); break;
+          } else {
+            resolve(false)
+          }
         default:
           resolve(false); break;
       }
     } else {
       resolve(false)
     }
-    
   }
   
   

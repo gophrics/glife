@@ -36,9 +36,7 @@ export class TripExplorePageController {
         return this.Modal.steps[0]
     }
 
-    getSteps = () => {
-        if (this.Modal.steps == undefined || this.Modal.steps == null)
-            throw "No steps found"
-        return this.Modal.steps
+    getSteps = async() => {
+        return await this.Modal.steps
     }
 }

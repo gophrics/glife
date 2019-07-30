@@ -1,9 +1,7 @@
 import { NativeModules } from "react-native";
 import { ProfileModal } from '../../Engine/Modals/ProfileModal';
 import { TripModal } from '../../Engine/Modals/TripModal';
-import { Instance } from '../../Engine/Engine';
 import * as Engine from '../../Engine/Engine';
-import { returnStatement } from "@babel/types";
 
 export class ProfilePageController {
     

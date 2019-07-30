@@ -8,7 +8,6 @@ import { TripModal } from '../../Engine/Modals/TripModal';
 import { Page } from '../../Modals/ApplicationEnums';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { ProfilePageController } from './ProfilePageController';
-import { ProfileModal } from '../../Engine/Modals/ProfileModal';
 
 interface IState {
     bottom: number,

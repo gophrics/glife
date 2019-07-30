@@ -32,7 +32,8 @@ class TripUtils {
     request.httpBody = jsonData
 
     var result = 0
-    URLSession.shared.dataTask(with: request) { data, response, error in
+    let semaphore = DispatchSemaphore(value: 0)
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
         return
@@ -42,6 +43,9 @@ class TripUtils {
         result = Int(Int64((responseJSON["main"] as! [String:Any])["temp"] as! Float64 - 273.15))
       }
     }
+    
+    task.resume()
+    semaphore.wait()
     
     return result
   }
@@ -59,7 +63,8 @@ class TripUtils {
     request.httpBody = jsonData
     
     var result: String = ""
-    _ = URLSession.shared.dataTask(with: request) { data, response, error in
+    let semaphore = DispatchSemaphore(value: 0)
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
         return
@@ -74,6 +79,9 @@ class TripUtils {
         }
       }
     }
+    
+    task.resume()
+    semaphore.wait()
     
     return result
   }

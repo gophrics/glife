@@ -23,7 +23,7 @@
 
  RCT_EXTERN_METHOD(getTripData: (NSString)op profileId:(NSString)profileId tripId:(NSString)tripId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
- RCT_EXTERN_METHOD(getStepData: (NSString)operation profileId:(NSString)profileId tripId:(NSString)tripId stepId:(NSInteger)stepId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+ RCT_EXTERN_METHOD(getStepData: (NSString)op profileId:(NSString)profileId tripId:(NSString)tripId stepId:(NSInteger)stepId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
   RCT_EXTERN_METHOD(addNewTrip: (NSString)tripName resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 

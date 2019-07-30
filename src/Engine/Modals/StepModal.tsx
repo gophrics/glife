@@ -15,7 +15,8 @@ export class StepModal {
     distanceTravelled: number = 0
     description: string = ""
     temperature: number = 0
-
+    numberOfImagesTaken: number = 0
+    
     get images() {
         return NativeModules.ExposedAPI.getStepData('images', this.profileId, this.tripId, this.stepId)
     }

@@ -32,16 +32,19 @@ class TripUtils {
     request.httpBody = jsonData
 
     var result = 0
-    let semaphore = DispatchSemaphore(value: 0)
+    let semaphore = DispatchSemaphore(value: 1)
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
         return
       }
       let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+      dump(responseJSON, name: "Weather DUMP")
       if let responseJSON = responseJSON as? [String: Any] {
         result = Int(Int64((responseJSON["main"] as! [String:Any])["temp"] as! Float64 - 273.15))
+        print("Weather dump: " + String(result))
       }
+      semaphore.signal()
     }
     
     task.resume()
@@ -63,7 +66,7 @@ class TripUtils {
     request.httpBody = jsonData
     
     var result: String = ""
-    let semaphore = DispatchSemaphore(value: 0)
+    let semaphore = DispatchSemaphore(value: 2)
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
@@ -78,6 +81,7 @@ class TripUtils {
           result = (responseJSON["address"] as! [String:Any])["country_code"] as! String
         }
       }
+      semaphore.signal()
     }
     
     task.resume()
@@ -101,7 +105,7 @@ class TripUtils {
 
     var result: String = ""
   
-    let semaphore = DispatchSemaphore(value: 0)
+    let semaphore = DispatchSemaphore(value: 3)
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
@@ -115,13 +119,14 @@ class TripUtils {
         else {
           result = (responseJSON["address"] as? [String:Any] ?? [:] )["state_district"] as? String ?? ""
         }
-        semaphore.signal()
       }
+      semaphore.signal()
     }
     
     task.resume()
     semaphore.wait()
     
+    dump(result)
     return result
   }
   
@@ -138,7 +143,7 @@ class TripUtils {
     
     var result: [Region] = []
     
-    let semaphore = DispatchSemaphore(value: 0)
+    let semaphore = DispatchSemaphore(value: 4)
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
 
       guard let data = data, error == nil else {
@@ -154,8 +159,8 @@ class TripUtils {
           _result.longitude = Float64(_res["lon"] as! String)!
           result.append(_result)
         }
-        semaphore.signal()
       }
+      semaphore.signal()
     }
     
     task.resume()

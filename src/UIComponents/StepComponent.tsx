@@ -10,8 +10,10 @@ interface IProps {
 }
 
 interface IState {
+    stepName: string,
     temperature: number,
-    masterPic: string
+    masterPic: string,
+    numberOfPicturesTaken: number
 }
 
 const deviceWidth = Dimensions.get('window').width
@@ -21,31 +23,26 @@ export class StepComponent extends React.Component<IProps, IState> {
     retryCount = 20;
     constructor(props: IProps) {
         super(props)
-        this.populateMasterPic()
-    }
-
-    shareStep = () => {
-
+        this.state = {
+            stepName: "",
+            temperature: 0,
+            masterPic: "",
+            numberOfPicturesTaken: 0
+        }
+        this.loadState()
     }
 
     onPress = (e: any) => {
         this.props.onPress(this.props.modal)
     }
-    
-    componentDidUpdate = () => {
-        this.populateMasterPic()
-    }
 
-    populateMasterPic = () => {
-        var masterPic = this.props.modal.masterImageBase64
-        if(masterPic == "" && (this.props.modal.imageBase64 != undefined && this.props.modal.imageBase64.length > 0)) masterPic = this.props.modal.imageBase64[0]
-        if(masterPic ==  "" ) masterPic = this.props.modal.masterImageUri
-        else masterPic = `data:image/gif;base64,${masterPic}`
-        
-        this.state = {
+    loadState = () => {
+        this.setState({
+            stepName: this.props.modal.stepName,
             temperature: 0,
-            masterPic: masterPic
-        }
+            masterPic: this.props.modal.masterImage,
+            numberOfPicturesTaken: this.props.modal.images
+        })
     }
 
     render() {
@@ -58,7 +55,7 @@ export class StepComponent extends React.Component<IProps, IState> {
                             
                             <Text style={{color:'white'}}>{"Day " + this.props.daysOfTravel}</Text>
 
-                            <Text style={{fontSize: 18, color: 'white'}}>{this.props.modal.location == "" ? "Unknown" : this.props.modal.location}</Text>
+                            <Text style={{fontSize: 18, color: 'white'}}>{this.props.modal.stepName == "" ? "Unknown" : this.state.stepName}</Text>
                             
                             {
                                 // TODO: Don't forget to add degree celsius}
@@ -68,7 +65,7 @@ export class StepComponent extends React.Component<IProps, IState> {
                         
                         <View style={{flexDirection: 'column', alignContent: 'space-between'}}>
                             <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.props.distanceTravelled + " km"}</Text>
-                            <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{(this.props.modal.imageUris || this.props.modal.imageBase64).length + " photos taken"}</Text>
+                            <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{this.state.numberOfPicturesTaken + " photos taken"}</Text>
                             <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{""}</Text>
                             <Text style={{alignSelf: 'flex-end', color: 'white', fontSize: 18}}>{""}</Text>
                             {

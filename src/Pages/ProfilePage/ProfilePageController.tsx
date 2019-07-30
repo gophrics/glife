@@ -8,10 +8,7 @@ export class ProfilePageController {
     Modal: ProfileModal = new ProfileModal();
 
     loadModal = async() => {
-        console.log(await NativeModules.ExposedAPI.getProfileData('all', 'randomGeneratedId'))
         this.Modal.CopyConstructor(await NativeModules.ExposedAPI.getProfileData('all', 'randomGeneratedId'))
-        console.log("ProfileModal")
-        console.log(this.Modal)
     }
 
     setName = async(name: string) => {

@@ -26,6 +26,7 @@ class ClusterProcessor {
     var _it: Int = 0
     
     for item in trip {
+      Constants.IMAGE_LOADED = item.image;
       // If distance between two modals are less than 10 km
       if(ClusterProcessor.EarthDistance(p: item, q: firstItem) < 10) {
         // We divide based on time

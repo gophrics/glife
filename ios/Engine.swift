@@ -122,7 +122,8 @@ class Engine {
       // Modify timestamp and location of objects in accordance with homeData input from user
       var currentTimestamp = Int(Date().timeIntervalSince1970/86400)
       for data in homeData {
-        let _region = TripUtils.getCoordinatesFromLocation(location: data.name)[0] // Bug
+        var coordinates = TripUtils.getCoordinatesFromLocation(location: data.name)
+        let _region = coordinates.count > 0 ? coordinates[0] : Region() //Bug, user should select ? 
         
         while(currentTimestamp >= Int(data.timestamp/86400)) {
           

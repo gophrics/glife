@@ -29,4 +29,11 @@
 
   RCT_EXTERN_METHOD(InitializeEngine: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
+
+RCT_EXTERN_METHOD(GetTotalToLoad: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(GetTotalLoaded: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(GetImageBeingLoaded: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+
 @end

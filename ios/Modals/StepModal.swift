@@ -51,6 +51,7 @@ class StepModal : Object {
     dict["distanceTravelled"] = self.distanceTravelled;
     dict["desc"] = self.desc;
     dict["temperature"] = self.temperature;
+    dict["numberOfPicturesTaken"] = self.images.count;
     
     return dict;
   }

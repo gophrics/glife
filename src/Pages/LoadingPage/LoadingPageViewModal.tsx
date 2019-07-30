@@ -65,25 +65,17 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
             else
                 this.props.setPage(Page[Page.NOPERMISSIONIOS])
         })
-        
-        const Events = new NativeEventEmitter(NativeModules.ExposedEvents)
 
-        Events.addListener("getTotalToLoad", res => {
-            this.setState({
-                total: res.totalToLoad
-            })
-        })
+        this.loadState()
+    }
 
-        Events.addListener("getTotalLoaded", res => {
-            this.setState({
-                finished: res.totalLoaded
-            })
-        })
-
-        Events.addListener("getImageBeingLoaded", res => {
-            this.setState({
-                image: res.imageBeingLoaded
-            })
+    loadState = async() => {
+        this.setState({
+            total: await NativeModules.ExposedAPI.GetTotalToLoad(),
+            finished: await NativeModules.ExposedAPI.GetTotalLoaded(),
+            image: await NativeModules.ExposedAPI.GetImageBeingLoaded()
+        }, () => {
+            setTimeout(1000, this.loadState)
         })
     }
 

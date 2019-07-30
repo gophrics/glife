@@ -45,10 +45,8 @@
 		4FECC0B9977743079020166F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BCC3E4A076742F399538C1F /* Zocial.ttf */; };
 		6EC205E6A16448F1BECAF3F1 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6391C19ECC604B43B0673441 /* libAirMaps.a */; };
 		72098C8122E6241F00C6E57A /* Glimpse-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 72098C1322E5E58F00C6E57A /* Glimpse-Bridging-Header.h */; };
-		72098C9C22E62B6200C6E57A /* ExposedEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098C9822E62B6100C6E57A /* ExposedEvents.swift */; };
 		72098C9D22E62B6200C6E57A /* ExposedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098C9922E62B6100C6E57A /* ExposedAPI.swift */; };
 		72098C9E22E62B6200C6E57A /* ExposedAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 72098C9A22E62B6100C6E57A /* ExposedAPI.m */; };
-		72098C9F22E62B6200C6E57A /* ExposedEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 72098C9B22E62B6200C6E57A /* ExposedEvents.m */; };
 		72098CA222E62D2500C6E57A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098CA022E62D2500C6E57A /* Error.swift */; };
 		72098CA322E62D2500C6E57A /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098CA122E62D2500C6E57A /* Engine.swift */; };
 		72098CB822E62D2B00C6E57A /* TripUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098CA522E62D2B00C6E57A /* TripUtils.swift */; };
@@ -433,10 +431,8 @@
 		6391C19ECC604B43B0673441 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		6BCC3E4A076742F399538C1F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		72098C1322E5E58F00C6E57A /* Glimpse-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Glimpse-Bridging-Header.h"; sourceTree = "<group>"; };
-		72098C9822E62B6100C6E57A /* ExposedEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExposedEvents.swift; sourceTree = "<group>"; };
 		72098C9922E62B6100C6E57A /* ExposedAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExposedAPI.swift; sourceTree = "<group>"; };
 		72098C9A22E62B6100C6E57A /* ExposedAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExposedAPI.m; sourceTree = "<group>"; };
-		72098C9B22E62B6200C6E57A /* ExposedEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExposedEvents.m; sourceTree = "<group>"; };
 		72098CA022E62D2500C6E57A /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		72098CA122E62D2500C6E57A /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		72098CA522E62D2B00C6E57A /* TripUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripUtils.swift; sourceTree = "<group>"; };
@@ -629,8 +625,6 @@
 				72098CA022E62D2500C6E57A /* Error.swift */,
 				72098C9A22E62B6100C6E57A /* ExposedAPI.m */,
 				72098C9922E62B6100C6E57A /* ExposedAPI.swift */,
-				72098C9B22E62B6200C6E57A /* ExposedEvents.m */,
-				72098C9822E62B6100C6E57A /* ExposedEvents.swift */,
 				72098C1322E5E58F00C6E57A /* Glimpse-Bridging-Header.h */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -1519,12 +1513,10 @@
 				72098CC022E62D2B00C6E57A /* HomeDataModal.swift in Sources */,
 				72098C9D22E62B6200C6E57A /* ExposedAPI.swift in Sources */,
 				72098C9E22E62B6200C6E57A /* ExposedAPI.m in Sources */,
-				72098C9C22E62B6200C6E57A /* ExposedEvents.swift in Sources */,
 				72098CBC22E62D2B00C6E57A /* DatabaseProvider.swift in Sources */,
 				72098CC722E62D2B00C6E57A /* Region.swift in Sources */,
 				72098CB822E62D2B00C6E57A /* TripUtils.swift in Sources */,
 				72098CBB22E62D2B00C6E57A /* AuthProvider.swift in Sources */,
-				72098C9F22E62B6200C6E57A /* ExposedEvents.m in Sources */,
 				72098CBD22E62D2B00C6E57A /* BlobProvider.swift in Sources */,
 				72098CBE22E62D2B00C6E57A /* Model.xcdatamodeld in Sources */,
 				72098CC222E62D2B00C6E57A /* TripModal.swift in Sources */,

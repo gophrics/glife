@@ -63,14 +63,10 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
             masterPic: "",
             stepMarkerImages: []
         }
-        this.populateStepMarkerImages()
+        this.loadState()
     }
 
-    componentDidMount = () => {
-        this.initialize();
-    }
-
-    async initialize() {
+    async loadState() {
 
         var steps = await this.Controller.getSteps()
         var lastStepClicked = steps[0]
@@ -175,7 +171,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         this.setState({
             steps: await this.Controller.getSteps()
         })
-        this.initialize()
+        this.loadState()
     }
 
     // Photo Modal methods
@@ -191,16 +187,6 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
 
     onMapLayout = () => {
         this.zoomToStep(this.state.steps[0])
-    }
-
-    populateStepMarkerImages = async() => {
-        var imageArray = []
-        for(var step of this.state.steps) {
-            imageArray.push(`data:image/gif;base64,${await step.masterImage}`)
-        }
-        this.setState({
-            stepMarkerImages: imageArray
-        })
     }
 
     render() {

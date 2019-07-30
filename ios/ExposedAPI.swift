@@ -26,57 +26,13 @@ class ExposedAPI: NSObject {
             resolve(false)
           }
           break;
-        case "name":
-          resolve(db.objects(ProfileModal.self).first?.name);
-          break;
-        case "trips":
-          let dbResponse = db.objects(TripModal.self)
-          var trips: [[String:Any]] = []
-          
-          for trip in dbResponse {
-            trips.append(trip.GetAsDictionary())
+      case "trips":
+          let dbData = db.objects(TripModal.self)
+          var response: [[String:Any]] = []
+          for data in dbData {
+            response.append(data.GetAsDictionary())
           }
-          
-          dump(trips, name: "TripDump");
-          dump(dbResponse)
-          resolve(trips)
-          break;
-        case "percentageWorldTravelled":
-          resolve(db.objects(ProfileModal.self).first?.percentageWorldTravelled)
-          break;
-        case "countriesVisited":
-          let dbResponse = db.objects(ProfileModal.self).first?.countriesVisited ?? List<Country>()
-          var countriesVisited : [Country] = []
-          for country in dbResponse {
-            countriesVisited.append(country)
-          }
-          resolve(countriesVisited)
-          break;
-        case "coverPicURL":
-          let dbResponse = db.objects(ProfileModal.self)
-          if let coverPicUrl = dbResponse.first {
-            resolve(coverPicUrl);
-          } else {
-            resolve("https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg")
-          }
-          break;
-        case "profilePicURL":
-          let dbResponse = db.objects(ProfileModal.self)
-          
-          if let coverPicUrl = dbResponse.first {
-            resolve(coverPicUrl);
-          } else {
-            resolve("https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg")
-          }
-          break;
-        case "email":
-          let dbResponse = db.objects(ProfileModal.self).first?.email
-          resolve(dbResponse)
-          break;
-        case "password":
-          let dbResponse = db.objects(ProfileModal.self).first?.password
-          resolve(dbResponse)
-          break;
+          resolve(response)
         default: resolve(nil)
       }
   }
@@ -147,19 +103,11 @@ class ExposedAPI: NSObject {
   }
   
   @objc
-  func getTripData(_ op: String, tripId tripId: String, profileId profileId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    let db = try! Realm()
-    let dbresult = db.objects(TripModal.self).filter{$0.tripId == tripId}
-    if let result = dbresult.first {
-      
-      
-    } else {
-      resolve(false)
-    }
+  func getTripData(_ op: String, profileId profileId: String, tripId tripId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     
+    let db = try! Realm()
     switch(op) {
       case "all":
-        let db = try! Realm()
         let dbresult = db.objects(TripModal.self).filter{$0.tripId == tripId}
         if let result = dbresult.first {
           resolve(result);
@@ -168,7 +116,6 @@ class ExposedAPI: NSObject {
         }
         break;
       case "steps":
-        let db = try! Realm()
         let dbresult = db.objects(StepModal.self).filter{$0.tripId == tripId}
         if dbresult.count == 0 {
           resolve(false); break;
@@ -226,6 +173,20 @@ class ExposedAPI: NSObject {
     resolve(result)
   }
   
+  @objc
+  func GetTotalToLoad(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    resolve(Constants.TOTAL_TO_LOAD)
+  }
+  
+  @objc
+  func GetTotalLoaded(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    resolve(Constants.TOTAL_LOADED)
+  }
+  
+  @objc
+  func GetImageBeingLoaded(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    resolve(Constants.IMAGE_LOADED)
+  }
   
    @objc
    func addNewTrip(_ tripName: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {

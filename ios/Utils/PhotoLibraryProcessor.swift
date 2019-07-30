@@ -66,11 +66,15 @@ class PhotoLibraryProcessor: NSObject {
       throw EngineError.coreEngineError(message: "No trips found")
     }
     
+    Constants.TOTAL_TO_LOAD = trips.count;
+    var i = 0;
     for trip in trips {
       let _trip = trip.sorted(by: { $0.timestamp < $1.timestamp })
       let _steps: [StepModal] = ClusterProcessor.RunStepClustering(trip: _trip);
       let __trip = PhotoLibraryProcessor.PopulateTripModalData(steps: _steps, tripId: TripUtils.GenerateTripId(), homesDataForClustering: homesForDataClustering);
       tripResult.append(__trip);
+      i += 1;
+      Constants.TOTAL_LOADED = i;
     }
     
     tripResult = tripResult.sorted(by: {$0.endDate > $1.endDate})
@@ -149,7 +153,7 @@ class PhotoLibraryProcessor: NSObject {
     for step in _stepsForTrip {
       let result = TripUtils.getLocationFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)
       
-      step.location = result
+      step.stepName = result
     
       if (countries.firstIndex(of: result) == nil) {
         countries.append(result)
@@ -211,7 +215,7 @@ class PhotoLibraryProcessor: NSObject {
       result += step.location + ", ";
     }
     
-    result = result.substring(to: result.lastIndex(of: ",") ?? String.Index(encodedOffset: result.count)) 
+    result = result.substring(to: result.lastIndex(of: ",") ?? String.Index(encodedOffset: result.count))
     return result;
   }
   

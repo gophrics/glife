@@ -176,7 +176,6 @@ class ExposedAPI: NSObject {
   
   @objc
   func InitializeEngine(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    print("Dump : InitializeEngine called")
     let result = Engine.EngineInstance.Initialize()
     resolve(result)
   }
@@ -211,47 +210,5 @@ class ExposedAPI: NSObject {
         var operationResult = Engine.EngineInstance.UpdateProfileDataWithTrip(trip: data)
         resolve(operationResult)
    }
-    
-    @objc
-    func setName(_ name: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        resolve(true)
-    }
-  
-    @objc
-    func getName(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        resolve(Engine.EngineInstance._BlobProvider.Blob.profileData.name)
-    }
-  
-    @objc
-    func setHomeTimestamp(_ timestamp: Int64, index: Int, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        Engine.EngineInstance._BlobProvider.Modal.homeData[index].timestamp = timestamp
-        resolve(true)
-    }
-  
-    @objc
-    func getCoordinatesFromLocation(_ name: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-      var result = TripUtils.getCoordinatesFromLocation(location: name)
-      resolve(result)
-    }
-    
-    
-    @objc
-    func setProfilePic(_ profilePicData: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        Engine.EngineInstance._BlobProvider.Blob.profileData.profilePicURL = profilePicData;
-        resolve(true)
-    }
-    
-    
-    @objc
-    func setCoverPic(_ coverPicURL: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        Engine.EngineInstance._BlobProvider.Blob.profileData.coverPicURL = coverPicURL;
-        resolve(true)
-    }
-    
-    @objc
-    func getProfileMeta(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        // TODO: Get all profile data to be displayed in profile page
-        resolve(true)
-    }
 
 }

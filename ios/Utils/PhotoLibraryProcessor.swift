@@ -59,7 +59,6 @@ class PhotoLibraryProcessor: NSObject {
     let trips = ClusterProcessor.RunMasterClustering(clusterData: clusterData, homes: homesForDataClustering);
     var tripResult: [TripModal] = [];
     
-    print("Dump: " + String(trips.count))
     if (trips.count == 0) {
       throw EngineError.coreEngineError(message: "No trips found")
     }
@@ -75,9 +74,8 @@ class PhotoLibraryProcessor: NSObject {
       Constants.TOTAL_LOADED = i;
     }
     
-    tripResult = tripResult.sorted(by: {$0.endDate > $1.endDate})
+    tripResult = tripResult.sorted(by: {$0.startDate < $1.startDate})
     
-    print("Dump 3: " + String(tripResult.count))
     return tripResult
   }
   
@@ -105,8 +103,23 @@ class PhotoLibraryProcessor: NSObject {
     var countries: [String] = []
     var places: [String] = []
     
+    // Load locations
     for step in steps {
-      
+      let result = TripUtils.getLocationFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)
+      step.stepName = result
+    
+      if (countries.firstIndex(of: result) == nil) {
+        countries.append(result)
+      }
+      if (places.firstIndex(of: step.stepName) == nil) {
+        places.append(step.stepName)
+      }
+      let _obj = Country()
+      _obj.country = result
+      tripResult.countryCode.append(_obj)
+
+      // Showing current weather now
+      step.temperature = String(TripUtils.getWeatherFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)) + "ºC"
       let _p = ClusterModal()
       _p.latitude = step.meanLatitude;
       _p.longitude = step.meanLongitude;
@@ -114,14 +127,14 @@ class PhotoLibraryProcessor: NSObject {
       let _q = ClusterModal()
       _q.latitude = steps[i].meanLatitude;
       _q.longitude = steps[i].meanLongitude;
-
+      
       step.distanceTravelled = (steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
-      print("DISTANCE TRAVELLED: " + String(step.distanceTravelled))
       step.tripId = tripId;
       step.stepId = i*100;
       _stepsForTrip.append(step);
       i += 1;
     }
+    
     
     let homeStep2 = homesDataForClustering[Int(steps[steps.count - 1].endTimestamp / 86400) + 1]
     homeStep2.timestamp = (steps[steps.count - 1].endTimestamp + 86400)
@@ -144,32 +157,10 @@ class PhotoLibraryProcessor: NSObject {
     _q.latitude = _stepsForTrip[i].meanLatitude
     _q.longitude = _stepsForTrip[i].meanLongitude
     
-    _stepModal2.distanceTravelled = (_stepsForTrip[_stepsForTrip.count - 2].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
+    _stepModal2.distanceTravelled = (steps[steps.count - 1].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
     _stepsForTrip.append(_stepModal2)
     
-    // Load locations
-    for step in _stepsForTrip {
-      let result = TripUtils.getLocationFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)
-      
-      step.stepName = result
-    
-      if (countries.firstIndex(of: result) == nil) {
-        countries.append(result)
-      }
-      if (places.firstIndex(of: step.stepName) == nil) {
-        places.append(step.stepName)
-      }
-      let _obj = Country()
-      _obj.country = result
-      tripResult.countryCode.append(_obj)
-
-      // Showing current weather now
-      step.temperature = String(TripUtils.getWeatherFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)) + "ºC"
-    }
-    
     tripResult.tripId = tripId;
-    
-    
     tripResult = PhotoLibraryProcessor.PopulateTripWithSteps(trip: tripResult, steps: _stepsForTrip)
     PhotoLibraryProcessor.UpdateDBWithSteps(steps: _stepsForTrip)
     
@@ -199,23 +190,25 @@ class PhotoLibraryProcessor: NSObject {
   }
   
   static func GenerateTripNameFromSteps(steps: [StepModal]) -> String {
-    
-    var locations: [String] = [""];
+    var locations: [String] = ["", "Home"];
     var result: String = "";
     
     for step in steps{
-      if locations.firstIndex(of: step.stepName) == -1 {
+      if let _ = locations.firstIndex(of: step.stepName) {
+      
+      } else {
         locations.append(step.stepName)
         result += step.stepName + ", ";
       }
       
+      print("Generating tripname with stepName " + step.stepName + " : " + result)
       if locations.count > 2 {
         break;
       }
-      
     }
-    
+    print("Generating tripname: " + result)
     result = result.substring(to: result.lastIndex(of: ",") ?? String.Index(encodedOffset: result.count))
+    print("Generating tripname after substring: " + result)
     return result;
   }
   
@@ -223,6 +216,7 @@ class PhotoLibraryProcessor: NSObject {
   static func UpdateDBWithSteps(steps: [StepModal]) {
     let db = try! Realm()
     for step in steps {
+      print("Saving step with name " + step.stepName + " to database")
       let dbObjects = db.objects(StepModal.self).filter{ $0.tripId == step.tripId && $0.stepId == step.stepId }
       if let obj = dbObjects.first {
         try! db.write {

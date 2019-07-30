@@ -32,17 +32,15 @@ class TripUtils {
     request.httpBody = jsonData
 
     var result = 0
-    let semaphore = DispatchSemaphore(value: 1)
+    let semaphore = DispatchSemaphore(value: 0)
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
         return
       }
       let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
-      dump(responseJSON, name: "Weather DUMP")
       if let responseJSON = responseJSON as? [String: Any] {
         result = Int(Int64((responseJSON["main"] as! [String:Any])["temp"] as! Float64 - 273.15))
-        print("Weather dump: " + String(result))
       }
       semaphore.signal()
     }
@@ -66,7 +64,7 @@ class TripUtils {
     request.httpBody = jsonData
     
     var result: String = ""
-    let semaphore = DispatchSemaphore(value: 2)
+    let semaphore = DispatchSemaphore(value: 0)
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
@@ -105,19 +103,20 @@ class TripUtils {
 
     var result: String = ""
   
-    let semaphore = DispatchSemaphore(value: 3)
+    let semaphore = DispatchSemaphore(value: 0)
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       guard let data = data, error == nil else {
         print("No data")
         return
       }
       let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
-      if let responseJSON = responseJSON as? [String: Any] {
-        if((responseJSON["address"] as! [String:Any])["county"] != nil) {
-          result = (responseJSON["address"] as? [String:Any] ?? [:])["county"] as? String ?? ""
-        }
-        else {
-          result = (responseJSON["address"] as? [String:Any] ?? [:] )["state_district"] as? String ?? ""
+      if var responseJSON = responseJSON as? [String: Any] {
+        if let address = responseJSON["address"] as? [String:Any] {
+          if let state = address["state"] as? String {
+            result = state
+          } else if let county = address["county"] as? String {
+            result = county
+          }
         }
       }
       semaphore.signal()
@@ -125,8 +124,6 @@ class TripUtils {
     
     task.resume()
     semaphore.wait()
-    
-    dump(result)
     return result
   }
   
@@ -143,7 +140,7 @@ class TripUtils {
     
     var result: [Region] = []
     
-    let semaphore = DispatchSemaphore(value: 4)
+    let semaphore = DispatchSemaphore(value: 0)
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
 
       guard let data = data, error == nil else {
@@ -151,7 +148,6 @@ class TripUtils {
       }
       let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
       if let responseJSON = responseJSON as? [[String: Any]] {
-        
         for _res in responseJSON {
           let _result = Region()
           _result.name = _res["display_name"] as! String
@@ -166,7 +162,6 @@ class TripUtils {
     task.resume()
     semaphore.wait()
     
-    dump(getCoordinatesFromLocation, name: "getCoordinatesFromLocation")
     return result
   }
   

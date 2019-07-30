@@ -28,12 +28,10 @@ class Engine {
     static var EngineInstance = Engine()
 
     init() {
-        print("Init called for Engine")
         //self.ExtendHomeDataToDate()
     }
     
     func Initialize() -> Bool {
-        print("Dump : Initialize() called")
         let dbHomeDataArray = (try! Realm()).objects(HomeDataModal.self)
         let homeDataArray: List<HomeDataModal> = List<HomeDataModal>();
       
@@ -79,24 +77,26 @@ class Engine {
               db.delete(object)
           }
         }
+        let dbObjects2 = db.objects(StepModal.self)
+        for object in dbObjects2 {
+          try! db.write {
+            db.delete(object)
+          }
+        }
     }
   
     func UpdateDBWithTrips(trips: [TripModal]) {
       let db = try! Realm();
       
       for trip in trips{
-        print("DEBUG: Updating trip " + trip.tripId)
         let dbResult = db.objects(TripModal.self).filter{ $0.tripId == trip.tripId }
         if let _trip = dbResult.first {
-          print("DEBUG: Trip with tripId " + _trip.tripId + " found in db")
           try! db.write {
             // Right now we're deleting and adding the object everywhere, because that is what seem to work
             db.delete(_trip)
             db.add(trip)
           }
         } else {
-          print("DEBUG: Trip with tripId " + trip.tripId + " not found in db, adding")
-          dump(trip)
           try! db.write {
             db.add(trip)
           }
@@ -115,7 +115,6 @@ class Engine {
     
       // Populate array till today with empty object
       for i in 0...Int(today.timeIntervalSince1970/86400) + 1 {
-        print("Dump: " + String(i))
         homesForDataClustering.append(HomesForDataClusteringModal())
       }
     
@@ -165,7 +164,7 @@ class Engine {
       self._BlobProvider.Blob.profileData.countriesVisited.append(_obj)
     }
     self._BlobProvider.Blob.profileData.percentageWorldTravelled = Float((self._BlobProvider.Blob.profileData.countriesVisited.count * 100 / 186))    
-    let _trip: TripModal = try! Database.db.objects(TripModal.self).filter("tripId == " + trip.tripId).first ?? TripModal()
+    let _trip: TripModal = try! Database.db.objects(TripModal.self).filter{ $0.tripId == trip.tripId} .first ?? TripModal()
     
     return _trip
   }

@@ -102,8 +102,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         this.validateData()
     }
 
-    onNewHome = () => {            
-        this.Controller.onNewHomeClick()
+    onNewHome = () => {
         this.props.setPage(Page[Page.ASKFORDATE])
     }
 

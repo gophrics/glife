@@ -60,7 +60,7 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
     onNextButtonClick = async () => {
         console.log(this.state.location)
         if (await this.validateData()) {
-            this.Controller.SetLastHomeLocation(this.state.location)
+            this.Controller.AddHomeWithLocation(this.state.location)
             this.props.setPage(Page[Page.ONBOARDING])
         }
     }

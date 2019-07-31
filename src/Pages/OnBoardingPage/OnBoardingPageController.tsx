@@ -18,21 +18,24 @@ export class OnBoardingPageController {
 
     loadHomeData = async() => {
         this.homeData = await NativeModules.ExposedAPI.getHomeData()
-        console.log(this.homeData);
-        if(this.homeData.length == 0) this.AddEmptyHome()
         this.homeDataLoaded = true;
     }
 
-    getDateFromTimestamp = (timestamp: number) => {
-        return "STUB" //TODO
+    AddHomeWithLocation = async(location: string) => {
+        this.homeData.push({
+            name: location,
+            timestamp: this.GetCachedDate().getTime(),
+            latitude: 0,
+            longitude: 0
+        } as HomeDataModal)
+    }
+
+    GetCachedDateAsString = (date: Date) => {
+        return date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() 
     }
 
     GetCachedDate = () => {
         return Engine.Instance.Cache['date'] || new Date()
-    }
-
-    FirstHomeFilled = () => {
-        return this.homeData.length > 0 && this.homeData[0].name != ""
     }
 
     SetCachedDate = (date: Date) => {
@@ -51,15 +54,6 @@ export class OnBoardingPageController {
 
     SaveData = async() => {
         await NativeModules.ExposedAPI.setHomeData(this.homeData)
-    }
-    
-    AddEmptyHome = () => {
-        this.homeData.push({
-            name: "",
-            timestamp: 0,
-            latitude: 0,
-            longitude: 0
-          } as HomeDataModal)
     }
 
     GetAllHomesData = () => {
@@ -99,18 +93,12 @@ export class OnBoardingPageController {
         return dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
     }
 
-    onCalenderConfirm = (pos: number, dateObject: Date) => {
+    onCalenderConfirm = async(pos: number, dateObject: Date) => {
         this.homeData[pos].timestamp = dateObject.getTime();
     }
 
     onLocationChangeText = (pos: number, text: string) => {
         this.homeData[pos].name = text
-    }
-
-    onNewHomeClick = () => {
-        this.AddEmptyHome()
-        this.cursor = this.GetAllHomesData().length + 1;
-        this.culprits.push(0)
     }
 
     onDeleteHome = (index: number) => {

@@ -4,7 +4,7 @@ import { NativeModules } from 'react-native';
 
 export class OnBoardingPageController {
 
-    tempLocations: any[][];
+    tempLocations: Array<Array<string>>;
     cursor: number;
     culprits: Array<number>;
     homeData: Array<HomeDataModal> = [];
@@ -22,34 +22,28 @@ export class OnBoardingPageController {
     }
 
     AddHomeWithLocation = async(location: string) => {
+        await this.loadHomeData()
+        if(this.homeData.length > 0)
+            this.homeData[this.homeData.length - 1].timestamp = this.GetCachedDate().getTime()
         this.homeData.push({
             name: location,
-            timestamp: this.GetCachedDate().getTime(),
+            timestamp: 0,
             latitude: 0,
             longitude: 0
         } as HomeDataModal)
+        return await this.SaveData()
     }
 
     GetCachedDateAsString = (date: Date) => {
-        return date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() 
+        return date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() 
     }
 
     GetCachedDate = () => {
-        return Engine.Instance.Cache['date'] || new Date()
+        return Engine.Instance.Cache['date'] || new Date(0)
     }
 
     SetCachedDate = (date: Date) => {
         Engine.Instance.Cache['date'] = date;
-    }
-
-    SetLastHomeLocation = (location: string) => {
-        this.homeData[this.homeData.length - 1].name = location
-        this.SaveData()
-    }
-
-    SetLastHomeTimestamp = (timestamp: number) => {
-        this.homeData[this.homeData.length - 1].timestamp = timestamp
-        this.SaveData()
     }
 
     SaveData = async() => {
@@ -60,15 +54,16 @@ export class OnBoardingPageController {
         return this.homeData;
     }
 
-    GetLastHomeData = async() => {
-        if(this.homeData.length == 0) {
-            await this.loadHomeData()
-        }
-        return this.homeData[this.homeData.length-1]
+    GetLastHomeData = () => {
+        return this.homeData.length > 0 ? this.homeData[this.homeData.length-1] : undefined
     }
 
     GetName = async() : Promise<string> => {
         return await NativeModules.ExposedAPI.getProfileData('name', 'randomGeneratedId')
+    }
+
+    SetName = async(name: string) => {
+        return await NativeModules.ExposedAPI.setProfileData({"name": name }, 'name', await Engine.Instance.Modal.profileId)
     }
 
     GetTempLocations = () => {
@@ -88,20 +83,20 @@ export class OnBoardingPageController {
         this.cursor = index;
     }
 
-    GetDateAsString = (timestamp: number) => {
-        var dateObject = new Date(timestamp)
-        return dateObject.getDate() + "/" + dateObject.getMonth() + "/" + dateObject.getFullYear()
-    }
-
     onCalenderConfirm = async(pos: number, dateObject: Date) => {
-        this.homeData[pos].timestamp = dateObject.getTime();
+        if(pos < this.homeData.length) {
+            this.homeData[pos].timestamp = dateObject.getTime();
+            this.SetCachedDate(dateObject);
+            await this.SaveData()
+        }
     }
 
-    onLocationChangeText = (pos: number, text: string) => {
+    onLocationChangeText = async(pos: number, text: string) => {
         this.homeData[pos].name = text
+        await this.SaveData()
     }
 
-    onDeleteHome = (index: number) => {
+    onDeleteHome = async(index: number) => {
         var homes = []
         for (var i = 0; i < this.homeData.length; i++) {
             if (i != index) {
@@ -118,6 +113,38 @@ export class OnBoardingPageController {
             }
         }
         this.homeData = homes
+        await this.SaveData()
+    }
+
+    validateAndGetCulprits = async() => {
+        var count = 0;
+        this.culprits = []
+        this.tempLocations = []
+
+        for (var home of this.homeData) {
+            if(home.name == "") {
+                this.culprits.push(1)
+                count++; 
+                continue;
+            }
+
+            this.tempLocations.push(await this.validate(home.name))
+
+            this.culprits.push(((await this.tempLocations[count].length) == 1) ? 0 : 1);
+            count++;
+        }
+
+        return this.culprits
+    }
+
+    validate = async(location: string) => {
+        var res = await NativeModules.ExposedAPI.getCoordinatesFromLocation(location)
+        res = this.trimName(res)
+        var tempLocations = []
+        for (var obj of res) {
+            tempLocations.push(obj);
+        }
+        return tempLocations
     }
 
     trimName = (obj: any) : Array<string> => {
@@ -131,41 +158,5 @@ export class OnBoardingPageController {
             }
         }
         return result
-    }
-
-    validateAndGetCulprits = async() => {
-        var count = 0;
-
-        var culprits: Array<number> = []
-
-        for (var i = 0; i < culprits.length; i++) culprits.push(1)
-
-        this.tempLocations = []
-        for (var home of this.homeData) {
-            if(home.name == "") {
-                culprits[count] = 1;
-                count++; continue;
-            }
-
-            this.tempLocations[count] = await this.validate(home.name)
-
-            culprits[count] = this.tempLocations.length == 1 ? 0 : 1;
-            count++
-        }
-        
-        this.culprits = culprits;
-
-        return culprits
-    }
-
-    validate = async(location: string) => {
-        var res = await NativeModules.ExposedAPI.getCoordinatesFromLocation(location)
-        console.log(res)
-        res = this.trimName(res)
-        var tempLocations = []
-        for (var obj of res) {
-            tempLocations.push(obj);
-        }
-        return tempLocations
     }
 }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import { Page } from '../../Modals/ApplicationEnums';
 import { ProfilePageController } from '../ProfilePage/ProfilePageController';
+import { OnBoardingPageController } from './OnBoardingPageController';
 
 
 interface IProps {
@@ -18,7 +19,7 @@ const deviceHeight = Dimensions.get('window').height
 
 export class PreOnBoardingPage extends React.Component<IProps, IState> {
 
-    ProfilePageController: ProfilePageController;
+    Controller: OnBoardingPageController;
     constructor(props: IProps) {
 
         super(props)
@@ -26,7 +27,7 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
             name: "",
             valid: true
         }
-        this.ProfilePageController = new ProfilePageController();
+        this.Controller = new OnBoardingPageController();
     }
 
     validate = () => {
@@ -40,9 +41,9 @@ export class PreOnBoardingPage extends React.Component<IProps, IState> {
         this.validate()
     }
 
-    onNextButtonClick = () => {
+    onNextButtonClick = async() => {
         if(this.state.name != "") {
-            this.ProfilePageController.setName(this.state.name)
+            await this.Controller.SetName(this.state.name)
             this.props.setPage(Page[Page.ASKFORLOCATION])
         }
     }

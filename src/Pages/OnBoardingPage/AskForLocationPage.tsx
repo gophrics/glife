@@ -34,9 +34,11 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
 
     loadState = async() => {
         await this.Controller.loadHomeData()
+        var _lastHomeName = this.Controller.GetLastHomeData()
+        var lastHomeName = _lastHomeName == undefined ? "" : _lastHomeName.name
         this.setState({
             name: await this.Controller.GetName(),
-            lastHome: (await this.Controller.GetLastHomeData()).name
+            lastHome: lastHomeName
         })
     }
 
@@ -57,18 +59,17 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
         })
     }
 
-    onNextButtonClick = async () => {
-        console.log(this.state.location)
-        if (await this.validateData()) {
-            this.Controller.AddHomeWithLocation(this.state.location)
-            this.props.setPage(Page[Page.ONBOARDING])
-        }
-    }
-
     setLocation = (location: string) => {
         this.setState({
             location: location
         }, this.validateData)
+    }
+
+    onNextButtonClick = async () => {
+        if (await this.validateData()) {
+            await this.Controller.AddHomeWithLocation(this.state.location)
+            this.props.setPage(Page[Page.ONBOARDING])
+        }
     }
 
     render() {
@@ -82,7 +83,7 @@ export class AskForLocationPage extends React.Component<IProps, IState> {
         return (
             <View>
                 {
-                    !this.Controller.FirstHomeFilled() ?
+                    this.state.lastHome == "" ?
                         <View>
                             <Text style={{ marginTop: 50, fontSize: 32, color: 'white', textAlign: 'center', fontFamily: 'AppleSDGothicNeo-Regular', padding: 20 }}>Where do you currently stay, {this.state.name}?</Text>
                             <TextInput

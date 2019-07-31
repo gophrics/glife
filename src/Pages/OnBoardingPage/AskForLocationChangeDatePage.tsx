@@ -18,7 +18,6 @@ interface IState {
 export class AskForLocationChangeDatePage extends React.Component<IProps, IState> {
 
     Controller: OnBoardingPageController;
-    cursor: number;
 
     constructor(props: IProps) {
         super(props)
@@ -30,14 +29,15 @@ export class AskForLocationChangeDatePage extends React.Component<IProps, IState
         }
         
         this.Controller = new OnBoardingPageController()
-        this.cursor = this.Controller.GetAllHomesData().length - 1;
-        
         this.loadState()
     }
 
     loadState = async() => {
+        await this.Controller.loadHomeData()
+        var _lastHome = this.Controller.GetLastHomeData()
+        var lastHome = _lastHome == undefined ? "" : _lastHome.name 
         this.setState({
-            lastHome: (await this.Controller.GetLastHomeData()).name,
+            lastHome: lastHome,
             cachedDate: this.Controller.GetCachedDate(),
             cachedDateAsString: await this.Controller.GetCachedDateAsString(this.Controller.GetCachedDate())
         })
@@ -50,8 +50,7 @@ export class AskForLocationChangeDatePage extends React.Component<IProps, IState
     }
 
     onCalenderConfirm = async(date: Date) => {
-        this.Controller.onCalenderConfirm(this.cursor-1, date)
-        this.Controller.SetCachedDate(date);
+        this.Controller.SetCachedDate(date)
         this.setState({
             cachedDate: date,
             cachedDateAsString: await this.Controller.GetCachedDateAsString(date),

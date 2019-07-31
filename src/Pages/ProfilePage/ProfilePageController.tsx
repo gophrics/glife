@@ -10,10 +10,6 @@ export class ProfilePageController {
     loadModal = async() => {
         this.Modal.CopyConstructor(await NativeModules.ExposedAPI.getProfileData('all', 'randomGeneratedId'))
     }
-
-    setName = async(name: string) => {
-        NativeModules.ExposedAPI.setProfileData({"name": name }, 'name', await Engine.Instance.Modal.profileId)
-    }
     
     onProfilePicChange = (profilePicURL: string) => {
         NativeModules.setProfilePic(profilePicURL);

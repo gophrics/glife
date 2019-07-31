@@ -17,13 +17,14 @@ interface IState {
     homes: Array<HomeDataModal>
 
     name: string
-    lastHomeTimestamp: number
+    tempLocations: Array<Array<string>>
 }
 
 export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
 
     cachedDate: Date = new Date();
     Controller: OnBoardingPageController;
+    cachedLastHomeDateObject: Date = new Date();
 
     constructor(props: IProps) {
         super(props)
@@ -35,7 +36,7 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
             culprits: [0],
             homes: this.Controller.GetAllHomesData(),
             name: "",
-            lastHomeTimestamp: 0
+            tempLocations: []
         }
 
         this.loadState();
@@ -45,9 +46,9 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         await this.Controller.loadHomeData();
         this.setState({
             name: await this.Controller.GetName(),
-            homes: this.Controller.GetAllHomesData(),
-            lastHomeTimestamp: (await this.Controller.GetLastHomeData()).timestamp
+            homes: this.Controller.GetAllHomesData()
         })
+        await this.validateData()
     }
 
     getTempLocations = () => {
@@ -66,12 +67,17 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
             culprits: culprits
         })
 
-        return this.state.culprits.indexOf(1) == -1 && this.state.culprits.indexOf(2) == -1;
+        if(this.state.culprits.indexOf(1) == -1 && this.state.culprits.indexOf(2) == -1){
+            return true;
+        } else {
+            await this.getTempLocations();
+            return false;
+        }
     }
 
-    onLocationTextChange = (pos: number, text: string) => {
+    onLocationTextChange = async(pos: number, text: string) => {
         this.Controller.SetCursor(pos)
-        this.Controller.onLocationChangeText(pos, text)
+        await this.Controller.onLocationChangeText(pos, text)
         this.setState({
             homes: this.Controller.GetAllHomesData()
         })
@@ -103,7 +109,10 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
     }
 
     onNewHome = () => {
-        this.props.setPage(Page[Page.ASKFORDATE])
+        if(this.Controller.GetLastHomeData() != undefined)
+            this.props.setPage(Page[Page.ASKFORDATE])
+        else 
+            this.props.setPage(Page[Page.ASKFORLOCATION])
     }
 
     render() {
@@ -118,32 +127,40 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                 <View style={{ flex: 1, height: '100%' }}>
                     
                         {
-                            this.state.homes.map((home, i) => (
-                                <View key={i + 'a'} style={{ flexDirection: 'row', alignSelf:'center'}}>
-                                    <View style={{ flexDirection: 'column', alignSelf:'center'}}>
-                                        <TextInput
-                                            editable={true}
-                                            onEndEditing={this.validateData}
-                                            placeholder={(i == 0) ? "Your most recent home city" : "Your previous home city"}
-                                            onChangeText={(text) => this.onLocationTextChange(i, text)}
-                                            style={[{ fontSize: 22, padding: 3, color: 'white', textAlign: 'center' }, { borderWidth: ((this.state.culprits[i] != 0) ? 1 : 0), borderColor: ((this.state.culprits[i] != 0) ? 'red' : 'white') }]}
-                                            textContentType={'addressCity'}
-                                        >{home.name}</TextInput>
-                                        {this.state.culprits[i] != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overlords can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India"} </Text> : <View />}
-                                        {this.state.culprits[i] == 2 ? <Text style={{ color: 'lightgrey', padding: 3 }}>Places found: </Text> : <View />}
-                                        {this.state.culprits[i] == 2 && this.getTempLocations()[i] != undefined? 
-                                            this.getTempLocations()[i].map((el, index) => (
-                                                <Text style={{ color: 'lightgrey'}} onPress={(e: any) => this.setLocation(i, el)}>{"\n " + (index+1) + ". " + el.name.trim() + ", " + el.country.trim() + "\n"}</Text>
-                                            )) : <View />}
-                                        <Text style={{ color: 'white', fontSize: 20, marginBottom: 20, textAlign:'center'  }}>{home.timestamp == 0 ? "Long long ago" : this.Controller.GetDateAsString(home.timestamp)} - {i == 0 ? "Current" : this.Controller.GetDateAsString(this.state.lastHomeTimestamp)}</Text>
-                                    </View>
-                                    {i != 0 ?
-                                    <TouchableOpacity onPress={() => this.onDeleteHome(i)}>
-                                        <Icon name='closecircle' size={30} />
-                                    </TouchableOpacity>
-                                    : <View />}
-                                </View>
-                            ))
+                            this.state.homes.map((home, i) => {
+                                    var JSXRetVal = (
+                                        <View key={i + 'a'} style={{ flexDirection: 'row', alignSelf:'center'}}>
+                                            <View style={{ flexDirection: 'column', alignSelf:'center'}}>
+                                                <TextInput
+                                                    editable={true}
+                                                    onEndEditing={this.validateData}
+                                                    placeholder={(i == 0) ? "Your most recent home city" : "Your previous home city"}
+                                                    onChangeText={(text) => this.onLocationTextChange(i, text)}
+                                                    style={[{ fontSize: 22, padding: 3, color: 'white', textAlign: 'center' }, { borderWidth: ((this.state.culprits[i] != 0) ? 1 : 0), borderColor: ((this.state.culprits[i] != 0) ? 'red' : 'white') }]}
+                                                    textContentType={'addressCity'}
+                                                >{home.name}</TextInput>
+                                                {this.state.culprits[i] != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overlords can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India"} </Text> : <View />}
+                                                {this.state.culprits[i] == 2 ? <Text style={{ color: 'lightgrey', padding: 3 }}>Places found: </Text> : <View />}
+                                                {this.state.culprits[i] == 2 && this.state.tempLocations[i] != undefined? 
+                                                    this.state.tempLocations[i].map((el, index) => {
+                                                        console.log(el)
+                                                        return (
+                                                            <Text style={{ color: 'lightgrey'}} onPress={(e: any) => this.setLocation(i, el)}>{"\n " + (index+1) + ". " + el + "\n"}</Text>
+                                                        )
+                                                    }) : <View />}
+                                                <Text style={{ color: 'white', fontSize: 20, marginBottom: 20, textAlign:'center'  }}>{home.timestamp == 0 ? "Long long ago" : this.Controller.GetCachedDateAsString(new Date(home.timestamp))} - {i == 0 ? "Now" : this.Controller.GetCachedDateAsString(this.cachedLastHomeDateObject)}</Text>
+                                            </View>
+                                            {i != 0 ?
+                                            <TouchableOpacity onPress={async() => await this.onDeleteHome(i)}>
+                                                <Icon name='closecircle' size={30} />
+                                            </TouchableOpacity>
+                                            : <View />}
+                                        </View>
+                                    )
+                                    this.cachedLastHomeDateObject = new Date(home.timestamp)
+                                    return JSXRetVal;
+                                }
+                            )
                         }
                         <Button title={"Add New"} onPress={this.onNewHome} />
                         

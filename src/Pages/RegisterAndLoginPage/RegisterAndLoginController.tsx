@@ -28,10 +28,7 @@ export class RegisterAndLoginController {
 
     Login = async(email: string, password: string): Promise<boolean> => {
         try {
-            var res = await NativeModules.LoginUser({
-                Email: email,
-                Password: password
-            })
+            var res = await NativeModules.ExposedAPI.Login(email, password)
             if(res) {
                 NativeModules.setProfileData('email', email); 
                 NativeModules.setProfileData('password', password);
@@ -47,14 +44,10 @@ export class RegisterAndLoginController {
 
     Register = async(email: string, phone: string, password: string): Promise<boolean> => {
         try {
-            var res = await NativeModules.RegisterUser({
-                Email: email,
-                Phone: phone,
-                Password: password
-            })
+            var res = await NativeModules.ExposedAPI.Register(email, phone, password)
             if(res) {
-                NativeModules.setProfileData('email', email); 
-                NativeModules.setProfileData('password', password);
+                NativeModules.ExposedAPI.setProfileData('email', email); 
+                NativeModules.ExposedAPI.setProfileData('password', password);
                 Engine.Instance.AppState.loggedIn = true;
                 return true
             } 
@@ -67,7 +60,7 @@ export class RegisterAndLoginController {
 
     LoginUsingGoogle = async(email: string, idToken: string) : Promise<boolean> => {
         try {
-            var res = await NativeModules.LoginUserWithGoogle(email, idToken)
+            var res = await NativeModules.ExposedAPI.LoginUserWithGoogle(email, idToken)
             if(res) {
                 Engine.Instance.AppState.loggedIn = true;
                 return true

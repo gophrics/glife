@@ -25,15 +25,9 @@
 
  RCT_EXTERN_METHOD(getStepData: (NSString)op profileId:(NSString)profileId tripId:(NSString)tripId stepId:(NSInteger)stepId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
-  RCT_EXTERN_METHOD(addNewTrip: (NSString)tripName resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-
   RCT_EXTERN_METHOD(InitializeEngine: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(Register: (NSString)email phone:(NSString)phone password:(NSString)password resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(GetTotalToLoad: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(GetTotalLoaded: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(GetImageBeingLoaded: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-
+RCT_EXTERN_METHOD(Login: (NSString)email password:(NSString)password resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 @end

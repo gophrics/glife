@@ -188,4 +188,30 @@ class ExposedAPI: NSObject {
     
     resolve(result)
   }
+  
+  @objc
+  func Register(_ email: String, phone phone: String, password password: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    do {
+      let AuthToken = try AuthUtils.Register(email: email, phone: phone, password: password);
+      AuthProvider.Token = AuthToken;
+      resolve(true)
+    } catch APIError.GenericError(let message) {
+      reject("error", message, APIError.GenericError(message: message))
+    } catch {
+      reject("error", "API Network call failed", APIError.GenericError(message: "Unknown error"))
+    }
+  }
+  
+  @objc
+  func Login(_ email: String, password password: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    do {
+      let AuthToken = try AuthUtils.Login(email: email, password: password);
+      AuthProvider.Token = AuthToken;
+      resolve(true)
+    } catch APIError.GenericError(let message) {
+      reject("error", message, APIError.GenericError(message: message))
+    } catch {
+      reject("error", "API Network call failed", APIError.GenericError(message: "Unknown error"))
+    }
+  }
 }

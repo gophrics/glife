@@ -33,3 +33,5 @@ pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-s
 pod 'RealmSwift', '~> 3.17', :modular_headers => true
 
 pod 'Realm', :modular_headers => true
+
+pod 'FBSDKLoginKit'

@@ -155,7 +155,6 @@ dependencies {
     implementation project(':react-native-maps')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation project(':react-native-sqlite-storage')
     implementation project(':react-native-svg')
     implementation 'com.google.firebase:firebase-core:16.0.9'
 }

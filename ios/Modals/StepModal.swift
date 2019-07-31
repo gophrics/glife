@@ -43,7 +43,9 @@ class StepModal : Object {
     dict["startTimestamp"] = self.startTimestamp;
     dict["endTimestamp"] = self.endTimestamp;
     dict["masterImage"] = self.masterImage;
+    print("DEBUG: REACHED HERE")
     dict["masterMarker"] = self.markers[0].GetAsDictionary();
+    print("DEBUG: REACHED HERE 2")
     dict["distanceTravelled"] = self.distanceTravelled;
     dict["desc"] = self.desc;
     dict["temperature"] = self.temperature;

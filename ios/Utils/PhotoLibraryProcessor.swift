@@ -140,6 +140,13 @@ class PhotoLibraryProcessor: NSObject {
     _stepModal.startTimestamp = timestamp;
     _stepModal.endTimestamp = timestamp;
     
+    var markerRegion = Region()
+    markerRegion.latitude = homeStep.latitude;
+    markerRegion.longitude = homeStep.longitude;
+    
+    _stepModal.markers = List<Region>()
+    _stepModal.markers.append(markerRegion)
+    
     return _stepModal
   }
   

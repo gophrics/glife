@@ -129,6 +129,7 @@ class ExposedAPI: NSObject {
           resolve(false); break;
         }
         var steps: [[String:Any]] = []
+        dump(steps)
         for obj in dbresult {
           steps.append(obj.GetAsDictionary())
         }

@@ -16,6 +16,13 @@ class HomesForDataClusteringModal: Object {
   dynamic var latitude: Float64 = 0
   dynamic var longitude: Float64 = 0
   
+  func CopyConstructor(home: HomesForDataClusteringModal) {
+    self.name = home.name;
+    self.timestamp = home.timestamp;
+    self.latitude = home.latitude;
+    self.longitude = home.longitude;
+  }
+  
   func CloneDictionary(dict: [String:Any]) {
     self.name = dict["name"] as? String ?? ""
     self.timestamp = dict["timestamp"] as? TimeInterval ?? 0

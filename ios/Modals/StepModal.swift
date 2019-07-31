@@ -63,4 +63,17 @@ class StepModal : Object {
     self.desc = step.desc;
     self.temperature = step.temperature;
   }
+  
+  func GetDistanceBetween(a: StepModal) -> Int {
+    
+    let _p = ClusterModal()
+    _p.latitude = a.meanLatitude
+    _p.longitude = a.meanLongitude
+    
+    let _q = ClusterModal()
+    _q.latitude = self.meanLatitude
+    _q.longitude = self.meanLongitude
+    
+    return (ClusterProcessor.EarthDistance(p: _p, q: _q))
+  }
 }

@@ -167,56 +167,24 @@ class ExposedAPI: NSObject {
   
   
   @objc
+  func InitializeEngine(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    let result = Engine.EngineInstance.Initialize()
+    resolve(result)
+  }
+  
+  
+  // API calls
+  
+  @objc
   func getCoordinatesFromLocation(_ location: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     let coordinatesArray = TripUtils.getCoordinatesFromLocation(location: location)
     
     var result : [[String:Any]] = []
     
     for _res in coordinatesArray {
-        result.append(_res.GetAsDictionary())
+      result.append(_res.GetAsDictionary())
     }
     
     resolve(result)
   }
-  
-  @objc
-  func InitializeEngine(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    let result = Engine.EngineInstance.Initialize()
-    resolve(result)
-  }
-  
-  @objc
-  func GetTotalToLoad(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    print("DEBUG: " + String(Constants.TOTAL_TO_LOAD))
-    resolve(0)
-  }
-  
-  @objc
-  func GetTotalLoaded(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    print("DEBUG: " + String(Constants.TOTAL_LOADED))
-    resolve(0)
-  }
-  
-  @objc
-  func GetImageBeingLoaded(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    print("DEBUG: " + String(Constants.IMAGE_LOADED))
-    resolve(0)
-  }
-  
-   @objc
-   func addNewTrip(_ tripName: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-    
-        let today = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat="dd-MM-yyyy"
-    
-        let data = TripModal()
-        data.startDate = dateFormatter.string(from: today)
-        data.endDate = dateFormatter.string(from: today)
-        data.tripName = tripName
-        data.tripId = TripUtils.GenerateTripId()
-        var operationResult = Engine.EngineInstance.UpdateProfileDataWithTrip(trip: data)
-        resolve(operationResult)
-   }
-
 }

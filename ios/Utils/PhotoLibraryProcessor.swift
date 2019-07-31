@@ -54,8 +54,9 @@ class PhotoLibraryProcessor: NSObject {
   }
   
   
-  static func GenerateTripFromPhotos(clusterData: [ClusterModal], homesForDataClustering: List<HomesForDataClusteringModal>, endTimestamp: Int64) throws -> [TripModal] {
+  static func GenerateTripFromPhotos(clusterData: [ClusterModal]) throws -> [TripModal] {
     
+    let homesForDataClustering = DatabaseProvider.GetHomesForDataClustering()
     let trips = ClusterProcessor.RunMasterClustering(clusterData: clusterData, homes: homesForDataClustering);
     if (trips.count == 0) {
       throw EngineError.coreEngineError(message: "No trips found")
@@ -78,8 +79,8 @@ class PhotoLibraryProcessor: NSObject {
   }
   
   
-  static func PopulateTripModalData(steps: [StepModal], tripId: String, homesDataForClustering: List<HomesForDataClusteringModal>) -> TripModal {
-    
+  static func PopulateTripModalData(steps: [StepModal], tripId: String, homesDataForClustering: [HomesForDataClusteringModal]) -> TripModal {
+    print("DEBUG: "  + tripId)
     var tripResult: TripModal = TripModal();
     
     var i = 1;
@@ -110,13 +111,13 @@ class PhotoLibraryProcessor: NSObject {
 
       // Showing current weather now
       step.temperature = String(TripUtils.getWeatherFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)) + "ºC"
-      step.distanceTravelled = GetDistanceTravelledBetweenSteps(a: steps[i-1], b: step)
+      step.distanceTravelled = steps[i-1].GetDistanceBetween(a: step)
       _stepsForTrip.append(step);
       i += 1;
     }
     
     let _stepModal2: StepModal = PhotoLibraryProcessor.GetHomeStepForTimestamp(homesDataForClustering: homesDataForClustering, timestamp: steps[steps.count - 1].endTimestamp, tripId: tripId, stepId: i*100)
-    _stepModal2.distanceTravelled = steps[steps.count - 1].distanceTravelled + PhotoLibraryProcessor.GetDistanceTravelledBetweenSteps(a: _stepsForTrip[_stepsForTrip.count - 1], b: _stepModal2)
+    _stepModal2.distanceTravelled = steps[steps.count - 1].distanceTravelled + _stepsForTrip[_stepsForTrip.count - 1].GetDistanceBetween(a: _stepModal2)
     _stepsForTrip.append(_stepModal2)
     
     tripResult.tripId = tripId;
@@ -126,23 +127,9 @@ class PhotoLibraryProcessor: NSObject {
     return tripResult
   }
   
-  static func GetDistanceTravelledBetweenSteps(a: StepModal, b: StepModal) -> Int {
-    
-    let _p = ClusterModal()
-    _p.latitude = a.meanLatitude
-    _p.longitude = a.meanLongitude
-    
-    let _q = ClusterModal()
-    _q.latitude = b.meanLatitude
-    _q.longitude = b.meanLongitude
-    
-    return (ClusterProcessor.EarthDistance(p: _p, q: _q))
-  }
-  
-  static func GetHomeStepForTimestamp(homesDataForClustering: List<HomesForDataClusteringModal>, timestamp: TimeInterval, tripId: String, stepId: Int) -> StepModal {
+  static func GetHomeStepForTimestamp(homesDataForClustering: [HomesForDataClusteringModal], timestamp: TimeInterval, tripId: String, stepId: Int) -> StepModal {
     
     let homeStep = homesDataForClustering[Int(timestamp / 86400) - 1]
-    homeStep.timestamp = timestamp
     
     let homeStepCluster = ClusterModal()
     homeStepCluster.latitude = homeStep.latitude

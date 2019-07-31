@@ -14,10 +14,21 @@ export class OnBoardingPageController {
         this.tempLocations = [];
         this.cursor = 0;
         this.culprits = [];
+        this.loadHomeData()
     }
 
     loadHomeData = async() => {
-        this.homeData = await NativeModules.ExposedAPI.getHomeData()
+        var homes = await NativeModules.ExposedAPI.getHomeData()
+        this.homeData = []
+        for(var home of homes) {
+            this.homeData.push({
+                name: home.name,
+                timestamp: home.timestamp,
+                latitude: home.latitude,
+                longitude: home.longitude
+            } as HomeDataModal)
+        }
+        console.log(this.homeData)
         this.homeDataLoaded = true;
     }
 
@@ -47,7 +58,18 @@ export class OnBoardingPageController {
     }
 
     SaveData = async() => {
-        await NativeModules.ExposedAPI.setHomeData(this.homeData)
+        var homeData = []
+        for(var home of this.homeData) {
+            homeData.push({
+                name: home.name,
+                timestamp: home.timestamp,
+                latitude: home.latitude,
+                longitude: home.longitude
+            } as HomeDataModal)
+        }
+        await NativeModules.ExposedAPI.setHomeData(homeData)
+        console.log("After SaveData")
+        console.log(this.homeData)
     }
 
     GetAllHomesData = () => {
@@ -70,15 +92,6 @@ export class OnBoardingPageController {
         return this.tempLocations;
     }
 
-    SetAllHomeData = async(homes: Array<HomeDataModal>) => {
-        this.homeData = homes
-        return await this.SaveData()
-    }
-
-    SetHomeName = (index: number, name: string) => {
-        this.homeData[index].name = name
-    }
-
     SetCursor = (index: number) => {
         this.cursor = index;
     }
@@ -92,6 +105,7 @@ export class OnBoardingPageController {
     }
 
     onLocationChangeText = async(pos: number, text: string) => {
+        console.log(this.homeData)
         this.homeData[pos].name = text
         await this.SaveData()
     }

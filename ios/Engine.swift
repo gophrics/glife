@@ -10,21 +10,8 @@ import Foundation
 import Photos
 import RealmSwift
 
-enum EngineLoadStatus {
-  case None
-  case Partial
-  case Full
-}
-
-class AppState {
-  var loggedIn : Bool = false
-  var engineLoaded: EngineLoadStatus = EngineLoadStatus.None
-}
-
-
 class Engine {
-  
-    var _BlobProvider: BlobProvider = BlobProvider()
+
     static var EngineInstance = Engine()
 
     init() {
@@ -32,6 +19,9 @@ class Engine {
     }
     
     func Initialize() -> Bool {
+        // Clear out all the trips
+        DatabaseProvider.ClearAllTrips()
+      
         let dbHomeDataArray = (try! Realm()).objects(HomeDataModal.self)
         let homeDataArray: List<HomeDataModal> = List<HomeDataModal>();
       
@@ -39,10 +29,8 @@ class Engine {
           homeDataArray.append(homeData)
         }
       
-        let homesForDataClustering = try! self.GenerateHomeData(homeData: homeDataArray)
+        try! self.GenerateHomeData(homeData: homeDataArray)
       
-        // Clear out all the trips
-        self.ClearTripDB()
         let photos = PHPhotoLibrary.authorizationStatus()
         if photos == .notDetermined {
           PHPhotoLibrary.requestAuthorization({status in
@@ -60,58 +48,22 @@ class Engine {
           return true
         }
         
-        let trips = try! PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos, homesForDataClustering: homesForDataClustering, endTimestamp: self._BlobProvider.Modal.endTimestamp)
-        self.UpdateDBWithTrips(trips: trips)
+        let trips = try! PhotoLibraryProcessor.GenerateTripFromPhotos(clusterData: photoRollInfos)
+        DatabaseProvider.UpdateDBWithTrips(trips: trips)
         return true
     }
-
-    func SetHomeData(data: List<HomeDataModal>) {
-      self._BlobProvider.Modal.homeData = data
-    }
   
-    func ClearTripDB() {
-        let db = try! Realm()
-        let dbObjects = db.objects(TripModal.self)
-        for object in dbObjects {
-          try! db.write {
-              db.delete(object)
-          }
-        }
-        let dbObjects2 = db.objects(StepModal.self)
-        for object in dbObjects2 {
-          try! db.write {
-            db.delete(object)
-          }
-        }
-    }
+    
   
-    func UpdateDBWithTrips(trips: [TripModal]) {
-      let db = try! Realm();
-      
-      for trip in trips{
-        let dbResult = db.objects(TripModal.self).filter{ $0.tripId == trip.tripId }
-        if let _trip = dbResult.first {
-          try! db.write {
-            _trip.CopyConstructor(trip: trip)
-          }
-        } else {
-          try! db.write {
-            db.add(trip)
-          }
-        }
-      }
-    }
-  
-  func GenerateHomeData(homeData: List<HomeDataModal>) throws -> List<HomesForDataClusteringModal> {
+  func GenerateHomeData(homeData: List<HomeDataModal>) throws  {
       if(homeData.count == 0) {
         throw EngineError.coreEngineError(message: "No homes as input to be processed")
       }
-      
-      let homesForDataClustering: List<HomesForDataClusteringModal> = List<HomesForDataClusteringModal>()
     
       let today = Date()
     
       // Populate array till today with empty object
+      var homesForDataClustering: [HomesForDataClusteringModal] = []
       for _ in 0...Int(today.timeIntervalSince1970/86400) + 1 {
         homesForDataClustering.append(HomesForDataClusteringModal())
       }
@@ -132,38 +84,9 @@ class Engine {
           currentTimestamp -= 1
         }
       }
-      
-      return homesForDataClustering
+    
+      DatabaseProvider.UpdateDBWithHomesForDataClustering(homes: homesForDataClustering)
     }
   
   
-  func ExtendHomeDataToDate() {
-    let today: Date = Date()
-    var endTimestamp = self._BlobProvider.Modal.endTimestamp
-    
-    let homesDataForClustering = self._BlobProvider.Modal.homesForDataClustering;
-    let dataToExtend = homesDataForClustering[Int(endTimestamp)]
-    
-    while(endTimestamp <= Int64(today.timeIntervalSince1970/86400)) {
-      homesDataForClustering[Int(endTimestamp)] = dataToExtend;
-      endTimestamp += 1
-    }
-    
-    self._BlobProvider.Modal.endTimestamp = endTimestamp;
-    self._BlobProvider.Modal.homesForDataClustering = homesDataForClustering;
-  }
-  
-  func UpdateProfileDataWithTrip(trip: TripModal) -> TripModal {
-    // Bug
-    self._BlobProvider.Blob.profileData.countriesVisited = List<Country>()
-    for countryCode in trip.countryCode {
-      let _obj = Country()
-      _obj.country = countryCode.country
-      self._BlobProvider.Blob.profileData.countriesVisited.append(_obj)
-    }
-    self._BlobProvider.Blob.profileData.percentageWorldTravelled = Float((self._BlobProvider.Blob.profileData.countriesVisited.count * 100 / 186))    
-    let _trip: TripModal = try! Database.db.objects(TripModal.self).filter{ $0.tripId == trip.tripId} .first ?? TripModal()
-    
-    return _trip
-  }
 }

@@ -51,10 +51,6 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         await this.validateData()
     }
 
-    getTempLocations = () => {
-        return this.Controller.GetTempLocations()
-    }
-
     validateData = async () => {
         this.setState({
             validationInProgress: true
@@ -75,18 +71,14 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         }
     }
 
-    onLocationTextChange = async(pos: number, text: string) => {
-        this.Controller.SetCursor(pos)
-        await this.Controller.onLocationChangeText(pos, text)
-        this.setState({
-            homes: this.Controller.GetAllHomesData()
-        })
+    getTempLocations = () => {
+        return this.Controller.GetTempLocations()
     }
 
     onNextButtonClick = async() => {
         var validateSuccess = await this.validateData()
         if (validateSuccess) {
-            await this.Controller.SetAllHomeData(this.state.homes)
+            await this.Controller.SaveData()
             this.props.setPage(Page[Page.LOADING])
         }
     }
@@ -99,14 +91,20 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         })
     }
 
-    setLocation = (index: number, obj: any) => {
-        this.onLocationTextChange(index, obj.name.trim() + ", " + obj.country.trim())
+    setLocation = async(index: number, obj: string) => {
+        await this.onLocationTextChange(index, obj)
         this.setState({
             homes: this.Controller.GetAllHomesData()
         })
-
         this.validateData()
     }
+
+    onLocationTextChange = async(pos: number, text: string) => {
+        console.log(pos + " " + text)
+        this.Controller.SetCursor(pos)
+        await this.Controller.onLocationChangeText(pos, text)
+    }
+
 
     onNewHome = () => {
         if(this.Controller.GetLastHomeData() != undefined)

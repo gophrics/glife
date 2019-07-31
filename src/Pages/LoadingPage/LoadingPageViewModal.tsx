@@ -70,20 +70,20 @@ export default class LoadingPageViewModal extends React.Component<IProps, IState
     }
 
     loadState = async() => {
-        let total = await NativeModules.ExposedAPI.GetTotalToLoad()
-        let finished = await NativeModules.ExposedAPI.GetTotalLoaded()
-        let image = await NativeModules.ExposedAPI.GetImageBeingLoaded()
+        // let total = await NativeModules.ExposedAPI.GetTotalToLoad()
+        // let finished = await NativeModules.ExposedAPI.GetTotalLoaded()
+        // let image = await NativeModules.ExposedAPI.GetImageBeingLoaded()
         
-        console.log(total)
-        console.log(finished)
-        console.log(image)
-        this.setState({
-            total: await NativeModules.ExposedAPI.GetTotalToLoad(),
-            finished: await NativeModules.ExposedAPI.GetTotalLoaded(),
-            image: await NativeModules.ExposedAPI.GetImageBeingLoaded()
-        }, () => {
-            setTimeout(100, this.loadState)
-        })
+        // console.log(total)
+        // console.log(finished)
+        // console.log(image)
+        // this.setState({
+        //     total: await NativeModules.ExposedAPI.GetTotalToLoad(),
+        //     finished: await NativeModules.ExposedAPI.GetTotalLoaded(),
+        //     image: await NativeModules.ExposedAPI.GetImageBeingLoaded()
+        // }, () => {
+        //     setTimeout(100, this.loadState)
+        // })
     }
 
     componentWillUnmount = () => {

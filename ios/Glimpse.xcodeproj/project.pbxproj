@@ -55,7 +55,6 @@
 		72098CBB22E62D2B00C6E57A /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098CA922E62D2B00C6E57A /* AuthProvider.swift */; };
 		72098CBC22E62D2B00C6E57A /* DatabaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098CAA22E62D2B00C6E57A /* DatabaseProvider.swift */; };
 		72098CBD22E62D2B00C6E57A /* BlobProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098CAB22E62D2B00C6E57A /* BlobProvider.swift */; };
-		72098CBE22E62D2B00C6E57A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72098CAC22E62D2B00C6E57A /* Model.xcdatamodeld */; };
 		72098CBF22E62D2B00C6E57A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098CAF22E62D2B00C6E57A /* Constants.swift */; };
 		72098CC022E62D2B00C6E57A /* HomeDataModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098CB022E62D2B00C6E57A /* HomeDataModal.swift */; };
 		72098CC122E62D2B00C6E57A /* HomesForDataClusteringModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72098CB122E62D2B00C6E57A /* HomesForDataClusteringModal.swift */; };
@@ -441,7 +440,6 @@
 		72098CA922E62D2B00C6E57A /* AuthProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthProvider.swift; sourceTree = "<group>"; };
 		72098CAA22E62D2B00C6E57A /* DatabaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseProvider.swift; sourceTree = "<group>"; };
 		72098CAB22E62D2B00C6E57A /* BlobProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlobProvider.swift; sourceTree = "<group>"; };
-		72098CAD22E62D2B00C6E57A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		72098CAF22E62D2B00C6E57A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		72098CB022E62D2B00C6E57A /* HomeDataModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeDataModal.swift; sourceTree = "<group>"; };
 		72098CB122E62D2B00C6E57A /* HomesForDataClusteringModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomesForDataClusteringModal.swift; sourceTree = "<group>"; };
@@ -709,7 +707,6 @@
 				72098CA922E62D2B00C6E57A /* AuthProvider.swift */,
 				72098CAA22E62D2B00C6E57A /* DatabaseProvider.swift */,
 				72098CAB22E62D2B00C6E57A /* BlobProvider.swift */,
-				72098CAC22E62D2B00C6E57A /* Model.xcdatamodeld */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -1518,7 +1515,6 @@
 				72098CB822E62D2B00C6E57A /* TripUtils.swift in Sources */,
 				72098CBB22E62D2B00C6E57A /* AuthProvider.swift in Sources */,
 				72098CBD22E62D2B00C6E57A /* BlobProvider.swift in Sources */,
-				72098CBE22E62D2B00C6E57A /* Model.xcdatamodeld in Sources */,
 				72098CC222E62D2B00C6E57A /* TripModal.swift in Sources */,
 				72098CC522E62D2B00C6E57A /* ProfileModal.swift in Sources */,
 				72098CB922E62D2B00C6E57A /* PhotoLibraryProcessor.swift in Sources */,
@@ -2018,19 +2014,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		72098CAC22E62D2B00C6E57A /* Model.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				72098CAD22E62D2B00C6E57A /* Model.xcdatamodel */,
-			);
-			currentVersion = 72098CAD22E62D2B00C6E57A /* Model.xcdatamodel */;
-			path = Model.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

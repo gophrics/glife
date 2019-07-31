@@ -69,7 +69,7 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
         steps.sort((a: StepModal, b: StepModal) => {
             return a.stepId - b.stepId
         })
-        console.log(steps)
+        
         this.travelCardArray = []
         //Populate travelcard Array for each step
         var imageUriData: string[] = []
@@ -125,7 +125,16 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
     }
 
     onMarkerPress = (e: any, stepId: number) => {
-        var step = this.state.steps[0];//TODO
+        var step: StepModal = this.state.steps[0];
+        
+        for(var _step of this.state.steps) {
+            if(_step.stepId == stepId) {
+                step = _step;
+                break;
+            }
+        }
+
+        console.log(step)
         if ((step.meanLatitude != this.state.lastStepClicked.meanLatitude ||
             step.meanLatitude != this.state.lastStepClicked.meanLongitude) &&
             (step.stepName != "Home")) {
@@ -137,11 +146,12 @@ export default class TripExplorePageViewModal extends React.Component<IProps, IS
                 longitudeDelta: .6
             } as Region, 1000)
 
-            this.setState({
-                photoModalVisible: true,
-                lastStepClicked: step
-            })
         }
+
+        this.setState({
+            photoModalVisible: true,
+            lastStepClicked: step
+        })
     }
 
     onScroll = (event: any) => {

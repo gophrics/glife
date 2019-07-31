@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Modal, SafeAreaView, TouchableHighlight, Text, ScrollView, Image, TextInput, Dimensions } from 'react-native';
+import { View, NativeModules, Modal, SafeAreaView, TouchableHighlight, Text, ScrollView, Image, TextInput, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { StepModal } from '../../Engine/Modals/StepModal';
 
@@ -34,6 +34,8 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
         var imageArray = [];
         
         var images = await this.props.lastStepClicked.images;
+        console.log(NativeModules.ExposedAPI)
+        console.log(images)
         for(var image of images ) {
             imageArray.push(image)
         }

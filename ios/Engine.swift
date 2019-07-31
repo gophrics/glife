@@ -112,7 +112,7 @@ class Engine {
       let today = Date()
     
       // Populate array till today with empty object
-      for i in 0...Int(today.timeIntervalSince1970/86400) + 1 {
+      for _ in 0...Int(today.timeIntervalSince1970/86400) + 1 {
         homesForDataClustering.append(HomesForDataClusteringModal())
       }
     

@@ -16,9 +16,6 @@ class HomeDataModal: Object {
   dynamic var latitude: Float64 = 0
   dynamic var longitude: Float64 = 0
   
-  override static func primaryKey() -> String? {
-    return "timestamp"
-  }
   
   func CloneDictionary(dict: [String:Any]) {
     self.name = dict["name"] as? String ?? ""

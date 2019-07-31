@@ -148,7 +148,12 @@ class ExposedAPI: NSObject {
         case "images":
           let dbresult2 = dbresult.filter{$0.stepId == stepId}
           if let result2 = dbresult2.first {
-            resolve(result2.images); break;
+            var resolveResult: [String] = []
+            for image in result2.images {
+              resolveResult.append(image.image)
+            }
+            dump(resolveResult)
+            resolve(resolveResult); break;
           } else {
             resolve(false)
           }

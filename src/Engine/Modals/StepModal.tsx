@@ -20,4 +20,21 @@ export class StepModal {
     get images() {
         return NativeModules.ExposedAPI.getStepData('images', this.profileId, this.tripId, this.stepId)
     }
+
+    CopyConstructor(modal: any) {
+        this.profileId = modal.profileId;
+        this.tripId = modal.tripId;
+        this.stepId = modal.stepId;
+        this.stepName = modal.stepName;
+        this.meanLatitude = modal.meanLatitude;
+        this.meanLongitude = modal.meanLongitude;
+        this.startTimestamp = modal.startTimestamp;
+        this.endTimestamp = modal.endTimestamp;
+        this.masterImage = modal.masterImage;
+        this.masterMarker = modal.masterMarker;
+        this.distanceTravelled = modal.distanceTravelled;
+        this.description = modal.description;
+        this.temperature = modal.temperature;
+        this.numberOfPicturesTaken = modal.numberOfPicturesTaken;
+    }
 }

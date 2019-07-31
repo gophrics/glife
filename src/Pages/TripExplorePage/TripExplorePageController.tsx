@@ -38,7 +38,12 @@ export class TripExplorePageController {
 
     getSteps = async() => {
         var steps = await this.Modal.steps;
-        console.log(steps)
-        return steps
+        var result: Array<StepModal> = [];
+        for(var step of steps) {
+            var _step = new StepModal()
+            _step.CopyConstructor(step)
+            result.push(_step)
+        }
+        return result
     }
 }

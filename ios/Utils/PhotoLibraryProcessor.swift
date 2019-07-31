@@ -93,30 +93,24 @@ class PhotoLibraryProcessor: NSObject {
     for step in steps {
       let result = TripUtils.getLocationFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)
       step.stepName = result
-    
+      step.tripId = tripId;
+      step.stepId = i*100;
+      
       if (countries.firstIndex(of: result) == nil) {
         countries.append(result)
       }
+      
       if (places.firstIndex(of: step.stepName) == nil) {
         places.append(step.stepName)
       }
+      
       let _obj = Country()
       _obj.country = result
       tripResult.countryCode.append(_obj)
 
       // Showing current weather now
       step.temperature = String(TripUtils.getWeatherFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)) + "ºC"
-      let _p = ClusterModal()
-      _p.latitude = step.meanLatitude;
-      _p.longitude = step.meanLongitude;
-      
-      let _q = ClusterModal()
-      _q.latitude = steps[i-1].meanLatitude;
-      _q.longitude = steps[i-1].meanLongitude;
-      
-      step.distanceTravelled = (steps[i-1].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
-      step.tripId = tripId;
-      step.stepId = i*100;
+      step.distanceTravelled = GetDistanceTravelledBetweenSteps(a: steps[i-1], b: step)
       _stepsForTrip.append(step);
       i += 1;
     }

@@ -2,7 +2,6 @@ package com.beerwithai.glimpse;
 
 import android.app.Application;
 import com.facebook.react.ReactApplication;
-import com.transistorsoft.rnbackgroundfetch.RNBackgroundFetchPackage;
 import com.rnfs.RNFSPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
@@ -35,7 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new SQLitePluginPackage(),   // register SQLite Plugin here
             new MainReactPackage(),
-            new RNBackgroundFetchPackage(),
             new RNFSPackage(),
             new ImageResizerPackage(),
             new RNGoogleSigninPackage(),

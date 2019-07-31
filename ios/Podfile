@@ -23,7 +23,6 @@ end
 pod 'GoogleSignIn', '~> 4.4.0'
 
 # Add new pods below this line
-pod 'RNBackgroundFetch', :path => '../node_modules/react-native-background-fetch'
 
 pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 

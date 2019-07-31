@@ -66,7 +66,9 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
         if(this.state.culprits.indexOf(1) == -1 && this.state.culprits.indexOf(2) == -1){
             return true;
         } else {
-            await this.getTempLocations();
+            this.setState({
+                tempLocations: await this.getTempLocations()
+            })
             return false;
         }
     }
@@ -100,7 +102,6 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
     }
 
     onLocationTextChange = async(pos: number, text: string) => {
-        console.log(pos + " " + text)
         this.Controller.SetCursor(pos)
         await this.Controller.onLocationChangeText(pos, text)
     }
@@ -137,15 +138,20 @@ export class OnBoardingPageViewModal extends React.Component<IProps, IState> {
                                                     style={[{ fontSize: 22, padding: 3, color: 'white', textAlign: 'center' }, { borderWidth: ((this.state.culprits[i] != 0) ? 1 : 0), borderColor: ((this.state.culprits[i] != 0) ? 'red' : 'white') }]}
                                                     textContentType={'addressCity'}
                                                 >{home.name}</TextInput>
-                                                {this.state.culprits[i] != 0 ? <Text style={{ color: 'red', padding: 3 }} > {this.state.culprits[i] == 1 ? "Try nearest city, the digital overlords can't find this place in the map" : "Be more specific, multiple places with same name exist. Try Bangalore, India"} </Text> : <View />}
-                                                {this.state.culprits[i] == 2 ? <Text style={{ color: 'lightgrey', padding: 3 }}>Places found: </Text> : <View />}
-                                                {this.state.culprits[i] == 2 && this.state.tempLocations[i] != undefined? 
-                                                    this.state.tempLocations[i].map((el, index) => {
-                                                        console.log(el)
-                                                        return (
-                                                            <Text style={{ color: 'lightgrey'}} onPress={(e: any) => this.setLocation(i, el)}>{"\n " + (index+1) + ". " + el + "\n"}</Text>
-                                                        )
-                                                    }) : <View />}
+                                                {
+                                                    this.state.culprits[i] == 1 && this.state.tempLocations[i] != undefined ? 
+                                                        <View>
+                                                            <Text style={{ color: 'red', padding: 3 }} > Be more specific, multiple places with same name exist. Try Bangalore, India</Text>
+                                                            <Text style={{ color: 'lightgrey', padding: 3 }}>Places found: </Text>
+                                                            {
+                                                                this.state.tempLocations[i].map((el, index) => (
+                                                                        <Text style={{ color: 'lightgrey'}} onPress={(e: any) => this.setLocation(i, el)}>{"\n " + (index+1) + ". " + el + "\n"}</Text>
+                                                                ))
+                                                            }
+                                                        </View>
+                                                    :
+                                                        <View />
+                                                }
                                                 <Text style={{ color: 'white', fontSize: 20, marginBottom: 20, textAlign:'center'  }}>{home.timestamp == 0 ? "Long long ago" : this.Controller.GetCachedDateAsString(new Date(home.timestamp))} - {i == 0 ? "Now" : this.Controller.GetCachedDateAsString(this.cachedLastHomeDateObject)}</Text>
                                             </View>
                                             {i != 0 ?

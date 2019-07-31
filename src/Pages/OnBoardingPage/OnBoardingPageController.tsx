@@ -58,6 +58,7 @@ export class OnBoardingPageController {
     }
 
     SaveData = async() => {
+        // Noone knows why this is required
         var homeData = []
         for(var home of this.homeData) {
             homeData.push({
@@ -68,8 +69,6 @@ export class OnBoardingPageController {
             } as HomeDataModal)
         }
         await NativeModules.ExposedAPI.setHomeData(homeData)
-        console.log("After SaveData")
-        console.log(this.homeData)
     }
 
     GetAllHomesData = () => {
@@ -105,7 +104,6 @@ export class OnBoardingPageController {
     }
 
     onLocationChangeText = async(pos: number, text: string) => {
-        console.log(this.homeData)
         this.homeData[pos].name = text
         await this.SaveData()
     }

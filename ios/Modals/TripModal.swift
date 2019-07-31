@@ -41,4 +41,17 @@ class TripModal: Object {
     
     return dict;
   }
+  
+  func CopyConstructor(trip: TripModal) {
+    self.tripName = trip.tripName;
+    self.countryCode = trip.countryCode;
+    self.temperature = trip.temperature;
+    self.daysOfTravel = trip.daysOfTravel;
+    self.distanceTravelled = trip.distanceTravelled;
+    self.startDate = trip.startDate;
+    self.endDate = trip.endDate;
+    self.masterImage = trip.masterImage;
+    self.isPublic =  trip.isPublic;
+    self.syncComplete = trip.syncComplete;
+  }
 }

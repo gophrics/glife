@@ -13,7 +13,7 @@ class ClusterModal {
   var id: Int
   var latitude: Float64
   var longitude: Float64
-  var timestamp: Int64
+  var timestamp: TimeInterval
   var image: String
   
   init() {

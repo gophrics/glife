@@ -17,7 +17,7 @@ class ClusterProcessor {
     }
     
     var stepResult: [StepModal] = []
-    var firstTimestamp: Int64 = trip[0].timestamp
+    var firstTimestamp: TimeInterval = trip[0].timestamp
     var firstItem: ClusterModal = trip[0]
     
     var _stepCluster: [[ClusterModal]] = []
@@ -115,7 +115,7 @@ class ClusterProcessor {
     return trips;
   }
   
-  static func TimeDistance(p: ClusterModal, q: ClusterModal) -> Int64 {
+  static func TimeDistance(p: ClusterModal, q: ClusterModal) -> TimeInterval {
     return abs(p.timestamp - q.timestamp)
   }
   

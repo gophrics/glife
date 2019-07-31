@@ -92,9 +92,7 @@ class Engine {
         let dbResult = db.objects(TripModal.self).filter{ $0.tripId == trip.tripId }
         if let _trip = dbResult.first {
           try! db.write {
-            // Right now we're deleting and adding the object everywhere, because that is what seem to work
-            db.delete(_trip)
-            db.add(trip)
+            _trip.CopyConstructor(trip: trip)
           }
         } else {
           try! db.write {
@@ -119,17 +117,17 @@ class Engine {
       }
     
       // Modify timestamp and location of objects in accordance with homeData input from user
-      var currentTimestamp = Int(Date().timeIntervalSince1970/86400)
+      var currentTimestamp = Date().timeIntervalSince1970/86400
       for data in homeData {
         var coordinates = TripUtils.getCoordinatesFromLocation(location: data.name)
         let _region = coordinates.count > 0 ? coordinates[0] : Region() //Bug, user should select ? 
         
-        while(currentTimestamp >= Int(data.timestamp/86400)) {
+        while(currentTimestamp >= data.timestamp/86400) {
           
-          homesForDataClustering[currentTimestamp].timestamp = Int64(currentTimestamp)
-          homesForDataClustering[currentTimestamp].name = data.name;
-          homesForDataClustering[currentTimestamp].latitude = _region.latitude;
-          homesForDataClustering[currentTimestamp].longitude = _region.longitude;
+          homesForDataClustering[Int(currentTimestamp)].timestamp = currentTimestamp
+          homesForDataClustering[Int(currentTimestamp)].name = data.name;
+          homesForDataClustering[Int(currentTimestamp)].latitude = _region.latitude;
+          homesForDataClustering[Int(currentTimestamp)].longitude = _region.longitude;
           
           currentTimestamp -= 1
         }

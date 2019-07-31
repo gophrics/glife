@@ -22,8 +22,8 @@ class StepModal : Object {
   dynamic var stepName: String = ""
   dynamic var meanLatitude: Float64 = 0
   dynamic var meanLongitude: Float64 = 0
-  dynamic var startTimestamp: Int64 = 0
-  dynamic var endTimestamp: Int64 = 0
+  dynamic var startTimestamp: TimeInterval = 0
+  dynamic var endTimestamp: TimeInterval = 0
   dynamic var images: List<Image> = List<Image>()
   dynamic var markers: List<Region> = List<Region>()
   dynamic var masterImage: String = ""
@@ -50,5 +50,17 @@ class StepModal : Object {
     dict["numberOfPicturesTaken"] = self.images.count;
     
     return dict;
+  }
+  
+  func CopyConstructor(step: StepModal) {
+    self.stepName = step.stepName;
+    self.meanLatitude = step.meanLatitude;
+    self.meanLongitude = step.meanLongitude;
+    self.startTimestamp = step.startTimestamp;
+    self.endTimestamp = step.endTimestamp;
+    self.masterImage = step.masterImage;
+    self.distanceTravelled = step.distanceTravelled;
+    self.desc = step.desc;
+    self.temperature = step.temperature;
   }
 }

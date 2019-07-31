@@ -28,7 +28,7 @@ class PhotoLibraryProcessor: NSObject {
           _el.image = "ph://" + asset.localIdentifier
           _el.latitude = asset.location?.coordinate.latitude ?? 0
           _el.longitude = asset.location?.coordinate.longitude ?? 0
-          _el.timestamp = Int64(asset.creationDate?.timeIntervalSince1970 ?? 0)
+          _el.timestamp = asset.creationDate?.timeIntervalSince1970 ?? 0
           arrayOfPHAsset.append(_el)
         }
       }
@@ -57,13 +57,12 @@ class PhotoLibraryProcessor: NSObject {
   static func GenerateTripFromPhotos(clusterData: [ClusterModal], homesForDataClustering: List<HomesForDataClusteringModal>, endTimestamp: Int64) throws -> [TripModal] {
     
     let trips = ClusterProcessor.RunMasterClustering(clusterData: clusterData, homes: homesForDataClustering);
-    var tripResult: [TripModal] = [];
-    
     if (trips.count == 0) {
       throw EngineError.coreEngineError(message: "No trips found")
     }
     
-    Constants.TOTAL_TO_LOAD = trips.count;
+    var tripResult: [TripModal] = [];
+    
     var i = 0;
     for trip in trips {
       let _trip = trip.sorted(by: { $0.timestamp < $1.timestamp })
@@ -71,7 +70,6 @@ class PhotoLibraryProcessor: NSObject {
       let __trip = PhotoLibraryProcessor.PopulateTripModalData(steps: _unsortedSteps.sorted(by: {$0.startTimestamp < $1.startTimestamp }), tripId: TripUtils.GenerateTripId(), homesDataForClustering: homesForDataClustering);
       tripResult.append(__trip);
       i += 1;
-      Constants.TOTAL_LOADED = i;
     }
     
     tripResult = tripResult.sorted(by: {$0.startDate < $1.startDate})
@@ -83,25 +81,13 @@ class PhotoLibraryProcessor: NSObject {
   static func PopulateTripModalData(steps: [StepModal], tripId: String, homesDataForClustering: List<HomesForDataClusteringModal>) -> TripModal {
     
     var tripResult: TripModal = TripModal();
-    let homeStep = homesDataForClustering[Int(steps[0].startTimestamp / 86400) - 1]
-    homeStep.timestamp = (steps[0].startTimestamp - 86400)
     
-    let homeStepCluster = ClusterModal()
-    homeStepCluster.latitude = homeStep.latitude
-    homeStepCluster.longitude = homeStep.longitude
-    homeStepCluster.timestamp = homeStep.timestamp
-    
+    var i = 1;
     var _stepsForTrip: [StepModal] = []
-    
-    let _stepModal: StepModal = ClusterProcessor.convertClusterToStep(cluster: [homeStepCluster])
-    _stepModal.stepName = "Home";
-    _stepModal.stepId = 0;
-    _stepModal.tripId = tripId;
-    _stepsForTrip.append(_stepModal);
-    
-    var i = 0;
     var countries: [String] = []
     var places: [String] = []
+    
+    _stepsForTrip.append(PhotoLibraryProcessor.GetHomeStepForTimestamp(homesDataForClustering: homesDataForClustering, timestamp: steps[0].startTimestamp, tripId: tripId, stepId: 0));
     
     // Load locations
     for step in steps {
@@ -125,46 +111,57 @@ class PhotoLibraryProcessor: NSObject {
       _p.longitude = step.meanLongitude;
       
       let _q = ClusterModal()
-      _q.latitude = steps[i].meanLatitude;
-      _q.longitude = steps[i].meanLongitude;
+      _q.latitude = steps[i-1].meanLatitude;
+      _q.longitude = steps[i-1].meanLongitude;
       
-      step.distanceTravelled = (steps[i].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
+      step.distanceTravelled = (steps[i-1].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
       step.tripId = tripId;
       step.stepId = i*100;
       _stepsForTrip.append(step);
       i += 1;
     }
     
-    
-    let homeStep2 = homesDataForClustering[Int(steps[steps.count - 1].endTimestamp / 86400) + 1]
-    homeStep2.timestamp = (steps[steps.count - 1].endTimestamp + 86400)
-    
-    let homeStep2Cluster = ClusterModal()
-    homeStep2Cluster.latitude = homeStep2.latitude
-    homeStep2Cluster.longitude = homeStep2.longitude
-    homeStep2Cluster.timestamp = homeStep2.timestamp
-    
-    let _stepModal2: StepModal = ClusterProcessor.convertClusterToStep(cluster: [homeStep2Cluster])
-    _stepModal2.stepName = "Home";
-    _stepModal2.tripId = tripId;
-    _stepModal2.stepId = i*100;
-    
-    let _p = ClusterModal()
-    _p.latitude = _stepModal2.meanLatitude
-    _p.longitude = _stepModal2.meanLongitude
-    
-    let _q = ClusterModal()
-    _q.latitude = _stepsForTrip[i].meanLatitude
-    _q.longitude = _stepsForTrip[i].meanLongitude
-    
-    _stepModal2.distanceTravelled = (steps[steps.count - 1].distanceTravelled + ClusterProcessor.EarthDistance(p: _p, q: _q))
+    let _stepModal2: StepModal = PhotoLibraryProcessor.GetHomeStepForTimestamp(homesDataForClustering: homesDataForClustering, timestamp: steps[steps.count - 1].endTimestamp, tripId: tripId, stepId: i*100)
+    _stepModal2.distanceTravelled = steps[steps.count - 1].distanceTravelled + PhotoLibraryProcessor.GetDistanceTravelledBetweenSteps(a: _stepsForTrip[_stepsForTrip.count - 1], b: _stepModal2)
     _stepsForTrip.append(_stepModal2)
     
     tripResult.tripId = tripId;
     tripResult = PhotoLibraryProcessor.PopulateTripWithSteps(trip: tripResult, steps: _stepsForTrip)
-    PhotoLibraryProcessor.UpdateDBWithSteps(steps: _stepsForTrip)
+    DatabaseProvider.UpdateDBWithSteps(steps: _stepsForTrip)
     
     return tripResult
+  }
+  
+  static func GetDistanceTravelledBetweenSteps(a: StepModal, b: StepModal) -> Int {
+    
+    let _p = ClusterModal()
+    _p.latitude = a.meanLatitude
+    _p.longitude = a.meanLongitude
+    
+    let _q = ClusterModal()
+    _q.latitude = b.meanLatitude
+    _q.longitude = b.meanLongitude
+    
+    return (ClusterProcessor.EarthDistance(p: _p, q: _q))
+  }
+  
+  static func GetHomeStepForTimestamp(homesDataForClustering: List<HomesForDataClusteringModal>, timestamp: TimeInterval, tripId: String, stepId: Int) -> StepModal {
+    
+    let homeStep = homesDataForClustering[Int(timestamp / 86400) - 1]
+    homeStep.timestamp = timestamp
+    
+    let homeStepCluster = ClusterModal()
+    homeStepCluster.latitude = homeStep.latitude
+    homeStepCluster.longitude = homeStep.longitude
+    homeStepCluster.timestamp = homeStep.timestamp
+    
+    
+    let _stepModal: StepModal = ClusterProcessor.convertClusterToStep(cluster: [homeStepCluster])
+    _stepModal.stepName = "Home";
+    _stepModal.stepId = stepId;
+    _stepModal.tripId = tripId;
+    
+    return _stepModal
   }
   
   static func PopulateTripWithSteps(trip: TripModal, steps: [StepModal]) -> TripModal {
@@ -210,22 +207,4 @@ class PhotoLibraryProcessor: NSObject {
     return result;
   }
   
-  
-  static func UpdateDBWithSteps(steps: [StepModal]) {
-    let db = try! Realm()
-    for step in steps {
-      print("Saving step with name " + step.stepName + " to database")
-      let dbObjects = db.objects(StepModal.self).filter{ $0.tripId == step.tripId && $0.stepId == step.stepId }
-      if let obj = dbObjects.first {
-        try! db.write {
-          db.delete(obj);
-          db.add(step);
-        }
-      } else {
-        try! db.write {
-          db.add(step)
-        }
-      }
-    }
-  }
 }

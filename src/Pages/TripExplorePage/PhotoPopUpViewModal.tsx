@@ -23,6 +23,10 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props)
+        this.state = {
+            modalBottom: 0,
+            images: []
+        }
         this.populateImages()
     }
 
@@ -31,13 +35,13 @@ export class PhotoPopUpViewModal extends React.Component<IProps, IState> {
         
         var images = await this.props.lastStepClicked.images;
         for(var image of images ) {
-            imageArray.push(`data:image/gif;base64,${image}`)
+            imageArray.push(image)
         }
         
-        this.state = {
+        this.setState({
             modalBottom: 0,
             images: imageArray
-        }
+        })
     }
 
 

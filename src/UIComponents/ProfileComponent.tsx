@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 interface IState {
 }
@@ -7,8 +7,6 @@ interface IState {
 interface IProps {
     profilePic: string
     onProfilePicChange: any
-    scrollY: any
-    HEADER_SCROLL_DISTANCE: number
 }
 
 export class ProfileComponent extends React.Component<IProps, IState> {
@@ -37,23 +35,7 @@ export class ProfileComponent extends React.Component<IProps, IState> {
         return (
             <View style={styles.main}>
                 <TouchableOpacity onPress={this.onProfilePicChange}>
-                    <Animated.Image style={[
-                            {width: 200, height: 200, borderRadius: 100, borderWidth: 2},
-                            {
-                                opacity: this.props.scrollY.interpolate({
-                                    inputRange: [0, this.props.HEADER_SCROLL_DISTANCE / 2, this.props.HEADER_SCROLL_DISTANCE],
-                                    outputRange: [1, 1, 0],
-                                    extrapolate: 'clamp',
-                                }), 
-                                transform: [{
-                                    translateY: this.props.scrollY.interpolate({
-                                        inputRange: [0, this.props.HEADER_SCROLL_DISTANCE],
-                                        outputRange: [0, -1],
-                                        extrapolate: 'clamp',
-                                    })
-                                }]
-                            },
-                        ]} source={{uri: this.props.profilePic}}/> 
+                    <Image style={{width: 200, height: 200, borderRadius: 100, borderWidth: 2}} source={{uri: this.props.profilePic}}/> 
                 </TouchableOpacity>
                 {
                 /*

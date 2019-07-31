@@ -12,7 +12,7 @@ import RealmSwift
 @objcMembers
 class HomesForDataClusteringModal: Object {
   dynamic var name: String = ""
-  dynamic var timestamp: TimeInterval = 0
+  dynamic var timestamp: Double = 0
   dynamic var latitude: Float64 = 0
   dynamic var longitude: Float64 = 0
   

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
+import { View, Image, Text, RefreshControl, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { ProfileComponent } from '../../UIComponents/ProfileComponent';
 import { WorldMapColouredComponent } from '../../UIComponents/WorldMapColouredComponent';
 import { StatsAsCardComponent } from '../../UIComponents/StatsAsCardComponent';
@@ -11,7 +11,6 @@ import { ProfilePageController } from './ProfilePageController';
 
 interface IState {
     bottom: number,
-    scrollY: Animated.Value,
     coverPicURL: string
     profilePicURL: string
     refreshing: boolean
@@ -29,8 +28,6 @@ interface IProps {
 
 
 const HEADER_MAX_HEIGHT = Dimensions.get('window').height * .66
-const HEADER_MIN_HEIGHT = 0;
-const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 export default class ProfilePageViewModal extends React.Component<IProps, IState> {
 
@@ -44,9 +41,8 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
         
         this.state = {
             bottom: 200,
-            scrollY: new Animated.Value(0),
-            coverPicURL: "",// "https://cms.hostelworld.com/hwblog/wp-content/uploads/sites/2/2017/08/girlgoneabroad.jpg" 
-            profilePicURL: "",// "https://lakewangaryschool.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg" 
+            coverPicURL: "",
+            profilePicURL: "",
             refreshing: false,
             tripRenderArray: [],
             percentageWorldTravelled: 0,
@@ -61,7 +57,6 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
         await this.Controller.loadModal();
         this.setState({
             bottom: 200,
-            scrollY: new Animated.Value(0),
             coverPicURL: this.Controller.getCoverPicURL(),
             profilePicURL: this.Controller.getProfilePicURL(),
             refreshing: false,
@@ -124,39 +119,27 @@ export default class ProfilePageViewModal extends React.Component<IProps, IState
             <View style={{ height: '100%' }} >
 
                 <ScrollView contentContainerStyle={{ paddingBottom: 200}} style={{ flex: 1 }}
-                    scrollEventThrottle={1}
-                    onScroll={Animated.event(	
-                        [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
-                    )}
+                    scrollEventThrottle={16}
                     contentInset={{ top: 0, bottom: this.state.bottom }}
                     refreshControl={
                         <RefreshControl
                           refreshing={this.state.refreshing}
                           onRefresh={this._onRefresh}
                         />
-                    }
-                    >
+                    }>
 
-                <Animated.View style={[styles.header, {
-                    height: this.state.scrollY.interpolate({
-                        inputRange: [0, HEADER_SCROLL_DISTANCE],
-                        outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT]
-                    })
-                }]}>
-                    <Animated.Image
-                        style={[
-                            styles.backgroundImage,
-                            
-                        ]}
-                        source={{uri: this.state.coverPicURL }}
-                    />
-                    <TouchableOpacity style={{alignItems:'flex-end', padding: 20}} onPress={this.pickCoverPic} >
-                        <Icon name='edit' size={25}/>
-                    </TouchableOpacity>
-                    <View style={styles.bar}>
-                        <ProfileComponent scrollY={this.state.scrollY} HEADER_SCROLL_DISTANCE={HEADER_SCROLL_DISTANCE} profilePic={this.state.profilePicURL} onProfilePicChange={this.onProfilePicChange} />
+                    <View style={styles.header}>
+                        <Image
+                            style={styles.backgroundImage}
+                            source={{uri: this.state.coverPicURL }}
+                        />
+                        <TouchableOpacity style={{alignItems:'flex-end', padding: 20}} onPress={this.pickCoverPic} >
+                            <Icon name='edit' size={25}/>
+                        </TouchableOpacity>
+                        <View style={styles.bar}>
+                            <ProfileComponent profilePic={this.state.profilePicURL} onProfilePicChange={this.onProfilePicChange} />
+                        </View>
                     </View>
-                </Animated.View>
                     <WorldMapColouredComponent visitedCountryList={this.state.visitedCountryList} />
                     <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 10 }}>
                         <StatsAsCardComponent text={"You travelled " + this.state.percentageWorldTravelled + "% of the world"} />

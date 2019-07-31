@@ -131,16 +131,14 @@ class PhotoLibraryProcessor: NSObject {
     
     let homeStep = homesDataForClustering[Int(timestamp / 86400) - 1]
     
-    let homeStepCluster = ClusterModal()
-    homeStepCluster.latitude = homeStep.latitude
-    homeStepCluster.longitude = homeStep.longitude
-    homeStepCluster.timestamp = homeStep.timestamp
-    
-    
-    let _stepModal: StepModal = ClusterProcessor.convertClusterToStep(cluster: [homeStepCluster])
+    let _stepModal: StepModal = StepModal()
     _stepModal.stepName = "Home";
     _stepModal.stepId = stepId;
     _stepModal.tripId = tripId;
+    _stepModal.meanLatitude = homeStep.latitude
+    _stepModal.meanLongitude = homeStep.longitude
+    _stepModal.startTimestamp = timestamp;
+    _stepModal.endTimestamp = timestamp;
     
     return _stepModal
   }
@@ -156,6 +154,7 @@ class PhotoLibraryProcessor: NSObject {
     trip.masterImage = steps[steps.count-2].masterImage
     trip.isPublic = false;
     
+    print("DEBUG: StartTimestamp: " + String(steps[0].startTimestamp))
     date = Date(timeIntervalSince1970: TimeInterval(steps[0].startTimestamp))
     trip.startDate = dateFormatter.string(from: date)
     trip.syncComplete = false;
@@ -163,7 +162,7 @@ class PhotoLibraryProcessor: NSObject {
   
     trip.tripName = PhotoLibraryProcessor.GenerateTripNameFromSteps(steps: steps)
     trip.distanceTravelled = steps[steps.count - 1].distanceTravelled;
-    
+    trip.daysOfTravel = Int((steps[steps.count - 1].endTimestamp - steps[0].startTimestamp)/86400)
     return trip;
   }
   

@@ -20,4 +20,17 @@ public class StepModal extends RealmObject {
     public Integer distanceTravelled;
     public String desc;
     public Integer temperature;
+
+    public void CopyConstructor(StepModal step) {
+        this.meanLatitude = step.meanLatitude;
+        this.meanLongitude = step.meanLongitude;
+        this.startTimestamp = step.startTimestamp;
+        this.endTimestamp = step.endTimestamp;
+        this.images = step.images;
+        this.markers = step.markers;
+        this.masterImage = step.masterImage;
+        this.distanceTravelled = step.distanceTravelled;
+        this.desc = step.desc;
+        this.temperature  = step.temperature;
+    }
 }

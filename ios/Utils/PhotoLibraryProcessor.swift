@@ -14,6 +14,28 @@ import RealmSwift
 @objc(PhotoLibraryProcessor)
 class PhotoLibraryProcessor: NSObject {
   
+  static func GenerateTripNameFromSteps(steps: [StepModal]) -> String {
+    var locations: [String] = ["", "Home"];
+    var result: String = "";
+    
+    for step in steps{
+      if let _ = locations.firstIndex(of: step.stepName) {
+        
+      } else {
+        locations.append(step.stepName)
+        result += step.stepName + ", ";
+      }
+      
+      if locations.count > 4 {
+        break;
+      }
+    }
+    
+    result = result.substring(to: result.lastIndex(of: ",") ?? String.Index(encodedOffset: result.count))
+    return result;
+  }
+  
+  
   static func getPhotosFromLibrary() -> [ClusterModal] {
     let allPhotos = PHAsset.fetchAssets(with: .image, options: PHFetchOptions())
     var arrayOfPHAsset : [ClusterModal] = []
@@ -173,25 +195,5 @@ class PhotoLibraryProcessor: NSObject {
     return trip;
   }
   
-  static func GenerateTripNameFromSteps(steps: [StepModal]) -> String {
-    var locations: [String] = ["", "Home"];
-    var result: String = "";
-    
-    for step in steps{
-      if let _ = locations.firstIndex(of: step.stepName) {
-      
-      } else {
-        locations.append(step.stepName)
-        result += step.stepName + ", ";
-      }
-      
-      if locations.count > 4 {
-        break;
-      }
-    }
-    
-    result = result.substring(to: result.lastIndex(of: ",") ?? String.Index(encodedOffset: result.count))
-    return result;
-  }
   
 }

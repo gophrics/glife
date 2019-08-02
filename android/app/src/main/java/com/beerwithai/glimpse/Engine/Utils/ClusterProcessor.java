@@ -2,9 +2,11 @@ package com.beerwithai.glimpse.Engine.Utils;
 
 import com.beerwithai.glimpse.Engine.Modals.ClusterModal;
 import com.beerwithai.glimpse.Engine.Modals.HomesForDataClusteringModal;
+import com.beerwithai.glimpse.Engine.Modals.Region;
 import com.beerwithai.glimpse.Engine.Modals.StepModal;
 import java.util.ArrayList;
 import java.util.Comparator;
+import io.realm.RealmList;
 
 public class ClusterProcessor {
 
@@ -130,9 +132,55 @@ public class ClusterProcessor {
     }
 
     static double deg2rad(double deg) {
-        return deg * (PI/180) // TODO: Value PI
+        return deg * (Math.PI/180);
     }
 
-    
+    static StepModal convertClusterToStep(ArrayList<ClusterModal> cluster) {
+        if(cluster.size() == 0) {
+            StepModal step = new StepModal();
+            step.stepId = -1;
+            return step;
+        }
+
+        double latitudeSum = 0;
+        double longitudeSum = 0;
+        ArrayList<String> imageUris = new ArrayList<String>();
+        ArrayList<Region> markers = new ArrayList<Region>();
+
+        ArrayList<ClusterModal> _cluster = cluster.sort(comparator); //TODO: Define comparator
+
+        for(int i = 0; i < _cluster.size(); i++) {
+            latitudeSum += cluster.get(i).latitude;
+            longitudeSum += cluster.get(i).longitude;
+            imageUris.add(cluster.get(i).image);
+
+            Region _r = new Region();
+            _r.latitude = cluster.get(i).latitude;
+            _r.longitude = cluster.get(i).longitude;
+
+            markers.add(_r);
+        }
+
+        StepModal step = new StepModal();
+        step.meanLatitude = Float.valueOf((float)(latitudeSum/cluster.size()));
+        step.meanLongitude = Float.valueOf((float)longitudeSum/cluster.size());
+        step.markers = RealmList<Region>();
+
+        for(int i = 0; i < markers.size(); i++) {
+            step.markers.add(markers[i]);
+        }
+
+        step.startTimestamp = cluster.get(0).timestamp;
+        step.endTimestamp = cluster.get(cluster.size() - 1).timestamp;
+        step.images = RealmList<String>();
+
+        for(int i = 0; i < imageUris.size(); i++) {
+            step.images.add(imageUris[i]);
+        }
+
+        step.masterImage = imageUris.get(0);
+
+        return step;
+    }
 
 }

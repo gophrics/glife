@@ -10,6 +10,7 @@ public class StepModal extends RealmObject {
     public String profileId;
     public String tripId;
     public Integer stepId;
+    public String stepName;
     public Float meanLatitude;
     public Float meanLongitude;
     public Double startTimestamp;
@@ -22,6 +23,7 @@ public class StepModal extends RealmObject {
     public Integer temperature;
 
     public void CopyConstructor(StepModal step) {
+        this.stepName = step.stepName;
         this.meanLatitude = step.meanLatitude;
         this.meanLongitude = step.meanLongitude;
         this.startTimestamp = step.startTimestamp;

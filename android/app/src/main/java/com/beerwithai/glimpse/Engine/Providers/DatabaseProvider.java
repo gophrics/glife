@@ -1,6 +1,9 @@
 package com.beerwithai.glimpse.Engine.Providers;
 
 import com.beerwithai.glimpse.Engine.Modals.*;
+
+import java.util.ArrayList;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -21,19 +24,19 @@ public class DatabaseProvider {
         }
     }
 
-    public static void UpdateDBWithTrips(TripModal[] trips) {
+    public static void UpdateDBWithTrips(ArrayList<TripModal> trips) {
         Realm db = Realm.getDefaultInstance();
 
         try {
-            for (int i = 0; i < trips.length; i++) {
-                TripModal dbObject = db.where(TripModal.class).equalTo("tripId", trips[i].tripId).findFirst();
+            for (int i = 0; i < trips.size(); i++) {
+                TripModal dbObject = db.where(TripModal.class).equalTo("tripId", trips.get(i).tripId).findFirst();
                 if (dbObject != null) { //TODO: Check if this is the case
                     db.beginTransaction();
-                    dbObject.CopyConstructor(trips[i]);
+                    dbObject.CopyConstructor(trips.get(i));
                     db.commitTransaction();
                 } else {
                     db.beginTransaction();
-                    db.copyToRealm(trips[i]);
+                    db.copyToRealm(trips.get(i));
                     db.commitTransaction();
                 }
             }
@@ -43,19 +46,19 @@ public class DatabaseProvider {
 
     }
 
-    public static void UpdateDBWithSteps(StepModal[] steps) {
+    public static void UpdateDBWithSteps(ArrayList<StepModal> steps) {
         Realm db = Realm.getDefaultInstance();
 
         try {
-            for (int i = 0; i < steps.length; i++) {
-                StepModal dbObject = db.where(StepModal.class).equalTo("tripId", steps[i].tripId).equalTo("stepId", steps[i].stepId).findFirst();
+            for (int i = 0; i < steps.size(); i++) {
+                StepModal dbObject = db.where(StepModal.class).equalTo("tripId", steps.get(i).tripId).equalTo("stepId", steps.get(i).stepId).findFirst();
                 if (dbObject != null) { //TODO: Check if this is the case
                     db.beginTransaction();
-                    dbObject.CopyConstructor(steps[i]);
+                    dbObject.CopyConstructor(steps.get(i));
                     db.commitTransaction();
                 } else {
                     db.beginTransaction();
-                    db.copyToRealm(steps[i]);
+                    db.copyToRealm(steps.get(i));
                     db.commitTransaction();
                 }
             }
@@ -64,14 +67,14 @@ public class DatabaseProvider {
         }
     }
 
-    public static void UpdateDBWithHomesForDataClustering(HomesForDataClusteringModal[] homes) {
+    public static void UpdateDBWithHomesForDataClustering(ArrayList<HomesForDataClusteringModal> homes) {
         Realm db = Realm.getDefaultInstance();
 
         try {
             db.beginTransaction();
             db.where(HomesForDataClusteringModal.class).findAll().deleteAllFromRealm();
-            for(int i = 0; i < homes.length; i++) {
-                db.copyToRealm(homes[i]);
+            for(int i = 0; i < homes.size(); i++) {
+                db.copyToRealm(homes.get(i));
             }
             db.commitTransaction();
         } catch (Exception e) {

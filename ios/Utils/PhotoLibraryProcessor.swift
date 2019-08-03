@@ -121,15 +121,15 @@ class PhotoLibraryProcessor: NSObject {
       
       if (countries.firstIndex(of: result) == nil) {
         countries.append(result)
+        
+        let _obj = Country()
+        _obj.country = result
+        tripResult.countryCode.append(_obj)
       }
       
       if (places.firstIndex(of: step.stepName) == nil) {
         places.append(step.stepName)
       }
-      
-      let _obj = Country()
-      _obj.country = result
-      tripResult.countryCode.append(_obj)
 
       // Showing current weather now
       step.temperature = String(TripUtils.getWeatherFromCoordinates(latitude: step.meanLatitude, longitude: step.meanLongitude)) + "ºC"

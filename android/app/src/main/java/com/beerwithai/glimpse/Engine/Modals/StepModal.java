@@ -1,6 +1,8 @@
 package com.beerwithai.glimpse.Engine.Modals;
 
 
+import com.beerwithai.glimpse.Engine.Utils.ClusterProcessor;
+
 import java.util.List;
 
 import io.realm.RealmList;
@@ -20,7 +22,7 @@ public class StepModal extends RealmObject {
     public String masterImage;
     public Integer distanceTravelled;
     public String desc;
-    public Integer temperature;
+    public String temperature;
 
     public void CopyConstructor(StepModal step) {
         this.stepName = step.stepName;
@@ -34,5 +36,18 @@ public class StepModal extends RealmObject {
         this.distanceTravelled = step.distanceTravelled;
         this.desc = step.desc;
         this.temperature  = step.temperature;
+    }
+
+    public Integer GetDistanceBetween(StepModal a) {
+
+        ClusterModal _p = new ClusterModal();
+        _p.latitude = a.meanLatitude;
+        _p.longitude = a.meanLongitude;
+
+        ClusterModal _q = new ClusterModal();
+        _q.latitude = this.meanLatitude;
+        _q.longitude = this.meanLongitude;
+
+        return (ClusterProcessor.EarthDistance(_p, _q));
     }
 }

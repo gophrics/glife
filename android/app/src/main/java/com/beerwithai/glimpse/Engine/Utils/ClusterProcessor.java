@@ -44,7 +44,7 @@ public class ClusterProcessor {
         }
 
         for(int i = 0; i < _stepCluster.size(); i++) {
-            StepModal step = ClusterProcessor.convertClusterToStep(_stepCluster[i]);
+            StepModal step = ClusterProcessor.convertClusterToStep(_stepCluster.get(i));
             if(step.stepId != -1) {
                 stepResult.add(step);
             }

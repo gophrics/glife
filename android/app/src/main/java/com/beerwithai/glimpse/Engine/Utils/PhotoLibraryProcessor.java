@@ -9,6 +9,8 @@ import com.beerwithai.glimpse.Engine.Providers.DatabaseProvider;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import io.realm.RealmList;
@@ -38,7 +40,7 @@ public class PhotoLibraryProcessor {
     }
 
     public static TripModal PopulateTripWithSteps(TripModal trip, ArrayList<StepModal> steps) {
-        trip.daysOfTravel = Integer.valueOf((int)(steps.get(steps.size() -1).endTimestamp - steps.get(0).startTimestamp)/86400));
+        trip.daysOfTravel = Integer.valueOf((int)(steps.get(steps.size() -1).endTimestamp - steps.get(0).startTimestamp)/86400);
         trip.startDate = ""; // TODO: Generate date from startTImestamp of steps
         trip.endDate = ""; // TODO: Generate date from endTimestamp of steps
         trip.masterImage = steps.get(steps.size() - 2).masterImage;
@@ -75,34 +77,36 @@ public class PhotoLibraryProcessor {
 
     public static TripModal PopulateTripModalData(ArrayList<StepModal> steps, String tripId, ArrayList<HomesForDataClusteringModal> homesForDataClustering) {
         TripModal tripResult = new TripModal();
-        int i = 1;
         ArrayList<StepModal> _stepsForTrip = new ArrayList<StepModal>();
         ArrayList<String> countries = new ArrayList<String>();
         ArrayList<String> places = new ArrayList<String>();
 
         _stepsForTrip.add(PhotoLibraryProcessor.GetHomeStepFromTimestamp(homesForDataClustering, steps.get(0).startTimestamp, tripId, 0));
 
-        for(int i = 0; i < _stepsForTrip.size(); i++) {
-            String result = TripUtils.getLocationFromCoordinates(_stepsForTrip.get(i).meanLatitude, _stepsForTrip.get(i).meanLongitude);
-            _stepsForTrip.get(i).stepName = result;
-            _stepsForTrip.get(i).tripId = tripId;
-            _stepsForTrip.get(i).stepId = i*100;
+        for(int i = 1; i < _stepsForTrip.size(); i++) {
+            try {
+                String result = TripUtils.getLocationFromCoordinates(_stepsForTrip.get(i).meanLatitude, _stepsForTrip.get(i).meanLongitude);
+                _stepsForTrip.get(i).stepName = result;
+                _stepsForTrip.get(i).tripId = tripId;
+                _stepsForTrip.get(i).stepId = i * 100;
 
-            if(countries.indexOf(result) == -1) { // TODO: Check if indexOf gives -1 if not found
-                countries.add(result);
-                tripResult.countryCode.add(result);
+                if (countries.indexOf(result) == -1) { // TODO: Check if indexOf gives -1 if not found
+                    countries.add(result);
+                    tripResult.countryCode.add(result);
+                }
+
+                if (places.indexOf(_stepsForTrip.get(i).stepName) == -1) {
+                    places.add(_stepsForTrip.get(i).stepName);
+                }
+
+                _stepsForTrip.get(i).temperature = String.valueOf(TripUtils.getWeatherFromCoordinates(_stepsForTrip.get(i).meanLatitude, _stepsForTrip.get(i).meanLongitude));
+                _stepsForTrip.get(i).distanceTravelled = steps.get(i - 1).GetDistanceBetween(_stepsForTrip.get(i));
+            } catch (Exception e) {
+                // TODO: Handle exception
             }
-
-            if(places.indexOf(_stepsForTrip.get(i).stepName) == -1) {
-                places.add(_stepsForTrip.get(i).stepName);
-            }
-
-            _stepsForTrip.get(i).temperature = String.valueOf(TripUtils.getWeatherFromCoordinates(_stepsForTrip.get(i).meanLatitude, _stepsForTrip.get(i).meanLongitude));
-            _stepsForTrip.get(i).distanceTravelled = steps.get(i-1).GetDistanceBetween(_stepsForTrip.get(i));
-            i += 1;
         }
 
-        StepModal _stepModal2 = PhotoLibraryProcessor.GetHomeStepFromTimestamp(homesForDataClustering, steps.get(steps.size() - 1).endTimestamp, tripId, i*100);
+        StepModal _stepModal2 = PhotoLibraryProcessor.GetHomeStepFromTimestamp(homesForDataClustering, steps.get(steps.size() - 1).endTimestamp, tripId, (steps.size() - 1)*100);
         _stepModal2.distanceTravelled = steps.get(steps.size() - 1).distanceTravelled + steps.get(steps.size() - 1).GetDistanceBetween(_stepModal2);
         _stepsForTrip.add(_stepModal2);
 
@@ -114,4 +118,33 @@ public class PhotoLibraryProcessor {
         return tripResult;
     }
 
+    public static ArrayList<TripModal> GenerateTripFromPhotos(ArrayList<ClusterModal> clusterData) throws Exception {
+        ArrayList<HomesForDataClusteringModal> homesForDataClustering = DatabaseProvider.GetHomesForDataClustering();
+        ArrayList<ArrayList<ClusterModal>> trips = ClusterProcessor.RunMasterClustering(clusterData, homesForDataClustering);
+
+        if (trips.size() == 0) {
+            throw new Exception("ABC"); //TODO: Write exceptions
+        }
+
+        ArrayList<TripModal> tripResult = new ArrayList<TripModal>();
+
+        for(int i = 0; i < trips.size(); i++) {
+            ArrayList<ClusterModal> _trip = trips.get(i);
+            Collections.sort(_trip, new CompareClusterByTimestamp());
+            ArrayList<StepModal> _unsortedSteps = ClusterProcessor.RunStepClustering(_trip);
+            Collections.sort(_unsortedSteps, new CompareByTimestamp());
+            TripModal trip = PhotoLibraryProcessor.PopulateTripModalData(_unsortedSteps, TripUtils.GenerateTripId(), homesForDataClustering);
+            tripResult.add(trip);
+        }
+        Collections.sort(tripResult, new CompareTripsByTimestamp());
+        return tripResult;
+    }
+
+
+}
+
+class CompareTripsByTimestamp implements Comparator<TripModal> {
+    public int compare(TripModal a, TripModal b) {
+        return a.startDate.compareTo(b.startDate);
+    }
 }

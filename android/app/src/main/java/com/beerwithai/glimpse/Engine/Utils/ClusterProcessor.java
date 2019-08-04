@@ -5,39 +5,53 @@ import com.beerwithai.glimpse.Engine.Modals.HomesForDataClusteringModal;
 import com.beerwithai.glimpse.Engine.Modals.Region;
 import com.beerwithai.glimpse.Engine.Modals.StepModal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import io.realm.RealmList;
 
+class CompareByTimestamp implements Comparator<StepModal> {
+    public int compare(StepModal a, StepModal b) {
+        return (int)(a.endTimestamp - b.endTimestamp);
+    }
+}
+
+class CompareClusterByTimestamp implements  Comparator<ClusterModal> {
+    public int compare(ClusterModal a, ClusterModal b) {
+        return (int)(a.timestamp - b.timestamp);
+    }
+}
+
 public class ClusterProcessor {
 
-    public static ArrayList<StepModal> RunStepClustering(ClusterModal[] trip) {
-        if(trip.length == 0) {
+
+    public static ArrayList<StepModal> RunStepClustering(ArrayList<ClusterModal> trip) {
+        if(trip.size() == 0) {
             return null;
         }
 
         ArrayList<StepModal> stepResult = new ArrayList<StepModal>();
-        Double firstTimestamp = trip[0].timestamp;
-        ClusterModal firstItem = trip[0];
+        Double firstTimestamp = trip.get(0).timestamp;
+        ClusterModal firstItem = trip.get(0);
         ArrayList<ArrayList<ClusterModal>> _stepCluster = new ArrayList<ArrayList<ClusterModal>>();
         _stepCluster.add(new ArrayList<ClusterModal>());
         Integer _it = 0;
 
-        for(int i = 0; i < trip.length; i++) {
-            if(ClusterProcessor.EarthDistance(trip[i], firstItem) < 10) {
-                if(trip[i].timestamp <= firstTimestamp + 86400) {
-                    _stepCluster.get(_it).add(trip[i]);
+        for(int i = 0; i < trip.size(); i++) {
+            if(ClusterProcessor.EarthDistance(trip.get(i), firstItem) < 10) {
+                if(trip.get(i).timestamp <= firstTimestamp + 86400) {
+                    _stepCluster.get(_it).add(trip.get(i));
                 } else {
-                    firstTimestamp = trip[i].timestamp;
+                    firstTimestamp = trip.get(i).timestamp;
                     ArrayList<ClusterModal> t = new ArrayList<ClusterModal>();
-                    t.add(trip[i]);
+                    t.add(trip.get(i));
                     _stepCluster.add(t);
                     _it += 1;
                 }
             } else {
-                firstTimestamp = trip[i].timestamp;
-                firstItem = trip[i];
+                firstTimestamp = trip.get(i).timestamp;
+                firstItem = trip.get(i);
                 ArrayList<ClusterModal> t = new ArrayList<ClusterModal>();
-                t.add(trip[i]);
+                t.add(trip.get(i));
                 _stepCluster.add(t);
                 _it += 1;
             }
@@ -50,14 +64,13 @@ public class ClusterProcessor {
             }
         }
 
-        stepResult = stepResult.sort(comparator); // TODO: Define comparator
+        Collections.sort(stepResult, new CompareByTimestamp());
 
-        int i = 100;
         StepModal previousStep = new StepModal();
         int distanceTravelled = 0;
         for(int i = 0; i < stepResult.size(); i++) {
-            stepResult.get(i).stepId = i;
-            if(i > 100) {
+            stepResult.get(i).stepId = i*100;
+            if(i > 1) {
                 ClusterModal _m = new ClusterModal();
                 _m.latitude = stepResult.get(i).meanLatitude;
                 _m.longitude = stepResult.get(i).meanLongitude;
@@ -70,19 +83,17 @@ public class ClusterProcessor {
             }
             stepResult.get(i).distanceTravelled = distanceTravelled;
             stepResult.get(i).desc = "Description goes here...";
-            i += 100;
             previousStep = stepResult.get(i);
         }
 
         return stepResult;
     }
 
-    static ArrayList<ArrayList<ClusterModal>> RunMasterClustering(ArrayList<ClusterModal> clusterData, ArrayList<HomesForDataClusteringModal> homes) {
+    public static ArrayList<ArrayList<ClusterModal>> RunMasterClustering(ArrayList<ClusterModal> clusterData, ArrayList<HomesForDataClusteringModal> homes) {
         ArrayList<ArrayList<ClusterModal>> trips = new ArrayList<ArrayList<ClusterModal>>();
         ArrayList<ClusterModal> trip = new ArrayList<ClusterModal>();
 
-        ArrayList<ClusterModal> _clusterData = clusterData.sort(comparator); //TODO: Define comparator
-
+        Collections.sort(clusterData, new CompareClusterByTimestamp());
         ClusterModal prevData = clusterData.get(0);
 
         for(int i = 0; i < clusterData.size(); i++) {
@@ -109,11 +120,11 @@ public class ClusterProcessor {
         return trips;
     }
 
-    static Double TimeDistance(ClusterModal p, ClusterModal q) {
+    public static Double TimeDistance(ClusterModal p, ClusterModal q) {
         return Math.abs(p.timestamp - q.timestamp);
     }
 
-    static Integer EarthDistance(ClusterModal p, ClusterModal q) {
+    public static Integer EarthDistance(ClusterModal p, ClusterModal q) {
         double lat1 = p.latitude;
         double lat2 = q.latitude;
         double lon1 = q.longitude;
@@ -126,16 +137,16 @@ public class ClusterProcessor {
         double a = Math.sin(dLat/2) * Math.sin(dLon/2) + Math.cos(ClusterProcessor.deg2rad(lat1)) * Math.cos(ClusterProcessor.deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-        double d = R * Float.valueOf(c);
+        double d = R * Float.valueOf((float)c);
 
         return (int)d;
     }
 
-    static double deg2rad(double deg) {
+    public static double deg2rad(double deg) {
         return deg * (Math.PI/180);
     }
 
-    static StepModal convertClusterToStep(ArrayList<ClusterModal> cluster) {
+    public static StepModal convertClusterToStep(ArrayList<ClusterModal> cluster) {
         if(cluster.size() == 0) {
             StepModal step = new StepModal();
             step.stepId = -1;
@@ -147,9 +158,8 @@ public class ClusterProcessor {
         ArrayList<String> imageUris = new ArrayList<String>();
         ArrayList<Region> markers = new ArrayList<Region>();
 
-        ArrayList<ClusterModal> _cluster = cluster.sort(comparator); //TODO: Define comparator
-
-        for(int i = 0; i < _cluster.size(); i++) {
+        Collections.sort(cluster, new CompareClusterByTimestamp());
+        for(int i = 0; i < cluster.size(); i++) {
             latitudeSum += cluster.get(i).latitude;
             longitudeSum += cluster.get(i).longitude;
             imageUris.add(cluster.get(i).image);
@@ -164,18 +174,18 @@ public class ClusterProcessor {
         StepModal step = new StepModal();
         step.meanLatitude = Float.valueOf((float)(latitudeSum/cluster.size()));
         step.meanLongitude = Float.valueOf((float)longitudeSum/cluster.size());
-        step.markers = RealmList<Region>();
+        step.markers = new RealmList<Region>();
 
         for(int i = 0; i < markers.size(); i++) {
-            step.markers.add(markers[i]);
+            step.markers.add(markers.get(i));
         }
 
         step.startTimestamp = cluster.get(0).timestamp;
         step.endTimestamp = cluster.get(cluster.size() - 1).timestamp;
-        step.images = RealmList<String>();
+        step.images = new RealmList<String>();
 
         for(int i = 0; i < imageUris.size(); i++) {
-            step.images.add(imageUris[i]);
+            step.images.add(imageUris.get(i));
         }
 
         step.masterImage = imageUris.get(0);

@@ -82,14 +82,14 @@ public class DatabaseProvider {
         }
     }
 
-    public static HomesForDataClusteringModal[] GetHomesForDataClustering() {
+    public static ArrayList<HomesForDataClusteringModal> GetHomesForDataClustering() {
         Realm db = Realm.getDefaultInstance();
 
         try {
             RealmResults<HomesForDataClusteringModal> dbResults = db.where(HomesForDataClusteringModal.class).findAll();
-            HomesForDataClusteringModal[] results = new HomesForDataClusteringModal[dbResults.size()];
+            ArrayList<HomesForDataClusteringModal> results = new ArrayList<HomesForDataClusteringModal>();
             for(int i = 0; i < dbResults.size(); i++) {
-                results[i] = dbResults.get(i);
+                results.add(dbResults.get(i));
             }
             return results;
         } catch (Exception e) {

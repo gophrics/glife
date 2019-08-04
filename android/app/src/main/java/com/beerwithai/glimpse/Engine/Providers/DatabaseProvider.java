@@ -97,5 +97,20 @@ public class DatabaseProvider {
         }
     }
 
+    public static ArrayList<HomeDataModal> GetHomeData() {
+        Realm db = Realm.getDefaultInstance();
+
+        try {
+            RealmResults<HomeDataModal> dbResults = db.where(HomeDataModal.class).findAll();
+            ArrayList<HomeDataModal> results = new ArrayList<HomeDataModal>();
+            for(int i = 0; i < dbResults.size(); i++) {
+                results.add(dbResults.get(i));
+            }
+            return results;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
 }

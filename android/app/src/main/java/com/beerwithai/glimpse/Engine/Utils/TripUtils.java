@@ -92,9 +92,6 @@ public class TripUtils {
     }
 
 
-
-
-
     private static String sendPost(String url, String data) throws Exception {
 
         URL obj = new URL(url);

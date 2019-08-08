@@ -7,4 +7,8 @@ public class HomeDataModal extends RealmObject {
     public Double timestamp;
     public Float latitude;
     public Float longitude;
+
+    public void GetAsDictionary() {
+        
+    }
 }

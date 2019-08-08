@@ -1,5 +1,8 @@
 package com.beerwithai.glimpse.Engine.Modals;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
@@ -28,5 +31,22 @@ public class TripModal extends RealmObject {
         this.masterImage = trip.masterImage;
         this.isPublic = trip.isPublic;
         this.syncComplete = trip.syncComplete;
+    }
+
+    public Map<String, Object> GetAsDictionary() {
+        Map<String, Object> obj = new HashMap<String, Object>();
+        obj.put("profileId", this.profileId);
+        obj.put("tripId", this.tripId);
+        obj.put("tripName", this.tripName);
+        obj.put("countryCode", this.countryCode);
+        obj.put("temperature", this.temperature);
+        obj.put("daysOfTravel", this.daysOfTravel);
+        obj.put("distanceTravelled", this.distanceTravelled);
+        obj.put("startDate", this.startDate);
+        obj.put("endDate", this.endDate);
+        obj.put("masterImage", this.masterImage);
+        obj.put("isPublic", this.isPublic);
+        obj.put("syncComplete", this.syncComplete);
+        return obj;
     }
 }

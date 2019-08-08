@@ -1,5 +1,10 @@
 package com.beerwithai.glimpse.Engine.Utils;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.media.ExifInterface;
+import android.provider.MediaStore;
+
 import com.beerwithai.glimpse.Engine.Modals.ClusterModal;
 import com.beerwithai.glimpse.Engine.Modals.HomesForDataClusteringModal;
 import com.beerwithai.glimpse.Engine.Modals.Region;
@@ -7,7 +12,9 @@ import com.beerwithai.glimpse.Engine.Modals.StepModal;
 import com.beerwithai.glimpse.Engine.Modals.TripModal;
 import com.beerwithai.glimpse.Engine.Providers.DatabaseProvider;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,7 +61,7 @@ public class PhotoLibraryProcessor {
     }
 
     public static StepModal GetHomeStepFromTimestamp(ArrayList<HomesForDataClusteringModal> homesForDataClustering, double timestamp, String tripId, Integer stepId) {
-        HomesForDataClusteringModal homeStep = homesForDataClustering[]
+        HomesForDataClusteringModal homeStep = homesForDataClustering.get((int)timestamp);
 
         StepModal _stepModal = new StepModal();
         _stepModal.stepName = "Home";
@@ -140,6 +147,69 @@ public class PhotoLibraryProcessor {
         return tripResult;
     }
 
+    public static ArrayList<ClusterModal> getPhotosFromLibrary(Context context) {
+        final Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        ArrayList<ClusterModal> cameraImagePaths = new ArrayList<>();
+
+        if (cursor == null) {
+            return cameraImagePaths;
+        }
+
+        if (cursor.moveToLast()) {
+            final int dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            do {
+                String localPath = cursor.getString(dataColumn);
+                ClusterModal _m = new ClusterModal();
+                _m.image = localPath;
+                cameraImagePaths.add(_m);
+            } while (cursor.moveToPrevious());
+        }
+        cursor.close();
+
+        return cameraImagePaths;
+    }
+
+    public static ArrayList<ClusterModal> PopulateImageProperties(ArrayList<ClusterModal> cluster) {
+
+        for(ClusterModal c : cluster) {
+            try {
+                double timestamp = PhotoLibraryProcessor.computeTimestamp(c.image);
+                Region region = PhotoLibraryProcessor.computeLocation(c.image);
+                c.timestamp = timestamp;
+                c.latitude = region.latitude;
+                c.longitude = region.longitude;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return cluster;
+    }
+
+    private static double computeTimestamp(String localPath) throws Exception {
+        ExifInterface exif = new ExifInterface(localPath);
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+        String dateString = exif.getAttribute(ExifInterface.TAG_DATETIME);
+        double timestamp = fmt.parse(dateString).getTime() / 1000;
+        return timestamp;
+    }
+
+    private static Region computeLocation(String localPath) throws Exception {
+        ExifInterface exif = new ExifInterface(localPath);
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+        String longitude = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+        String latitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+        Region _r = new Region();
+        _r.latitude = Float.parseFloat(latitude);
+        _r.longitude = Float.parseFloat(longitude);
+        return _r;
+    }
 
 }
 

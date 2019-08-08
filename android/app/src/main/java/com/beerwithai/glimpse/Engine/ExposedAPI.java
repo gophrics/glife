@@ -12,12 +12,9 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-
 import java.util.ArrayList;
 import java.util.Map;
-
 import javax.annotation.Nonnull;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -101,7 +98,7 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setHomeData(ArrayList<Map<String, Object>> homeData, Promise callback) {
         Realm db = Realm.getDefaultInstance();
-        RealmResults<HomeDataModal> dbResults = db.where(HomeDataModal.class).;
+        RealmResults<HomeDataModal> dbResults = db.where(HomeDataModal.class).findAll();
 
         db.beginTransaction();
         db.delete(HomeDataModal.class);
@@ -174,13 +171,14 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void InitializeEngine(Promise callback) {
-        boolean result = Engine.EngineInstance.Initialize();
+        boolean result = Engine.EngineInstance.Initialize(this.context);
         callback.resolve(result);
     }
 
 
     // API Calls
 
+    @ReactMethod
     public void getCoordinatesFromLocation(String location, Promise callback) {
         try {
             ArrayList<Region> arr = TripUtils.getCoordinatesFromLocation(location);
@@ -197,6 +195,7 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
     public void Register(String email, String phone, String password, Promise callback) {
         try {
             String AuthToken = AuthUtils.Register(email, phone, password);
@@ -208,6 +207,7 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
     public void Login(String email, String password, Promise callback) {
         try {
             String AuthToken = AuthUtils.Login(email, password);
@@ -220,9 +220,11 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
     }
 
 
+    ReactApplicationContext context;
 
     public ExposedAPI(ReactApplicationContext reactContext) {
         super(reactContext);
+        this.context = reactContext;
     }
 
     @Nonnull

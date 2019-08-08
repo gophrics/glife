@@ -1,10 +1,14 @@
 package com.beerwithai.glimpse.Engine;
 
+import com.beerwithai.glimpse.Engine.Modals.ClusterModal;
 import com.beerwithai.glimpse.Engine.Modals.HomeDataModal;
 import com.beerwithai.glimpse.Engine.Modals.HomesForDataClusteringModal;
 import com.beerwithai.glimpse.Engine.Modals.Region;
+import com.beerwithai.glimpse.Engine.Modals.TripModal;
 import com.beerwithai.glimpse.Engine.Providers.DatabaseProvider;
+import com.beerwithai.glimpse.Engine.Utils.PhotoLibraryProcessor;
 import com.beerwithai.glimpse.Engine.Utils.TripUtils;
+import com.facebook.react.bridge.ReactApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +50,7 @@ public class Engine {
         DatabaseProvider.UpdateDBWithHomesForDataClustering(homesForDataClusteringModals);
     }
 
-    public boolean Initialize() {
+    public boolean Initialize(ReactApplicationContext context) {
         DatabaseProvider.ClearAllTrips();
         ArrayList<HomeDataModal> homeDataArray = DatabaseProvider.GetHomeData();
         try {
@@ -55,6 +59,20 @@ public class Engine {
 
         }
 
-        // Read from photo library and stuff
+        ArrayList<ClusterModal> _cluster = PhotoLibraryProcessor.getPhotosFromLibrary(context);
+        _cluster =  PhotoLibraryProcessor.PopulateImageProperties(_cluster);
+
+        if(_cluster.size() == 0) {
+            return true;
+        }
+
+        try {
+            ArrayList<TripModal> trips = PhotoLibraryProcessor.GenerateTripFromPhotos(_cluster);
+            DatabaseProvider.UpdateDBWithTrips(trips);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

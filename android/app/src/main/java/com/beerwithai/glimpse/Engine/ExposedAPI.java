@@ -13,6 +13,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableNativeArray;
 
@@ -59,22 +61,22 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void setProfileData(Map<String, Object> value, String param, String profileId, Promise callback) {
+    public void setProfileData(ReadableMap value, String param, String profileId, Promise callback) {
         Realm db = Realm.getDefaultInstance();
         switch(param) {
             case "name":
                 RealmResults<ProfileModal> data = db.where(ProfileModal.class).findAll();
-                ProfileModal profile = data.get(0);
-
-                if(profile != null) {
+                
+                if(data.size() > 0) {
+                    ProfileModal profile = data.get(0);
                     db.beginTransaction();
-                    profile.name = String.valueOf(value.get("name"));
+                    profile.name = String.valueOf(value.getString("name"));
                     db.copyFromRealm(profile);
                     db.commitTransaction();
                 } else {
                     db.beginTransaction();
-                    profile = new ProfileModal();
-                    profile.name = String.valueOf(value.get("name"));
+                    ProfileModal profile = new ProfileModal();
+                    profile.name = String.valueOf(value.getString("name"));
                     db.copyToRealm(profile);
                     db.commitTransaction();
                 }
@@ -99,7 +101,7 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setHomeData(ArrayList<Map<String, Object>> homeData, Promise callback) {
+    public void setHomeData(ReadableArray homeData, Promise callback) {
         Realm db = Realm.getDefaultInstance();
         RealmResults<HomeDataModal> dbResults = db.where(HomeDataModal.class).findAll();
 
@@ -109,7 +111,7 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
 
         for(int i = 0; i < homeData.size(); i++) {
             HomeDataModal homeDataModal = new HomeDataModal();
-            homeDataModal.CloneDictionary(homeData.get(i));
+            homeDataModal.CloneDictionary(homeData.getMap(i));
             db.beginTransaction();
             db.copyToRealm(homeDataModal);
             db.commitTransaction();

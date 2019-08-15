@@ -1,5 +1,6 @@
 package com.beerwithai.glimpse.Engine.Modals;
 
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 
@@ -23,10 +24,10 @@ public class HomeDataModal extends RealmObject {
         return obj;
     }
 
-    public void CloneDictionary(Map<String, Object> obj) {
-        this.name = String.valueOf(obj.get("name"));
-        this.timestamp = Double.parseDouble(String.valueOf(obj.get("timestamp")));
-        this.latitude = Float.parseFloat(String.valueOf(obj.get("latitude")));
-        this.longitude = Float.parseFloat(String.valueOf(obj.get("longitude")));
+    public void CloneDictionary(ReadableMap obj) {
+        this.name = String.valueOf(obj.getString("name"));
+        this.timestamp = Double.parseDouble(String.valueOf(obj.getDouble("timestamp"))); // Why so many type conversions?
+        this.latitude = Float.parseFloat(String.valueOf(obj.getDouble("latitude")));
+        this.longitude = Float.parseFloat(String.valueOf(obj.getDouble("longitude")));
     }
 }

@@ -53,6 +53,7 @@ export default class App extends React.Component<IProps, IState> {
   }
 
   Initialize = async() => {
+    console.log(NativeModules)
     AsyncStorage.getItem('profileId')
     .then((res) => {
       if(res) {

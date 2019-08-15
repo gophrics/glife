@@ -1,5 +1,8 @@
 package com.beerwithai.glimpse.Engine.Modals;
 
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,11 +11,11 @@ public class Region {
     public Float longitude;
     public String name;
 
-    public Map<String, Object> GetAsDictionary() {
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("latitude", this.latitude);
-        result.put("longitude", this.longitude);
-        result.put("name", this.name);
+    public WritableMap GetAsDictionary() {
+        WritableMap result = new WritableNativeMap();
+        result.putDouble("latitude", this.latitude);
+        result.putDouble("longitude", this.longitude);
+        result.putString("name", this.name);
         return result;
     }
 }

@@ -15,6 +15,7 @@ import com.facebook.soloader.SoLoader;
 import com.horcrux.svg.SvgPackage; 
 import java.util.Arrays;
 import java.util.List;
+import com.beerwithai.glimpse.Engine.NativeEngine;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -32,7 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new AsyncStoragePackage(),
             new MapsPackage(),
-      	    new SvgPackage()
+      	    new SvgPackage(),
+            new NativeEngine()
 	);
     }
 

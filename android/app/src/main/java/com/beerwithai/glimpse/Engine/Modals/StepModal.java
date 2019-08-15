@@ -2,15 +2,18 @@ package com.beerwithai.glimpse.Engine.Modals;
 
 
 import com.beerwithai.glimpse.Engine.Utils.ClusterProcessor;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.realm.RealmList;
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 
-public class StepModal extends RealmObject {
+public class StepModal implements RealmModel {
     public String profileId;
     public String tripId;
     public Integer stepId;
@@ -53,22 +56,22 @@ public class StepModal extends RealmObject {
         return (ClusterProcessor.EarthDistance(_p, _q));
     }
 
-    public Map<String, Object> GetAsDictionary() {
-        Map<String, Object> obj = new HashMap<String, Object>();
-        obj.put("profileId", this.profileId);
-        obj.put("tripId", this.tripId);
-        obj.put("stepId", this.stepId);
-        obj.put("stepName", this.stepName);
-        obj.put("meanLatitude", this.meanLatitude);
-        obj.put("meanLongitude", this.meanLongitude);
-        obj.put("startTimestamp", this.startTimestamp);
-        obj.put("endTimestamp", this.endTimestamp);
-        obj.put("masterImage", this.masterImage);
-        obj.put("masterMarker", this.markers.get(0).GetAsDictionary());
-        obj.put("distanceTravelled", this.distanceTravelled);
-        obj.put("desc", this.desc);
-        obj.put("temperature", this.temperature);
-        obj.put("numberOfPicturesTaken", this.images.size());
+    public WritableMap GetAsDictionary() {
+        WritableMap obj = new WritableNativeMap();
+        obj.putString("profileId", this.profileId);
+        obj.putString("tripId", this.tripId);
+        obj.putInt("stepId", this.stepId);
+        obj.putString("stepName", this.stepName);
+        obj.putDouble("meanLatitude", this.meanLatitude);
+        obj.putDouble("meanLongitude", this.meanLongitude);
+        obj.putDouble("startTimestamp", this.startTimestamp);
+        obj.putDouble("endTimestamp", this.endTimestamp);
+        obj.putString("masterImage", this.masterImage);
+        obj.putMap("masterMarker", this.markers.get(0).GetAsDictionary());
+        obj.putInt("distanceTravelled", this.distanceTravelled);
+        obj.putString("desc", this.desc);
+        obj.putString("temperature", this.temperature);
+        obj.putInt("numberOfPicturesTaken", this.images.size());
         return obj;
     }
 }

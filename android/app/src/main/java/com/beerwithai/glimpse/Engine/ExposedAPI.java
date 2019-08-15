@@ -8,10 +8,13 @@ import com.beerwithai.glimpse.Engine.Modals.TripModal;
 import com.beerwithai.glimpse.Engine.Providers.AuthProvider;
 import com.beerwithai.glimpse.Engine.Utils.AuthUtils;
 import com.beerwithai.glimpse.Engine.Utils.TripUtils;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableArray;
+
 import java.util.ArrayList;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -27,7 +30,7 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
             case "all":
                 RealmResults<ProfileModal> dbData = db.where(ProfileModal.class).findAll();
                 if(dbData.size() > 0) {
-                    callback.resolve(dbData.get(0));
+                    callback.resolve(dbData.get(0).GetAsDictionary());
                 } else {
                     callback.resolve(false);
                 }
@@ -86,13 +89,12 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
         Realm db = Realm.getDefaultInstance();
         RealmResults<HomeDataModal> dbResult = db.where(HomeDataModal.class).findAll();
 
-        ArrayList<Map<String, Object>> homeDataArray = new ArrayList<Map<String, Object>>();
-
+        WritableArray promiseArray = Arguments.createArray();
         for(int i = 0; i < dbResult.size(); i++) {
-            homeDataArray.add(dbResult.get(i).GetAsDictionary());
+            promiseArray.pushMap(dbResult.get(i).GetAsDictionary());
         }
 
-        callback.resolve(homeDataArray);
+        callback.resolve(promiseArray);
     }
 
     @ReactMethod

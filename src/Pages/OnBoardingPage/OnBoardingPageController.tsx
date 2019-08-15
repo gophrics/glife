@@ -15,6 +15,7 @@ export class OnBoardingPageController {
         this.cursor = 0;
         this.culprits = [];
         this.loadHomeData()
+        console.log(NativeModules);
     }
 
     loadHomeData = async() => {

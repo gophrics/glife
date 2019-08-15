@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public class CustomPackage implements ReactPackage {
+public class NativeEngine implements ReactPackage {
 
     @Nonnull
     @Override

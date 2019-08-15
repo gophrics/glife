@@ -1,5 +1,10 @@
 package com.beerwithai.glimpse.Engine.Modals;
 
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableNativeMap;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,20 +38,25 @@ public class TripModal extends RealmObject {
         this.syncComplete = trip.syncComplete;
     }
 
-    public Map<String, Object> GetAsDictionary() {
-        Map<String, Object> obj = new HashMap<String, Object>();
-        obj.put("profileId", this.profileId);
-        obj.put("tripId", this.tripId);
-        obj.put("tripName", this.tripName);
-        obj.put("countryCode", this.countryCode);
-        obj.put("temperature", this.temperature);
-        obj.put("daysOfTravel", this.daysOfTravel);
-        obj.put("distanceTravelled", this.distanceTravelled);
-        obj.put("startDate", this.startDate);
-        obj.put("endDate", this.endDate);
-        obj.put("masterImage", this.masterImage);
-        obj.put("isPublic", this.isPublic);
-        obj.put("syncComplete", this.syncComplete);
+    public WritableMap GetAsDictionary() {
+        WritableMap obj = new WritableNativeMap();
+        obj.putString("profileId", this.profileId);
+        obj.putString("tripId", this.tripId);
+        obj.putString("tripName", this.tripName);
+
+        WritableArray cc = new WritableNativeArray();
+        for(String code: this.countryCode) {
+            cc.pushString(code);
+        }
+        obj.putArray("countryCode", cc);
+        obj.putString("temperature", this.temperature);
+        obj.putInt("daysOfTravel", this.daysOfTravel);
+        obj.putInt("distanceTravelled", this.distanceTravelled);
+        obj.putString("startDate", this.startDate);
+        obj.putString("endDate", this.endDate);
+        obj.putString("masterImage", this.masterImage);
+        obj.putBoolean("isPublic", this.isPublic);
+        obj.putBoolean("syncComplete", this.syncComplete);
         return obj;
     }
 }

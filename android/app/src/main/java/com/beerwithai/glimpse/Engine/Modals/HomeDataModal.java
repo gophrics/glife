@@ -1,5 +1,8 @@
 package com.beerwithai.glimpse.Engine.Modals;
 
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,12 +14,12 @@ public class HomeDataModal extends RealmObject {
     public Float latitude;
     public Float longitude;
 
-    public Map<String, Object> GetAsDictionary() {
-        Map<String, Object> obj = new HashMap<String, Object>();
-        obj.put("name", this.name);
-        obj.put("timestamp", this.timestamp);
-        obj.put("latitude", this.latitude);
-        obj.put("longitude", this.longitude);
+    public WritableMap GetAsDictionary() {
+        WritableMap obj = new WritableNativeMap();
+        obj.putString("name", this.name);
+        obj.putDouble("timestamp", this.timestamp);
+        obj.putDouble("latitude", this.latitude);
+        obj.putDouble("longitude", this.longitude);
         return obj;
     }
 

@@ -1,5 +1,10 @@
 package com.beerwithai.glimpse.Engine.Modals;
 
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableNativeMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,20 +23,20 @@ public class ProfileModal extends RealmObject {
     public String email;
     public String password;
 
-    public Map<String, Object> GetAsDictionary() {
-        Map<String, Object> _m = new HashMap<String, Object>();
-        _m.put("profileId", this.profileId);
-        ArrayList<String> countriesVisited = new ArrayList<String>();
-        for(String country: countriesVisited) {
-            countriesVisited.add(country);
+    public WritableMap GetAsDictionary() {
+        WritableMap _m = new WritableNativeMap();
+        _m.putString("profileId", this.profileId);
+        WritableArray countriesVisited = new WritableNativeArray();
+        for(String country: this.countriesVisited) {
+            countriesVisited.pushString(country);
         }
-        _m.put("countriesVisited", countriesVisited);
-        _m.put("percentageWorldTravelled", this.percentageWorldTravelled);
-        _m.put("coverPicURL", this.coverPicURL);
-        _m.put("profilePicURL", this.profilePicURL);
-        _m.put("name", this.name);
-        _m.put("email", this.email);
-        _m.put("password", this.password);
+        _m.putArray("countriesVisited", countriesVisited);
+        _m.putDouble("percentageWorldTravelled", this.percentageWorldTravelled);
+        _m.putString("coverPicURL", this.coverPicURL);
+        _m.putString("profilePicURL", this.profilePicURL);
+        _m.putString("name", this.name);
+        _m.putString("email", this.email);
+        _m.putString("password", this.password);
 
         return _m;
     }

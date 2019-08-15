@@ -14,6 +14,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableNativeArray;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -45,9 +46,9 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
                 break;
             case "trips":
                 RealmResults<ProfileModal> dbData3 = db.where(ProfileModal.class).findAll();
-                ArrayList<Map<String, Object>> response = new ArrayList<Map<String, Object>>();
+                WritableArray response = new WritableNativeArray();
                 for(int i = 0; i < dbData3.size(); i++) {
-                    response.add(dbData3.get(i).GetAsDictionary());
+                    response.pushMap(dbData3.get(i).GetAsDictionary());
                 }
                 callback.resolve(response);
                 break;
@@ -135,10 +136,10 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
                     break;
                 }
 
-                ArrayList<Map<String, Object>> steps = new ArrayList<Map<String, Object>>();
+                WritableArray steps = new WritableNativeArray();
 
                 for(int i = 0; i < dbResults2.size(); i++) {
-                    steps.add(dbResults2.get(i).GetAsDictionary());
+                    steps.pushMap(dbResults2.get(i).GetAsDictionary());
                 }
                 callback.resolve(steps);
                 break;
@@ -184,10 +185,10 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
     public void getCoordinatesFromLocation(String location, Promise callback) {
         try {
             ArrayList<Region> arr = TripUtils.getCoordinatesFromLocation(location);
-            ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+            WritableArray result = new WritableNativeArray();
 
             for(int i = 0; i < arr.size(); i++) {
-                result.add(arr.get(i).GetAsDictionary());
+                result.pushMap(arr.get(i).GetAsDictionary());
             }
 
             callback.resolve(arr);

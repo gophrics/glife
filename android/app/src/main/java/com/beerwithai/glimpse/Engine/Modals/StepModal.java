@@ -14,20 +14,20 @@ import io.realm.RealmModel;
 import io.realm.RealmObject;
 
 public class StepModal implements RealmModel {
-    public String profileId;
-    public String tripId;
-    public Integer stepId;
-    public String stepName;
-    public Float meanLatitude;
-    public Float meanLongitude;
-    public Double startTimestamp;
-    public Double endTimestamp;
-    public RealmList<String> images;
-    public RealmList<Region> markers;
-    public String masterImage;
-    public Integer distanceTravelled;
-    public String desc;
-    public String temperature;
+    public String profileId = "randomGeneratedId";
+    public String tripId = "";
+    public Integer stepId = 0;
+    public String stepName = "";
+    public Float meanLatitude = Float.valueOf(0);
+    public Float meanLongitude = Float.valueOf(0);
+    public Double startTimestamp = Double.valueOf(0);
+    public Double endTimestamp = Double.valueOf(0);
+    public RealmList<String> images = new RealmList<String>();
+    public RealmList<Region> markers = new RealmList<Region>();
+    public String masterImage = "";
+    public Integer distanceTravelled = Integer.valueOf(0);
+    public String desc = "";
+    public String temperature = "";
 
     public void CopyConstructor(StepModal step) {
         this.stepName = step.stepName;

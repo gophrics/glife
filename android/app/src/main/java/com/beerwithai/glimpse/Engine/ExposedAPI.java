@@ -66,7 +66,7 @@ public class ExposedAPI extends ReactContextBaseJavaModule {
         switch(param) {
             case "name":
                 RealmResults<ProfileModal> data = db.where(ProfileModal.class).findAll();
-                
+
                 if(data.size() > 0) {
                     ProfileModal profile = data.get(0);
                     db.beginTransaction();

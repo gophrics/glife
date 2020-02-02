@@ -51,7 +51,7 @@ public class Engine {
     }
 
     public boolean Initialize(ReactApplicationContext context) {
-        DatabaseProvider.ClearAllTrips();
+        DatabaseProvider.ClearAllTrips(); // Remove this, all logic in react native
         ArrayList<HomeDataModal> homeDataArray = DatabaseProvider.GetHomeData();
         try {
             this.GenerateHomeData(homeDataArray);

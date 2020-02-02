@@ -95,7 +95,6 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -146,6 +145,9 @@ android {
             }
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -157,6 +159,8 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-svg')
     implementation 'com.google.firebase:firebase-core:16.0.9'
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:1.+"
 }
 
 // Run this once to be able to run the application with BUCK
